@@ -1,5 +1,25 @@
+'use client';
 import { ProductItem } from '../components/product/productItem';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 export default function Shop() {
+    const [products, setProducts] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const listProduct = await axios.get('https://v2.dlbd.vn/api/v2/guest/products');
+                const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
+                setProducts(listProduct.data.data);
+                setCategories(listCategories.data.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
@@ -24,87 +44,16 @@ export default function Shop() {
                                 <div className="shop-widget">
                                     <h4 className="shop-widget-title">Category</h4>
                                     <ul>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat1" />
-                                                <label className="form-check-label" htmlFor="cat1">
-                                                    {' '}
-                                                    Headlights & Lighting
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat2" />
-                                                <label className="form-check-label" htmlFor="cat2">
-                                                    {' '}
-                                                    Interior Parts
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat3" />
-                                                <label className="form-check-label" htmlFor="cat3">
-                                                    {' '}
-                                                    Switches & Relays
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat4" />
-                                                <label className="form-check-label" htmlFor="cat4">
-                                                    {' '}
-                                                    Tires & Wheels
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat5" />
-                                                <label className="form-check-label" htmlFor="cat5">
-                                                    {' '}
-                                                    Fuel Systems
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat6" />
-                                                <label className="form-check-label" htmlFor="cat6">
-                                                    {' '}
-                                                    Steering
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat7" />
-                                                <label className="form-check-label" htmlFor="cat7">
-                                                    {' '}
-                                                    Body Parts
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat8" />
-                                                <label className="form-check-label" htmlFor="cat8">
-                                                    {' '}
-                                                    Air Filters
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="cat9" />
-                                                <label className="form-check-label" htmlFor="cat9">
-                                                    {' '}
-                                                    Wipers & Washers
-                                                </label>
-                                            </div>
-                                        </li>
+                                        {categories.map((item) => (
+                                            <li key={item.id}>
+                                                <div className="form-check">
+                                                    <input className="form-check-input" type="checkbox" id="cat1" />
+                                                    <label className="form-check-label" htmlFor="cat1">
+                                                        {item.name}
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                                 <div className="shop-widget">
@@ -205,33 +154,15 @@ export default function Shop() {
                             </div>
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
-                                    <div className="col-md-6 col-lg-4">
-                                        <ProductItem />
-                                    </div>
+                                    {products.map((item) => (
+                                        <div key={item.id} className="col-md-6 col-lg-4">
+                                            <ProductItem
+                                                name={item.name}
+                                                price={item.price}
+                                                thumbnail={item.thumbnail}
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                             <div className="pagination-area mt-4">

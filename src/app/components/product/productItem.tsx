@@ -1,10 +1,11 @@
 'use client';
-const ProductItem = () => {
+
+const ProductItem = ({ name, price, thumbnail }: { name: string; price: number; thumbnail: any }) => {
     return (
         <div className="shop-item">
             <div className="shop-item-img">
                 <span className="shop-item-sale">Sale</span>
-                <img src="/assets/img/shop/01.jpg" alt="" />
+                <img src={thumbnail} alt="" />
                 <div className="shop-item-meta">
                     <a href="#">
                         <i className="far fa-heart"></i>
@@ -26,10 +27,10 @@ const ProductItem = () => {
                     <i className="fas fa-star"></i>
                 </div>
                 <a href="#">
-                    <h4 className="shop-item-title">Car Engine Parts</h4>
+                    <h4 className="shop-item-title">{name}</h4>
                 </a>
                 <div className="shop-item-price">
-                    <del>$450</del> $390
+                    <del>{price.toLocaleString()}đ</del> {price.toLocaleString()}đ
                 </div>
             </div>
         </div>
