@@ -2,6 +2,7 @@
 import { ProductItem } from '../components/product/productItem';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+
 export default function Shop() {
     const [products, setProducts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
