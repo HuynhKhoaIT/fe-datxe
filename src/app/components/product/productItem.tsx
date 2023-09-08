@@ -1,6 +1,16 @@
 'use client';
-
-const ProductItem = ({ name, price, thumbnail }: { name: string; price: number; thumbnail: any }) => {
+import Link from 'next/link';
+const ProductItem = ({
+    productId,
+    name,
+    price,
+    thumbnail,
+}: {
+    productId: number;
+    name: string;
+    price: number;
+    thumbnail: any;
+}) => {
     return (
         <div className="shop-item">
             <div className="shop-item-img">
@@ -26,9 +36,9 @@ const ProductItem = ({ name, price, thumbnail }: { name: string; price: number; 
                     <i className="fas fa-star"></i>
                     <i className="fas fa-star"></i>
                 </div>
-                <a href="#">
+                <Link href={`/san-pham/${productId}`}>
                     <h4 className="shop-item-title">{name}</h4>
-                </a>
+                </Link>
                 <div className="shop-item-price">
                     <del>{price.toLocaleString()}đ</del> {price.toLocaleString()}đ
                 </div>
