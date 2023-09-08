@@ -1,116 +1,11 @@
 import './assets/css/nice-select.min.css';
+import { SlideBanners } from './components/home/slideBanners';
+
 export default function Home() {
     return (
         <main className="main">
             <div className="hero-section">
-                <div className="hero-slider owl-carousel owl-theme">
-                    <div className="hero-single" style={{ background: `url(assets/img/slider/slider-1.jpg)` }}>
-                        <div className="container">
-                            <div className="row align-items-center">
-                                <div className="col-md-12 col-lg-6">
-                                    <div className="hero-content">
-                                        <h6 className="hero-sub-title" data-animation="fadeInUp" data-delay=".25s">
-                                            Welcome To Motex!
-                                        </h6>
-                                        <h1 className="hero-title" data-animation="fadeInRight" data-delay=".50s">
-                                            Best Way To Find Your <span>Dream</span> Car
-                                        </h1>
-                                        <p data-animation="fadeInLeft" data-delay=".75s">
-                                            There are many variations of passages orem psum available but the majority
-                                            have suffered alteration in some form by injected humour.
-                                        </p>
-                                        <div className="hero-btn" data-animation="fadeInUp" data-delay="1s">
-                                            <a href="#" className="theme-btn">
-                                                About More<i className="fas fa-arrow-right-long"></i>
-                                            </a>
-                                            <a href="#" className="theme-btn theme-btn2">
-                                                Learn More<i className="fas fa-arrow-right-long"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-12 col-lg-6">
-                                    <div className="hero-right">
-                                        <div className="hero-img">
-                                            <img
-                                                src="assets/img/slider/hero-1.png"
-                                                alt=""
-                                                data-animation="fadeInRight/"
-                                                data-delay=".25s"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* <div className="hero-single" style={{background: `url(assets/img/slider/slider-2.jpg)`}}>
-                    <div className="container">
-                        <div className="row align-items-center">
-                            <div className="col-md-12 col-lg-6">
-                                <div className="hero-content">
-                                    <h6 className="hero-sub-title" data-animation="fadeInUp" data-delay=".25s">Welcome To
-                                        Motex!</h6>
-                                    <h1 className="hero-title" data-animation="fadeInRight" data-delay=".50s">
-                                        Best Way To Find Your <span>Dream</span> Car
-                                    </h1>
-                                    <p data-animation="fadeInLeft" data-delay=".75s">
-                                        There are many variations of passages orem psum available but the majority have
-                                        suffered alteration in some form by injected humour.
-                                    </p>
-                                    <div className="hero-btn" data-animation="fadeInUp" data-delay="1s">
-                                        <a href="#" className="theme-btn">About More<i
-                                                className="fas fa-arrow-right-long"></i></a>
-                                        <a href="#" className="theme-btn theme-btn2">Learn More<i
-                                                className="fas fa-arrow-right-long"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-12 col-lg-6">
-                                <div className="hero-right">
-                                    <div className="hero-img">
-                                        <img src="assets/img/slider/hero-2.png" alt="" data-animation="fadeInRight/"
-                                            data-delay=".25s"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="hero-single" style={{background: `url(assets/img/slider/slider-3.jpg)`}}>
-                    <div className="container">
-                        <div className="row align-items-center">
-                            <div className="col-md-12 col-lg-6">
-                                <div className="hero-content">
-                                    <h6 className="hero-sub-title" data-animation="fadeInUp" data-delay=".25s">Welcome To
-                                        Motex!</h6>
-                                    <h1 className="hero-title" data-animation="fadeInRight" data-delay=".50s">
-                                        Best Way To Find Your <span>Dream</span> Car
-                                    </h1>
-                                    <p data-animation="fadeInLeft" data-delay=".75s">
-                                        There are many variations of passages orem psum available but the majority have
-                                        suffered alteration in some form by injected humour.
-                                    </p>
-                                    <div className="hero-btn" data-animation="fadeInUp" data-delay="1s">
-                                        <a href="#" className="theme-btn">About More<i
-                                                className="fas fa-arrow-right-long"></i></a>
-                                        <a href="#" className="theme-btn theme-btn2">Learn More<i
-                                                className="fas fa-arrow-right-long"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-12 col-lg-6">
-                                <div className="hero-right">
-                                    <div className="hero-img">
-                                        <img src="assets/img/slider/hero-4.png" alt="" data-animation="fadeInRight/"
-                                            data-delay=".25s"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-                </div>
+                <SlideBanners />
             </div>
             {/* <!-- hero slider end --> */}
 
@@ -118,7 +13,7 @@ export default function Home() {
             <div className="find-car">
                 <div className="container">
                     <div className="find-car-form">
-                        <h4 className="find-car-title">Let's Find Your Perfect Car</h4>
+                        <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
                         <form action="#">
                             <div className="row">
                                 <div className="col-lg-3">
@@ -217,108 +112,117 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="about-area py-120">
+            <div className="car-category py-120">
                 <div className="container">
-                    <div className="row align-items-center">
-                        <div className="col-lg-6">
-                            <div className="about-left wow fadeInLeft" data-wow-delay=".25s">
-                                <div className="about-img">
-                                    <img src="assets/img/about/01.png" alt="" />
-                                </div>
-                                <div className="about-experience">
-                                    <div className="about-experience-icon">
-                                        <i className="flaticon-car"></i>
-                                    </div>
-                                    <b>
-                                        30 Years Of <br /> Quality Service
-                                    </b>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="about-right wow fadeInRight" data-wow-delay=".25s">
-                                <div className="site-heading mb-3">
-                                    <span className="site-title-tagline justify-content-start">
-                                        <i className="flaticon-drive"></i> About Us
-                                    </span>
-                                    <h2 className="site-title">
-                                        World Largest <span>Car Dealer</span> Marketplace.
-                                    </h2>
-                                </div>
-                                <p className="about-text">
-                                    There are many variations of passages of Lorem Ipsum available, but the majority
-                                    have suffered alteration in some form, by injected humour.
-                                </p>
-                                <div className="about-list-wrapper">
-                                    <ul className="about-list list-unstyled">
-                                        <li>At vero eos et accusamus et iusto odio.</li>
-                                        <li>Established fact that a reader will be distracted.</li>
-                                        <li>Sed ut perspiciatis unde omnis iste natus sit.</li>
-                                    </ul>
-                                </div>
-                                <a href="about.html" className="theme-btn mt-4">
-                                    Discover More<i className="fas fa-arrow-right-long"></i>
-                                </a>
+                    <div className="row">
+                        <div className="col-lg-6 mx-auto">
+                            <div className="site-heading text-center">
+                                <span className="site-title-tagline">
+                                    <i className="flaticon-drive"></i> Danh mục
+                                </span>
+                                <h2 className="site-title">
+                                    Dịch vụ <span>Nổi bật</span>
+                                </h2>
+                                <div className="heading-divider"></div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div className="counter-area pt-30 pb-30">
-                <div className="container">
                     <div className="row">
-                        <div className="col-lg-3 col-sm-6">
-                            <div className="counter-box">
-                                <div className="icon">
-                                    <i className="flaticon-car-rental"></i>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".25s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/01.png" alt="" />
                                 </div>
-                                <div>
-                                    <span className="counter" data-count="+" data-to="500" data-speed="3000">
-                                        500
-                                    </span>
-                                    <h6 className="title">+ Available Cars </h6>
-                                </div>
-                            </div>
+                                <h5>Sedan</h5>
+                            </a>
                         </div>
-                        <div className="col-lg-3 col-sm-6">
-                            <div className="counter-box">
-                                <div className="icon">
-                                    <i className="flaticon-car-key"></i>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".50s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/02.png" alt="" />
                                 </div>
-                                <div>
-                                    <span className="counter" data-count="+" data-to="900" data-speed="3000">
-                                        900
-                                    </span>
-                                    <h6 className="title">+ Happy Clients</h6>
-                                </div>
-                            </div>
+                                <h5>Compact</h5>
+                            </a>
                         </div>
-                        <div className="col-lg-3 col-sm-6">
-                            <div className="counter-box">
-                                <div className="icon">
-                                    <i className="flaticon-screwdriver"></i>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".75s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/03.png" alt="" />
                                 </div>
-                                <div>
-                                    <span className="counter" data-count="+" data-to="1500" data-speed="3000">
-                                        1500
-                                    </span>
-                                    <h6 className="title">+ Team Workers</h6>
-                                </div>
-                            </div>
+                                <h5>Convertible</h5>
+                            </a>
                         </div>
-                        <div className="col-lg-3 col-sm-6">
-                            <div className="counter-box">
-                                <div className="icon">
-                                    <i className="flaticon-review"></i>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/04.png" alt="" />
                                 </div>
-                                <div>
-                                    <span className="counter" data-count="+" data-to="30" data-speed="3000">
-                                        30
-                                    </span>
-                                    <h6 className="title">+ Years Of Experience</h6>
+                                <h5>SUV</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.25s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/05.png" alt="" />
                                 </div>
-                            </div>
+                                <h5>Crossover</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.50s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/06.png" alt="" />
+                                </div>
+                                <h5>Wagon</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".25s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/07.png" alt="" />
+                                </div>
+                                <h5>Sports</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".50s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/08.png" alt="" />
+                                </div>
+                                <h5>Pickup</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".75s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/09.png" alt="" />
+                                </div>
+                                <h5>Family MPV</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/10.png" alt="" />
+                                </div>
+                                <h5>Coupe</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.25s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/11.png" alt="" />
+                                </div>
+                                <h5>Electric</h5>
+                            </a>
+                        </div>
+                        <div className="col-6 col-md-4 col-lg-2">
+                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.50s">
+                                <div className="category-img">
+                                    <img src="assets/img/category/12.png" alt="" />
+                                </div>
+                                <h5>Luxury</h5>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -330,10 +234,10 @@ export default function Home() {
                         <div className="col-lg-6 mx-auto">
                             <div className="site-heading text-center">
                                 <span className="site-title-tagline">
-                                    <i className="flaticon-drive"></i> New Arrivals
+                                    <i className="flaticon-drive"></i> Nổi bật
                                 </span>
                                 <h2 className="site-title">
-                                    Let's Check Latest <span>Cars</span>
+                                    Sản phẩm / Dịch vụ <span>Hot</span>
                                 </h2>
                                 <div className="heading-divider"></div>
                             </div>
@@ -753,122 +657,6 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="car-category py-120">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6 mx-auto">
-                            <div className="site-heading text-center">
-                                <span className="site-title-tagline">
-                                    <i className="flaticon-drive"></i> Car Category
-                                </span>
-                                <h2 className="site-title">
-                                    Car By Body <span>Types</span>
-                                </h2>
-                                <div className="heading-divider"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".25s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/01.png" alt="" />
-                                </div>
-                                <h5>Sedan</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".50s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/02.png" alt="" />
-                                </div>
-                                <h5>Compact</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".75s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/03.png" alt="" />
-                                </div>
-                                <h5>Convertible</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/04.png" alt="" />
-                                </div>
-                                <h5>SUV</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.25s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/05.png" alt="" />
-                                </div>
-                                <h5>Crossover</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.50s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/06.png" alt="" />
-                                </div>
-                                <h5>Wagon</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".25s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/07.png" alt="" />
-                                </div>
-                                <h5>Sports</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".50s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/08.png" alt="" />
-                                </div>
-                                <h5>Pickup</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay=".75s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/09.png" alt="" />
-                                </div>
-                                <h5>Family MPV</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/10.png" alt="" />
-                                </div>
-                                <h5>Coupe</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.25s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/11.png" alt="" />
-                                </div>
-                                <h5>Electric</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2">
-                            <a href="#" className="category-item wow fadeInUp" data-wow-delay="1.50s">
-                                <div className="category-img">
-                                    <img src="assets/img/category/12.png" alt="" />
-                                </div>
-                                <h5>Luxury</h5>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div className="video-area pb-120">
                 <div className="container-fluid px-0">
                     <div className="video-content">
@@ -896,10 +684,10 @@ export default function Home() {
                         <div className="col-lg-6 mx-auto">
                             <div className="site-heading text-center">
                                 <span className="site-title-tagline">
-                                    <i className="flaticon-drive"></i> Car Dealers
+                                    <i className="flaticon-drive"></i> Chuyên gia
                                 </span>
                                 <h2 className="site-title">
-                                    Best Dealers In <span>Your City</span>
+                                    Tốt nhất <span>gần bạn</span>
                                 </h2>
                                 <div className="heading-divider"></div>
                             </div>
@@ -1247,163 +1035,6 @@ export default function Home() {
                 </div>
             </div>
             {/* <!-- car brand end--> */}
-
-            {/* <!-- testimonial area --> */}
-            <div className="testimonial-area bg py-120">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6 mx-auto">
-                            <div className="site-heading text-center">
-                                <span className="site-title-tagline">
-                                    <i className="flaticon-drive"></i> Testimonials
-                                </span>
-                                <h2 className="site-title">
-                                    What Our Client <span>Say's</span>
-                                </h2>
-                                <div className="heading-divider"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="testimonial-slider owl-carousel owl-theme">
-                        <div className="testimonial-single">
-                            <div className="testimonial-content">
-                                <div className="testimonial-author-img">
-                                    <img src="assets/img/testimonial/01.jpg" alt="" />
-                                </div>
-                                <div className="testimonial-author-info">
-                                    <h4>Sylvia H Green</h4>
-                                    <p>Customer</p>
-                                </div>
-                            </div>
-                            <div className="testimonial-quote">
-                                <span className="testimonial-quote-icon">
-                                    <i className="flaticon-quote"></i>
-                                </span>
-                                <p>
-                                    There are many variations of passages available but the majority have suffered to
-                                    the alteration in some injected.
-                                </p>
-                            </div>
-                            <div className="testimonial-rate">
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <div className="testimonial-single">
-                            <div className="testimonial-content">
-                                <div className="testimonial-author-img">
-                                    <img src="assets/img/testimonial/02.jpg" alt="" />
-                                </div>
-                                <div className="testimonial-author-info">
-                                    <h4>Gordo Novak</h4>
-                                    <p>Customer</p>
-                                </div>
-                            </div>
-                            <div className="testimonial-quote">
-                                <span className="testimonial-quote-icon">
-                                    <i className="flaticon-quote"></i>
-                                </span>
-                                <p>
-                                    There are many variations of passages available but the majority have suffered to
-                                    the alteration in some injected.
-                                </p>
-                            </div>
-                            <div className="testimonial-rate">
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <div className="testimonial-single">
-                            <div className="testimonial-content">
-                                <div className="testimonial-author-img">
-                                    <img src="assets/img/testimonial/03.jpg" alt="" />
-                                </div>
-                                <div className="testimonial-author-info">
-                                    <h4>Reid E Butt</h4>
-                                    <p>Customer</p>
-                                </div>
-                            </div>
-                            <div className="testimonial-quote">
-                                <span className="testimonial-quote-icon">
-                                    <i className="flaticon-quote"></i>
-                                </span>
-                                <p>
-                                    There are many variations of passages available but the majority have suffered to
-                                    the alteration in some injected.
-                                </p>
-                            </div>
-                            <div className="testimonial-rate">
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <div className="testimonial-single">
-                            <div className="testimonial-content">
-                                <div className="testimonial-author-img">
-                                    <img src="assets/img/testimonial/04.jpg" alt="" />
-                                </div>
-                                <div className="testimonial-author-info">
-                                    <h4>Parker Jimenez</h4>
-                                    <p>Customer</p>
-                                </div>
-                            </div>
-                            <div className="testimonial-quote">
-                                <span className="testimonial-quote-icon">
-                                    <i className="flaticon-quote"></i>
-                                </span>
-                                <p>
-                                    There are many variations of passages available but the majority have suffered to
-                                    the alteration in some injected.
-                                </p>
-                            </div>
-                            <div className="testimonial-rate">
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <div className="testimonial-single">
-                            <div className="testimonial-content">
-                                <div className="testimonial-author-img">
-                                    <img src="assets/img/testimonial/05.jpg" alt="" />
-                                </div>
-                                <div className="testimonial-author-info">
-                                    <h4>Heruli Nez</h4>
-                                    <p>Customer</p>
-                                </div>
-                            </div>
-                            <div className="testimonial-quote">
-                                <span className="testimonial-quote-icon">
-                                    <i className="flaticon-quote"></i>
-                                </span>
-                                <p>
-                                    There are many variations of passages available but the majority have suffered to
-                                    the alteration in some injected.
-                                </p>
-                            </div>
-                            <div className="testimonial-rate">
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                                <i className="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- testimonial area end --> */}
 
             {/* <!-- blog area --> */}
             <div className="blog-area py-120">
