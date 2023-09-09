@@ -1,4 +1,6 @@
 'use client';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 const ProductItem = ({
     productId,
@@ -30,11 +32,11 @@ const ProductItem = ({
             </div>
             <div className="shop-item-info">
                 <div className="shop-item-rate">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
+                    <FontAwesomeIcon icon={faStar} />
+                    <FontAwesomeIcon icon={faStar} />
+                    <FontAwesomeIcon icon={faStar} />
+                    <FontAwesomeIcon icon={faStar} />
+                    <FontAwesomeIcon icon={faStar} />
                 </div>
                 <Link href={`/san-pham/${productId}`}>
                     <h4 className="shop-item-title">{name}</h4>
