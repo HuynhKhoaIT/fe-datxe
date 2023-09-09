@@ -1,5 +1,8 @@
 'use client';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faCartShopping, faCirclePlus, faEnvelope, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
@@ -44,16 +47,16 @@ const Header = () => {
                             <div className="header-top-social">
                                 <span>Follow Us: </span>
                                 <Link href="#">
-                                    <i className="fab fa-facebook"></i>
+                                    <FontAwesomeIcon icon={faFacebook} />
                                 </Link>
                                 <Link href="#">
-                                    <i className="fab fa-twitter"></i>
+                                    <FontAwesomeIcon icon={faXTwitter} />
                                 </Link>
                                 <Link href="#">
-                                    <i className="fab fa-instagram"></i>
+                                    <FontAwesomeIcon icon={faInstagram} />
                                 </Link>
                                 <Link href="#">
-                                    <i className="fab fa-linkedin"></i>
+                                    <FontAwesomeIcon icon={faLinkedin} />
                                 </Link>
                             </div>
                         </div>
@@ -97,7 +100,7 @@ const Header = () => {
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" href="san-pham">
+                                    <Link className="nav-link" href="/san-pham">
                                         Sản phẩm/Dịch vụ
                                     </Link>
                                 </li>
@@ -120,18 +123,19 @@ const Header = () => {
                             <div className="nav-right">
                                 <div className="search-btn">
                                     <button type="button" className="nav-right-link">
-                                        <i className="far fa-search"></i>
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
                                     </button>
                                 </div>
                                 <div className="cart-btn">
-                                    <Link href="#" className="nav-right-link">
-                                        <i className="far fa-cart-plus"></i>
+                                    <Link href="/gio-hang" className="nav-right-link">
+                                        <FontAwesomeIcon icon={faCartShopping} />
                                         <span>0</span>
                                     </Link>
                                 </div>
                                 <div className="nav-right-btn mt-2">
                                     <Link href="#" className="theme-btn">
-                                        <span className="far fa-plus-circle"></span>Add Listing
+                                        <FontAwesomeIcon icon={faCirclePlus} />
+                                        Add Listing
                                     </Link>
                                 </div>
                                 <div className="sidebar-btn">
