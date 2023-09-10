@@ -4,10 +4,13 @@ import { SlideBanners } from './components/home/slideBanners';
 import { ProductItem } from './components/product/productItem';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
 export default function Home() {
     const [products, setProducts] = useState<any[]>([]);
     const [featuredProduct, setFeaturedProduct] = useState<number>(8);
-
+    const [chuyengia, setChuyengia] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
 
     useEffect(() => {
@@ -15,8 +18,10 @@ export default function Home() {
             try {
                 const listProduct = await axios.get('https://v2.dlbd.vn/api/v2/guest/products');
                 const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
+                const listChuyengia = await axios.get('https://v2.dlbd.vn/api/v2/guest/garages?limit=8');
                 setProducts(listProduct.data.data);
                 setCategories(listCategories.data.data);
+                setChuyengia(listChuyengia.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -29,10 +34,8 @@ export default function Home() {
     const handleButtonClick = () => {
         // Khi người dùng nhấp chuột, tăng số lượng sản phẩm cần lấy thêm 4 sản phẩm
         setFeaturedProduct(featuredProduct + 4);
-
-        // Thực hiện hành động mong muốn ở đây
-        // Ví dụ: Gọi lại API để lấy thêm sản phẩm, cập nhật giao diện, vv.
     };
+    console.log(chuyengia);
     const featuredProducts = products.slice(0, featuredProduct);
     return (
         <main className="main">
@@ -247,182 +250,30 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay=".25s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">25 Listing</span>
-                                    <img src="assets/img/dealer/01.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Automotive Gear</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay=".50s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">35 Listing</span>
-                                    <img src="assets/img/dealer/02.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Keithson Car</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
+                        {chuyengia.map((item) => (
+                            <div key={item.id} className="col-md-6 col-lg-3">
+                                <div className="dealer-item wow fadeInUp" data-wow-delay=".25s">
+                                    <div className="dealer-img">
+                                        <span className="dealer-listing">25 Listing</span>
+                                        <img src={item.logo} alt="" />
+                                    </div>
+                                    <div className="dealer-content">
+                                        <h4>
+                                            <a href="#">{item.name}</a>
+                                        </h4>
+                                        <ul>
+                                            <li>
+                                                <FontAwesomeIcon icon={faLocationDot} /> {item.address}
+                                            </li>
+                                            <li>
+                                                <FontAwesomeIcon icon={faPhone} />
+                                                <Link href={`tel:${item.phone_number}`}>{item.phone_number}</Link>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay=".75s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">15 Listing</span>
-                                    <img src="assets/img/dealer/03.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Superious Automotive</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay="1s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">20 Listing</span>
-                                    <img src="assets/img/dealer/04.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Racing Gear Car</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay=".25s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">19 Listing</span>
-                                    <img src="assets/img/dealer/05.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Car Showromio</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay=".50s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">40 Listing</span>
-                                    <img src="assets/img/dealer/06.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Fastspeedio Car</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay=".75s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">59 Listing</span>
-                                    <img src="assets/img/dealer/07.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Star AutoMall</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="dealer-item wow fadeInUp" data-wow-delay="1s">
-                                <div className="dealer-img">
-                                    <span className="dealer-listing">28 Listing</span>
-                                    <img src="assets/img/dealer/08.png" alt="" />
-                                </div>
-                                <div className="dealer-content">
-                                    <h4>
-                                        <a href="#">Superspeed Auto</a>
-                                    </h4>
-                                    <ul>
-                                        <li>
-                                            <i className="far fa-location-dot"></i> 25/B Milford Road, New York
-                                        </li>
-                                        <li>
-                                            <i className="far fa-phone"></i>{' '}
-                                            <a href="tel:+21236547898">+2 123 654 7898</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
