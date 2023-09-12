@@ -1,11 +1,17 @@
 'use client';
-import { icon } from '@fortawesome/fontawesome-svg-core';
-import { faCartShopping, faCirclePlus, faEnvelope, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowRightToBracket,
+    faCartShopping,
+    faCirclePlus,
+    faEnvelope,
+    faMagnifyingGlass,
+    faPhoneVolume,
+    faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-
 const Header = () => {
     return (
         <header className="header">
@@ -24,7 +30,7 @@ const Header = () => {
                                     </li>
                                     <li>
                                         <Link href="tel:+21236547898">
-                                            <i className="far fa-phone-volume"></i> +2 123 654 7898
+                                            <FontAwesomeIcon icon={faPhoneVolume} /> +2 123 654 7898
                                         </Link>
                                     </li>
                                     <li>
@@ -37,11 +43,11 @@ const Header = () => {
                         </div>
                         <div className="header-top-right">
                             <div className="header-top-link">
-                                <Link href="#">
-                                    <i className="far fa-arrow-right-to-arc"></i> Login
+                                <Link href="dang-nhap">
+                                    <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
                                 </Link>
                                 <Link href="#">
-                                    <i className="far fa-user-vneck"></i> Register
+                                    <FontAwesomeIcon icon={faUser} /> Đăng ký
                                 </Link>
                             </div>
                             <div className="header-top-social">
@@ -110,12 +116,12 @@ const Header = () => {
                                     </Link>
                                 </li>
                                 <li className="nav-item dropdown">
-                                    <Link className="nav-link " href="#" data-bs-toggle="dropdown">
+                                    <Link className="nav-link " href="bai-viet" data-bs-toggle="dropdown">
                                         Tin tức
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" href="contact">
+                                    <Link className="nav-link" href="lien-he">
                                         Liên hệ
                                     </Link>
                                 </li>

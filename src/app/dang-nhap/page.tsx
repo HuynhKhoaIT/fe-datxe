@@ -1,5 +1,30 @@
+'use client';
 import Link from 'next/link';
+import { useState } from 'react';
+import axios from 'axios';
+import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/navigation';
+import { faFacebookF, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons';
+
 export default function Login() {
+    const router = useRouter();
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+    const handleLogin = async (event: React.FormEvent) => {
+        event.preventDefault(); // Ngăn chặn sự kiện mặc định của biểu mẫu
+        try {
+            const response = await axios.post('https://v2.dlbd.vn/api/login', { phone, password });
+            const { token } = response.data.token; // Destructuring để lấy token
+            // Lưu token vào Local Storage
+            localStorage.setItem('token', token);
+            // Điều hướng đến trang chính sau khi đăng nhập thành công
+            console.log(response.data.token);
+            // router.push('/home', { scroll: false });
+        } catch (error) {
+            console.error('Đăng nhập không thành công', error);
+        }
+    };
     return (
         <main className="main">
             <div className="login-area py-120">
@@ -10,14 +35,26 @@ export default function Login() {
                                 <img src="assets/img/logo/logo.png" alt="" />
                                 <p>Login with your motex account</p>
                             </div>
-                            <form action="#">
+                            <form onSubmit={handleLogin}>
                                 <div className="form-group">
-                                    <label>Email Address</label>
-                                    <input type="email" className="form-control" placeholder="Your Email" />
+                                    <label>Phone</label>
+                                    <input
+                                        type="tel"
+                                        className="form-control"
+                                        placeholder="Your Phone"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                    />
                                 </div>
                                 <div className="form-group">
                                     <label>Password</label>
-                                    <input type="password" className="form-control" placeholder="Your Password" />
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Your Password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
                                 </div>
                                 <div className="d-flex justify-content-between mb-4">
                                     <div className="form-check">
@@ -26,13 +63,14 @@ export default function Login() {
                                             Remember Me
                                         </label>
                                     </div>
-                                    <Link href="forgot-password" className="forgot-pass">
+                                    {/* Sử dụng thư viện định tuyến (React Router hoặc next/router) cho liên kết */}
+                                    <Link href="/forgot-password" className="forgot-pass">
                                         Forgot Password?
                                     </Link>
                                 </div>
                                 <div className="d-flex align-items-center">
                                     <button type="submit" className="theme-btn">
-                                        <i className="far fa-sign-in"></i> Login
+                                        <FontAwesomeIcon icon={faArrowRightToBracket} /> Login
                                     </button>
                                 </div>
                             </form>
@@ -44,13 +82,13 @@ export default function Login() {
                                     <p>Continue with social media</p>
                                     <div className="social-login-list">
                                         <Link href="#">
-                                            <i className="fab fa-facebook-f"></i>
+                                            <FontAwesomeIcon icon={faFacebookF} />
                                         </Link>
                                         <Link href="#">
-                                            <i className="fab fa-google"></i>
+                                            <FontAwesomeIcon icon={faGoogle} />
                                         </Link>
                                         <Link href="#">
-                                            <i className="fab fa-twitter"></i>
+                                            <FontAwesomeIcon icon={faTwitter} />
                                         </Link>
                                     </div>
                                 </div>
