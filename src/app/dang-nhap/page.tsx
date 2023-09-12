@@ -19,7 +19,8 @@ export default function Login() {
             // Lưu token vào Local Storage
             localStorage.setItem('token', token);
             // Điều hướng đến trang chính sau khi đăng nhập thành công
-            router.push('/home', { scroll: false });
+            console.log(response.data.token);
+            // router.push('/home', { scroll: false });
         } catch (error) {
             console.error('Đăng nhập không thành công', error);
         }
