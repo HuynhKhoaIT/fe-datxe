@@ -18,7 +18,7 @@ const Header = () => {
                                 <ul>
                                     <li>
                                         <Link href="mailto:info@example.com">
-                                            <FontAwesomeIcon icon={faEnvelope} />
+                                            {/* <FontAwesomeIcon icon={faEnvelope} /> */}
                                             info@example.com
                                         </Link>
                                     </li>
@@ -95,7 +95,7 @@ const Header = () => {
                         <div className="collapse navbar-collapse" id="main_nav">
                             <ul className="navbar-nav">
                                 <li className="nav-item dropdown">
-                                    <Link className="nav-link active" href="#" data-bs-toggle="dropdown">
+                                    <Link className="nav-link active" href="/" data-bs-toggle="dropdown">
                                         Trang chủ
                                     </Link>
                                 </li>
