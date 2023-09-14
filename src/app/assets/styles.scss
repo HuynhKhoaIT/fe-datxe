@@ -1296,8 +1296,8 @@ label {
     -webkit-box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
     box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
     width: 340px;
-    visibility: hidden;
-    opacity: 0;
+    // visibility: hidden;
+    opacity: 1;
     border-radius: 10px;
     -webkit-transition: var(--transition);
     transition: var(--transition);
