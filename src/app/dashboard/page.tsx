@@ -49,17 +49,16 @@ export default function Dashboard() {
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="user-profile-card">
-                                            <h4 className="user-profile-card-title">Recent Listing</h4>
+                                            <h4 className="user-profile-card-title">Danh sách đơn hàng</h4>
                                             <div className="table-responsive">
                                                 <table className="table text-nowrap">
                                                     <thead>
                                                         <tr>
-                                                            <th>Car Info</th>
-                                                            <th>Brand</th>
-                                                            <th>Publish</th>
-                                                            <th>Price</th>
-                                                            <th>Views</th>
-                                                            <th>Status</th>
+                                                            <th>Chuyên gia</th>
+                                                            <th>Tổng tiền</th>
+                                                            <th>Đã trả</th>
+                                                            <th>Số nợ</th>
+                                                            <th>Tình trạng</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -67,7 +66,7 @@ export default function Dashboard() {
                                                             <td>
                                                                 <div className="table-list-info">
                                                                     <a href="#">
-                                                                        {/* <img src="assets/img/car/01.jpg" alt=""> */}
+                                                                        <img src="assets/img/car/01.jpg" alt="" />
                                                                         <div className="table-ad-content">
                                                                             <h6>Mercedes Benz Car</h6>
                                                                             <span>Car ID: #123456</span>
@@ -75,7 +74,6 @@ export default function Dashboard() {
                                                                     </a>
                                                                 </div>
                                                             </td>
-                                                            <td>Ferrari</td>
                                                             <td>5 days ago</td>
                                                             <td>$50,650</td>
                                                             <td>350k+</td>
@@ -87,7 +85,7 @@ export default function Dashboard() {
                                                             <td>
                                                                 <div className="table-list-info">
                                                                     <a href="#">
-                                                                        {/* <img src="assets/img/car/02.jpg" alt=""> */}
+                                                                        <img src="assets/img/car/02.jpg" alt="" />
                                                                         <div className="table-ad-content">
                                                                             <h6>Mercedes Benz Car</h6>
                                                                             <span>Car ID: #123456</span>
@@ -95,67 +93,6 @@ export default function Dashboard() {
                                                                     </a>
                                                                 </div>
                                                             </td>
-                                                            <td>Ferrari</td>
-                                                            <td>5 days ago</td>
-                                                            <td>$50,650</td>
-                                                            <td>350k+</td>
-                                                            <td>
-                                                                <span className="badge badge-success">Active</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="table-list-info">
-                                                                    <a href="#">
-                                                                        <img src="assets/img/car/03.jpg" alt="" />
-                                                                        <div className="table-ad-content">
-                                                                            <h6>Mercedes Benz Car</h6>
-                                                                            <span>Car ID: #123456</span>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                            <td>Ferrari</td>
-                                                            <td>5 days ago</td>
-                                                            <td>$50,650</td>
-                                                            <td>350k+</td>
-                                                            <td>
-                                                                <span className="badge badge-success">Active</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="table-list-info">
-                                                                    <a href="#">
-                                                                        <img src="assets/img/car/04.jpg" alt="" />
-                                                                        <div className="table-ad-content">
-                                                                            <h6>Mercedes Benz Car</h6>
-                                                                            <span>Car ID: #123456</span>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                            <td>Ferrari</td>
-                                                            <td>5 days ago</td>
-                                                            <td>$50,650</td>
-                                                            <td>350k+</td>
-                                                            <td>
-                                                                <span className="badge badge-success">Active</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="table-list-info">
-                                                                    <a href="#">
-                                                                        <img src="assets/img/car/05.jpg" alt="" />
-                                                                        <div className="table-ad-content">
-                                                                            <h6>Mercedes Benz Car</h6>
-                                                                            <span>Car ID: #123456</span>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                            <td>Ferrari</td>
                                                             <td>5 days ago</td>
                                                             <td>$50,650</td>
                                                             <td>350k+</td>
