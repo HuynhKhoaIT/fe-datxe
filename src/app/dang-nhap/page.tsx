@@ -18,8 +18,6 @@ export default function Login() {
             const { token } = response.data.token; // Destructuring để lấy token
             // Lưu token vào Local Storage
             localStorage.setItem('token', token);
-            // Điều hướng đến trang chính sau khi đăng nhập thành công
-            console.log(response.data.token);
             // router.push('/home', { scroll: false });
         } catch (error) {
             console.error('Đăng nhập không thành công', error);

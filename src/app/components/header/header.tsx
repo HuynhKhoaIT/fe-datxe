@@ -9,10 +9,29 @@ import {
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
-
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 const Header = () => {
+    const [isVisible, setIsVisible] = useState(true);
+    const toggleVisibility = () => {
+        setIsVisible(!isVisible);
+    };
+
+    const router = useRouter();
+    const [searchValue, setSearchValue] = useState('');
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsVisible(!isVisible);
+        router.push(`/tim-kiem?s=${encodeURIComponent(searchValue)}`);
+        setSearchValue('');
+    };
     return (
         <header className="header">
             {/* <!-- top header --> */}
@@ -128,7 +147,7 @@ const Header = () => {
                             </ul>
                             <div className="nav-right">
                                 <div className="search-btn">
-                                    <button type="button" className="nav-right-link">
+                                    <button onClick={toggleVisibility} className="nav-right-link">
                                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                                     </button>
                                 </div>
@@ -152,12 +171,19 @@ const Header = () => {
                             </div>
                         </div>
                         {/* <!-- search area --> */}
-                        <div className="search-area">
-                            <form action="#">
+                        <div className="search-area" style={{ visibility: isVisible ? 'hidden' : 'visible' }}>
+                            <form onSubmit={handleSubmit} method="GET">
                                 <div className="form-group">
-                                    <input type="text" className="form-control" placeholder="Type Keyword..." />
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Type Keyword..."
+                                        name="s"
+                                        value={searchValue}
+                                        onChange={handleInputChange}
+                                    />
                                     <button type="submit" className="search-icon-btn">
-                                        <i className="far fa-search"></i>
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
                                     </button>
                                 </div>
                             </form>

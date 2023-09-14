@@ -165,12 +165,16 @@ export default function Home() {
                     <div className="row">
                         {categories.map((item) => (
                             <div key={item.id} className="col-6 col-md-4 col-lg-2">
-                                <a href="#" className="category-item wow fadeInUp" data-wow-delay=".25s">
+                                <Link
+                                    href={`/chuyen-muc/${item.id}`}
+                                    className="category-item wow fadeInUp"
+                                    data-wow-delay=".25s"
+                                >
                                     <div className="category-img">
                                         <img src={item.thumbnail} alt="" />
                                     </div>
                                     <h5>{item.name}</h5>
-                                </a>
+                                </Link>
                             </div>
                         ))}
                     </div>
