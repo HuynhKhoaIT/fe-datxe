@@ -263,7 +263,7 @@ export default function Home() {
                                     </div>
                                     <div className="dealer-content">
                                         <h4>
-                                            <a href="#">{item.name}</a>
+                                            <a href={`/chuyen-gia/${item.id}`}>{item.name}</a>
                                         </h4>
                                         <ul>
                                             <li>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import Link from 'next/link';
 export default function Shop() {
     const [garages, setGarages] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
@@ -175,9 +175,9 @@ export default function Shop() {
                                                 </p>
                                                 <div className="car-footer">
                                                     <span className="car-price">$45,620</span>
-                                                    <a href="#" className="theme-btn">
+                                                    <Link href={`/chuyen-gia/${item.id}`} className="theme-btn">
                                                         <span className="far fa-eye"></span>Chi tiết
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
