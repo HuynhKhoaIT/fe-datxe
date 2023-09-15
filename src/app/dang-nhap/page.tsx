@@ -15,10 +15,10 @@ export default function Login() {
         event.preventDefault(); // Ngăn chặn sự kiện mặc định của biểu mẫu
         try {
             const response = await axios.post('https://v2.dlbd.vn/api/login', { phone, password });
-            const { token } = response.data.token; // Destructuring để lấy token
+            const token = response.data.token; // Destructuring để lấy token
             // Lưu token vào Local Storage
             localStorage.setItem('token', token);
-            // router.push('/home', { scroll: false });
+            router.push('/dashboard', { scroll: false });
         } catch (error) {
             console.error('Đăng nhập không thành công', error);
         }
