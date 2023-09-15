@@ -66,13 +66,13 @@ const Orders = async () => {
                                         <tr>
                                             <td>
                                                 <div className="table-list-info">
-                                                    <a href="#">
+                                                    <Link href={`/dashboard/order/${order.id}`}>
                                                         <img src={`${order.thumbnail}`} alt="" />
                                                         <div className="table-ad-content">
                                                             <h6>{order.code}</h6>
-                                                            <span>Car ID: #123456</span>
+                                                            <span>Car ID: #{order.customerId}</span>
                                                         </div>
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </td>
                                             <td>{order.subTotal}</td>
