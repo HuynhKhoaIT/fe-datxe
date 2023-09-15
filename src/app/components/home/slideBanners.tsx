@@ -14,7 +14,7 @@ const SlideBanners = () => {
         <Swiper
             // install Swiper modules
             modules={[Navigation, Pagination, Scrollbar, A11y]}
-            spaceBetween={50}
+            spaceBetween={0}
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
@@ -23,16 +23,16 @@ const SlideBanners = () => {
             onSlideChange={() => console.log('slide change')}
         >
             <SwiperSlide>
-                <img src="assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
+                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
             </SwiperSlide>
             <SwiperSlide>
-                <img src="assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
+                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
             </SwiperSlide>
             <SwiperSlide>
-                <img src="assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
+                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
             </SwiperSlide>
             <SwiperSlide>
-                <img src="assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
+                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
             </SwiperSlide>
         </Swiper>
     );

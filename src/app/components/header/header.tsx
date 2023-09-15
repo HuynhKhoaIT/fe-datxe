@@ -43,7 +43,7 @@ const Header = () => {
                                 <ul>
                                     <li>
                                         <Link href="mailto:info@example.com">
-                                            <FontAwesomeIcon icon={faEnvelope} />
+                                            {/* <FontAwesomeIcon icon={faEnvelope} /> */}
                                             info@example.com
                                         </Link>
                                     </li>
@@ -130,7 +130,7 @@ const Header = () => {
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" href="chuyen-gia">
+                                    <Link className="nav-link" href="/chuyen-gia">
                                         Chuyên gia
                                     </Link>
                                 </li>

@@ -217,28 +217,8 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="video-area pb-120">
-                <div className="container-fluid px-0">
-                    <div className="video-content">
-                        <div className="row align-items-center">
-                            <div className="col-lg-12">
-                                <div className="video-wrapper">
-                                    <a
-                                        className="play-btn popup-youtube"
-                                        href="https://www.youtube.com/watch?v=ckHzmP1evNU"
-                                    >
-                                        <i className="fas fa-play"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- video area end --> */}
-
             {/* <!-- car dealer --> */}
-            <div className="car-dealer pb-120">
+            <div className="car-dealer pb-40 pt-40">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -255,6 +235,7 @@ export default function Home() {
                     </div>
                     <div className="row">
                         {chuyengia.map((item) => (
+
                             <GarageItem
                                 key={item.id}
                                 garageId={item.id}
@@ -269,169 +250,8 @@ export default function Home() {
             </div>
             {/* <!-- car dealer end--> */}
 
-            {/* <!-- choose area --> */}
-            <div className="choose-area py-120">
-                <div className="container">
-                    <div className="row align-items-center">
-                        <div className="col-lg-6">
-                            <div className="choose-content">
-                                <div className="site-heading wow fadeInDown" data-wow-delay=".25s">
-                                    <span className="site-title-tagline text-white justify-content-start">
-                                        <i className="flaticon-drive"></i> Why Choose Us
-                                    </span>
-                                    <h2 className="site-title text-white mb-10">
-                                        We are dedicated <span>to provide</span> quality service
-                                    </h2>
-                                    <p className="text-white">
-                                        There are many variations of passages available but the majority have suffered
-                                        alteration in some form going to use a passage by injected humour randomised
-                                        words which don't look even slightly believable.
-                                    </p>
-                                </div>
-                                <div className="choose-img wow fadeInUp" data-wow-delay=".25s">
-                                    <img src="assets/img/choose/01.png" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="choose-content-wrapper wow fadeInRight" data-wow-delay=".25s">
-                                <div className="row">
-                                    <div className="col-md-6 col-lg-6 mt-lg-5">
-                                        <div className="choose-item">
-                                            <span className="choose-count">01</span>
-                                            <div className="choose-item-icon">
-                                                <i className="flaticon-car"></i>
-                                            </div>
-                                            <div className="choose-item-info">
-                                                <h3>Best Quality Cars</h3>
-                                                <p>
-                                                    There are many variations of the passages available but the majo
-                                                    have suffered fact that reader will be dist alteration.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="choose-item mb-lg-0">
-                                            <span className="choose-count">03</span>
-                                            <div className="choose-item-icon">
-                                                <i className="flaticon-drive-thru"></i>
-                                            </div>
-                                            <div className="choose-item-info">
-                                                <h3>Popular Brands</h3>
-                                                <p>
-                                                    There are many variations of the passages available but the majo
-                                                    have suffered fact that reader will be dist alteration.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6 col-lg-6">
-                                        <div className="choose-item">
-                                            <span className="choose-count">02</span>
-                                            <div className="choose-item-icon">
-                                                <i className="flaticon-chauffeur"></i>
-                                            </div>
-                                            <div className="choose-item-info">
-                                                <h3>Certified Mechanics</h3>
-                                                <p>
-                                                    There are many variations of the passages available but the majo
-                                                    have suffered fact that reader will be dist alteration.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="choose-item mb-lg-0">
-                                            <span className="choose-count">04</span>
-                                            <div className="choose-item-icon">
-                                                <i className="flaticon-online-payment"></i>
-                                            </div>
-                                            <div className="choose-item-info">
-                                                <h3>Reasonable Price</h3>
-                                                <p>
-                                                    There are many variations of the passages available but the majo
-                                                    have suffered fact that reader will be dist alteration.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- choose area end --> */}
-
-            {/* <!-- car brand --> */}
-            <div className="car-brand py-120">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6 mx-auto">
-                            <div className="site-heading text-center">
-                                <span className="site-title-tagline">
-                                    <i className="flaticon-drive"></i> Popular Brands
-                                </span>
-                                <h2 className="site-title">
-                                    Our Top Quality <span>Brands</span>
-                                </h2>
-                                <div className="heading-divider"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-6 col-md-3 col-lg-2">
-                            <a href="#" className="brand-item wow fadeInUp" data-wow-delay=".25s">
-                                <div className="brand-img">
-                                    <img src="assets/img/brand/01.png" alt="" />
-                                </div>
-                                <h5>Ferrari</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-3 col-lg-2">
-                            <a href="#" className="brand-item wow fadeInUp" data-wow-delay=".50s">
-                                <div className="brand-img">
-                                    <img src="assets/img/brand/02.png" alt="" />
-                                </div>
-                                <h5>Hyundai</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-3 col-lg-2">
-                            <a href="#" className="brand-item wow fadeInUp" data-wow-delay=".75s">
-                                <div className="brand-img">
-                                    <img src="assets/img/brand/03.png" alt="" />
-                                </div>
-                                <h5>Mercedes Benz</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-3 col-lg-2">
-                            <a href="#" className="brand-item wow fadeInUp" data-wow-delay="1s">
-                                <div className="brand-img">
-                                    <img src="assets/img/brand/04.png" alt="" />
-                                </div>
-                                <h5>Toyota</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-3 col-lg-2">
-                            <a href="#" className="brand-item wow fadeInUp" data-wow-delay="1.25s">
-                                <div className="brand-img">
-                                    <img src="assets/img/brand/05.png" alt="" />
-                                </div>
-                                <h5>BMW</h5>
-                            </a>
-                        </div>
-                        <div className="col-6 col-md-3 col-lg-2">
-                            <a href="#" className="brand-item wow fadeInUp" data-wow-delay="1.50s">
-                                <div className="brand-img">
-                                    <img src="assets/img/brand/06.png" alt="" />
-                                </div>
-                                <h5>Nissan</h5>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- car brand end--> */}
-
             {/* <!-- blog area --> */}
-            <div className="blog-area py-120">
+            <div className="blog-area pt-60 pb-60">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function Expert() {
+
     const [garages, setGarages] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
 
@@ -24,7 +25,7 @@ export default function Expert() {
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
-            <div className="shop-area bg py-120">
+            <div className="shop-area car-area list bg pt-50 pb-50">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-3">

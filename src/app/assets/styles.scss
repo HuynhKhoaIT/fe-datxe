@@ -87,11 +87,11 @@ Table of contents
 :root {
     --body-font: 'Roboto', sans-serif;
     --heading-font: 'Inter', sans-serif;
-    --theme-color: #ef1d26;
+    --theme-color: #f8ba02;
     --theme-bg-light: #f9f9f9;
     --body-text-color: #757f95;
     --color-white: #ffffff;
-    --color-dark: #111111;
+    --color-dark: #08221b;
     --color-green: #11b76b;
     --color-blue: #0049d0;
     --color-yellow: #fba707;
@@ -834,8 +834,7 @@ label {
     font-weight: 500;
 }
 
-.header-top-contact a svg {
-    font-size: 16px;
+.header-top-contact a i {
     color: var(--theme-color);
 }
 
@@ -5409,9 +5408,6 @@ body.rtl-mode .price-wrapper {
 
 .social-login-list {
     text-align: center;
-    svg {
-        color: #fff;
-    }
 }
 
 .social-login-list a {
@@ -6489,7 +6485,7 @@ body.rtl-mode .price-wrapper {
     transition: var(--transition);
 }
 
-.footer-list li a svg {
+.footer-list li a i {
     margin-right: 5px;
     color: var(--theme-color);
 }
@@ -6511,8 +6507,8 @@ body.rtl-mode .price-wrapper {
     justify-content: end;
 }
 
-.footer-social li a svg {
-    padding: 11px 0;
+.footer-social li a i {
+    height: 38px;
     width: 38px;
     line-height: 38px;
     text-align: center;
@@ -6543,19 +6539,18 @@ body.rtl-mode .price-wrapper {
     transition: 0.3s;
 }
 
-.footer-contact li {
-    svg {
-        line-height: 30px;
-        margin-right: 15px;
-        text-align: center;
-        -webkit-transition: 0.3s;
-        transition: 0.3s;
-        color: var(--color-white);
-        font-size: 16px;
-        padding: 10px;
-        border-radius: 10px;
-        background: var(--theme-color);
-    }
+.footer-contact li i {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    margin-right: 15px;
+    border-radius: 10px;
+    background: var(--theme-color);
+    text-align: center;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    color: var(--color-white);
 }
 
 .subscribe-form .form-control {
@@ -6630,8 +6625,7 @@ body.rtl-mode .price-wrapper {
     border-bottom: 5px solid var(--color-dark);
 }
 
-.home-2 .header-top-contact a svg {
-    font-size: 16px;
+.home-2 .header-top-contact a i {
     color: var(--color-white);
 }
 
