@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { getOrders, showStatus } from '@/utils/order';
-import { Order } from '@/interfaces/order';
+import { IOrder } from '@/interfaces/order';
 
 const Orders = async () => {
     const orders_data = await getOrders({
@@ -62,7 +62,7 @@ const Orders = async () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {orders_data?.map((order: Order) => (
+                                    {orders_data?.map((order: IOrder) => (
                                         <tr>
                                             <td>
                                                 <div className="table-list-info">

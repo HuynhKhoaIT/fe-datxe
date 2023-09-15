@@ -1,4 +1,4 @@
-export interface Order {
+export interface IOrder {
     id?: BigInteger;
     code?: string;
     customerId?: BigInteger;
