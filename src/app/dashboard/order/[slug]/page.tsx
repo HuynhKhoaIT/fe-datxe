@@ -1,5 +1,11 @@
 'use client';
-export default function SingleOrder({ params }: { params: { slug: string } }) {
+
+import { IOrderDetail } from '@/interfaces/orderDetail';
+import { getOrder, getOrderDetail, showStatus } from '@/utils/order';
+
+export default async function SingleOrder({ params }: { params: { slug: number } }) {
+    const items = await getOrderDetail(params.slug, '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY');
+    const order = await getOrder(params.slug, '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY');
     return (
         <main className="main">
             <div className="order-item-single bg pt-60">
@@ -38,14 +44,13 @@ export default function SingleOrder({ params }: { params: { slug: string } }) {
                                 </div>
 
                                 <div className="col-sm-4 invoice-col">
-                                    <b>Invoice #007612</b>
+                                    <b>#{order.code}</b>
                                     <br />
+                                    <b>Trạng thái:</b> {showStatus(order.status)}
                                     <br />
-                                    <b>Order ID:</b> 4F3S8J
+                                    <b>Ngày tiếp nhận:</b> 2/22/2014
                                     <br />
-                                    <b>Payment Due:</b> 2/22/2014
-                                    <br />
-                                    <b>Account:</b> 968-34567
+                                    <b>Hoàn thành/Dự kiến:</b> 968-34567
                                 </div>
                                 <br />
                             </div>
@@ -64,34 +69,22 @@ export default function SingleOrder({ params }: { params: { slug: string } }) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Call of Duty</td>
-                                        <td>455-981-221</td>
-                                        <td>El snort testosterone trophy driving gloves handsome</td>
-                                        <td>$64.50</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Need for Speed IV</td>
-                                        <td>247-925-726</td>
-                                        <td>Wes Anderson umami biodiesel</td>
-                                        <td>$50.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Monsters DVD</td>
-                                        <td>735-845-642</td>
-                                        <td>Terry Richardson helvetica tousled street art master</td>
-                                        <td>$10.70</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Grown Ups Blue Ray</td>
-                                        <td>422-568-642</td>
-                                        <td>Tousled lomo letterpress</td>
-                                        <td>$25.99</td>
-                                    </tr>
+                                    {items?.map((orderItem: IOrderDetail) => (
+                                        <tr>
+                                            <td>
+                                                <img
+                                                    src={orderItem.thumbnail}
+                                                    alt={orderItem.name}
+                                                    className="img-thumbnail img-fluid"
+                                                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                                                />
+                                            </td>
+                                            <td>{orderItem.name}</td>
+                                            <td>{orderItem.quantity}</td>
+                                            <td>{orderItem.sellPrice?.toLocaleString()}đ</td>
+                                            <td>{orderItem.total?.toLocaleString()}đ </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>

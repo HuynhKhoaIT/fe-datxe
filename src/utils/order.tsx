@@ -5,8 +5,9 @@ import axios from 'axios';
 /**
  * Internal Dependencies.
  */
-import { GET_ORDER_ENDPOINT } from './constants/endpoints';
+import { GET_ORDER_ENDPOINT, GET_ORDER_DETAIL_ENDPOINT } from './constants/endpoints';
 import { IOrder } from '@/interfaces/order';
+import { IOrderDetail } from '@/interfaces/orderDetail';
 /**
  * Get getOrders.
  *
@@ -20,12 +21,20 @@ export const getOrders = async ({ pageNo = 1, token = '' }) => {
     return res.data.data as Promise<IOrder[]>;
 };
 
-export const getOrderDetail = async (orderId = 0, token = '') => {
+export const getOrder = async (orderId = 0, token = '') => {
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };
     const res = await axios.get(`${GET_ORDER_ENDPOINT}/${orderId}`, config);
-    return res.data.data as Promise<IOrder[]>;
+    return res.data.data as Promise<IOrder>;
+};
+
+export const getOrderDetail = async (orderId = 0, token = '') => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` },
+    };
+    const res = await axios.get(`${GET_ORDER_DETAIL_ENDPOINT}/${orderId}`, config);
+    return res.data.data as Promise<IOrderDetail[]>;
 };
 
 export function showStatus(status: any) {
