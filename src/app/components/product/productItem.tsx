@@ -14,35 +14,37 @@ const ProductItem = ({
     thumbnail: any;
 }) => {
     return (
-        <div className="shop-item">
-            <div className="shop-item-img">
-                <span className="shop-item-sale">Sale</span>
-                <img src={thumbnail} alt="" />
-                <div className="shop-item-meta">
-                    <a href="#">
-                        <i className="far fa-heart"></i>
-                    </a>
-                    <a href="#">
-                        <i className="far fa-eye"></i>
-                    </a>
-                    <a href="#">
-                        <i className="far fa-shopping-cart"></i>
-                    </a>
+        <div key={productId} className="col-md-6 col-lg-4 col-xl-3">
+            <div className="shop-item">
+                <div className="shop-item-img">
+                    <span className="shop-item-sale">Sale</span>
+                    <img src={thumbnail} alt="" />
+                    <div className="shop-item-meta">
+                        <a href="#">
+                            <i className="far fa-heart"></i>
+                        </a>
+                        <a href="#">
+                            <i className="far fa-eye"></i>
+                        </a>
+                        <a href="#">
+                            <i className="far fa-shopping-cart"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div className="shop-item-info">
-                <div className="shop-item-rate">
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                </div>
-                <Link href={`/san-pham/${productId}`}>
-                    <h4 className="shop-item-title">{name}</h4>
-                </Link>
-                <div className="shop-item-price">
-                    <del>{price.toLocaleString()}đ</del> {price.toLocaleString()}đ
+                <div className="shop-item-info">
+                    <div className="shop-item-rate">
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                    </div>
+                    <Link href={`/san-pham/${productId}`}>
+                        <h4 className="shop-item-title">{name}</h4>
+                    </Link>
+                    <div className="shop-item-price">
+                        <del>{price.toLocaleString()}đ</del> {price.toLocaleString()}đ
+                    </div>
                 </div>
             </div>
         </div>

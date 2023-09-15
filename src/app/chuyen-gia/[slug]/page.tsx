@@ -3,7 +3,7 @@ import { ProductItem } from '../../components/product/productItem';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function CategoryItem({ params }: { params: { slug: string } }) {
+export default function GarageItem({ params }: { params: { slug: string } }) {
     const [products, setProducts] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -16,8 +16,10 @@ export default function CategoryItem({ params }: { params: { slug: string } }) {
         // Gọi API trong hàm useEffect khi component được tải
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://v2.dlbd.vn/api/v2/guest/products?cat_id=${params.slug}`);
-                const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
+                const response = await fetch(`https://v2.dlbd.vn/api/v2/guest/products?garage_id=${params.slug}`);
+                const listCategories = await axios.get(
+                    `https://v2.dlbd.vn/api/v2/guest/product-category?garage_id=${params.slug}`,
+                );
 
                 if (response.status === 200) {
                     const result = await response.json();

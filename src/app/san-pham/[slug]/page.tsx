@@ -15,6 +15,7 @@ import Link from 'next/link';
 
 export default function SingleShop({ params }: { params: { slug: string } }) {
     const [productData, setProductData] = useState<any>(null);
+    const [relatedProducts, setRelatedProducts] = useState<any>([]);
     const [error, setError] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState<number>(1);
 
@@ -61,18 +62,31 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
         alert('sản phẩm đã được thêm vào giỏ hàng');
     };
     // fetch api
+
     useEffect(() => {
         if (!params.slug) {
             setError('Slug không hợp lệ');
             return;
         }
-        // Gọi API trong hàm useEffect khi component được tải
+
+        // Gọi API để lấy dữ liệu sản phẩm
         const fetchData = async () => {
             try {
                 const response = await fetch(`https://v2.dlbd.vn/api/v2/guest/products/${params.slug}`);
                 if (response.status === 200) {
                     const result = await response.json();
                     setProductData(result.data);
+
+                    // Gọi API để lấy dữ liệu sản phẩm liên quan
+                    const relatedProduct = await fetch(
+                        `https://v2.dlbd.vn/api/v2/guest/products?cat_id=${result.data.categoryId}&garage_id=${result.data.garageId}`,
+                    );
+                    if (relatedProduct.status === 200) {
+                        const relatedResult = await relatedProduct.json();
+                        setRelatedProducts(relatedResult.data);
+                    } else {
+                        throw new Error('Lỗi khi lấy dữ liệu sản phẩm liên quan từ API');
+                    }
                 } else {
                     throw new Error('Lỗi khi lấy dữ liệu từ API');
                 }
@@ -83,7 +97,9 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
         };
 
         fetchData();
-    }, [params.slug]); // useEffect sẽ được gọi lại khi id thay đổi
+    }, [params.slug]);
+
+    console.log(relatedProducts);
     return (
         <main className="main">
             <div className="shop-item-single bg py-120">
@@ -410,136 +426,49 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
                         </div>
                         <div className="shop-item-wrapper">
                             <div className="row align-items-center">
-                                <div className="col-md-6 col-lg-3">
-                                    <div className="shop-item">
-                                        <div className="shop-item-img">
-                                            <span className="shop-item-sale">Sale</span>
-                                            <img src="/assets/img/shop/01.jpg" alt="" />
-                                            <div className="shop-item-meta">
-                                                <a href="#">
-                                                    <i className="far fa-heart"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <i className="far fa-eye"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <FontAwesomeIcon icon={faCartShopping} />
-                                                </a>
+                                {relatedProducts.map(
+                                    (item: {
+                                        thumbnail: string | undefined;
+                                        id: number;
+                                        name: string | null | undefined;
+                                        price: number | undefined;
+                                    }) => (
+                                        <div className="col-md-6 col-lg-3" key={item.id}>
+                                            <div className="shop-item">
+                                                <div className="shop-item-img">
+                                                    <span className="shop-item-sale">Sale</span>
+                                                    <img src={item.thumbnail} alt="" />
+                                                    <div className="shop-item-meta">
+                                                        <a href="#">
+                                                            <i className="far fa-heart"></i>
+                                                        </a>
+                                                        <a href="#">
+                                                            <i className="far fa-eye"></i>
+                                                        </a>
+                                                        <a href="#">
+                                                            <FontAwesomeIcon icon={faCartShopping} />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div className="shop-item-info">
+                                                    <div className="shop-item-rate">
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                        <i className="fas fa-star"></i>
+                                                    </div>
+                                                    <a href="#">
+                                                        <h4 className="shop-item-title">{item.name}</h4>
+                                                    </a>
+                                                    <div className="shop-item-price">
+                                                        <del>{item.price}</del> {item.price}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="shop-item-info">
-                                            <div className="shop-item-rate">
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                            </div>
-                                            <a href="#">
-                                                <h4 className="shop-item-title">Car Engine Parts</h4>
-                                            </a>
-                                            <div className="shop-item-price">
-                                                <del>$560</del> $510
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 col-lg-3">
-                                    <div className="shop-item">
-                                        <div className="shop-item-img">
-                                            <img src="/assets/img/shop/03.jpg" alt="" />
-                                            <div className="shop-item-meta">
-                                                <a href="#">
-                                                    <i className="far fa-heart"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <i className="far fa-eye"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <i className="far fa-shopping-cart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="shop-item-info">
-                                            <div className="shop-item-rate">
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                            </div>
-                                            <a href="#">
-                                                <h4 className="shop-item-title">Car Engine Parts</h4>
-                                            </a>
-                                            <div className="shop-item-price">$680</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 col-lg-3">
-                                    <div className="shop-item">
-                                        <div className="shop-item-img">
-                                            <img src="/assets/img/shop/04.jpg" alt="" />
-                                            <div className="shop-item-meta">
-                                                <a href="#">
-                                                    <i className="far fa-heart"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <i className="far fa-eye"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <i className="far fa-shopping-cart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="shop-item-info">
-                                            <div className="shop-item-rate">
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                            </div>
-                                            <a href="#">
-                                                <h4 className="shop-item-title">Car Engine Parts</h4>
-                                            </a>
-                                            <div className="shop-item-price">$710</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 col-lg-3">
-                                    <div className="shop-item">
-                                        <div className="shop-item-img">
-                                            <span className="shop-item-sale">Sale</span>
-                                            <img src="/assets/img/shop/02.jpg" alt="" />
-                                            <div className="shop-item-meta">
-                                                <a href="#">
-                                                    <i className="far fa-heart"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <i className="far fa-eye"></i>
-                                                </a>
-                                                <a href="#">
-                                                    <i className="far fa-shopping-cart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="shop-item-info">
-                                            <div className="shop-item-rate">
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                                <i className="fas fa-star"></i>
-                                            </div>
-                                            <a href="#">
-                                                <h4 className="shop-item-title">Car Engine Parts</h4>
-                                            </a>
-                                            <div className="shop-item-price">
-                                                <del>$920</del> $900
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    ),
+                                )}
                             </div>
                         </div>
                     </div>
