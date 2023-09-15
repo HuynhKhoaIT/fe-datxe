@@ -120,7 +120,7 @@ const Header = () => {
                         <div className="collapse navbar-collapse" id="main_nav">
                             <ul className="navbar-nav">
                                 <li className="nav-item dropdown">
-                                    <Link className="nav-link active" href="#" data-bs-toggle="dropdown">
+                                    <Link className="nav-link active" href="/" data-bs-toggle="dropdown">
                                         Trang chủ
                                     </Link>
                                 </li>
@@ -130,7 +130,7 @@ const Header = () => {
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" href="shop">
+                                    <Link className="nav-link" href="chuyen-gia">
                                         Chuyên gia
                                     </Link>
                                 </li>

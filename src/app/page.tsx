@@ -7,6 +7,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { GarageItem } from './components/garageItem/garageItem';
 export default function Home() {
     const [products, setProducts] = useState<any[]>([]);
     const [featuredProduct, setFeaturedProduct] = useState<number>(8);
@@ -199,14 +200,13 @@ export default function Home() {
                     <div className="row">
                         {}
                         {featuredProducts.map((item) => (
-                            <div key={item.id} className="col-md-6 col-lg-4 col-xl-3">
-                                <ProductItem
-                                    productId={item.id}
-                                    name={item.name}
-                                    price={item.price}
-                                    thumbnail={item.thumbnail}
-                                />
-                            </div>
+                            <ProductItem
+                                key={item.id}
+                                productId={item.id}
+                                name={item.name}
+                                price={item.price}
+                                thumbnail={item.thumbnail}
+                            />
                         ))}
                     </div>
                     <div className="text-center mt-4">
@@ -255,28 +255,14 @@ export default function Home() {
                     </div>
                     <div className="row">
                         {chuyengia.map((item) => (
-                            <div key={item.id} className="col-md-6 col-lg-3">
-                                <div className="dealer-item wow fadeInUp" data-wow-delay=".25s">
-                                    <div className="dealer-img">
-                                        <span className="dealer-listing">25 Listing</span>
-                                        <img src={item.logo} alt="" />
-                                    </div>
-                                    <div className="dealer-content">
-                                        <h4>
-                                            <a href="#">{item.name}</a>
-                                        </h4>
-                                        <ul>
-                                            <li>
-                                                <FontAwesomeIcon icon={faLocationDot} /> {item.address}
-                                            </li>
-                                            <li>
-                                                <FontAwesomeIcon icon={faPhone} />
-                                                <Link href={`tel:${item.phone_number}`}>{item.phone_number}</Link>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            <GarageItem
+                                key={item.id}
+                                garageId={item.id}
+                                name={item.name}
+                                thumbnail={item.logo}
+                                address={item.address}
+                                phone_number={item.phone_number}
+                            />
                         ))}
                     </div>
                 </div>

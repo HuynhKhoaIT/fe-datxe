@@ -1,40 +1,26 @@
 'use client';
-import { ProductItem } from '../../components/product/productItem';
+import { GarageItem } from '../components/garageItem/garageItem';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function CategoryItem({ params }: { params: { slug: string } }) {
-    const [products, setProducts] = useState<any[]>([]);
+export default function Expert() {
+    const [garages, setGarages] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    // fetch api
+
     useEffect(() => {
-        if (!params.slug) {
-            setError('Slug không hợp lệ');
-            return;
-        }
-        // Gọi API trong hàm useEffect khi component được tải
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://v2.dlbd.vn/api/v2/guest/products?cat_id=${params.slug}`);
+                const listGarages = await axios.get('https://v2.dlbd.vn/api/v2/guest/garages');
                 const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
-
-                if (response.status === 200) {
-                    const result = await response.json();
-                    setProducts(result.data);
-                    setCategories(listCategories.data.data);
-                } else {
-                    throw new Error('Lỗi khi lấy dữ liệu từ API');
-                }
+                setGarages(listGarages.data);
+                setCategories(listCategories.data.data);
             } catch (error) {
-                console.error(error);
-                setError('Đã xảy ra lỗi khi tải dữ liệu');
+                console.error('Error fetching data:', error);
             }
         };
 
         fetchData();
-    }, [params.slug]); // useEffect sẽ được gọi lại khi id thay đổi
-
+    }, []);
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
@@ -169,13 +155,14 @@ export default function CategoryItem({ params }: { params: { slug: string } }) {
                             </div>
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
-                                    {products.map((item) => (
-                                        <ProductItem
+                                    {garages.map((item) => (
+                                        <GarageItem
                                             key={item.id}
-                                            productId={item.id}
+                                            garageId={item.id}
                                             name={item.name}
-                                            price={item.price}
-                                            thumbnail={item.thumbnail}
+                                            thumbnail={item.logo}
+                                            address={item.address}
+                                            phone_number={item.phone_number}
                                         />
                                     ))}
                                 </div>
