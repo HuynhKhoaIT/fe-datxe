@@ -2,23 +2,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-const ProductItem = ({
-    productId,
-    name,
-    price,
-    thumbnail,
-}: {
-    productId: number;
-    name: string;
-    price: number;
-    thumbnail: any;
-}) => {
+import { IProduct } from '@/interfaces/product';
+const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
     return (
-        <div key={productId} className="col-md-6 col-lg-4 col-xl-3">
+        <div key={key} className="col-md-6 col-lg-4 col-xl-3">
             <div className="shop-item">
                 <div className="shop-item-img">
                     <span className="shop-item-sale">Sale</span>
-                    <img src={thumbnail} alt="" />
+                    <img src={product.thumbnail} alt="" />
                     <div className="shop-item-meta">
                         <a href="#">
                             <i className="far fa-heart"></i>
@@ -39,11 +30,11 @@ const ProductItem = ({
                         <FontAwesomeIcon icon={faStar} />
                         <FontAwesomeIcon icon={faStar} />
                     </div>
-                    <Link href={`/san-pham/${productId}`}>
-                        <h4 className="shop-item-title">{name}</h4>
+                    <Link href={`/san-pham/${product.id}`}>
+                        <h4 className="shop-item-title">{product.name}</h4>
                     </Link>
                     <div className="shop-item-price">
-                        <del>{price.toLocaleString()}đ</del> {price.toLocaleString()}đ
+                        <del>{product.price}đ</del> {product.price}đ
                     </div>
                 </div>
             </div>

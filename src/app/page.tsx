@@ -5,39 +5,18 @@ import { ProductItem } from './components/product/productItem';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { GarageItem } from './components/garageItem/garageItem';
-export default function Home() {
-    const [products, setProducts] = useState<any[]>([]);
-    const [featuredProduct, setFeaturedProduct] = useState<number>(8);
-    const [chuyengia, setChuyengia] = useState<any[]>([]);
-    const [categories, setCategories] = useState<any[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const listProduct = await axios.get('https://v2.dlbd.vn/api/v2/guest/products');
-                const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
-                const listChuyengia = await axios.get('https://v2.dlbd.vn/api/v2/guest/garages?limit=8');
-                setProducts(listProduct.data.data);
-                setCategories(listCategories.data.data);
-                setChuyengia(listChuyengia.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
+import { getProductsHot } from '@/utils/product';
+import { IProduct } from '@/interfaces/product';
+export default async function Home() {
+    const [litmit, setLimit] = useState<number>(8);
+    const product_data = await getProductsHot({ limit: litmit });
     // Lấy ra 8 Sản Phẩm / Dịch Vụ Hot
     const handleButtonClick = () => {
         // Khi người dùng nhấp chuột, tăng số lượng sản phẩm cần lấy thêm 4 sản phẩm
-        setFeaturedProduct(featuredProduct + 4);
+        setLimit(litmit + 4);
     };
-    console.log(chuyengia);
-    const featuredProducts = products.slice(0, featuredProduct);
+    console.log(product_data);
     return (
         <main className="main">
             <div className="hero-section">
@@ -164,7 +143,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="row">
-                        {categories.map((item) => (
+                        {/* {categories.map((item) => (
                             <div key={item.id} className="col-6 col-md-4 col-lg-2">
                                 <Link
                                     href={`/chuyen-muc/${item.id}`}
@@ -177,7 +156,7 @@ export default function Home() {
                                     <h5>{item.name}</h5>
                                 </Link>
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                 </div>
             </div>
@@ -198,15 +177,8 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="row">
-                        {}
-                        {featuredProducts.map((item) => (
-                            <ProductItem
-                                key={item.id}
-                                productId={item.id}
-                                name={item.name}
-                                price={item.price}
-                                thumbnail={item.thumbnail}
-                            />
+                        {product_data?.map((product: IProduct, index: number) => (
+                            <ProductItem product={product} key={index} />
                         ))}
                     </div>
                     <div className="text-center mt-4">
@@ -234,8 +206,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="row">
-                        {chuyengia.map((item) => (
-
+                        {/* {chuyengia.map((item) => (
                             <GarageItem
                                 key={item.id}
                                 garageId={item.id}
@@ -244,7 +215,7 @@ export default function Home() {
                                 address={item.address}
                                 phone_number={item.phone_number}
                             />
-                        ))}
+                        ))} */}
                     </div>
                 </div>
             </div>
