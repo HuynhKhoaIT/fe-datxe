@@ -170,14 +170,13 @@ export default function CategoryItem({ params }: { params: { slug: string } }) {
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
                                     {products.map((item) => (
-                                        <div key={item.id} className="col-md-6 col-lg-4">
-                                            <ProductItem
-                                                productId={item.id}
-                                                name={item.name}
-                                                price={item.price}
-                                                thumbnail={item.thumbnail}
-                                            />
-                                        </div>
+                                        <ProductItem
+                                            key={item.id}
+                                            productId={item.id}
+                                            name={item.name}
+                                            price={item.price}
+                                            thumbnail={item.thumbnail}
+                                        />
                                     ))}
                                 </div>
                             </div>
