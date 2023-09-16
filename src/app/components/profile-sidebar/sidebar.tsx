@@ -1,7 +1,9 @@
 'use client';
+import { getMyAccount } from '@/utils/user';
 import Link from 'next/link';
 
-const ProfileSidebar = () => {
+const ProfileSidebar = async () => {
+    const myAccount = await getMyAccount('1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY');
     return (
         <div className="user-profile-sidebar">
             <div className="user-profile-sidebar-top">
@@ -12,8 +14,8 @@ const ProfileSidebar = () => {
                     </button>
                     <input type="file" className="profile-img-file" />
                 </div>
-                <h5>Antoni Jonson</h5>
-                <p>antoni@example.com</p>
+                <h5>{myAccount.name}</h5>
+                <p>{myAccount.phone}</p>
             </div>
             <ul className="user-profile-sidebar-list">
                 <li>

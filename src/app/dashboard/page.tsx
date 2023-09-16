@@ -1,7 +1,6 @@
 import { Orders } from '../components/dashboard/order/orders';
 import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
-import React, { useEffect, useState } from 'react';
-import { getOrders } from '@/utils/order';
+import React from 'react';
 const Dashboard = () => {
     return (
         <main className="main">
