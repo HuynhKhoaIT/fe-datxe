@@ -2,25 +2,9 @@
 import { ProductItem } from '../components/product/productItem';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { IProduct } from '@/interfaces/product';
+import { getProducts } from '@/utils/product';
 export default function Shop() {
-    const [products, setProducts] = useState<any[]>([]);
-    const [categories, setCategories] = useState<any[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const listProduct = await axios.get('https://v2.dlbd.vn/api/v2/guest/products');
-                const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
-                setProducts(listProduct.data.data);
-                setCategories(listCategories.data.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
@@ -45,16 +29,16 @@ export default function Shop() {
                                 <div className="shop-widget">
                                     <h4 className="shop-widget-title">Category</h4>
                                     <ul>
-                                        {categories.map((item) => (
-                                            <li key={item.id}>
+                                        {/* {products.map((product:IProduct) => (
+                                            <li key={product.id}>
                                                 <div className="form-check">
                                                     <input className="form-check-input" type="checkbox" id="cat1" />
                                                     <label className="form-check-label" htmlFor="cat1">
-                                                        {item.name}
+                                                        {product.name}
                                                     </label>
                                                 </div>
                                             </li>
-                                        ))}
+                                        ))} */}
                                     </ul>
                                 </div>
                                 <div className="shop-widget">
@@ -141,15 +125,9 @@ export default function Shop() {
                         <div className="col-lg-9">
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
-                                    {products.map((item) => (
-                                        <ProductItem
-                                            key={item.id}
-                                            productId={item.id}
-                                            name={item.name}
-                                            price={item.price}
-                                            thumbnail={item.thumbnail}
-                                        />
-                                    ))}
+                                    {/* {products?.map((product: IProduct, index: number) => (
+                                        <ProductItem product={product} key={index} />
+                                    ))} */}
                                 </div>
                             </div>
                             <div className="pagination-area mt-4">
