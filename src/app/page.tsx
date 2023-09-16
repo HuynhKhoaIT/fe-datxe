@@ -2,15 +2,20 @@
 import './assets/css/nice-select.min.css';
 import { SlideBanners } from './components/home/slideBanners';
 import { ProductItem } from './components/product/productItem';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Link from 'next/link';
+import { CategoryItem } from './components/category/categoryItem';
+import React, { useState } from 'react';
 import { GarageItem } from './components/garageItem/garageItem';
 import { getProductsHot } from '@/utils/product';
+import { getCategories } from '@/utils/category';
 import { IProduct } from '@/interfaces/product';
+import { ICategory } from '@/interfaces/category';
+import { IGarage } from '@/interfaces/garage';
+import { getGarages } from '@/utils/garage';
 export default async function Home() {
     const [litmit, setLimit] = useState<number>(8);
     const product_data = await getProductsHot({ limit: litmit });
+    const category_list = await getCategories();
+    const garage_list = await getGarages();
     // Lấy ra 8 Sản Phẩm / Dịch Vụ Hot
     const handleButtonClick = () => {
         // Khi người dùng nhấp chuột, tăng số lượng sản phẩm cần lấy thêm 4 sản phẩm
@@ -143,20 +148,9 @@ export default async function Home() {
                         </div>
                     </div>
                     <div className="row">
-                        {/* {categories.map((item) => (
-                            <div key={item.id} className="col-6 col-md-4 col-lg-2">
-                                <Link
-                                    href={`/chuyen-muc/${item.id}`}
-                                    className="category-item wow fadeInUp"
-                                    data-wow-delay=".25s"
-                                >
-                                    <div className="category-img">
-                                        <img src={item.thumbnail} alt="" />
-                                    </div>
-                                    <h5>{item.name}</h5>
-                                </Link>
-                            </div>
-                        ))} */}
+                        {category_list?.map((category: ICategory, index) => (
+                            <CategoryItem category={category} key={index} />
+                        ))}
                     </div>
                 </div>
             </div>
@@ -206,16 +200,9 @@ export default async function Home() {
                         </div>
                     </div>
                     <div className="row">
-                        {/* {chuyengia.map((item) => (
-                            <GarageItem
-                                key={item.id}
-                                garageId={item.id}
-                                name={item.name}
-                                thumbnail={item.logo}
-                                address={item.address}
-                                phone_number={item.phone_number}
-                            />
-                        ))} */}
+                        {garage_list?.map((garage: IGarage, index: number) => (
+                            <GarageItem garage={garage} key={index} />
+                        ))}
                     </div>
                 </div>
             </div>

@@ -1,27 +1,11 @@
 'use client';
 import { GarageItem } from '../components/garageItem/garageItem';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
-export default function Expert() {
-
-    const [garages, setGarages] = useState<any[]>([]);
-    const [categories, setCategories] = useState<any[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const listGarages = await axios.get('https://v2.dlbd.vn/api/v2/guest/garages');
-                const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
-                setGarages(listGarages.data);
-                setCategories(listCategories.data.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
+import { getGarages } from '@/utils/garage';
+import { IGarage } from '@/interfaces/garage';
+import { SideBar } from '../components/shop-sidebar/sideBar';
+export default async function Expert() {
+    const garage_data = await getGarages();
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
@@ -29,115 +13,7 @@ export default function Expert() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-3">
-                            <div className="shop-sidebar">
-                                <div className="shop-widget">
-                                    <div className="shop-search-form">
-                                        <h4 className="shop-widget-title">Search</h4>
-                                        <form action="#">
-                                            <div className="form-group">
-                                                <input type="text" className="form-control" placeholder="Search" />
-                                                <button type="button">
-                                                    <i className="far fa-search"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div className="shop-widget">
-                                    <h4 className="shop-widget-title">Category</h4>
-                                    <ul>
-                                        {categories.map((item) => (
-                                            <li key={item.id}>
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="checkbox" id="cat1" />
-                                                    <label className="form-check-label" htmlFor="cat1">
-                                                        {item.name}
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className="shop-widget">
-                                    <h4 className="shop-widget-title">Parts Brand</h4>
-                                    <ul>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="brand1" />
-                                                <label className="form-check-label" htmlFor="brand1">
-                                                    {' '}
-                                                    Audi
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="brand2" />
-                                                <label className="form-check-label" htmlFor="brand2">
-                                                    {' '}
-                                                    BMW
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="brand3" />
-                                                <label className="form-check-label" htmlFor="brand3">
-                                                    {' '}
-                                                    Ford
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="brand4" />
-                                                <label className="form-check-label" htmlFor="brand4">
-                                                    {' '}
-                                                    Tesla
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="brand5" />
-                                                <label className="form-check-label" htmlFor="brand5">
-                                                    {' '}
-                                                    Honda
-                                                </label>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="shop-widget">
-                                    <h4 className="shop-widget-title">Price Range</h4>
-                                    <div className="price-range-box">
-                                        <div className="price-range-input">
-                                            <input type="text" id="price-amount" />
-                                        </div>
-                                        <div className="price-range"></div>
-                                    </div>
-                                </div>
-                                <div className="shop-widget">
-                                    <h4 className="shop-widget-title">Popular Tags</h4>
-                                    <div className="shop-tags">
-                                        <a href="#">Car</a>
-                                        <a href="#">Parts</a>
-                                        <a href="#">Fuel</a>
-                                        <a href="#">Tire</a>
-                                        <a href="#">Light</a>
-                                    </div>
-                                </div>
-                                <div className="widget-banner mt-30 mb-50">
-                                    <div className="banner-content">
-                                        <h3>
-                                            Get <span>35% Off</span> On All Our Products
-                                        </h3>
-                                        <a href="#" className="theme-btn">
-                                            Buy Now<i className="fas fa-arrow-right-long"></i>{' '}
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <SideBar />
                         </div>
                         <div className="col-lg-9">
                             <div className="col-md-12">
@@ -156,15 +32,8 @@ export default function Expert() {
                             </div>
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
-                                    {garages.map((item) => (
-                                        <GarageItem
-                                            key={item.id}
-                                            garageId={item.id}
-                                            name={item.name}
-                                            thumbnail={item.logo}
-                                            address={item.address}
-                                            phone_number={item.phone_number}
-                                        />
+                                    {garage_data.map((garage: IGarage, index) => (
+                                        <GarageItem garage={garage} key={index} />
                                     ))}
                                 </div>
                             </div>

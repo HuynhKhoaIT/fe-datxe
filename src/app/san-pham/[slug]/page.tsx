@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 import {
     faCartShopping,
     faHeart,
@@ -10,96 +10,17 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-export default function SingleShop({ params }: { params: { slug: string } }) {
-    const [productData, setProductData] = useState<any>(null);
-    const [relatedProducts, setRelatedProducts] = useState<any>([]);
-    const [error, setError] = useState<string | null>(null);
-    const [inputValue, setInputValue] = useState<number>(1);
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = parseInt(event.target.value, 10);
-
-        if (!isNaN(newValue)) {
-            setInputValue(newValue);
-        }
+import { getProductDetail } from '@/utils/product';
+export default async function SingleShop({ params }: { params: { slug: number } }) {
+    var inputValue = 1;
+    const handleQuantity = () => {
+        inputValue += 1;
     };
-    // tăng số lượng
-    const incrementValue = () => {
-        setInputValue(inputValue + 1);
-    };
-    // giảm số lượng
-    const decrementValue = () => {
-        if (inputValue === 1) {
-            return;
-        }
-        setInputValue(inputValue - 1);
-    };
-
-    const addToCart = () => {
-        const existingCartData = localStorage.getItem('cartData');
-        let cartData = [];
-        if (existingCartData) {
-            cartData = JSON.parse(existingCartData);
-        }
-
-        const existingProductIndex = cartData.findIndex(
-            (item: { product: { id: number } }) => item.product.id === productData.id,
-        );
-
-        if (existingProductIndex != -1) {
-            cartData[existingProductIndex].quantity += inputValue;
-        } else {
-            cartData.push({
-                product: productData,
-                quantity: inputValue,
-            });
-        }
-
-        localStorage.setItem('cartData', JSON.stringify(cartData));
-        alert('sản phẩm đã được thêm vào giỏ hàng');
-    };
-    // fetch api
-
-    useEffect(() => {
-        if (!params.slug) {
-            setError('Slug không hợp lệ');
-            return;
-        }
-
-        // Gọi API để lấy dữ liệu sản phẩm
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`https://v2.dlbd.vn/api/v2/guest/products/${params.slug}`);
-                if (response.status === 200) {
-                    const result = await response.json();
-                    setProductData(result.data);
-
-                    // Gọi API để lấy dữ liệu sản phẩm liên quan
-                    const relatedProduct = await fetch(
-                        `https://v2.dlbd.vn/api/v2/guest/products?cat_id=${result.data.categoryId}&garage_id=${result.data.garageId}`,
-                    );
-                    if (relatedProduct.status === 200) {
-                        const relatedResult = await relatedProduct.json();
-                        setRelatedProducts(relatedResult.data);
-                    } else {
-                        throw new Error('Lỗi khi lấy dữ liệu sản phẩm liên quan từ API');
-                    }
-                } else {
-                    throw new Error('Lỗi khi lấy dữ liệu từ API');
-                }
-            } catch (error) {
-                console.error(error);
-                setError('Đã xảy ra lỗi khi tải dữ liệu');
-            }
-        };
-
-        fetchData();
-    }, [params.slug]);
-
-    console.log(relatedProducts);
+    const product_detail = await getProductDetail(params.slug);
+    console.log(product_detail);
+    console.log(product_detail.name);
     return (
         <main className="main">
             <div className="shop-item-single bg py-120">
@@ -118,7 +39,8 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
                         </div>
                         <div className="col-lg-6">
                             <div className="single-item-info">
-                                <h4 className="single-item-title">{productData?.name}</h4>
+                                <h4 className="single-item-title">{product_detail.name}</h4>
+
                                 <div className="single-item-rating">
                                     <FontAwesomeIcon icon={faStar} />
                                     <FontAwesomeIcon icon={faStar} />
@@ -129,8 +51,8 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
                                 </div>
                                 <div className="single-item-price">
                                     <h4>
-                                        <del>{productData?.price.toLocaleString()}đ</del>
-                                        <span>{productData?.price.toLocaleString()}đ</span>
+                                        <del>{product_detail?.price.toLocaleString()}đ</del>
+                                        <span>{product_detail?.price.toLocaleString()}đ</span>
                                     </h4>
                                 </div>
                                 <p className="mb-4">
@@ -149,21 +71,21 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
                                 <div className="single-item-action">
                                     <h5 className="title">Quantity:</h5>
                                     <div className="cart-qty">
-                                        <button onClick={decrementValue} className="minus-btn bg-white">
+                                        <button className="minus-btn bg-white">
                                             <FontAwesomeIcon icon={faMinus} />
                                         </button>
                                         <input
                                             className="quantity bg-white"
                                             type="text"
                                             value={inputValue}
-                                            onChange={handleInputChange}
+                                            // onChange={handleQuantity}
                                         />
-                                        <button onClick={incrementValue} className="plus-btn bg-white">
+                                        <button onClick={handleQuantity} className="plus-btn bg-white">
                                             <FontAwesomeIcon icon={faPlus} />
                                         </button>
                                     </div>
                                     <div className="item-single-btn-area">
-                                        <button onClick={addToCart} className="theme-btn">
+                                        <button className="theme-btn">
                                             <FontAwesomeIcon icon={faCartShopping} />
                                             Add to cart
                                         </button>
@@ -426,7 +348,7 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
                         </div>
                         <div className="shop-item-wrapper">
                             <div className="row align-items-center">
-                                {relatedProducts.map(
+                                {/* {relatedProducts.map(
                                     (item: {
                                         thumbnail: string | undefined;
                                         id: number;
@@ -468,7 +390,7 @@ export default function SingleShop({ params }: { params: { slug: string } }) {
                                             </div>
                                         </div>
                                     ),
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </div>
