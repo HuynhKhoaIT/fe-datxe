@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
@@ -34,7 +34,7 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
                         <h4 className="shop-item-title">{product.name}</h4>
                     </Link>
                     <div className="shop-item-price">
-                        <del>{product.price}đ</del> {product.price}đ
+                        <del>{product.price?.toLocaleString()}đ</del> {product.price?.toLocaleString()}đ
                     </div>
                 </div>
             </div>

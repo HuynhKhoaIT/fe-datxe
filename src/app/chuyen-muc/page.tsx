@@ -1,24 +1,11 @@
-'use client';
-import { ProductItem } from '../components/product/productItem';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// 'use client';
+import { CategoryItem } from '../components/category/categoryItem';
 import Link from 'next/link';
+import { ICategory } from '@/interfaces/category';
+import { getCategories } from '@/utils/category';
 
-export default function Category() {
-    const [categories, setCategories] = useState<any[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const listCategories = await axios.get('https://v2.dlbd.vn/api/v2/guest/product-category');
-                setCategories(listCategories.data.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
+export default async function Category() {
+    const category_list = await getCategories();
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
@@ -43,12 +30,12 @@ export default function Category() {
                                 <div className="shop-widget">
                                     <h4 className="shop-widget-title">Category</h4>
                                     <ul>
-                                        {categories.map((item) => (
-                                            <li key={item.id}>
+                                        {category_list?.map((category: ICategory, index) => (
+                                            <li key={index}>
                                                 <div className="form-check">
                                                     <input className="form-check-input" type="checkbox" id="cat1" />
                                                     <label className="form-check-label" htmlFor="cat1">
-                                                        {item.name}
+                                                        {category.name}
                                                     </label>
                                                 </div>
                                             </li>
@@ -153,19 +140,8 @@ export default function Category() {
                             </div>
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
-                                    {categories.map((item) => (
-                                        <div key={item.id} className="col-6 col-md-4 col-lg-2">
-                                            <Link
-                                                href={`/chuyen-muc/${item.id}`}
-                                                className="category-item wow fadeInUp"
-                                                data-wow-delay=".25s"
-                                            >
-                                                <div className="category-img">
-                                                    <img src={item.thumbnail} alt="" />
-                                                </div>
-                                                <h5>{item.name}</h5>
-                                            </Link>
-                                        </div>
+                                    {category_list?.map((category: ICategory, index) => (
+                                        <CategoryItem key={index} category={category} />
                                     ))}
                                 </div>
                             </div>

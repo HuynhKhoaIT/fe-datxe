@@ -15,7 +15,7 @@ import { IGarage } from '@/interfaces/garage';
 export const getGarages = async () => {
     try {
         const res = await axios.get(`${GET_GARAGE_ENDPOINT}`);
-        return res.data.data as Promise<IGarage[]>;
+        return res.data as Promise<IGarage[]>;
     } catch (error) {
         console.error(error);
         throw new Error('Lỗi trong quá trình lấy danh sách chuyên gia'); // Xử lý lỗi và thông báo lỗi cho phía front-end
