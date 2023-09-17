@@ -53,9 +53,9 @@ export const getProductsByCat = async (catId = 0) => {
     }
 };
 
-export const getProductByGar = async (garageId = 0) => {
+export const getProductByGar = async (garageId = 0, limit = 8) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?garage_id=${garageId}`);
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?Garage_id=${garageId}&limit=${limit}`);
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);

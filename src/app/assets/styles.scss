@@ -3497,8 +3497,12 @@ label {
 }
 
 .category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    text-align: center;
+    height: 100%;
     margin-bottom: 25px;
     padding: 20px;
     border-radius: 20px;
@@ -3511,12 +3515,16 @@ label {
 }
 
 .category-img {
-    width: 100px;
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .category-item h5 {
     transition: var(--transition);
+    text-align: center;
 }
 
 .category-item:hover h5 {
@@ -3532,6 +3540,10 @@ label {
 }
 
 .dealer-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 25px);
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 25px;

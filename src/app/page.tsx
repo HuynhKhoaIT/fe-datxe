@@ -11,17 +11,17 @@ import { IProduct } from '@/interfaces/product';
 import { ICategory } from '@/interfaces/category';
 import { IGarage } from '@/interfaces/garage';
 import { getGarages } from '@/utils/garage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import Product from './components/product/product';
+import Garages from './components/garage/garages';
+import Categories from './components/category/categories';
+
 export default async function Home() {
-    const [litmit, setLimit] = useState<number>(8);
-    const product_data = await getProductsHot({ limit: litmit });
-    const category_list = await getCategories();
-    const garage_list = await getGarages();
-    // Lấy ra 8 Sản Phẩm / Dịch Vụ Hot
-    const handleButtonClick = () => {
-        // Khi người dùng nhấp chuột, tăng số lượng sản phẩm cần lấy thêm 4 sản phẩm
-        setLimit(litmit + 4);
-    };
-    console.log(product_data);
+    const initialCategoryData = await getCategories();
+    const garagesData = await getGarages();
+    const initialProductData: IProduct[] = await getProductsHot({ limit: 8 });
+
     return (
         <main className="main">
             <div className="hero-section">
@@ -34,99 +34,17 @@ export default async function Home() {
                 <div className="container">
                     <div className="find-car-form">
                         <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
-                        <form action="#">
-                            <div className="row">
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Car Condition</label>
-                                        <select className="select">
-                                            <option value="1">All Status</option>
-                                            <option value="2">New Car</option>
-                                            <option value="3">Used Car</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Brand Name</label>
-                                        <select className="select">
-                                            <option value="1">All Brand</option>
-                                            <option value="2">BMW</option>
-                                            <option value="3">Ferrari</option>
-                                            <option value="4">Marcediz Benz</option>
-                                            <option value="5">Hyundai</option>
-                                            <option value="6">Nissan</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Car Model</label>
-                                        <select className="select">
-                                            <option value="1">All Model</option>
-                                            <option value="2">3-Series </option>
-                                            <option value="3">Carrera</option>
-                                            <option value="4">G-TR</option>
-                                            <option value="3">Macan</option>
-                                            <option value="3">N-Series</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Choose Year</label>
-                                        <select className="select">
-                                            <option value="1">All Year</option>
-                                            <option value="2">2023</option>
-                                            <option value="3">2022</option>
-                                            <option value="4">2021</option>
-                                            <option value="5">2020</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Choose Milieage</label>
-                                        <select className="select">
-                                            <option value="1">All Milieage</option>
-                                            <option value="2">2000 Miles</option>
-                                            <option value="3">3000 Miles</option>
-                                            <option value="4">4000 Miles</option>
-                                            <option value="5">5000 Miles</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Price Range</label>
-                                        <select className="select">
-                                            <option value="1">All Price</option>
-                                            <option value="2">$1,000 - $5,000</option>
-                                            <option value="3">$5,000 - $10,000</option>
-                                            <option value="4">$15,000 - $20,000</option>
-                                            <option value="5">$20,000 - $25,000</option>
-                                            <option value="6">$25,000 - $30,000</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Body Type</label>
-                                        <select className="select">
-                                            <option value="1">All Body Type</option>
-                                            <option value="2">Sedan</option>
-                                            <option value="5">Compact</option>
-                                            <option value="3">Coupe</option>
-                                            <option value="4">Wagon</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3 align-self-end">
-                                    <button className="theme-btn" type="submit">
-                                        <span className="far fa-search"></span> Find Your Car
-                                    </button>
-                                </div>
-                            </div>
+                        <form method="GET" className="input-group rounded">
+                            <input
+                                type="search"
+                                className="form-control rounded"
+                                placeholder="Search"
+                                aria-label="Search"
+                                aria-describedby="search-addon"
+                            />
+                            <button type="submit" className="input-group-text border-0">
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -147,11 +65,7 @@ export default async function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        {category_list?.map((category: ICategory, index) => (
-                            <CategoryItem category={category} key={index} />
-                        ))}
-                    </div>
+                    <Categories initialCategoryData={initialCategoryData} />
                 </div>
             </div>
 
@@ -170,16 +84,7 @@ export default async function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        {product_data?.map((product: IProduct, index: number) => (
-                            <ProductItem product={product} key={index} />
-                        ))}
-                    </div>
-                    <div className="text-center mt-4">
-                        <button onClick={handleButtonClick} className="theme-btn">
-                            Load More <i className="far fa-arrow-rotate-right"></i>{' '}
-                        </button>
-                    </div>
+                    <Product initialProductData={initialProductData} />
                 </div>
             </div>
 
@@ -199,11 +104,7 @@ export default async function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        {garage_list?.map((garage: IGarage, index: number) => (
-                            <GarageItem garage={garage} key={index} />
-                        ))}
-                    </div>
+                    <Garages garages={garagesData} />
                 </div>
             </div>
             {/* <!-- car dealer end--> */}

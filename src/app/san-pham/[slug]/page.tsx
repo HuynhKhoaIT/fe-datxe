@@ -80,7 +80,7 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                                             value={inputValue}
                                             // onChange={handleQuantity}
                                         />
-                                        <button onClick={handleQuantity} className="plus-btn bg-white">
+                                        <button className="plus-btn bg-white">
                                             <FontAwesomeIcon icon={faPlus} />
                                         </button>
                                     </div>
