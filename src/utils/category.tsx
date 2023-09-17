@@ -21,3 +21,13 @@ export const getCategories = async () => {
         throw new Error('Lỗi trong quá trình lấy thông danh mục'); // Xử lý lỗi và thông báo lỗi cho phía front-end
     }
 };
+
+export const getCategoriesByGar = async (garageId = 0) => {
+    try {
+        const res = await axios.get(`${GET_CATEGORY_ENDPOINT}?Garage_id=${garageId}`);
+        return res.data.data as Promise<ICategory[]>;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình lấy danh sách danh mục theo garage'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+    }
+};
