@@ -1,6 +1,6 @@
 // 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faEye, faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IProduct } from '@/interfaces/product';
 const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
@@ -11,15 +11,15 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
                     <span className="shop-item-sale">Sale</span>
                     <img src={product.thumbnail} alt="" />
                     <div className="shop-item-meta">
-                        <a href="#">
-                            <i className="far fa-heart"></i>
-                        </a>
-                        <a href="#">
-                            <i className="far fa-eye"></i>
-                        </a>
-                        <a href="#">
-                            <i className="far fa-shopping-cart"></i>
-                        </a>
+                        <Link href="#">
+                            <FontAwesomeIcon icon={faHeart} />
+                        </Link>
+                        <Link href="#">
+                            <FontAwesomeIcon icon={faEye} />
+                        </Link>
+                        <Link href="#">
+                            <FontAwesomeIcon icon={faCartShopping} />
+                        </Link>
                     </div>
                 </div>
                 <div className="shop-item-info">

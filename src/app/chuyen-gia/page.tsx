@@ -31,7 +31,7 @@ export default async function Expert() {
                                 </div>
                             </div>
                             <div className="shop-item-wrapper">
-                                <div className="row align-items-center">
+                                <div className="row">
                                     {garage_data.map((garage: IGarage, index) => (
                                         <GarageItem garage={garage} key={index} />
                                     ))}
