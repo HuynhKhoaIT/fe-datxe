@@ -81,27 +81,6 @@ export default async function Home({ params }: { params: { slug: number } }) {
                 </div>
             </div>
 
-            {/* <!-- car dealer --> */}
-            <div className="car-dealer pb-40 pt-40">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6 mx-auto">
-                            <div className="site-heading text-center">
-                                <span className="site-title-tagline">
-                                    <i className="flaticon-drive"></i> Chuyên gia
-                                </span>
-                                <h2 className="site-title">
-                                    Tốt nhất <span>gần bạn</span>
-                                </h2>
-                                <div className="heading-divider"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <Garages garages={garagesData} />
-                </div>
-            </div>
-            {/* <!-- car dealer end--> */}
-
             {/* <!-- blog area --> */}
             <div className="blog-area pt-60 pb-60">
                 <div className="container">
@@ -122,7 +101,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
                         <div className="col-md-6 col-lg-4">
                             <div className="blog-item wow fadeInUp" data-wow-delay=".25s">
                                 <div className="blog-item-img">
-                                    <img src="assets/img/blog/01.jpg" alt="Thumb" />
+                                    <img src="/assets/img/blog/01.jpg" alt="Thumb" />
                                 </div>
                                 <div className="blog-item-info">
                                     <div className="blog-item-meta">
@@ -151,7 +130,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
                         <div className="col-md-6 col-lg-4">
                             <div className="blog-item wow fadeInUp" data-wow-delay=".50s">
                                 <div className="blog-item-img">
-                                    <img src="assets/img/blog/02.jpg" alt="Thumb" />
+                                    <img src="/assets/img/blog/02.jpg" alt="Thumb" />
                                 </div>
                                 <div className="blog-item-info">
                                     <div className="blog-item-meta">
@@ -180,7 +159,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
                         <div className="col-md-6 col-lg-4">
                             <div className="blog-item wow fadeInUp" data-wow-delay=".75s">
                                 <div className="blog-item-img">
-                                    <img src="assets/img/blog/03.jpg" alt="Thumb" />
+                                    <img src="/assets/img/blog/03.jpg" alt="Thumb" />
                                 </div>
                                 <div className="blog-item-info">
                                     <div className="blog-item-meta">
@@ -210,52 +189,6 @@ export default async function Home({ params }: { params: { slug: number } }) {
                 </div>
             </div>
             {/* <!-- blog area end --> */}
-
-            {/* <!-- download area --> */}
-            <div className="download-area mb-120">
-                <div className="container">
-                    <div className="download-wrapper">
-                        <div className="row">
-                            <div className="col-lg-6">
-                                <div className="download-content">
-                                    <div className="site-heading mb-4">
-                                        <span className="site-title-tagline justify-content-start">
-                                            <i className="flaticon-drive"></i> Get Our App
-                                        </span>
-                                        <h2 className="site-title mb-10">
-                                            Download <span>Our Motex</span> App For Free
-                                        </h2>
-                                        <p>
-                                            There are many variations of passages available but the majority have
-                                            suffered in some form going to use a passage by injected humour.
-                                        </p>
-                                    </div>
-                                    <div className="download-btn">
-                                        <a href="#">
-                                            <i className="fab fa-google-play"></i>
-                                            <div className="download-btn-content">
-                                                <span>Get It On</span>
-                                                <strong>Google Play</strong>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <i className="fab fa-app-store"></i>
-                                            <div className="download-btn-content">
-                                                <span>Get It On</span>
-                                                <strong>App Store</strong>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="download-img">
-                            <img src="assets/img/download/01.png" alt="" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- download area end --> */}
         </main>
     );
 }
