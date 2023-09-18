@@ -23,16 +23,7 @@ const SlideBanners = () => {
             onSlideChange={() => console.log('slide change')}
         >
             <SwiperSlide>
-                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src="/assets/img/breadcrumb/01.jpg" alt="" className="img-full full-width w-100" />
+                <img src="/assets/img/slider/hero-1.png" alt="" className="img-full full-width w-100" />
             </SwiperSlide>
         </Swiper>
     );

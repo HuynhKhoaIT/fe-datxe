@@ -15,9 +15,11 @@ export default async function Home() {
     const initialGarageData: IGarage[] = await getGaragesNear({ limit: 8 });
     const initialProductData: IProduct[] = await getProductsHot({ limit: 8 });
     return (
-        <main className="main">
+        <main className="main  bg-white">
             <div className="hero-section">
-                <SlideBanners />
+                <div className="container">
+                    <SlideBanners />
+                </div>
             </div>
             <div className="find-car">
                 <div className="container">
@@ -26,9 +28,9 @@ export default async function Home() {
                         <Search />
                     </div>
                 </div>
-            </div>
+            </div> */}
 
-            <div className="car-category py-120">
+            <div className="car-category pt-60 pb-60 bg-white">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -197,7 +199,7 @@ export default async function Home() {
             {/* <!-- blog area end --> */}
 
             {/* <!-- download area --> */}
-            <div className="download-area mb-120">
+            {/* <div className="download-area mb-120">
                 <div className="container">
                     <div className="download-wrapper">
                         <div className="row">
@@ -240,6 +242,7 @@ export default async function Home() {
                     </div>
                 </div>
             </div>
+
         </main>
     );
 }
