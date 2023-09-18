@@ -16,19 +16,34 @@ export default function register() {
                                     <div className="col col-md-4">
                                         <div className="form-group">
                                             <label>Họ Tên</label>
-                                            <input type="text" className="form-control" placeholder="Họ tên" />
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                className="form-control"
+                                                placeholder="Họ tên"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col col-md-4">
                                         <div className="form-group">
                                             <label>Điện thoại</label>
-                                            <input type="text" className="form-control" placeholder="Số điện thoại" />
+                                            <input
+                                                type="text"
+                                                name="phone"
+                                                className="form-control"
+                                                placeholder="Số điện thoại"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col col-md-4">
                                         <div className="form-group">
                                             <label>Email</label>
-                                            <input type="email" className="form-control" placeholder="Email" />
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                className="form-control"
+                                                placeholder="Email"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -36,7 +51,12 @@ export default function register() {
                                     <div className="col col-md-4">
                                         <div className="form-group">
                                             <label>Biển số xe</label>
-                                            <input type="text" className="form-control" placeholder="Biển số xe" />
+                                            <input
+                                                type="text"
+                                                name="license_plates"
+                                                className="form-control"
+                                                placeholder="Biển số xe"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col col-md-4">
@@ -47,6 +67,7 @@ export default function register() {
                                                 className="form-control"
                                                 placeholder="Hãng xe"
                                                 value="1"
+                                                name="automaker_id"
                                             />
                                         </div>
                                     </div>
@@ -58,6 +79,7 @@ export default function register() {
                                                 className="form-control"
                                                 placeholder="Dòng xe"
                                                 value="10"
+                                                name="car_name_id"
                                             />
                                         </div>
                                     </div>
