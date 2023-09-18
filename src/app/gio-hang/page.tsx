@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IProduct } from '@/interfaces/product';
 export default function Cart() {
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]

@@ -1,6 +1,7 @@
+'use client';
 import { IProduct } from '@/interfaces/product';
 import { getProductsHot } from '@/utils/product';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ProductItem } from './productItem';
 
 export default function Product({ initialProductData }: { initialProductData: IProduct[] }) {
@@ -26,7 +27,7 @@ export default function Product({ initialProductData }: { initialProductData: IP
             </div>
             <div className="text-center mt-4">
                 <button onClick={handleButtonClick} className="theme-btn">
-                    Load More <i className="far fa-arrow-rotate-right"></i>{' '}
+                    Load More <i className="far fa-arrow-rotate-right"></i>
                 </button>
             </div>
         </>
@@ -34,9 +35,7 @@ export default function Product({ initialProductData }: { initialProductData: IP
 }
 
 export async function getStaticProps() {
-    // Fetch dữ liệu ban đầu
-    const initialProductData = await getProductsHot({ limit: 8 }); // Thay đổi limit nếu cần
-
+    const initialProductData = await getProductsHot({ limit: 8 });
     return {
         props: {
             initialProductData,

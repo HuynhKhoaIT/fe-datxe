@@ -21,3 +21,13 @@ export const getGarages = async () => {
         throw new Error('Lỗi trong quá trình lấy danh sách chuyên gia'); // Xử lý lỗi và thông báo lỗi cho phía front-end
     }
 };
+
+export const getGaragesNear = async ({ limit = 8 }) => {
+    try {
+        const res = await axios.get(`${GET_GARAGE_ENDPOINT}?limit=${limit}`);
+        return res.data as Promise<IGarage[]>;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình lấy danh sách chuyên gia'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+    }
+};

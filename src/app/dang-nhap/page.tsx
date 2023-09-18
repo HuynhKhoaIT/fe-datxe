@@ -6,21 +6,20 @@ import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { faFacebookF, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons';
-
+import { login } from '@/utils/user';
 export default function Login() {
     const router = useRouter();
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    const handleLogin = async (event: React.FormEvent) => {
-        event.preventDefault(); // Ngăn chặn sự kiện mặc định của biểu mẫu
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
-            const response = await axios.post('https://v2.dlbd.vn/api/login', { phone, password });
-            const token = response.data.token; // Destructuring để lấy token
-            // Lưu token vào Local Storage
-            localStorage.setItem('token', token);
-            router.push('/dashboard', { scroll: false });
-        } catch (error) {
-            console.error('Đăng nhập không thành công', error);
+            await login(phone, password);
+            console.log('Login successful'); // Handle success (e.g., redirect to a different page)
+        } catch (error: any) {
+            console.log('Login fail');
+            console.error('Login error:', error.message); // Handle login errors
         }
     };
     return (

@@ -1,6 +1,8 @@
 import { ICategory } from '@/interfaces/category';
 import { getCategories } from '@/utils/category';
 import { SideBarItem } from './sidebarItem';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 export async function SideBar() {
     const category_list = await getCategories();
 
@@ -13,7 +15,7 @@ export async function SideBar() {
                         <div className="form-group">
                             <input type="text" className="form-control" placeholder="Search" />
                             <button type="button">
-                                <i className="far fa-search"></i>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </button>
                         </div>
                     </form>
@@ -26,6 +28,17 @@ export async function SideBar() {
                         <SideBarItem category={category} />
                     ))}
                 </ul>
+            </div>
+
+            <div className="widget-banner mt-30 mb-50">
+                <div className="banner-content">
+                    <h3>
+                        Get <span>35% Off</span> On All Our Products
+                    </h3>
+                    <a href="#" className="theme-btn">
+                        Buy Now<i className="fas fa-arrow-right-long"></i>{' '}
+                    </a>
+                </div>
             </div>
         </div>
     );
