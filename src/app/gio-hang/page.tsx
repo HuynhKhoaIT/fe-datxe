@@ -4,6 +4,7 @@ import { faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IProduct } from '@/interfaces/product';
 import CartItem from '../components/cart/cartItem';
+import Link from 'next/link';
 export default function Cart() {
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
@@ -120,9 +121,9 @@ export default function Cart() {
                                             </li>
                                         </ul>
                                         <div className="text-end mt-40">
-                                            <a href="#" className="theme-btn">
-                                                Checkout Now<i className="fas fa-arrow-right-long"></i>
-                                            </a>
+                                            <Link href="/thanh-toan" className="theme-btn">
+                                                Đặt lịch<i className="fas fa-arrow-right-long"></i>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

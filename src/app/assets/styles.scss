@@ -4437,6 +4437,7 @@ label {
     font-size: 20px;
     color: var(--color-dark);
     transition: var(--transition);
+    min-height: 50px;
 }
 
 .shop-item-title:hover {
@@ -4448,6 +4449,7 @@ label {
     color: var(--theme-color);
     font-weight: 700;
     margin-top: 5px;
+    min-height: 65px;
 }
 
 .shop-item-price del {
