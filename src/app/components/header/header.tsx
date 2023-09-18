@@ -62,9 +62,6 @@ const Header = () => {
                         </div>
                         <div className="header-top-right">
                             <div className="header-top-link">
-                                <Link href="dang-nhap">
-                                    <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
-                                </Link>
                                 <Link href="#">
                                     <FontAwesomeIcon icon={faUser} /> Đăng ký
                                 </Link>

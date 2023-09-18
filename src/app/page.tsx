@@ -1,18 +1,11 @@
 'use client';
 import './assets/css/nice-select.min.css';
 import { SlideBanners } from './components/home/slideBanners';
-import { ProductItem } from './components/product/productItem';
-import { CategoryItem } from './components/category/categoryItem';
 import React, { useState } from 'react';
-import { GarageItem } from './components/garageItem/garageItem';
 import { getProductsHot } from '@/utils/product';
 import { getCategories } from '@/utils/category';
 import { IProduct } from '@/interfaces/product';
-import { ICategory } from '@/interfaces/category';
-import { IGarage } from '@/interfaces/garage';
 import { getGarages } from '@/utils/garage';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Product from './components/product/product';
 import Garages from './components/garage/garages';
 import Categories from './components/category/categories';
@@ -23,14 +16,16 @@ export default async function Home() {
     const initialProductData: IProduct[] = await getProductsHot({ limit: 8 });
 
     return (
-        <main className="main">
+        <main className="main  bg-white">
             <div className="hero-section">
-                <SlideBanners />
+                <div className="container">
+                    <SlideBanners />
+                </div>
             </div>
             {/* <!-- hero slider end --> */}
 
             {/* <!-- find car form --> */}
-            <div className="find-car">
+            {/* <div className="find-car mt-30">
                 <div className="container">
                     <div className="find-car-form">
                         <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
@@ -48,9 +43,9 @@ export default async function Home() {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
-            <div className="car-category py-120">
+            <div className="car-category pt-60 pb-60 bg-white">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -219,7 +214,7 @@ export default async function Home() {
             {/* <!-- blog area end --> */}
 
             {/* <!-- download area --> */}
-            <div className="download-area mb-120">
+            {/* <div className="download-area mb-120">
                 <div className="container">
                     <div className="download-wrapper">
                         <div className="row">
@@ -261,7 +256,7 @@ export default async function Home() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/* <!-- download area end --> */}
         </main>
     );
