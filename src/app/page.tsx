@@ -28,7 +28,7 @@ export default async function Home() {
                         <Search />
                     </div>
                 </div>
-            </div> */}
+            </div>
 
             <div className="car-category pt-60 pb-60 bg-white">
                 <div className="container">
@@ -241,8 +241,7 @@ export default async function Home() {
                         </div>
                     </div>
                 </div>
-            </div>
-
+    </div>*/}
         </main>
     );
 }
