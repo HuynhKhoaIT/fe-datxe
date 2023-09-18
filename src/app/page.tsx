@@ -1,51 +1,29 @@
-'use client';
+// 'use client';
 import './assets/css/nice-select.min.css';
 import { SlideBanners } from './components/home/slideBanners';
-import { ProductItem } from './components/product/productItem';
-import { CategoryItem } from './components/category/categoryItem';
-import React, { useState } from 'react';
-import { GarageItem } from './components/garageItem/garageItem';
+import { Search } from './components/search/searchForm';
 import { getProductsHot } from '@/utils/product';
 import { getCategories } from '@/utils/category';
 import { IProduct } from '@/interfaces/product';
-import { ICategory } from '@/interfaces/category';
-import { IGarage } from '@/interfaces/garage';
-import { getGarages } from '@/utils/garage';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { getGaragesNear } from '@/utils/garage';
 import Product from './components/product/product';
 import Garages from './components/garage/garages';
 import Categories from './components/category/categories';
-
+import { IGarage } from '@/interfaces/garage';
 export default async function Home() {
     const initialCategoryData = await getCategories();
-    const garagesData = await getGarages();
+    const initialGarageData: IGarage[] = await getGaragesNear({ limit: 8 });
     const initialProductData: IProduct[] = await getProductsHot({ limit: 8 });
-
     return (
         <main className="main">
             <div className="hero-section">
                 <SlideBanners />
             </div>
-            {/* <!-- hero slider end --> */}
-
-            {/* <!-- find car form --> */}
             <div className="find-car">
                 <div className="container">
                     <div className="find-car-form">
                         <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
-                        <form method="GET" className="input-group rounded">
-                            <input
-                                type="search"
-                                className="form-control rounded"
-                                placeholder="Search"
-                                aria-label="Search"
-                                aria-describedby="search-addon"
-                            />
-                            <button type="submit" className="input-group-text border-0">
-                                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            </button>
-                        </form>
+                        <Search />
                     </div>
                 </div>
             </div>
@@ -104,7 +82,7 @@ export default async function Home() {
                             </div>
                         </div>
                     </div>
-                    <Garages garages={garagesData} />
+                    <Garages initialGarageData={initialGarageData} />
                 </div>
             </div>
             {/* <!-- car dealer end--> */}
@@ -262,7 +240,6 @@ export default async function Home() {
                     </div>
                 </div>
             </div>
-            {/* <!-- download area end --> */}
         </main>
     );
 }

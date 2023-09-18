@@ -52,6 +52,15 @@ export const getProductsByCat = async (catId = 0) => {
         throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
     }
 };
+export const getProductsByName = async (name: string) => {
+    try {
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?${name}`);
+        return res.data.data as Promise<IProduct[]>;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+    }
+};
 
 export const getProductByGar = async (garageId = 0, limit = 8) => {
     try {
@@ -62,3 +71,13 @@ export const getProductByGar = async (garageId = 0, limit = 8) => {
         throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
     }
 };
+export const getProductsRelated = async (catId = 0, garageId = 0) => {
+    try {
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?cat_id=${catId}&garage_id=${garageId}&limit=4`);
+        return res.data.data as Promise<IProduct[]>;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+    }
+};
+getProductsRelated;

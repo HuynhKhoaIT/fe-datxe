@@ -1,4 +1,3 @@
-'use client';
 import { ProductItem } from '../../components/product/productItem';
 
 import { SideBar } from '../../components/shop-sidebar/sideBar';

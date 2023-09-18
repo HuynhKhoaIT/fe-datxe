@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import {
     faCartShopping,
     faHeart,
@@ -11,16 +11,65 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
+import { getProductDetail, getProductsRelated } from '@/utils/product';
+import { IProduct } from '@/interfaces/product';
+import Product from '@/app/components/product/product';
+import { useEffect, useState } from 'react';
 
-import { getProductDetail } from '@/utils/product';
-export default async function SingleShop({ params }: { params: { slug: number } }) {
-    var inputValue = 1;
-    const handleQuantity = () => {
-        inputValue += 1;
+export default function SingleShop({ params }: { params: { slug: number } }) {
+    const [inputValue, setInputValue] = useState(1);
+    const [productDetail, setProductDetail] = useState<IProduct | null>(null);
+    const [initialProductData, setInitialProductData] = useState<IProduct[]>([]);
+    console.log(initialProductData);
+    useEffect(() => {
+        // Fetch product details and related products when the component mounts
+        const fetchData = async () => {
+            try {
+                const productDetailResponse: IProduct = await getProductDetail(params.slug);
+                setProductDetail(productDetailResponse);
+                const catId: IProduct[] = productDetailResponse.categoryId;
+                const garId: IProduct[] = productDetailResponse.garageId;
+                const relatedProducts: IProduct[] = await getProductsRelated(catId, garId);
+                setInitialProductData(relatedProducts);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [params.slug]);
+    // tăng số lượng
+    const incrementValue = () => {
+        setInputValue(inputValue + 1);
     };
-    const product_detail = await getProductDetail(params.slug);
-    console.log(product_detail);
-    console.log(product_detail.name);
+    // giảm số lượng
+    const decrementValue = () => {
+        if (inputValue === 1) {
+            return;
+        }
+        setInputValue(inputValue - 1);
+    };
+
+    const addProductToLocalStorage = () => {
+        if (productDetail) {
+            const productId = productDetail.id;
+            const existingCartItems = JSON.parse(localStorage.getItem('cartData') || '[]');
+            const index = existingCartItems.findIndex((item: any) => item.productId === productId);
+
+            if (index !== -1) {
+                existingCartItems[index].quantity += inputValue;
+            } else {
+                existingCartItems.push({
+                    product: productDetail,
+                    quantity: inputValue,
+                });
+            }
+
+            localStorage.setItem('cartData', JSON.stringify(existingCartItems));
+
+            alert('Product added to cart!');
+        }
+    };
     return (
         <main className="main">
             <div className="shop-item-single bg py-120">
@@ -39,7 +88,13 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                         </div>
                         <div className="col-lg-6">
                             <div className="single-item-info">
-                                <h4 className="single-item-title">{product_detail.name}</h4>
+                                {productDetail ? ( // Check if productDetail is not null
+                                    <div className="single-item-info">
+                                        <h4 className="single-item-title">{productDetail.name}</h4>
+                                    </div>
+                                ) : (
+                                    <p>Loading...</p>
+                                )}
 
                                 <div className="single-item-rating">
                                     <FontAwesomeIcon icon={faStar} />
@@ -49,17 +104,26 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                                     <FontAwesomeIcon icon={faStarHalfStroke} />
                                     <span className="rating-count"> (4 Customer Reviews)</span>
                                 </div>
+
                                 <div className="single-item-price">
                                     <h4>
-                                        <del>{product_detail?.price.toLocaleString()}đ</del>
-                                        <span>{product_detail?.price.toLocaleString()}đ</span>
+                                        {productDetail?.price ? (
+                                            <>
+                                                <del>{productDetail.price.toLocaleString()}đ</del>
+                                                <span>{productDetail.price.toLocaleString()}đ</span>
+                                            </>
+                                        ) : (
+                                            'Price not available'
+                                        )}
                                     </h4>
                                 </div>
+
                                 <p className="mb-4">
                                     There are many variations of passages of Lorem Ipsum available, but the majority
                                     have suffered alteration in some form, by injected humour, or randomised words which
                                     don't look even slightly believable.
                                 </p>
+
                                 <div className="single-item-content">
                                     <h5>
                                         Stock: <span>Available</span>
@@ -68,35 +132,37 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                                         SKU: <span>676TYWV</span>
                                     </h5>
                                 </div>
+
                                 <div className="single-item-action">
                                     <h5 className="title">Quantity:</h5>
                                     <div className="cart-qty">
-                                        <button className="minus-btn bg-white">
+                                        <button className="minus-btn bg-white" onClick={decrementValue}>
                                             <FontAwesomeIcon icon={faMinus} />
                                         </button>
                                         <input
                                             className="quantity bg-white"
                                             type="text"
                                             value={inputValue}
-                                            // onChange={handleQuantity}
+                                            onChange={(e) => setInputValue(parseInt(e.target.value) || 1)}
                                         />
-                                        <button className="plus-btn bg-white">
+                                        <button className="plus-btn bg-white" onClick={incrementValue}>
                                             <FontAwesomeIcon icon={faPlus} />
                                         </button>
                                     </div>
                                     <div className="item-single-btn-area">
-                                        <button className="theme-btn">
+                                        <button className="theme-btn" onClick={addProductToLocalStorage}>
                                             <FontAwesomeIcon icon={faCartShopping} />
                                             Add to cart
                                         </button>
-                                        <a href="#" className="single-item-btn">
+                                        <Link href="#" className="single-item-btn">
                                             <FontAwesomeIcon icon={faHeart} />
-                                        </a>
-                                        <a href="#" className="single-item-btn">
+                                        </Link>
+                                        <Link href="#" className="single-item-btn">
                                             <FontAwesomeIcon icon={faRightLeft} />
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
+
                                 <div className="single-item-content">
                                     <h5>
                                         Category: <span>Car Parts</span>
@@ -105,7 +171,9 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                                         Tags: <span>Car, Shop, Tire</span>
                                     </h5>
                                 </div>
+
                                 <hr />
+
                                 <div className="single-item-share">
                                     <span>Share:</span>
                                     <Link href="#">
@@ -347,50 +415,8 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                             </div>
                         </div>
                         <div className="shop-item-wrapper">
-                            <div className="row align-items-center">
-                                {/* {relatedProducts.map(
-                                    (item: {
-                                        thumbnail: string | undefined;
-                                        id: number;
-                                        name: string | null | undefined;
-                                        price: number | undefined;
-                                    }) => (
-                                        <div className="col-md-6 col-lg-3" key={item.id}>
-                                            <div className="shop-item">
-                                                <div className="shop-item-img">
-                                                    <span className="shop-item-sale">Sale</span>
-                                                    <img src={item.thumbnail} alt="" />
-                                                    <div className="shop-item-meta">
-                                                        <a href="#">
-                                                            <i className="far fa-heart"></i>
-                                                        </a>
-                                                        <a href="#">
-                                                            <i className="far fa-eye"></i>
-                                                        </a>
-                                                        <a href="#">
-                                                            <FontAwesomeIcon icon={faCartShopping} />
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div className="shop-item-info">
-                                                    <div className="shop-item-rate">
-                                                        <i className="fas fa-star"></i>
-                                                        <i className="fas fa-star"></i>
-                                                        <i className="fas fa-star"></i>
-                                                        <i className="fas fa-star"></i>
-                                                        <i className="fas fa-star"></i>
-                                                    </div>
-                                                    <a href="#">
-                                                        <h4 className="shop-item-title">{item.name}</h4>
-                                                    </a>
-                                                    <div className="shop-item-price">
-                                                        <del>{item.price}</del> {item.price}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ),
-                                )} */}
+                            <div className="row">
+                                <Product initialProductData={initialProductData} />
                             </div>
                         </div>
                     </div>

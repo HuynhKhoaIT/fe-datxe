@@ -12,14 +12,14 @@ export default async function Shop() {
             <div className="shop-area bg py-120">
                 <div className="container">
                     <div className="row">
-                        {/* <div className="col-lg-3">
+                        <div className="col-lg-3">
                             <SideBar />
-                        </div> */}
-                        <div className="col-lg-12">
+                        </div>
+                        <div className="col-lg-9">
                             <Sort />
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
-                                    {product_data?.map((product: IProduct, index: number) => (
+                                    {product_data?.map((product: IProduct, index) => (
                                         <ProductItem product={product} key={index} />
                                     ))}
                                 </div>
