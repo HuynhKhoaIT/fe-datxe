@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IProduct } from '@/interfaces/product';
+import CartItem from '../components/cart/cartItem';
 export default function Cart() {
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
@@ -74,55 +75,13 @@ export default function Cart() {
                                 </thead>
                                 <tbody>
                                     {cartData.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>
-                                                <div className="cart-img">
-                                                    <img src={item.product.thumbnail} alt="" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <h5>{item.product.name}</h5>
-                                            </td>
-                                            <td>
-                                                <div className="cart-price">
-                                                    <span>{item.product.price.toLocaleString()}đ</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="cart-qty">
-                                                    <button
-                                                        onClick={() => decrementQuantity(item.product.id)}
-                                                        className="minus-btn"
-                                                    >
-                                                        <FontAwesomeIcon icon={faMinus} />
-                                                    </button>
-                                                    <input
-                                                        className="quantity"
-                                                        type="text"
-                                                        value={item.quantity}
-                                                        readOnly
-                                                    />
-                                                    <button
-                                                        onClick={() => incrementQuantity(item.product.id)}
-                                                        className="plus-btn"
-                                                    >
-                                                        <FontAwesomeIcon icon={faPlus} />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="cart-sub-total">
-                                                    <span>
-                                                        {(item.product.price * item.quantity).toLocaleString()}đ
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a onClick={() => deleteItem(item.product.id)} className="cart-remove">
-                                                    <FontAwesomeIcon icon={faXmark} />
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <CartItem
+                                            key={index}
+                                            item={item}
+                                            decrementQuantity={decrementQuantity}
+                                            incrementQuantity={incrementQuantity}
+                                            deleteItem={deleteItem}
+                                        />
                                     ))}
                                 </tbody>
                             </table>
