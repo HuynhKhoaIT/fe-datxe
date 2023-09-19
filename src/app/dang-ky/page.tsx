@@ -5,40 +5,104 @@ export default function register() {
             {/* <!-- register area --> */}
             <div className="login-area py-120">
                 <div className="container">
-                    <div className="col-md-5 mx-auto">
+                    <div className="col-md-9 mx-auto">
                         <div className="login-form">
                             <div className="login-header">
                                 <img src="assets/img/logo/logo.png" alt="" />
-                                <p>Create your motex account</p>
+                                <p>Đăng ký tài khoản</p>
                             </div>
                             <form action="#">
-                                <div className="form-group">
-                                    <label>Full Name</label>
-                                    <input type="text" className="form-control" placeholder="Your Name" />
+                                <div className="row">
+                                    <div className="col col-md-4">
+                                        <div className="form-group">
+                                            <label>Họ Tên</label>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                className="form-control"
+                                                placeholder="Họ tên"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col col-md-4">
+                                        <div className="form-group">
+                                            <label>Điện thoại</label>
+                                            <input
+                                                type="text"
+                                                name="phone"
+                                                className="form-control"
+                                                placeholder="Số điện thoại"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col col-md-4">
+                                        <div className="form-group">
+                                            <label>Email</label>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                className="form-control"
+                                                placeholder="Email"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col col-md-4">
+                                        <div className="form-group">
+                                            <label>Biển số xe</label>
+                                            <input
+                                                type="text"
+                                                name="license_plates"
+                                                className="form-control"
+                                                placeholder="Biển số xe"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col col-md-4">
+                                        <div className="form-group">
+                                            <label>Hãng xe</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Hãng xe"
+                                                value="1"
+                                                name="automaker_id"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col col-md-4">
+                                        <div className="form-group">
+                                            <label>Dòng xe</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Dòng xe"
+                                                value="10"
+                                                name="car_name_id"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="form-group">
-                                    <label>Email Address</label>
-                                    <input type="email" className="form-control" placeholder="Your Email" />
-                                </div>
-                                <div className="form-group">
-                                    <label>Password</label>
-                                    <input type="password" className="form-control" placeholder="Your Password" />
+                                    <label>Mật khẩu</label>
+                                    <input type="password" className="form-control" placeholder="Mật khẩu" />
                                 </div>
                                 <div className="form-check form-group">
                                     <input className="form-check-input" type="checkbox" value="" id="agree" />
                                     <label className="form-check-label" htmlFor="agree">
-                                        I agree with the <Link href="#">Terms Of Service.</Link>
+                                        Tôi đồng ý với <Link href="#">Điều khoản dịch vụ.</Link>
                                     </label>
                                 </div>
                                 <div className="d-flex align-items-center">
                                     <button type="submit" className="theme-btn">
-                                        <i className="far fa-paper-plane"></i> Register
+                                        <i className="far fa-paper-plane"></i> Đăng ký
                                     </button>
                                 </div>
                             </form>
                             <div className="login-footer">
                                 <p>
-                                    Already have an account? <Link href="dang-nhap">Login.</Link>
+                                    Bạn đã có tài khoản? <Link href="dang-nhap">Đăng nhập.</Link>
                                 </p>
                                 <div className="social-login">
                                     <p>Continue with social media</p>
