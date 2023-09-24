@@ -8,7 +8,7 @@ import axios from 'axios';
 import { GET_MY_ACCOUNT_ENDPOINT, POST_LOGIN_ENDPOINT, POST_REGISTER_ENDPOINT } from './constants/endpoints';
 
 import { IUser } from '@/interfaces/user';
-import ForgotPassword from '@/app/forgot-password/page';
+// import ForgotPassword from '@/app/forgot-password/page';
 /**
  * Get getMyAccount.
  *
@@ -66,13 +66,6 @@ export const register = async (
     password: string,
     password_confirmation: string,
 ): Promise<void> => {
-    console.log(name);
-    console.log(phone);
-    console.log(license_plates);
-    console.log(automaker_id);
-    console.log(car_name_id);
-    console.log(password);
-
     try {
         const res = await axios.post(
             `${POST_REGISTER_ENDPOINT}`,
