@@ -55,3 +55,11 @@ export function showStatus(status: any) {
     }
     return s;
 }
+
+export const checkOut = async (dataForm = {}, token = '') => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` },
+    };
+    const res = await axios.post(`${GET_ORDER_ENDPOINT}`, dataForm, config);
+    console.log(res);
+};
