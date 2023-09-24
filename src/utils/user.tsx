@@ -5,7 +5,7 @@ import axios from 'axios';
 /**
  * Internal Dependencies.
  */
-import { GET_MY_ACCOUNT_ENDPOINT, POST_LOGIN_ENDPOINT } from './constants/endpoints';
+import { GET_MY_ACCOUNT_ENDPOINT, POST_LOGIN_ENDPOINT, POST_REGISTER_ENDPOINT } from './constants/endpoints';
 
 import { IUser } from '@/interfaces/user';
 import ForgotPassword from '@/app/forgot-password/page';
@@ -30,9 +30,6 @@ export const getMyAccount = async (token: string) => {
 
 export const login = async (phone: string, password: string): Promise<void> => {
     try {
-        console.log('phone', phone);
-        console.log(typeof phone);
-        console.log('password', password);
         const res = await axios.post(
             `${POST_LOGIN_ENDPOINT}`,
             {
@@ -45,13 +42,59 @@ export const login = async (phone: string, password: string): Promise<void> => {
                 },
             },
         );
-        console.log('11111111111111111111');
-        console.log(res);
-
         if (res.status === 200) {
             // Login was successful
             const data = res.data;
             localStorage.setItem('token', data.token);
+        } else {
+            // Login failed
+            console.log('Login failed');
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Đăng nhập thất bại');
+    }
+};
+
+export const register = async (
+    name: string,
+    phone: string,
+    email: String,
+    license_plates: string,
+    automaker_id: string,
+    car_name_id: string,
+    password: string,
+    password_confirmation: string,
+): Promise<void> => {
+    console.log(name);
+    console.log(phone);
+    console.log(license_plates);
+    console.log(automaker_id);
+    console.log(car_name_id);
+    console.log(password);
+
+    try {
+        const res = await axios.post(
+            `${POST_REGISTER_ENDPOINT}`,
+            {
+                name: name,
+                phone: phone,
+                email: email,
+                license_plates: license_plates,
+                automaker_id: automaker_id,
+                car_name_id: car_name_id,
+                password: password,
+                password_confirmation: password_confirmation,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
+
+        if (res.status === 200) {
+            console.log('đăng ký thành công');
         } else {
             // Login failed
             console.log('Login failed');

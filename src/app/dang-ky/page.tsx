@@ -1,5 +1,29 @@
+'use client';
+
 import Link from 'next/link';
-export default function register() {
+import { useState } from 'react';
+import { register } from '@/utils/user';
+
+export default function Register() {
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [licensePlates, setLicensePlates] = useState('');
+    const [automakerId, setAutomakerId] = useState('1');
+    const [carNameId, setCarNameId] = useState('10');
+    const [password, setPassword] = useState('');
+    const [passwordConfirmation, SetpasswordConfirmation] = useState('');
+
+    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            await register(name, phone, email, licensePlates, automakerId, carNameId, password, passwordConfirmation);
+            console.log('Register successful'); // Handle success (e.g., redirect to a different page)
+        } catch (error: any) {
+            console.log('Register fail');
+            console.error('Register error:', error.message); // Handle Register errors
+        }
+    };
     return (
         <main className="main">
             {/* <!-- register area --> */}
@@ -11,7 +35,7 @@ export default function register() {
                                 <img src="assets/img/logo/logo.png" alt="" />
                                 <p>Đăng ký tài khoản</p>
                             </div>
-                            <form action="#">
+                            <form onSubmit={handleRegister}>
                                 <div className="row">
                                     <div className="col col-md-4">
                                         <div className="form-group">
@@ -21,6 +45,8 @@ export default function register() {
                                                 name="name"
                                                 className="form-control"
                                                 placeholder="Họ tên"
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -32,6 +58,8 @@ export default function register() {
                                                 name="phone"
                                                 className="form-control"
                                                 placeholder="Số điện thoại"
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -43,6 +71,8 @@ export default function register() {
                                                 name="email"
                                                 className="form-control"
                                                 placeholder="Email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -56,6 +86,8 @@ export default function register() {
                                                 name="license_plates"
                                                 className="form-control"
                                                 placeholder="Biển số xe"
+                                                value={licensePlates}
+                                                onChange={(e) => setLicensePlates(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -68,6 +100,8 @@ export default function register() {
                                                 placeholder="Hãng xe"
                                                 value="1"
                                                 name="automaker_id"
+                                                // value={automakerId}
+                                                // onChange={(e) => setAutomakerId(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -86,7 +120,23 @@ export default function register() {
                                 </div>
                                 <div className="form-group">
                                     <label>Mật khẩu</label>
-                                    <input type="password" className="form-control" placeholder="Mật khẩu" />
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Mật khẩu"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Password Confirmation</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Your Password"
+                                        value={passwordConfirmation}
+                                        onChange={(e) => SetpasswordConfirmation(e.target.value)}
+                                    />
                                 </div>
                                 <div className="form-check form-group">
                                     <input className="form-check-input" type="checkbox" value="" id="agree" />
