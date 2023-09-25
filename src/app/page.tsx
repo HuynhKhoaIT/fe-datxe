@@ -1,7 +1,6 @@
-// 'use client';
 import './assets/css/nice-select.min.css';
 import { SlideBanners } from './components/home/slideBanners';
-import { Search } from './components/search/searchForm';
+// import { Search } from './components/search/searchForm';
 import { getProductsHot } from '@/utils/product';
 import { getCategories } from '@/utils/category';
 import { IProduct } from '@/interfaces/product';
@@ -21,14 +20,14 @@ export default async function Home() {
                     <SlideBanners />
                 </div>
             </div>
-            <div className="find-car">
+            {/* <div className="find-car">
                 <div className="container">
                     <div className="find-car-form">
                         <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
                         <Search />
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className="car-category pt-60 pb-60 bg-white">
                 <div className="container">
