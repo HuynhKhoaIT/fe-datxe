@@ -1,5 +1,3 @@
-// 'use client';
-
 import Link from 'next/link';
 import { ICategory } from '@/interfaces/category';
 const CategoryItem = ({ key, category }: { key: number; category: ICategory }) => {
