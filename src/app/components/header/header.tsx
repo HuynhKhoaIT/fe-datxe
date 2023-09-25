@@ -3,7 +3,6 @@ import {
     faArrowRightToBracket,
     faCartShopping,
     faCirclePlus,
-    faEnvelope,
     faMagnifyingGlass,
     faPhoneVolume,
     faUser,
@@ -93,6 +92,7 @@ const Header = () => {
                     <div className="container position-relative">
                         <Link className="navbar-brand" href="/">
                             <img
+                                className="rounded"
                                 src="https://datxe.com/wp-content/uploads/2021/08/cropped-logo-DatXE-App-vuong-1.jpg"
                                 alt="logo"
                                 style={{ maxWidth: '60px' }}
@@ -126,7 +126,12 @@ const Header = () => {
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" href="/san-pham">
-                                        Sản phẩm/Dịch vụ
+                                        Sản phẩm
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" href="/dich-vu">
+                                        Dịch vụ
                                     </Link>
                                 </li>
                                 <li className="nav-item">

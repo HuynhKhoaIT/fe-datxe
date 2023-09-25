@@ -23,7 +23,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
             {/* <!-- hero slider end --> */}
 
             {/* <!-- find car form --> */}
-            <div className="find-car">
+            {/* <div className="find-car">
                 <div className="container">
                     <div className="find-car-form">
                         <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
@@ -41,7 +41,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className="car-category py-120">
                 <div className="container">
