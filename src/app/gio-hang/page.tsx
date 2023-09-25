@@ -1,11 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IProduct } from '@/interfaces/product';
 import CartItem from '../components/cart/cartItem';
-import Link from 'next/link';
+import { checkOut } from '@/utils/order';
+import moment from 'moment';
 export default function Cart() {
+    const [time, setTime] = useState(moment().format('hh:mm'));
+    const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
@@ -57,73 +57,196 @@ export default function Cart() {
         }
     }, []);
 
+    const handleCheckOut = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            await checkOut(
+                {
+                    date: date,
+                    time: time,
+                },
+                '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY',
+            );
+            console.log('Login successful'); // Handle success (e.g., redirect to a different page)
+        } catch (error: any) {
+            console.log('Login fail');
+            console.error('Login error:', error.message); // Handle login errors
+        }
+    };
     return (
         <main className="main">
-            <div className="shop-cart py-120">
-                <div className="container">
-                    <div className="shop-cart-wrapper">
-                        <div className="table-responsive">
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th>Image</th>
-                                        <th>Product Name</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Sub Total</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {cartData.map((item, index) => (
-                                        <CartItem
-                                            key={index}
-                                            item={item}
-                                            decrementQuantity={decrementQuantity}
-                                            incrementQuantity={incrementQuantity}
-                                            deleteItem={deleteItem}
-                                        />
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="cart-footer">
-                            <div className="row">
-                                <div className="col-md-6 col-lg-4">
-                                    <div className="cart-coupon">
-                                        <div className="form-group">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Your Coupon Code"
-                                            />
-                                            <button className="coupon-btn" type="submit">
-                                                Apply <i className="fas fa-arrow-right-long"></i>
-                                            </button>
+            <form onSubmit={handleCheckOut} method="post">
+                <div className="shop-cart py-120">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="checkout-widget">
+                                    <h4 className="checkout-widget-title">Thông tin khách hàng</h4>
+                                    <div className="checkout-form">
+                                        <div className="row">
+                                            <div className="col-lg-12">
+                                                <div className="form-group">
+                                                    <label>Họ Tên</label>
+                                                    <input type="text" className="form-control" placeholder="Họ Tên" />
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="form-group">
+                                                    <label>Email</label>
+                                                    <input
+                                                        type="email"
+                                                        className="form-control"
+                                                        placeholder="Nhập Email"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="form-group">
+                                                    <label>Điện thoại</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Nhập số điện thoại"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-md-6 col-lg-8">
-                                    <div className="cart-summary">
-                                        <ul>
-                                            <li>
-                                                <strong>Sub Total:</strong>{' '}
-                                                <span>{calculateSubTotal().toLocaleString()}đ</span>
-                                            </li>
-                                            <li>
-                                                <strong>Vat:</strong> <span>$25.00</span>
-                                            </li>
-                                            <li>
-                                                <strong>Discount:</strong> <span>$5.00</span>
-                                            </li>
-                                            <li className="cart-total">
-                                                <strong>Total:</strong> <span>$4,520.00</span>
-                                            </li>
-                                        </ul>
-                                        <div className="text-end mt-40">
-                                            <Link href="/thanh-toan" className="theme-btn">
-                                                Đặt lịch<i className="fas fa-arrow-right-long"></i>
-                                            </Link>
+                            </div>
+                            <div className="col col-md-6">
+                                <div className="checkout-widget">
+                                    <h4 className="checkout-widget-title">Thông tin Xe</h4>
+                                    <div className="checkout-form">
+                                        <div className="row">
+                                            <div className="col-lg-6">
+                                                <div className="form-group">
+                                                    <label>Biển số</label>
+                                                    <input type="text" className="form-control" placeholder="Biển số" />
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="form-group">
+                                                    <label>Hãng Xe</label>
+                                                    <input type="text" className="form-control" placeholder="Hãng Xe" />
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="form-group">
+                                                    <label>Dòng Xe</label>
+                                                    <input type="text" className="form-control" placeholder="Dòng xe" />
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="form-group">
+                                                    <label>Năm sản xuất</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Năm sản xuất"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col col-md-12">
+                                <div className="bg-white mb-20 p-4">
+                                    <div className="row">
+                                        <div className="col-lg-6">
+                                            <div className="form-group">
+                                                <label>Ngày</label>
+                                                <input
+                                                    type="date"
+                                                    name="date"
+                                                    className="form-control"
+                                                    placeholder="Ngày"
+                                                    required
+                                                    value={date}
+                                                    onChange={(e) => setDate(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-6">
+                                            <div className="form-group">
+                                                <label>Giờ</label>
+                                                <input
+                                                    type="time"
+                                                    name="time"
+                                                    className="form-control"
+                                                    placeholder="Giờ"
+                                                    required
+                                                    value={time}
+                                                    onChange={(e) => setTime(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="container">
+                        <div className="shop-cart-wrapper">
+                            <div className="table-responsive">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Hình</th>
+                                            <th>Tên</th>
+                                            <th>Giá</th>
+                                            <th>Số lượng</th>
+                                            <th>Thành tiền</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cartData.map((item, index) => (
+                                            <CartItem
+                                                key={index}
+                                                item={item}
+                                                decrementQuantity={decrementQuantity}
+                                                incrementQuantity={incrementQuantity}
+                                                deleteItem={deleteItem}
+                                            />
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="cart-footer">
+                                <div className="row">
+                                    <div className="col-md-6 col-lg-4">
+                                        <div className="cart-coupon">
+                                            <div className="form-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Your Coupon Code"
+                                                />
+                                                <button className="coupon-btn" type="submit">
+                                                    Apply <i className="fas fa-arrow-right-long"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6 col-lg-8">
+                                        <div className="cart-summary">
+                                            <ul>
+                                                <li>
+                                                    <strong>Tổng tiền hàng:</strong>{' '}
+                                                    <span>{calculateSubTotal().toLocaleString()}đ</span>
+                                                </li>
+                                                <li className="cart-total">
+                                                    <strong>Tổng cộng:</strong>{' '}
+                                                    <span>{calculateSubTotal().toLocaleString()}đ</span>
+                                                </li>
+                                            </ul>
+                                            <div className="text-end mt-40">
+                                                <button type="submit" className="theme-btn">
+                                                    Đặt lịch<i className="fas fa-arrow-right-long"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +254,7 @@ export default function Cart() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </main>
     );
 }

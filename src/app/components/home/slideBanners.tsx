@@ -13,17 +13,20 @@ const SlideBanners = () => {
     return (
         <Swiper
             // install Swiper modules
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
+            modules={[Navigation, Pagination, A11y]}
             spaceBetween={0}
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
-            scrollbar={{ draggable: true }}
+            // scrollbar={{ draggable: f }}
             onSwiper={(swiper) => console.log(swiper)}
             onSlideChange={() => console.log('slide change')}
         >
             <SwiperSlide>
-                <img src="/assets/img/slider/hero-1.png" alt="" className="img-full full-width w-100" />
+                <img src="/assets/img/slider/h1.png" alt="" className="img-full full-width w-100" />
+            </SwiperSlide>
+            <SwiperSlide>
+                <img src="/assets/img/slider/b2.jpg" alt="" className="img-full full-width w-100" />
             </SwiperSlide>
         </Swiper>
     );
