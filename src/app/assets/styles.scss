@@ -2923,7 +2923,7 @@ label {
 .blog-comments-single {
     display: flex;
     justify-content: start;
-    align-items: flex-start;
+    align-items: start;
     margin-top: 50px;
 }
 
@@ -2997,7 +2997,7 @@ label {
 
     .blog-details-tags {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: start;
     }
 
     .blog-author {
@@ -3560,6 +3560,9 @@ label {
     background: rgba(239, 29, 38, 0.05);
     border-radius: 10px;
     padding: 10px 10px;
+}
+.dealer-img img {
+    object-fit: cover;
 }
 
 .dealer-listing {
@@ -4929,8 +4932,8 @@ label {
 @media all and (max-width: 767px) {
     .single-item-action {
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
+        justify-content: start;
+        align-items: start;
     }
 
     .single-item-action .theme-btn {
@@ -6170,13 +6173,13 @@ body.rtl-mode .price-wrapper {
 
     .user-profile-card-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: start;
         gap: 20px;
     }
 
     .user-profile-card-header-right {
         flex-direction: column-reverse;
-        align-items: flex-start;
+        align-items: start;
     }
 
     .profile-message .profile-message-wrapper {
@@ -6616,7 +6619,7 @@ body.rtl-mode .price-wrapper {
     }
 
     .footer-social {
-        justify-content: flex-start;
+        justify-content: start;
         margin-top: 20px;
     }
 

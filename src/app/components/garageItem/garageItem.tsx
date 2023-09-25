@@ -8,7 +8,7 @@ const GarageItem = ({ key, garage }: { key: number; garage: IGarage }) => {
         <div className="col-md-6 col-lg-3">
             <div className="dealer-item wow fadeInUp" data-wow-delay=".25s">
                 <div className="dealer-img">
-                    <span className="dealer-listing">25 Listing</span>
+                    {/* <span className="dealer-listing">25 Listing</span> */}
                     <img src={garage.logo} alt="" />
                 </div>
                 <div className="dealer-content">

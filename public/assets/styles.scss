@@ -3551,6 +3551,9 @@ label {
     border-radius: 10px;
     padding: 10px 10px;
 }
+.dealer-img img {
+    object-fit: cover;
+}
 
 .dealer-listing {
     position: absolute;
