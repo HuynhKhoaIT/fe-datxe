@@ -71,9 +71,11 @@ export const getProductByGar = async (garageId = 0, limit = 8) => {
         throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
     }
 };
-export const getProductsRelated = async (catId = 0, garageId = 0) => {
+export const getProductsRelated = async (categoryId: string, garageId: string, limit: number) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?cat_id=${catId}&garage_id=${garageId}&limit=4`);
+        const res = await axios.get(
+            `${GET_PRODUCT_ENDPOINT}?cat_id=${categoryId}&garage_id=${garageId}&limit=${limit}`,
+        );
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);

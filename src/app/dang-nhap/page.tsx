@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import axios from 'axios';
 import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
@@ -16,10 +15,10 @@ export default function Login() {
         e.preventDefault();
         try {
             await login(phone, password);
-            console.log('Login successful'); // Handle success (e.g., redirect to a different page)
+            console.log('Login successful');
         } catch (error: any) {
             console.log('Login fail');
-            console.error('Login error:', error.message); // Handle login errors
+            console.error('Login error:', error.message);
         }
     };
     return (

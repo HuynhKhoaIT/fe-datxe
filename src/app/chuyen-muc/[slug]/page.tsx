@@ -6,6 +6,8 @@ import axios from 'axios';
 import { IProduct } from '@/interfaces/product';
 import { getCategories } from '@/utils/category';
 import { getProductsByCat } from '@/utils/product';
+import { Pagination } from '@/app/components/pagination-area/pagination-area';
+import { Sort } from '@/app/components/shop-sort/sort';
 export default async function CategoryItem({ params }: { params: { slug: number } }) {
     const category_list = await getCategories();
     const product_data = await getProductsByCat(params.slug);
@@ -21,18 +23,7 @@ export default async function CategoryItem({ params }: { params: { slug: number 
                         </div>
                         <div className="col-lg-9">
                             <div className="col-md-12">
-                                <div className="shop-sort">
-                                    <h5>Showing 1-10 of 50 Results</h5>
-                                    <div className="shop-sort-box">
-                                        <select className="select">
-                                            <option value="1">Sort By Default</option>
-                                            <option value="5">Sort By Featured</option>
-                                            <option value="2">Sort By Latest</option>
-                                            <option value="3">Sort By Low Price</option>
-                                            <option value="4">Sort By High Price</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <Sort />
                             </div>
                             <div className="shop-item-wrapper">
                                 <div className="row align-items-center">
@@ -42,39 +33,7 @@ export default async function CategoryItem({ params }: { params: { slug: number 
                                 </div>
                             </div>
                             <div className="pagination-area mt-4">
-                                <div aria-label="Page navigation example">
-                                    <ul className="pagination">
-                                        <li className="page-item">
-                                            <a className="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">
-                                                    <i className="far fa-arrow-left"></i>
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li className="page-item active">
-                                            <a className="page-link" href="#">
-                                                1
-                                            </a>
-                                        </li>
-                                        <li className="page-item">
-                                            <a className="page-link" href="#">
-                                                2
-                                            </a>
-                                        </li>
-                                        <li className="page-item">
-                                            <a className="page-link" href="#">
-                                                3
-                                            </a>
-                                        </li>
-                                        <li className="page-item">
-                                            <a className="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">
-                                                    <i className="far fa-arrow-right"></i>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <Pagination />
                             </div>
                         </div>
                     </div>
