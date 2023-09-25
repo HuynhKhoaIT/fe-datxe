@@ -16,6 +16,7 @@ export default function Login() {
         try {
             await login(phone, password);
             console.log('Login successful');
+            await router.push('/');
         } catch (error: any) {
             console.log('Login fail');
             console.error('Login error:', error.message);
@@ -28,26 +29,29 @@ export default function Login() {
                     <div className="col-md-5 mx-auto">
                         <div className="login-form">
                             <div className="login-header">
-                                <img src="assets/img/logo/logo.png" alt="" />
-                                <p>Login with your motex account</p>
+                                <img
+                                    className="rounded"
+                                    src="https://datxe.com/wp-content/uploads/2021/08/cropped-logo-DatXE-App-vuong-1.jpg"
+                                    alt=""
+                                />
                             </div>
                             <form onSubmit={handleLogin}>
                                 <div className="form-group">
-                                    <label>Phone</label>
+                                    <label>Số điện thoại</label>
                                     <input
                                         type="tel"
                                         className="form-control"
-                                        placeholder="Your Phone"
+                                        placeholder="Số điện thoại"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label>Password</label>
+                                    <label>Mật khẩu</label>
                                     <input
                                         type="password"
                                         className="form-control"
-                                        placeholder="Your Password"
+                                        placeholder="Mật khẩu"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
@@ -57,26 +61,26 @@ export default function Login() {
                                     <div className="form-check">
                                         <input className="form-check-input" type="checkbox" value="" id="remember" />
                                         <label className="form-check-label" htmlFor="remember">
-                                            Remember Me
+                                            Ghi nhớ
                                         </label>
                                     </div>
                                     {/* Sử dụng thư viện định tuyến (React Router hoặc next/router) cho liên kết */}
                                     <Link href="/forgot-password" className="forgot-pass">
-                                        Forgot Password?
+                                        Quên mật khẩu?
                                     </Link>
                                 </div>
                                 <div className="d-flex align-items-center">
                                     <button type="submit" className="theme-btn">
-                                        <FontAwesomeIcon icon={faArrowRightToBracket} /> Login
+                                        <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
                                     </button>
                                 </div>
                             </form>
                             <div className="login-footer">
                                 <p>
-                                    Don't have an account? <Link href="dang-ky">Đăng Ký</Link>
+                                    Bạn không có tài khoản? <Link href="dang-ky">Đăng Ký</Link>
                                 </p>
-                                <div className="social-login">
-                                    <p>Continue with social media</p>
+                                {/* <div className="social-login">
+                                    <p>Đăng nhập bằng mạng xã hội</p>
                                     <div className="social-login-list">
                                         <Link href="#">
                                             <FontAwesomeIcon icon={faFacebookF} />
@@ -88,7 +92,7 @@ export default function Login() {
                                             <FontAwesomeIcon icon={faTwitter} />
                                         </Link>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
