@@ -86,12 +86,12 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                             Stock: <span>Available</span>
                         </h5> */}
                         <h5>
-                            SKU: <span>{ProductDetail.productCode}</span>
+                            Mã Sản Phẩm: <span>{ProductDetail.productCode}</span>
                         </h5>
                     </div>
 
                     <div className="single-item-action">
-                        <h5 className="title">Quantity:</h5>
+                        <h5 className="title">Số lượng:</h5>
                         <div className="cart-qty">
                             <button className="minus-btn bg-white" onClick={decrementValue}>
                                 <FontAwesomeIcon icon={faMinus} />
@@ -109,7 +109,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                         <div className="item-single-btn-area">
                             <button className="theme-btn" onClick={addProductToLocalStorage}>
                                 <FontAwesomeIcon icon={faCartShopping} />
-                                Add to cart
+                                Thêm vào giỏ hàng
                             </button>
                             <Link href="#" className="single-item-btn">
                                 <FontAwesomeIcon icon={faHeart} />
@@ -120,19 +120,19 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                         </div>
                     </div>
 
-                    <div className="single-item-content">
+                    {/* <div className="single-item-content">
                         <h5>
                             Category: <span>Car Parts</span>
                         </h5>
-                        {/* <h5>
+                        <h5>
                             Tags: <span>Car, Shop, Tire</span>
-                        </h5> */}
-                    </div>
+                        </h5>
+                    </div> */}
 
                     <hr />
 
                     <div className="single-item-share">
-                        <span>Share:</span>
+                        <span>Chia sẻ:</span>
                         <Link href="#">
                             <FontAwesomeIcon icon={faFacebookF} />
                         </Link>
@@ -164,7 +164,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                             aria-controls="tab1"
                             aria-selected="true"
                         >
-                            Description
+                            Mô Tả
                         </button>
                     </div>
                 </nav>

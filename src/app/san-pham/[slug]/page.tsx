@@ -19,7 +19,7 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                         <div className="row">
                             <div className="col-12 mx-auto">
                                 <div className="site-heading">
-                                    <h2 className="site-title">Related Items</h2>
+                                    <h2 className="site-title">Sản phẩm liên quan</h2>
                                 </div>
                             </div>
                         </div>
