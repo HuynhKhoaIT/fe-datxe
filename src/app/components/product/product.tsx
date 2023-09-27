@@ -27,7 +27,7 @@ export default function Product({ initialProductData }: { initialProductData: IP
             </div>
             <div className="text-center mt-4">
                 <button onClick={handleButtonClick} className="theme-btn">
-                    Load More <i className="far fa-arrow-rotate-right"></i>
+                    Xem Thêm <i className="far fa-arrow-rotate-right"></i>
                 </button>
             </div>
         </>

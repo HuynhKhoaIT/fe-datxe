@@ -5,7 +5,7 @@ import axios from 'axios';
 /**
  * Internal Dependencies.
  */
-import { GET_PRODUCT_ENDPOINT, GET_SERVICE_ENDPOINT } from './constants/endpoints';
+import { GET_PRODUCT_ENDPOINT, GET_SERVICE_ENDPOINT, GET_PRODUCT_DETAIL } from './constants/endpoints';
 import { IProduct } from '@/interfaces/product';
 /**
  * Get getOrders.
@@ -35,7 +35,17 @@ export const getServices = async () => {
 
 export const getProductsHot = async ({ limit = 8 }) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?limit=${limit}`);
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}&limit=${limit}`);
+        return res.data.data as Promise<IProduct[]>;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình lấy thông tin sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+    }
+};
+
+export const getServiceHot = async ({ limit = 8 }) => {
+    try {
+        const res = await axios.get(`${GET_SERVICE_ENDPOINT}&limit=${limit}`);
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
@@ -45,7 +55,7 @@ export const getProductsHot = async ({ limit = 8 }) => {
 
 export const getProductDetail = async (productId = 0) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}/${productId}`);
+        const res = await axios.get(`${GET_PRODUCT_DETAIL}/${productId}`);
         return res.data.data;
     } catch (error) {
         console.error(error);
@@ -64,7 +74,7 @@ export const getProductsByCat = async (catId = 0) => {
 };
 export const getProductsByName = async (name: string) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?${name}`);
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}&${name}`);
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
