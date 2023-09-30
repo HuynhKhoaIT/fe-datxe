@@ -3541,7 +3541,6 @@ label {
 .dealer-item {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: calc(100% - 25px);
     padding: 10px;
     border-radius: 10px;
@@ -3563,6 +3562,8 @@ label {
 }
 .dealer-img img {
     object-fit: cover;
+    aspect-ratio: 1;
+    width: 100%;
 }
 
 .dealer-listing {

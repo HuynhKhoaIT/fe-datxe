@@ -22,6 +22,16 @@ export const getGarages = async () => {
     }
 };
 
+export const getGarage = async (id = 0) => {
+    try {
+        const res = await axios.get(`${GET_GARAGE_ENDPOINT}/${id}`);
+        return res.data.data as Promise<IGarage>;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình lấy chuyên gia'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+    }
+};
+
 export const getGaragesNear = async ({ limit = 8 }) => {
     try {
         const res = await axios.get(`${GET_GARAGE_ENDPOINT}?limit=${limit}`);

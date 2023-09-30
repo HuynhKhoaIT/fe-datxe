@@ -7,15 +7,12 @@ import { useState } from 'react';
 export default function Garages({ initialGarageData }: { initialGarageData: IGarage[] }) {
     const [garageData, setGarageData] = useState<IGarage[]>(initialGarageData);
     const [limit, setLimit] = useState<number>(8);
-
     const handleButtonClick = async () => {
         // Tăng limit
         const newLimit = limit + 4;
         setLimit(newLimit);
-
         // Fetch thêm dữ liệu
         const newGarageData = await getGaragesNear({ limit: newLimit });
-
         // Cập nhật dữ liệu sản phẩm
         setGarageData(newGarageData);
     };
