@@ -1,9 +1,8 @@
 'use client';
 import { GarageItem } from '../components/garageItem/garageItem';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { getGarages } from '@/utils/garage';
 import { IGarage } from '@/interfaces/garage';
-import { SideBar } from '../components/shop-sidebar/sideBar';
 export default async function Expert() {
     const garage_data = await getGarages();
     return (

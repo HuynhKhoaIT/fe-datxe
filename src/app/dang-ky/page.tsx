@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { register } from '@/utils/user';
+import { getBrands } from '@/utils/branch';
 
-export default function Register() {
+export default async function Register() {
+    const brands_data = await getBrands();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -94,6 +96,9 @@ export default function Register() {
                                     <div className="col col-md-4">
                                         <div className="form-group">
                                             <label>Hãng xe</label>
+                                            <select name="" id="">
+                                                <option value="a">1</option>
+                                            </select>
                                             <input
                                                 type="text"
                                                 className="form-control"
