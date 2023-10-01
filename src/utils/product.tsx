@@ -19,37 +19,7 @@ export const getProducts = async () => {
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
-        throw new Error('Lỗi trong quá trình lấy thông tin sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
-    }
-};
-
-export const getServices = async () => {
-    try {
-        const res = await axios.get(`${GET_SERVICE_ENDPOINT}`);
-        return res.data.data as Promise<IProduct[]>;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Lỗi trong quá trình lấy thông tin dịch vụ'); // Xử lý lỗi và thông báo lỗi cho phía front-end
-    }
-};
-
-export const getProductsHot = async ({ limit = 8 }) => {
-    try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}&limit=${limit}`);
-        return res.data.data as Promise<IProduct[]>;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Lỗi trong quá trình lấy thông tin sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
-    }
-};
-
-export const getServiceHot = async ({ limit = 8 }) => {
-    try {
-        const res = await axios.get(`${GET_SERVICE_ENDPOINT}&limit=${limit}`);
-        return res.data.data as Promise<IProduct[]>;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Lỗi trong quá trình lấy thông tin sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+        throw new Error('Lỗi trong quá trình lấy thông tin sản phẩm');
     }
 };
 
@@ -59,26 +29,29 @@ export const getProductDetail = async (productId = 0) => {
         return res.data.data;
     } catch (error) {
         console.error(error);
-        throw new Error('Lỗi trong quá trình lấy thông tin chi tiết sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+        throw new Error('Lỗi trong quá trình lấy thông tin chi tiết sản phẩm');
     }
 };
 
-export const getProductsByCat = async (catId = 0) => {
+export const getProductsHot = async ({ limit = 8 }) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?cat_Id=${catId}`);
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}&limit=${limit}`);
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
-        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+        throw new Error('Lỗi trong quá trình lấy thông tin sản phẩm');
     }
 };
-export const getProductsByName = async (name: string) => {
+
+export const getProductsRelated = async (categoryId: string, garageId: string, limit: number) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}&${name}`);
+        const res = await axios.get(
+            `${GET_PRODUCT_ENDPOINT}?cat_id=${categoryId}&garage_id=${garageId}&limit=${limit}`,
+        );
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
-        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm');
     }
 };
 
@@ -88,18 +61,16 @@ export const getProductByGar = async (garageId = 0, limit = 8) => {
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
-        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm');
     }
 };
-export const getProductsRelated = async (categoryId: string, garageId: string, limit: number) => {
+
+export const getProductsSearch = async (search: string) => {
     try {
-        const res = await axios.get(
-            `${GET_PRODUCT_ENDPOINT}?cat_id=${categoryId}&garage_id=${garageId}&limit=${limit}`,
-        );
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}&${search}`);
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
-        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+        throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm');
     }
 };
-getProductsRelated;

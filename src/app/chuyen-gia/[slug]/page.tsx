@@ -9,7 +9,6 @@ export default async function Home({ params }: { params: { slug: number } }) {
     const initialCategoryData = await getCategoriesByGar();
     const garageData = await getGarage(params.slug);
     const initialProductData: IProduct[] = await getProductByGar(params.slug, 8);
-
     return (
         <main className="main">
             <div className="">
