@@ -1,4 +1,3 @@
-'use client';
 import Categories from '@/app/components/category/categories';
 import Garages from '@/app/components/garage/garages';
 import { SlideBanners } from '@/app/components/home/slideBanners';
@@ -7,41 +6,16 @@ import { IProduct } from '@/interfaces/product';
 import { getCategoriesByGar } from '@/utils/category';
 import { getGarages } from '@/utils/garage';
 import { getProductByGar } from '@/utils/product';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default async function Home({ params }: { params: { slug: number } }) {
     const initialCategoryData = await getCategoriesByGar();
     const garagesData = await getGarages();
     const initialProductData: IProduct[] = await getProductByGar(params.slug, 8);
-
     return (
         <main className="main">
             <div className="hero-section">
                 <SlideBanners />
             </div>
-            {/* <!-- hero slider end --> */}
-
-            {/* <!-- find car form --> */}
-            {/* <div className="find-car">
-                <div className="container">
-                    <div className="find-car-form">
-                        <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
-                        <form method="GET" className="input-group rounded">
-                            <input
-                                type="search"
-                                className="form-control rounded"
-                                placeholder="Search"
-                                aria-label="Search"
-                                aria-describedby="search-addon"
-                            />
-                            <button type="submit" className="input-group-text border-0">
-                                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div> */}
 
             <div className="car-category py-120">
                 <div className="container">

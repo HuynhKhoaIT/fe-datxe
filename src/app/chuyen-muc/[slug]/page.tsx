@@ -1,20 +1,14 @@
-import { ProductItem } from '../../components/product/productItem';
-
+import React from 'react';
 import { SideBar } from '../../components/shop-sidebar/sideBar';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { IProduct } from '@/interfaces/product';
-import { getCategories } from '@/utils/category';
-import { getProductsByCat } from '@/utils/product';
 import { Pagination } from '@/app/components/pagination-area/pagination-area';
 import { Sort } from '@/app/components/shop-sort/sort';
+import ProductData from '@/app/components/product/ProductData';
+import { getProductsSearch } from '@/utils/product';
+
 export default async function CategoryItem({ params }: { params: { slug: number } }) {
-    const category_list = await getCategories();
-    const product_data = await getProductsByCat(params.slug);
-    console.log(product_data);
+    const product_data = await getProductsSearch(`cat_id=${params.slug}`);
     return (
         <main className="main">
-            {/* <!-- shop-area --> */}
             <div className="shop-area bg py-120">
                 <div className="container">
                     <div className="row">
@@ -22,19 +16,9 @@ export default async function CategoryItem({ params }: { params: { slug: number 
                             <SideBar />
                         </div>
                         <div className="col-lg-9">
-                            <div className="col-md-12">
-                                <Sort />
-                            </div>
-                            <div className="shop-item-wrapper">
-                                <div className="row align-items-center">
-                                    {product_data.map((product: IProduct, index) => (
-                                        <ProductItem product={product} key={index} />
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="pagination-area mt-4">
-                                <Pagination />
-                            </div>
+                            <Sort />
+                            <ProductData product_data={product_data} />
+                            <Pagination />
                         </div>
                     </div>
                 </div>

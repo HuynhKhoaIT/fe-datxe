@@ -3,7 +3,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-const Search = () => {
+const SearchItem = () => {
     const router = useRouter();
     const [searchValue, setSearchValue] = useState('');
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,4 +33,4 @@ const Search = () => {
     );
 };
 
-export { Search };
+export { SearchItem };

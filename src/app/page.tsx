@@ -1,7 +1,7 @@
 import './assets/css/nice-select.min.css';
 import { SlideBanners } from './components/home/slideBanners';
 // import { Search } from './components/search/searchForm';
-import { getProductsHot, getServiceHot } from '@/utils/product';
+import { getProductsHot } from '@/utils/product';
 import { getCategories } from '@/utils/category';
 import { IProduct } from '@/interfaces/product';
 import { getGaragesNear } from '@/utils/garage';
@@ -9,6 +9,7 @@ import Product from './components/product/product';
 import Garages from './components/garage/garages';
 import Categories from './components/category/categories';
 import { IGarage } from '@/interfaces/garage';
+import { getServiceHot } from '@/utils/service';
 export default async function Home() {
     const initialCategoryData = await getCategories();
     const initialGarageData: IGarage[] = await getGaragesNear({ limit: 8 });
