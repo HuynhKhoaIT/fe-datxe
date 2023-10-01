@@ -1,23 +1,56 @@
 import Categories from '@/app/components/category/categories';
-import Garages from '@/app/components/garage/garages';
-import { SlideBanners } from '@/app/components/home/slideBanners';
 import Product from '@/app/components/product/product';
 import { IProduct } from '@/interfaces/product';
 import { getCategoriesByGar } from '@/utils/category';
-import { getGarages } from '@/utils/garage';
+import { getGarage } from '@/utils/garage';
 import { getProductByGar } from '@/utils/product';
 
 export default async function Home({ params }: { params: { slug: number } }) {
     const initialCategoryData = await getCategoriesByGar();
-    const garagesData = await getGarages();
+    const garageData = await getGarage(params.slug);
     const initialProductData: IProduct[] = await getProductByGar(params.slug, 8);
     return (
         <main className="main">
-            <div className="hero-section">
-                <SlideBanners />
+            <div className="">
+                <div className="garage-info-section">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col col-md-7">
+                                <div className="banner-garage-box">
+                                    <div className="garage-info">
+                                        <div className="garage-logo">
+                                            <img src={garageData.logo} alt="" />
+                                        </div>
+                                        <div className="garage-title">
+                                            <h5>{garageData.name}</h5>
+                                            <p>{garageData.code}</p>
+                                        </div>
+                                    </div>
+                                    <div className="garage-contact">
+                                        <div className="garage-contact-inner">
+                                            <button className="btn btn-phone" type="button">
+                                                Liên hệ
+                                            </button>
+                                            <button className="btn btn-phone" type="button">
+                                                Theo dõi
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col col-md-5">
+                                <ul>
+                                    <li>Sản phẩm</li>
+                                    <li>Dịch vụ</li>
+                                    <li>Đánh giá</li>
+                                    <li>Tham Gia:</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div className="car-category py-120">
+            <div className="car-category pt-40 pb-40 bg-white">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -36,7 +69,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
                 </div>
             </div>
 
-            <div className="car-area bg py-120">
+            <div className="car-area bg pt-40 pb-40">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -56,7 +89,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
             </div>
 
             {/* <!-- blog area --> */}
-            <div className="blog-area pt-60 pb-60">
+            {/* <div className="blog-area pt-60 pb-60">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -161,7 +194,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/* <!-- blog area end --> */}
         </main>
     );

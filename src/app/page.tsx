@@ -32,7 +32,7 @@ export default async function Home() {
                 </div>
             </div> */}
 
-            <div className="car-category pt-60 pb-60 bg-white">
+            <div className="car-category pt-40 pb-40 bg-white">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -51,7 +51,7 @@ export default async function Home() {
                 </div>
             </div>
 
-            <div className="car-area bg py-120">
+            <div className="car-area bg pt-40 pb-40">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -70,7 +70,7 @@ export default async function Home() {
                 </div>
             </div>
 
-            <div className="car-area bg pb-120">
+            <div className="car-area bg pt-40 pb-40">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
@@ -111,7 +111,7 @@ export default async function Home() {
             {/* <!-- car dealer end--> */}
 
             {/* <!-- blog area --> */}
-            <div className="blog-area pt-60 pb-60">
+            <div className="blog-area pt-40 pb-40">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
