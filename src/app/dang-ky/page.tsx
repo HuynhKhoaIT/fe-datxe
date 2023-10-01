@@ -5,8 +5,12 @@ import { useState } from 'react';
 import { register } from '@/utils/user';
 import { getBrands } from '@/utils/branch';
 
+async function getData() {
+    return await getBrands();
+}
+
 export default async function Register() {
-    const brands_data = await getBrands();
+    const brands_data = getData();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -97,7 +101,10 @@ export default async function Register() {
                                         <div className="form-group">
                                             <label>Hãng xe</label>
                                             <select name="" id="">
-                                                <option value="a">1</option>
+                                                {brands_data &&
+                                                    brands_data.map((brand) => (
+                                                        <option value={brand.id?.toString()}>{brand.name}</option>
+                                                    ))}
                                             </select>
                                             <input
                                                 type="text"
