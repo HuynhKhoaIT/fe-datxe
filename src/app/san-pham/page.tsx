@@ -1,12 +1,12 @@
-import { ProductItem } from '../components/product/productItem';
-import React, { useEffect, useState } from 'react';
-import { IProduct } from '@/interfaces/product';
+import React from 'react';
 import { getProducts } from '@/utils/product';
 import { SideBar } from '../components/shop-sidebar/sideBar';
 import { Pagination } from '../components/pagination-area/pagination-area';
 import { Sort } from '../components/shop-sort/sort';
+import ProductData from '../components/product/ProductData';
 export default async function Shop() {
     const product_data = await getProducts();
+
     return (
         <main className="main">
             <div className="shop-area bg py-120">
@@ -17,13 +17,7 @@ export default async function Shop() {
                         </div>
                         <div className="col-lg-9">
                             <Sort />
-                            <div className="shop-item-wrapper">
-                                <div className="row align-items-center">
-                                    {product_data?.map((product: IProduct, index) => (
-                                        <ProductItem product={product} key={index} />
-                                    ))}
-                                </div>
-                            </div>
+                            <ProductData product_data={product_data} />
                             <Pagination />
                         </div>
                     </div>

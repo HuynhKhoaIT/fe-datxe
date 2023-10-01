@@ -1,10 +1,9 @@
-import { ProductItem } from '../components/product/productItem';
-import React, { useEffect, useState } from 'react';
-import { IProduct } from '@/interfaces/product';
-import { getServices } from '@/utils/product';
+import React from 'react';
 import { SideBar } from '../components/shop-sidebar/sideBar';
 import { Pagination } from '../components/pagination-area/pagination-area';
 import { Sort } from '../components/shop-sort/sort';
+import ServiceData from '../components/service/serviceData';
+import { getServices } from '@/utils/service';
 export default async function Shop() {
     const product_data = await getServices();
     return (
@@ -17,13 +16,7 @@ export default async function Shop() {
                         </div>
                         <div className="col-lg-9">
                             <Sort />
-                            <div className="shop-item-wrapper">
-                                <div className="row align-items-center">
-                                    {product_data?.map((product: IProduct, index) => (
-                                        <ProductItem product={product} key={index} />
-                                    ))}
-                                </div>
-                            </div>
+                            <ServiceData product_data={product_data} />
                             <Pagination />
                         </div>
                     </div>
