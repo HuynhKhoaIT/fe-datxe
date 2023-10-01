@@ -40,10 +40,10 @@ export default async function Home({ params }: { params: { slug: number } }) {
                             </div>
                             <div className="col col-md-5">
                                 <ul>
-                                    <li>Sản phẩm</li>
-                                    <li>Dịch vụ</li>
-                                    <li>Đánh giá</li>
-                                    <li>Tham Gia:</li>
+                                    <li>Sản phẩm: 100+</li>
+                                    <li>Dịch vụ: 200+</li>
+                                    <li>Đánh giá: 4/5</li>
+                                    <li>Tham Gia: Ngày 22/12/2020</li>
                                 </ul>
                             </div>
                         </div>

@@ -91,8 +91,8 @@ body {
     overflow: hidden;
 }
 .garage-info-section .banner-garage-box .garage-info .garage-logo img {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 8px;
     overflow: hidden;
@@ -108,11 +108,18 @@ body {
 .garage-info-section .banner-garage-box .garage-info .garage-title h5 {
     color: #fff;
     text-transform: uppercase;
+    font-size: 22px;
 }
 .garage-info-section .banner-garage-box .btn {
     background: #fff;
     border-radius: 4px;
     width: calc(50% - 10px);
+}
+.category-item .category-img img {
+    width: 60px;
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center center;
 }
 @media (prefers-color-scheme: dark) {
     html {

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React from 'react';
-import { register } from '@/utils/user';
 import { getBrands } from '@/utils/branch';
 import RegisterForm from '../components/register/registerForm';
 export default async function Register() {
@@ -21,7 +20,7 @@ export default async function Register() {
                                 <p>
                                     Bạn đã có tài khoản? <Link href="dang-nhap">Đăng nhập.</Link>
                                 </p>
-                                <div className="social-login">
+                                {/* <div className="social-login">
                                     <p>Continue with social media</p>
                                     <div className="social-login-list">
                                         <Link href="#">
@@ -34,7 +33,7 @@ export default async function Register() {
                                             <i className="fab fa-twitter"></i>
                                         </Link>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

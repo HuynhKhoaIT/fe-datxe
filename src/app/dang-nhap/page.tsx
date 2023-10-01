@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { faFacebookF, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { login } from '@/utils/user';
 export default function Login() {
     const router = useRouter();
