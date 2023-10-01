@@ -1,9 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import { register } from '@/utils/user';
+import { getModels } from '@/utils/branch';
 
 import Link from 'next/link';
 function RegisterForm({ brands_data }) {
+    const [models, setModels] = useState([]);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -16,13 +18,25 @@ function RegisterForm({ brands_data }) {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await register(name, phone, email, licensePlates, automakerId, carNameId, password, passwordConfirmation);
-            console.log('Register successful'); // Handle success (e.g., redirect to a different page)
+            // await register(name, phone, email, licensePlates, automakerId, carNameId, password, passwordConfirmation);
+            // console.log('Register successful'); // Handle success (e.g., redirect to a different page)
+            // await router.push('/dashboard');
+            router.push('/dashboard');
         } catch (error) {
             console.log('Register fail');
             console.error('Register error:', error.message); // Handle Register errors
         }
     };
+
+    const selectBrand = async (e) => {
+        try {
+            setAutomakerId(e.target.value);
+            setCarNameId('');
+            const dong_xe = await getModels(e.target.value);
+            setModels(dong_xe);
+        } catch (error) {}
+    };
+
     return (
         <form onSubmit={handleRegister}>
             <div className="row">
@@ -86,12 +100,14 @@ function RegisterForm({ brands_data }) {
 
                         <select
                             className="form-control"
+                            required
                             name="automaker_id"
                             id="automaker_id"
-                            onChange={(e) => setAutomakerId(e.target.value)}
+                            onChange={selectBrand}
                         >
+                            <option>Chọn hãng xe</option>
                             {brands_data.map((brand) => (
-                                <option key={brand.id} value={brand.name}>
+                                <option key={brand.id} value={brand.id}>
                                     {brand.name}
                                 </option>
                             ))}
@@ -101,13 +117,21 @@ function RegisterForm({ brands_data }) {
                 <div className="col col-md-4">
                     <div className="form-group">
                         <label>Dòng xe</label>
-                        <input
+                        <select
                             type="text"
                             className="form-control"
                             placeholder="Dòng xe"
-                            value="10"
                             name="car_name_id"
-                        />
+                            required
+                            onChange={(e) => setCarNameId(e.target.value)}
+                        >
+                            <option>Chọn dòng xe</option>
+                            {models.map((model) => (
+                                <option key={model.id} value={model.id}>
+                                    {model.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
             </div>
@@ -122,11 +146,11 @@ function RegisterForm({ brands_data }) {
                 />
             </div>
             <div className="form-group">
-                <label>Nhập lạfa-inverse mật khẩu</label>
+                <label>Nhập lại mật khẩu</label>
                 <input
                     type="password"
                     className="form-control"
-                    placeholder="Your Password"
+                    placeholder="Nhập lại mật khẩu"
                     value={passwordConfirmation}
                     onChange={(e) => SetpasswordConfirmation(e.target.value)}
                 />

@@ -109,14 +109,14 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                         <div className="item-single-btn-area">
                             <button className="theme-btn" onClick={addProductToLocalStorage}>
                                 <FontAwesomeIcon icon={faCartShopping} />
-                                Thêm vào giỏ hàng
+                                Thêm vào giỏ
                             </button>
                             <Link href="#" className="single-item-btn">
                                 <FontAwesomeIcon icon={faHeart} />
                             </Link>
-                            <Link href="#" className="single-item-btn">
+                            {/* <Link href="#" className="single-item-btn">
                                 <FontAwesomeIcon icon={faRightLeft} />
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
 
