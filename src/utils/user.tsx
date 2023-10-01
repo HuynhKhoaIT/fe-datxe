@@ -89,11 +89,10 @@ export const register = async (
         if (res.status === 200) {
             console.log('đăng ký thành công');
         } else {
-            // Login failed
-            console.log('Login failed');
+            console.log('Regiter failed');
         }
     } catch (error) {
         console.error(error);
-        throw new Error('Đăng nhập thất bại');
+        throw new Error('Đăng Ký thất bại');
     }
 };
