@@ -1,5 +1,8 @@
+import { getMyAccount } from '@/utils/user';
 import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
-export default function Profile() {
+export default async function Profile() {
+    const myAccount = await getMyAccount('1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY');
+
     return (
         <main className="main">
             {/* <!-- user-profile --> */}
@@ -7,7 +10,7 @@ export default function Profile() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-3">
-                            <ProfileSidebar />
+                            <ProfileSidebar myAccount={myAccount} />
                         </div>
                         <div className="col-lg-9">
                             <div className="user-profile-wrapper">

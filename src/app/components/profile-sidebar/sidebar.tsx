@@ -1,9 +1,16 @@
 'use client';
-import { getMyAccount } from '@/utils/user';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { IUser } from '@/interfaces/user';
 
-const ProfileSidebar = async () => {
-    const myAccount = await getMyAccount('1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY');
+const ProfileSidebar = ({ myAccount }: { myAccount: IUser }) => {
+    const router = useRouter();
+    function handleLogout() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            localStorage.removeItem('token');
+        }
+    }
     return (
         <div className="user-profile-sidebar">
             <div className="user-profile-sidebar-top">
@@ -54,7 +61,7 @@ const ProfileSidebar = async () => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="#">
+                    <Link href="/dang-nhap" onClick={handleLogout}>
                         <i className="far fa-sign-out"></i> Logout
                     </Link>
                 </li>
