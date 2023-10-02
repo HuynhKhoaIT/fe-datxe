@@ -17,7 +17,7 @@ const GarageItem = ({ key, garage }: { key: number; garage: IGarage }) => {
                             <h4 className="shop-item-title">{garage.name}</h4>
                         </Link>
                     </h4>
-                    <ul>
+                    {/* <ul>
                         <li>
                             <FontAwesomeIcon icon={faLocationDot} /> {garage.address}
                         </li>
@@ -25,7 +25,7 @@ const GarageItem = ({ key, garage }: { key: number; garage: IGarage }) => {
                             <FontAwesomeIcon icon={faPhone} />
                             <Link href={`tel:${garage.phone_number}`}>{garage.phone_number}</Link>
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
             </div>
         </div>
