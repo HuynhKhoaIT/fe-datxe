@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 const Header = () => {
+    const userToken = localStorage.getItem('token');
     const [isVisible, setIsVisible] = useState(true);
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
@@ -60,14 +61,23 @@ const Header = () => {
                             </div>
                         </div>
                         <div className="header-top-right">
-                            <div className="header-top-link">
-                                <Link href="/dang-nhap">
-                                    <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
-                                </Link>
-                                <Link href="/dang-ky">
-                                    <FontAwesomeIcon icon={faUser} /> Đăng ký
-                                </Link>
-                            </div>
+                            {userToken ? (
+                                <div className="header-top-link">
+                                    <Link href="/profile">
+                                        <FontAwesomeIcon icon={faUser} /> Account
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="header-top-link">
+                                    <Link href="/dang-nhap">
+                                        <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
+                                    </Link>
+                                    <Link href="/dang-ky">
+                                        <FontAwesomeIcon icon={faUser} /> Đăng ký
+                                    </Link>
+                                </div>
+                            )}
+
                             <div className="header-top-social">
                                 <span>Follow Us: </span>
                                 <Link href="#">
