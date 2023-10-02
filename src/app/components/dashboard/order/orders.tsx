@@ -9,7 +9,6 @@ const Orders = async () => {
     const orders_data = await getOrders({
         token: '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY',
     });
-    console.log(orders_data);
     return (
         <div className="user-profile-wrapper">
             <div className="row">

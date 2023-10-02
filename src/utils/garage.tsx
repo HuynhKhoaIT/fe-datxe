@@ -22,7 +22,7 @@ export const getGarages = async () => {
     }
 };
 
-export const getGarage = async (id = 0) => {
+export const getGarage = async (id: number) => {
     try {
         const res = await axios.get(`${GET_GARAGE_ENDPOINT}/${id}`);
         return res.data.data as Promise<IGarage>;

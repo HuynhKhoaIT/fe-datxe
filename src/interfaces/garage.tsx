@@ -1,7 +1,7 @@
 export interface IGarage {
     id?: BigInteger;
     name?: string;
-    phone_number?: string;
+    phoneNumber?: string;
     address?: string;
     code?: string;
     email?: string;
