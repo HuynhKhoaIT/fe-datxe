@@ -1,4 +1,5 @@
 export interface IOrderDetail {
+    [x: string]: any;
     id?: BigInteger;
     type?: string;
     name?: string;
