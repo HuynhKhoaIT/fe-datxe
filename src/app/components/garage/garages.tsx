@@ -21,11 +21,11 @@ export default function Garages({ initialGarageData }: { initialGarageData: IGar
             <div className="row">
                 {garageData?.map((garage: IGarage, index: number) => <GarageItem garage={garage} key={index} />)}
             </div>
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
                 <button onClick={handleButtonClick} className="theme-btn">
                     Xem Thêm <i className="far fa-arrow-rotate-right"></i>
                 </button>
-            </div>
+            </div> */}
         </>
     );
 }

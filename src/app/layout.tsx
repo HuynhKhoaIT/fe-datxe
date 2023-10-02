@@ -7,6 +7,7 @@ import './assets/styles.scss';
 import './globals.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import Provider from './components/Provider';
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,9 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="vi">
             <body className={inter.className}>
-                <Header />
-                {children}
-                <MyFooter />
+                <Provider>
+                    <Header />
+                    {children}
+                    <MyFooter />
+                </Provider>
             </body>
         </html>
     );

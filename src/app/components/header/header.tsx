@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import SigninButton from './login-button';
 const Header = () => {
     const userToken = localStorage.getItem('token');
     const [isVisible, setIsVisible] = useState(true);
@@ -61,22 +62,7 @@ const Header = () => {
                             </div>
                         </div>
                         <div className="header-top-right">
-                            {userToken ? (
-                                <div className="header-top-link">
-                                    <Link href="/profile">
-                                        <FontAwesomeIcon icon={faUser} /> Account
-                                    </Link>
-                                </div>
-                            ) : (
-                                <div className="header-top-link">
-                                    <Link href="/dang-nhap">
-                                        <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
-                                    </Link>
-                                    <Link href="/dang-ky">
-                                        <FontAwesomeIcon icon={faUser} /> Đăng ký
-                                    </Link>
-                                </div>
-                            )}
+                            <SigninButton />
 
                             <div className="header-top-social">
                                 <span>Follow Us: </span>
@@ -177,6 +163,7 @@ const Header = () => {
                                         <FontAwesomeIcon icon={faCirclePlus} />
                                         Add Listing
                                     </Link>
+                                    <SigninButton />
                                 </div>
                                 <div className="sidebar-btn">
                                     <button type="button" className="nav-right-link">
