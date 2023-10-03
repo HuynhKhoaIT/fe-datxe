@@ -5,6 +5,7 @@ import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { login } from '@/utils/user';
+import { signIn } from 'next-auth/react';
 export default function Login() {
     const router = useRouter();
     const [phone, setPhone] = useState('');
@@ -13,7 +14,8 @@ export default function Login() {
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await login(phone, password);
+            signIn('credentials', { phone: phone, password: password });
+            // await login(, password);
             console.log('Login successful');
             await router.push('/');
         } catch (error: any) {
