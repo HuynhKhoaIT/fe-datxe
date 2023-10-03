@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import SigninButton from './login-button';
 const Header = () => {
+    const userToken = localStorage.getItem('token');
     const [isVisible, setIsVisible] = useState(true);
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
@@ -62,6 +63,7 @@ const Header = () => {
                         </div>
                         <div className="header-top-right">
                             <SigninButton />
+
                             <div className="header-top-social">
                                 <span>Follow Us: </span>
                                 <Link href="#">
