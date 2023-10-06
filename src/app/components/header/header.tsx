@@ -163,7 +163,6 @@ const Header = () => {
                                         <FontAwesomeIcon icon={faCirclePlus} />
                                         Add Listing
                                     </Link>
-                                    <SigninButton />
                                 </div>
                                 <div className="sidebar-btn">
                                     <button type="button" className="nav-right-link">
