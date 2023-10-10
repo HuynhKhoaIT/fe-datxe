@@ -5,29 +5,30 @@ import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '@/utils/user';
+import { signIn } from 'next-auth/react';
 function LoginForm() {
     const router = useRouter();
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const token = '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY';
 
-    // const handleLogin = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         await login(phone, password);
-    //         console.log('Login successful');
-    //         await router.push('/');
-    //     } catch (error) {
-    //         console.log('Login fail');
-    //         console.error('Login error:', error.message);
-    //     }
-    // };
     const handleLogin = async (e) => {
         e.preventDefault();
-        localStorage.setItem('token', token);
-        router.push('/');
+        try {
+            signIn('credentials', { phone: phone, password: password, callbackUrl: '/dashboard' });
+            // await login(phone, password);
+            // console.log('Login successful');
+            // await router.push('/');
+        } catch (error) {
+            console.log('Login fail');
+            console.error('Login error:', error.message);
+        }
     };
+    // const handleLogin = async (e) => {
+    //     e.preventDefault();
+    //     localStorage.setItem('token', token);
+    //     router.push('/');
+    // };
 
     return (
         <div className="login-form">

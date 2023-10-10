@@ -1,7 +1,7 @@
 'use client';
 import { faArrowRightToBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -19,8 +19,11 @@ const SigninButton = () => {
     }
     return (
         <div className="header-top-link">
-            <Link href="/dang-nhap" onClick={() => signIn()}>
+            <Link href="/dang-nhap">
                 <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
+            </Link>
+            <Link href="/dang-ky">
+                <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng ký
             </Link>
         </div>
     );

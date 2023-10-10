@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import CartItem from '../components/cart/cartItem';
 import { checkOut } from '@/utils/order';
 import moment from 'moment';
+import { redirect, useRouter } from 'next/navigation';
 export default function Cart() {
+    const { push } = useRouter();
     const [time, setTime] = useState(moment().format('hh:mm'));
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
     const [cartData, setCartData] = useState<
@@ -67,10 +69,15 @@ export default function Cart() {
                 },
                 '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY',
             );
-            console.log('Login successful'); // Handle success (e.g., redirect to a different page)
+            // redirect('/dashboard');
+            // RouteKind.
+            // Rouge_Script.
+            push('/dashboard');
+            // console.log(); // Handle success (e.g., redirect to a different page)
+            alert('order successful');
         } catch (error: any) {
-            console.log('Login fail');
-            console.error('Login error:', error.message); // Handle login errors
+            console.log('order fail');
+            console.error('order error:', error.message); // Handle order errors
         }
     };
     return (

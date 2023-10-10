@@ -4,6 +4,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { getOrders, showStatus } from '@/utils/order';
 import { IOrder } from '@/interfaces/order';
+import { useSession } from 'next-auth/react';
 
 const Orders = async () => {
     const orders_data = await getOrders({

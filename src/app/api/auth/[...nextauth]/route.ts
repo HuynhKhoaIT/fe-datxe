@@ -1,7 +1,6 @@
 import { POST_LOGIN_ENDPOINT } from '@/utils/constants/endpoints';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import Auth0Provider from 'next-auth/providers/auth0';
 
 const handler = NextAuth({
     session: {
