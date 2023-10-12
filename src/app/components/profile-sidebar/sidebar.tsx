@@ -11,6 +11,7 @@ const ProfileSidebar = ({ myAccount }: { myAccount: IUser }) => {
             localStorage.removeItem('token');
         }
     }
+    console.log(myAccount);
     return (
         <div className="user-profile-sidebar">
             <div className="user-profile-sidebar-top">

@@ -85,6 +85,8 @@ Table of contents
 ======================*/
 
 :root {
+    --grey-background: #f8f8fc;
+
     --body-font: 'Roboto', sans-serif;
     --heading-font: 'Inter', sans-serif;
     --theme-color: #f8ba02;
@@ -790,7 +792,7 @@ label {
     padding: 8px 0 10px 0;
     position: relative;
     background: var(--color-dark);
-    z-index: 1;
+    z-index: 9999;
 }
 
 .header-top::before {
@@ -955,6 +957,14 @@ label {
     width: 200px;
 }
 
+.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown > .dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
 .navbar .dropdown-toggle::after {
     display: inline-block;
     margin-left: 5px;
@@ -1288,15 +1298,8 @@ label {
 ======================*/
 
 .search-area {
-    position: absolute;
-    top: 85px;
-    right: 0;
-    background: var(--color-white);
-    padding: 15px 15px;
-    -webkit-box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
     box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
-    width: 340px;
-    // visibility: hidden;
+    width: 100%;
     opacity: 1;
     border-radius: 10px;
     -webkit-transition: var(--transition);
@@ -1331,6 +1334,7 @@ label {
     background: transparent;
     border: none;
     font-size: 20px;
+    color: var(--color-dark);
 }
 
 /*====================
@@ -6777,4 +6781,20 @@ body.rtl-mode .price-wrapper {
         top: -10px;
         right: 50px;
     }
+}
+
+// css header
+.nav-search {
+    margin-left: 60px;
+    height: 48px;
+}
+.input-search {
+    border: none;
+}
+.search-area {
+    border: 1px solid var(--color-dark);
+}
+.btn-submit {
+    background-color: var(--theme-color);
+    border-radius: 0px 8px 8px 0;
 }
