@@ -4,20 +4,20 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { getOrders, showStatus } from '@/utils/order';
 import { IOrder } from '@/interfaces/order';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
 const Orders = async () => {
-    const orders_data = await getOrders({
-        token: '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY',
-    });
+    const session = await getSession();
+    console.log(session);
+    // const orders_data = await getOrders({});
     return (
         <div className="user-profile-wrapper">
             <div className="row">
                 <div className="col-md-6 col-lg-4">
                     <div className="dashboard-widget dashboard-widget-color-1">
                         <div className="dashboard-widget-info">
-                            <h1>450</h1>
-                            <span>Active Listing</span>
+                            <h1>0</h1>
+                            <span>Điểm mua hàng</span>
                         </div>
                         <div className="dashboard-widget-icon">
                             <i className="fal fa-list"></i>
@@ -25,10 +25,10 @@ const Orders = async () => {
                     </div>
                 </div>
                 <div className="col-md-6 col-lg-4">
-                    <div className="dashboard-widget dashboard-widget-color-2">
+                    <div className="dashboard-widget dashboard-widget-color-3">
                         <div className="dashboard-widget-info">
                             <h1>18.6k</h1>
-                            <span>Total Views</span>
+                            <span>Đơn hàng</span>
                         </div>
                         <div className="dashboard-widget-icon">
                             <i className="fal fa-eye"></i>
@@ -36,10 +36,10 @@ const Orders = async () => {
                     </div>
                 </div>
                 <div className="col-md-6 col-lg-4">
-                    <div className="dashboard-widget dashboard-widget-color-3">
+                    <div className="dashboard-widget dashboard-widget-color-2">
                         <div className="dashboard-widget-info">
                             <h1>1560</h1>
-                            <span>Total Listing</span>
+                            <span>Đơn hàng thành công</span>
                         </div>
                         <div className="dashboard-widget-icon">
                             <i className="fal fa-layer-group"></i>
@@ -62,7 +62,7 @@ const Orders = async () => {
                                         <th>Tình trạng</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                {/* <tbody>
                                     {orders_data?.map((order: IOrder) => (
                                         <tr>
                                             <td>
@@ -84,7 +84,7 @@ const Orders = async () => {
                                             </td>
                                         </tr>
                                     ))}
-                                </tbody>
+                                </tbody> */}
                             </table>
                         </div>
                     </div>
