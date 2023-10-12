@@ -1,7 +1,7 @@
 'use client';
 import { faArrowRightFromBracket, faCircleUser, faSortDown, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from './Header.module.scss';

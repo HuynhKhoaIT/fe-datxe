@@ -1,7 +1,5 @@
-import { POST_LOGIN_ENDPOINT } from '@/utils/constants/endpoints';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import Auth0Provider from 'next-auth/providers/auth0';
 
 const handler = NextAuth({
     session: {
@@ -33,7 +31,6 @@ const handler = NextAuth({
                 });
 
                 const user = await res.json();
-
                 if (user) {
                     // Any object returned will be saved in `user` property of the JWT
                     return user.user;
@@ -47,8 +44,14 @@ const handler = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            return { ...token, ...user };
+        async jwt({ token, user, account, profile }) {
+            if (user) {
+                token.id = user.id;
+            }
+            if (account) {
+                token.accessToken = account.access_token;
+            }
+            return token;
         },
 
         async session({ session, token }) {
