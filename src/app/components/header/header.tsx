@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import SigninButton from './login-button';
 const Header = () => {
-    const userToken = localStorage.getItem('token');
+    // const userToken = localStorage.getItem('token');
     const [isVisible, setIsVisible] = useState(true);
     const toggleVisibility = () => {
         setIsVisible(!isVisible);

@@ -1,10 +1,14 @@
 'use client';
 import React, { useState } from 'react';
+// import { useRouter } from 'next/router';
 import { register } from '@/utils/user';
+import { useRouter } from 'next/navigation';
+
 import { getModels } from '@/utils/branch';
 
 import Link from 'next/link';
 function RegisterForm({ brands_data }) {
+    const router = useRouter();
     const [models, setModels] = useState([]);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -18,10 +22,7 @@ function RegisterForm({ brands_data }) {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            // await register(name, phone, email, licensePlates, automakerId, carNameId, password, passwordConfirmation);
-            // console.log('Register successful'); // Handle success (e.g., redirect to a different page)
-            // await router.push('/dashboard');
-            router.push('/dashboard');
+            await register(name, phone, email, licensePlates, automakerId, carNameId, password, passwordConfirmation);
         } catch (error) {
             console.log('Register fail');
             console.error('Register error:', error.message); // Handle Register errors

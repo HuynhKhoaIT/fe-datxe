@@ -8,6 +8,7 @@ import axios from 'axios';
 import { GET_MY_ACCOUNT_ENDPOINT, POST_LOGIN_ENDPOINT, POST_REGISTER_ENDPOINT } from './constants/endpoints';
 
 import { IUser } from '@/interfaces/user';
+import { signIn } from 'next-auth/react';
 // import ForgotPassword from '@/app/forgot-password/page';
 /**
  * Get getMyAccount.
@@ -87,6 +88,7 @@ export const register = async (
         );
 
         if (res.status === 200) {
+            signIn('credentials', { phone: phone, password: password, callbackUrl: '/dashboard' });
             console.log('đăng ký thành công');
         } else {
             console.log('Regiter failed');
