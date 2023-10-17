@@ -4,12 +4,9 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { getOrders, showStatus } from '@/utils/order';
 import { IOrder } from '@/interfaces/order';
-import { getSession } from 'next-auth/react';
-
 const Orders = async () => {
-    const session = await getSession();
-    console.log(session);
     // const orders_data = await getOrders({});
+
     return (
         <div className="user-profile-wrapper">
             <div className="row">
@@ -17,7 +14,7 @@ const Orders = async () => {
                     <div className="dashboard-widget dashboard-widget-color-1">
                         <div className="dashboard-widget-info">
                             <h1>0</h1>
-                            <span>Điểm mua hàng</span>
+                            <span>Điểm mua hàng2 </span>
                         </div>
                         <div className="dashboard-widget-icon">
                             <i className="fal fa-list"></i>
