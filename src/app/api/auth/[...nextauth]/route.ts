@@ -2,9 +2,9 @@ import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 const handler = NextAuth({
-    session: {
-        strategy: 'jwt',
-    },
+    // session: {
+    //     strategy: 'jwt',
+    // },
     providers: [
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
@@ -33,7 +33,8 @@ const handler = NextAuth({
                 const user = await res.json();
                 if (user) {
                     // Any object returned will be saved in `user` property of the JWT
-                    return user.user;
+                    // return user.user;
+                    return Promise.resolve(user.user);
                 } else {
                     // If you return null then an error will be displayed advising the user to check their details.
                     return null;
@@ -44,15 +45,28 @@ const handler = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user, account, profile }) {
+        async jwt({ token, user, account }) {
             if (user) {
                 token.id = user.id;
+                token.token = user.token;
             }
             if (account) {
                 token.accessToken = account.access_token;
             }
             return token;
         },
+
+        async session({ session, token }) {
+            session.user = token as any;
+            return session;
+        },
+    },
+    pages: {
+        signIn: '/dang-nhap',
+        signOut: '/auth/signout',
+        error: '/auth/error', // Error code passed in query string as ?error=
+        verifyRequest: '/auth/verify-request', // (used for check email message)
+        newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
     },
 });
 

@@ -7,7 +7,8 @@ import './assets/styles.scss';
 import './globals.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import Provider from './components/Provider';
+import Provider from './Provider';
+import { ReactNode } from 'react';
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -15,8 +16,10 @@ export const metadata: Metadata = {
     title: 'Datxe',
     description: 'Trang thương mại điện tử',
 };
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+interface IProps {
+    children: ReactNode;
+}
+export default function RootLayout({ children }: IProps) {
     return (
         <html lang="vi">
             <body className={inter.className}>

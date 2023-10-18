@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 import { faArrowRightFromBracket, faCircleUser, faSortDown, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, signOut, useSession } from 'next-auth/react';
@@ -13,6 +13,7 @@ const cx = classNames.bind(styles);
 
 const SigninButton = () => {
     const { data: session } = useSession();
+    console.log(session);
     return (
         <>
             <div className={cx('account', 'd-flex align-items-center')}>
@@ -32,7 +33,7 @@ const SigninButton = () => {
                                 <div className={cx('accout-result')}>
                                     <Link href={'/account'}>
                                         <FontAwesomeIcon icon={faUser} />
-                                        <p>Xem hồ sơ</p>
+                                        <p>Xem hồ sơ 2</p>
                                     </Link>
                                     <Link href={'/gio-hang'}>
                                         <FontAwesomeIcon icon={faUser} />

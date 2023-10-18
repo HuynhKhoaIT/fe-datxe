@@ -1,5 +1,0 @@
-export async function GET(request: Request) {
-    return new Response('hi');
-}
-
-export async function POST() {}
