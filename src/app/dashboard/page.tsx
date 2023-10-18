@@ -4,7 +4,7 @@ import { Orders } from '../components/dashboard/order/orders';
 import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
 import React, { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-export default async function Dashboard() {
+export default function Dashboard() {
     const { data: session } = useSession();
     if (session?.user?.token) {
         // const myAccount = await getMyAccount(session?.user?.token);
