@@ -3,17 +3,15 @@ import { faArrowRightFromBracket, faCircleUser, faSortDown, faUser } from '@fort
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
-import LoginForm from '../login/LoginForm';
 
 const cx = classNames.bind(styles);
 
 const SigninButton = () => {
     const { data: session } = useSession();
-    console.log(session);
     return (
         <>
             <div className={cx('account', 'd-flex align-items-center')}>
@@ -31,9 +29,9 @@ const SigninButton = () => {
                             trigger="click"
                             render={(attrs) => (
                                 <div className={cx('accout-result')}>
-                                    <Link href={'/account'}>
+                                    <Link href={'/dashboard'}>
                                         <FontAwesomeIcon icon={faUser} />
-                                        <p>Xem hồ sơ 2</p>
+                                        <p>Xem hồ sơ</p>
                                     </Link>
                                     <Link href={'/gio-hang'}>
                                         <FontAwesomeIcon icon={faUser} />

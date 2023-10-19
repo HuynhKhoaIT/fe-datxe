@@ -15,6 +15,8 @@
 // nextauth.d.ts
 import { DefaultSession, DefaultUser } from 'next-auth';
 interface IUser extends DefaultUser {
+    phone?: string;
+    address?: string;
     token?: string;
 }
 declare module 'next-auth' {

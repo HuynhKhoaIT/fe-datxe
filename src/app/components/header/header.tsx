@@ -27,18 +27,12 @@ const Header = () => {
                                             <FontAwesomeIcon icon={faPhoneVolume} /> +2 123 654 7898
                                         </Link>
                                     </li>
-                                    <li>
-                                        <Link href="#">
-                                            <i className="far fa-alarm-clock"></i> Sun - Fri (08AM - 10PM)
-                                        </Link>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <div className="header-top-right">
                             <SigninButton />
                             <div className="header-top-social">
-                                <span>Follow Us: </span>
                                 <Link href="#">
                                     <FontAwesomeIcon icon={faFacebook} />
                                 </Link>

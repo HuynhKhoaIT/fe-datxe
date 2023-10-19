@@ -9,6 +9,8 @@ import { GET_MY_ACCOUNT_ENDPOINT, POST_LOGIN_ENDPOINT, POST_REGISTER_ENDPOINT } 
 
 import { IUser } from '@/interfaces/user';
 import { signIn } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 // import ForgotPassword from '@/app/forgot-password/page';
 /**
  * Get getMyAccount.
@@ -16,13 +18,16 @@ import { signIn } from 'next-auth/react';
  * @return {Promise<void>}
  */
 
-export const getMyAccount = async (token: string) => {
+export const getMyAccount = async () => {
+    const session = await getServerSession(authOptions);
     try {
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
-        const res = await axios.get(`${GET_MY_ACCOUNT_ENDPOINT}`, config);
-        return res.data.data as Promise<IUser>;
+        if (session?.user?.token) {
+            const config = {
+                headers: { Authorization: `Bearer ${session?.user?.token}` },
+            };
+            const res = await axios.get(`${GET_MY_ACCOUNT_ENDPOINT}`, config);
+            return res.data.data as Promise<IUser>;
+        }
     } catch (error) {
         console.log(error);
         throw new Error('Lỗi lấy thông tin my-account');
