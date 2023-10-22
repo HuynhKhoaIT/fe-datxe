@@ -6,7 +6,7 @@ const ProfileSidebar = async ({ page = 'dashboard' }: { page: string }) => {
         <div className="user-profile-sidebar">
             <div className="user-profile-sidebar-top">
                 <div className="user-profile-img">
-                    <img src="assets/img/account/user.jpg" alt="" />
+                    <img src="/assets/img/account/user.jpg" alt="" />
                     <button type="button" className="profile-img-btn">
                         <i className="far fa-camera"></i>
                     </button>
@@ -17,7 +17,7 @@ const ProfileSidebar = async ({ page = 'dashboard' }: { page: string }) => {
             </div>
             <ul className="user-profile-sidebar-list">
                 <li>
-                    <Link href="dashboard" className={`list-group-item ${page == 'dashboard' && 'active'}`}>
+                    <Link href="/dashboard" className={`list-group-item ${page == 'dashboard' && 'active'}`}>
                         <i className="far fa-gauge-high"></i> Tổng quan
                     </Link>
                 </li>
@@ -27,12 +27,12 @@ const ProfileSidebar = async ({ page = 'dashboard' }: { page: string }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="profile-listing" className={`list-group-item ${page == 'cars' && 'active'}`}>
+                    <Link href="/dashboard/cars" className={`list-group-item ${page == 'cars' && 'active'}`}>
                         <i className="far fa-layer-group"></i> Danh sách xe
                     </Link>
                 </li>
                 <li>
-                    <Link href="add-listing" className={`${page == 'orders' && 'active'}`}>
+                    <Link href="/dashboard/order" className={`${page == 'orders' && 'active'}`}>
                         <i className="far fa-plus-circle"></i> Đơn hàng
                     </Link>
                 </li>
