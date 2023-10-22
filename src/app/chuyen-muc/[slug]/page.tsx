@@ -16,7 +16,7 @@ export default async function CategoryItem({ params }: { params: { slug: number 
                             <SideBar />
                         </div>
                         <div className="col-lg-9">
-                            <Sort />
+                            {/* <Sort /> */}
                             <ProductData product_data={product_data} />
                             <Pagination />
                         </div>

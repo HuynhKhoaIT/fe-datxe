@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { DatePicker } from 'antd';
 import styles from './AddCar.module.scss';
 import classNames from 'classnames/bind';
+import { IBrand } from '@/interfaces/brand';
 const cx = classNames.bind(styles);
 
 const AddCartForm = () => {
@@ -15,7 +16,7 @@ const AddCartForm = () => {
 
     const token = session?.user?.token;
 
-    const [brandsData, setBrandsData] = useState<ICar[]>([]);
+    const [brandsData, setBrandsData] = useState<IBrand[]>([]);
     const [models, setModels] = useState([]);
     const [licensePlates, setLicensePlates] = useState('');
     const [colorCar, setColorCar] = useState('');
@@ -26,15 +27,15 @@ const AddCartForm = () => {
     const [registrationDeadline, setRegistrationDeadline] = useState('');
     const [civilDeadline, setCivilDeadline] = useState('');
     const [materialDeadline, setMaterialDeadline] = useState('');
-    const handleRegistrationChange = (date) => {
+    const handleRegistrationChange = (date: string) => {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setRegistrationDeadline(dateString);
     };
-    const handleCivilChange = (date) => {
+    const handleCivilChange = (date: string) => {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setCivilDeadline(dateString);
     };
-    const handleMaterialChange = (date) => {
+    const handleMaterialChange = (date: string) => {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setMaterialDeadline(dateString);
     };
@@ -44,9 +45,7 @@ const AddCartForm = () => {
         try {
             setAutomakerId(value.toString());
             setCarNameId('');
-            console.log(value);
-            let dong_xe = await getModels(value);
-            console.log(dong_xe);
+            const dong_xe: IBrand[] = await getModels(value);
             if (dong_xe) {
                 setModels(dong_xe);
             }
@@ -78,7 +77,7 @@ const AddCartForm = () => {
                 civil_insurance_deadline: civilDeadline,
                 material_insurance_deadline: materialDeadline,
             };
-            const createdCar = await addCar(newCar, token);
+            const createdCar = await addCar(newCar, token ?? '');
             console.log('Car created:', createdCar);
         } catch (error) {
             console.error('Error creating car:', error);
@@ -113,7 +112,10 @@ const AddCartForm = () => {
                         >
                             <option>Chọn hãng xe</option>
 
-                            {brandsData && brandsData?.map((brand) => <option value={brand.id}>{brand.name}</option>)}
+                            {brandsData &&
+                                brandsData?.map((brand: IBrand) => (
+                                    <option value={brand.id?.toString()}>{brand.name}</option>
+                                ))}
                         </select>
                     </div>
                 </div>
@@ -121,7 +123,6 @@ const AddCartForm = () => {
                     <div className={cx('form-group')}>
                         <label>Dòng xe</label>
                         <select
-                            type="text"
                             className="form-control"
                             placeholder="Dòng xe"
                             name="car_name_id"
@@ -129,10 +130,8 @@ const AddCartForm = () => {
                             onChange={(e) => setCarNameId(e.target.value)}
                         >
                             <option>Chọn dòng xe</option>
-                            {models.map((model) => (
-                                <option key={model.id} value={model.id}>
-                                    {model.name}
-                                </option>
+                            {models.map((model: IBrand) => (
+                                <option value={model?.id?.toString()}>{model?.name}</option>
                             ))}
                         </select>
                     </div>
@@ -160,7 +159,7 @@ const AddCartForm = () => {
                             name="vin_number"
                             className="form-control"
                             placeholder="Vin Number"
-                            value={vinNumber}
+                            value={vinNumber?.toString()}
                             onChange={(e) => setVinNumber(Number(e.target.value))}
                         ></input>
                     </div>
@@ -173,7 +172,7 @@ const AddCartForm = () => {
                             name="machine_number"
                             className="form-control"
                             placeholder="Machine Number"
-                            value={machineNumber}
+                            value={machineNumber?.toString()}
                             onChange={(e) => setMachineNumber(Number(e.target.value))}
                         ></input>
                     </div>
@@ -188,7 +187,7 @@ const AddCartForm = () => {
                             name="km_repairt"
                             className="form-control"
                             placeholder="Km repairt"
-                            value={kmRepairt}
+                            value={kmRepairt?.toString()}
                             onChange={(e) => setKmRepairt(Number(e.target.value))}
                         />
                     </div>
@@ -201,7 +200,7 @@ const AddCartForm = () => {
                             name="date_repairt"
                             className="form-control"
                             placeholder="Date Repairt"
-                            value={dateRepairt}
+                            value={dateRepairt?.toString()}
                             onChange={(e) => setDateRepairt(Number(e.target.value))}
                         ></input>
                     </div>
