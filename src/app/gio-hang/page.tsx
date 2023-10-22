@@ -5,6 +5,7 @@ import { CustomerInfo } from '../components/cart/customerInfo';
 import { checkOut } from '@/utils/order';
 import moment from 'moment';
 import { redirect, useRouter } from 'next/navigation';
+import { CarInfoCart } from '../components/cart/carInfo';
 export default function Cart() {
     const { push } = useRouter();
     const [time, setTime] = useState(moment().format('hh:mm'));
@@ -93,38 +94,7 @@ export default function Cart() {
                             <div className="col col-md-6">
                                 <div className="checkout-widget">
                                     <h4 className="checkout-widget-title">Thông tin Xe</h4>
-                                    <div className="checkout-form">
-                                        <div className="row">
-                                            <div className="col-lg-6">
-                                                <div className="form-group">
-                                                    <label>Biển số</label>
-                                                    <input type="text" className="form-control" placeholder="Biển số" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <div className="form-group">
-                                                    <label>Hãng Xe</label>
-                                                    <input type="text" className="form-control" placeholder="Hãng Xe" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <div className="form-group">
-                                                    <label>Dòng Xe</label>
-                                                    <input type="text" className="form-control" placeholder="Dòng xe" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <div className="form-group">
-                                                    <label>Năm sản xuất</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Năm sản xuất"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <CarInfoCart />
                                 </div>
                             </div>
                             <div className="col col-md-12">
