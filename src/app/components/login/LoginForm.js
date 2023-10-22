@@ -6,8 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
+
 function LoginForm() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl');
+
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const token = '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY';
@@ -15,7 +20,7 @@ function LoginForm() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            signIn('credentials', { phone: phone, password: password, callbackUrl: '/dashboard' });
+            signIn('credentials', { phone: phone, password: password, callbackUrl: callbackUrl || '/dashboard' });
             // await login(phone, password);
             // console.log('Login successful');
             // await router.push('/');

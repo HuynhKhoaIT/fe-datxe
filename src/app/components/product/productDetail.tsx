@@ -6,10 +6,43 @@ import { faCartShopping, faMinus, faPlus, faRightLeft } from '@fortawesome/free-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import React, { useState } from 'react';
-
+import { signIn, useSession } from 'next-auth/react';
+import { notification, Modal } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
-    console.log(ProductDetail);
+    const { data: session } = useSession();
+    const [api, contextHolder] = notification.useNotification();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [inputValue, setInputValue] = useState(1);
+    const openNotification = () => {
+        api.info({
+            message: `Thành công`,
+            description: 'Sản phẩm đã được thêm vào giỏ hàng',
+            icon: <CheckOutlined style={{ color: 'green' }} />,
+        });
+    };
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+        const existingCartItems = JSON.parse('[]');
+        existingCartItems.push({
+            garageId: ProductDetail.garageId,
+            product: ProductDetail,
+            quantity: inputValue,
+        });
+        localStorage.setItem('cartData', JSON.stringify(existingCartItems));
+        openNotification();
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
     // tăng số lượng
     const incrementValue = () => {
         setInputValue(inputValue + 1);
@@ -23,27 +56,39 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
     };
 
     const addProductToLocalStorage = () => {
-        if (ProductDetail) {
+        if (ProductDetail && session?.user) {
+            console.log(ProductDetail);
             const productId = ProductDetail.id;
+            const garageId = ProductDetail.garageId;
             const existingCartItems = JSON.parse(localStorage.getItem('cartData') || '[]');
-            const index = existingCartItems.findIndex((item: any) => item.productId === productId);
+            const index = existingCartItems.findIndex((item: any) => item.product.id === productId);
+            const idCar = existingCartItems.findIndex((item: any) => item.product.garageId === garageId);
+            console.log(idCar);
+            console.log(existingCartItems);
 
-            if (index !== -1) {
-                existingCartItems[index].quantity += inputValue;
+            if (existingCartItems.length > 0 && idCar === -1) {
+                showModal();
             } else {
-                existingCartItems.push({
-                    product: ProductDetail,
-                    quantity: inputValue,
-                });
+                if (index !== -1) {
+                    existingCartItems[index].quantity += inputValue;
+                } else {
+                    existingCartItems.push({
+                        garageId: garageId,
+                        product: ProductDetail,
+                        quantity: inputValue,
+                    });
+                }
+
+                localStorage.setItem('cartData', JSON.stringify(existingCartItems));
+                openNotification();
             }
-
-            localStorage.setItem('cartData', JSON.stringify(existingCartItems));
-
-            alert('Product added to cart!');
+        } else {
+            signIn();
         }
     };
     return (
         <div className="row">
+            {contextHolder}
             <div className="col-lg-5">
                 <div className="item-gallery mb-5">
                     <div className="flexslider-thumbnails">
@@ -174,6 +219,15 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                     </div>
                 </div>
             </div>
+            <Modal
+                title="Thông báo"
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                style={{ zIndex: '99999' }}
+            >
+                <p>Bạn đang đặt hàng với 2 chuyên gia khác nhau? Bạn có muốn xóa giỏ hàng để thêm sản phẩm mới?</p>
+            </Modal>
         </div>
     );
 }

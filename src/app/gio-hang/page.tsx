@@ -61,8 +61,7 @@ export default function Cart() {
         }
     }, []);
 
-    const handleCheckOut = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleCheckOut = async () => {
         try {
             await checkOut(
                 {
@@ -84,7 +83,7 @@ export default function Cart() {
     };
     return (
         <main className="main">
-            <form onSubmit={handleCheckOut} method="post">
+            <form method="post">
                 <div className="shop-cart pt-60 pb-60">
                     <div className="container">
                         <div className="row">
@@ -170,7 +169,7 @@ export default function Cart() {
                                                     className="form-control"
                                                     placeholder="Your Coupon Code"
                                                 />
-                                                <button className="coupon-btn" type="submit">
+                                                <button className="coupon-btn">
                                                     Apply <i className="fas fa-arrow-right-long"></i>
                                                 </button>
                                             </div>
@@ -189,7 +188,7 @@ export default function Cart() {
                                                 </li>
                                             </ul>
                                             <div className="text-end mt-40">
-                                                <button type="submit" className="theme-btn">
+                                                <button className="theme-btn" onClick={handleCheckOut}>
                                                     Đặt lịch<i className="fas fa-arrow-right-long"></i>
                                                 </button>
                                             </div>

@@ -20,20 +20,6 @@ export default async function Register() {
                                 <p>
                                     Bạn đã có tài khoản? <Link href="dang-nhap">Đăng nhập.</Link>
                                 </p>
-                                {/* <div className="social-login">
-                                    <p>Continue with social media</p>
-                                    <div className="social-login-list">
-                                        <Link href="#">
-                                            <i className="fab fa-facebook-f"></i>
-                                        </Link>
-                                        <Link href="#">
-                                            <i className="fab fa-google"></i>
-                                        </Link>
-                                        <Link href="#">
-                                            <i className="fab fa-twitter"></i>
-                                        </Link>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
                     </div>
