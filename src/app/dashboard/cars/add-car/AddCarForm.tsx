@@ -21,11 +21,18 @@ const AddCartForm = () => {
     const [colorCar, setColorCar] = useState('');
     const [vinNumber, setVinNumber] = useState<Number>();
     const [kmRepairt, setKmRepairt] = useState<Number>();
+    const [brandId, setBrandId] = useState<Number>();
     const [machineNumber, setMachineNumber] = useState<Number>();
-    const [dateRepairt, setDateRepairt] = useState<Number>();
+    const [description, setDescription] = useState<String>();
+
+    const [dateRepairt, setDateRepairt] = useState('');
     const [registrationDeadline, setRegistrationDeadline] = useState('');
     const [civilDeadline, setCivilDeadline] = useState('');
     const [materialDeadline, setMaterialDeadline] = useState('');
+    const handleDateRepairtChange = (date) => {
+        const dateString = dayjs(date).format('YYYY-MM-DD');
+        setDateRepairt(dateString);
+    };
     const handleRegistrationChange = (date) => {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setRegistrationDeadline(dateString);
@@ -39,14 +46,12 @@ const AddCartForm = () => {
         setMaterialDeadline(dateString);
     };
     const [automakerId, setAutomakerId] = useState('');
-    const [carNameId, setCarNameId] = useState('10');
+    const [carNameId, setCarNameId] = useState();
     const selectBrand = async (value: number) => {
         try {
             setAutomakerId(value.toString());
-            setCarNameId('');
-            console.log(value);
+            setBrandId(value);
             let dong_xe = await getModels(value);
-            console.log(dong_xe);
             if (dong_xe) {
                 setModels(dong_xe);
             }
@@ -70,13 +75,15 @@ const AddCartForm = () => {
                 number_plates: licensePlates,
                 color: colorCar,
                 car_name_id: carNameId,
+                brand_id: brandId,
                 vin_number: vinNumber,
-                km_repairt: kmRepairt,
                 machine_number: machineNumber,
+                km_repairt: kmRepairt,
                 date_repairt: dateRepairt,
                 registration_deadline: registrationDeadline,
                 civil_insurance_deadline: civilDeadline,
                 material_insurance_deadline: materialDeadline,
+                description,
             };
             const createdCar = await addCar(newCar, token);
             console.log('Car created:', createdCar);
@@ -180,7 +187,7 @@ const AddCartForm = () => {
                 </div>
             </div>
             <div className={cx('row')}>
-                <div className={cx('col-4')}>
+                <div className={cx('col-4 col-md-4')}>
                     <div className={cx('form-group')}>
                         <label>Km repairt</label>
                         <input
@@ -193,52 +200,73 @@ const AddCartForm = () => {
                         />
                     </div>
                 </div>
-                <div className={cx('col col-md-4')}>
+                <div className={cx('col-4 col-md-4')}>
                     <div className={cx('form-group')}>
                         <label>Date Repairt</label>
-                        <input
-                            type="number"
-                            name="date_repairt"
-                            className="form-control"
-                            placeholder="Date Repairt"
-                            value={dateRepairt}
-                            onChange={(e) => setDateRepairt(Number(e.target.value))}
-                        ></input>
+                        <DatePicker
+                            className={cx('custom-datepicker')}
+                            name="date_repair"
+                            onChange={handleDateRepairtChange}
+                        />
                     </div>
                 </div>
             </div>
             <div className={cx('row')}>
                 <div className={cx('col-4')}>
-                    <label>Registration Deadline</label>
+                    <div className={cx('form-group')}>
+                        <label>Registration Deadline</label>
 
-                    <DatePicker
-                        style={{ width: '100%' }}
-                        name="registration_deadline"
-                        onChange={handleRegistrationChange}
-                    />
+                        <DatePicker
+                            className={cx('custom-datepicker')}
+                            name="registration_deadline"
+                            onChange={handleRegistrationChange}
+                        />
+                    </div>
                 </div>
                 <div className={cx('col col-md-4')}>
-                    <label>civil insurance deadline</label>
+                    <div className={cx('form-group')}>
+                        <label>civil deadline</label>
 
-                    <DatePicker
-                        style={{ width: '100%' }}
-                        name="civil_insurance_deadline"
-                        onChange={handleCivilChange}
-                    />
+                        <DatePicker
+                            className={cx('custom-datepicker')}
+                            name="civil_insurance_deadline"
+                            onChange={handleCivilChange}
+                        />
+                    </div>
                 </div>
                 <div className={cx('col col-md-4')}>
-                    <label>material insurance deadline</label>
+                    <div className={cx('form-group')}>
+                        <label>material deadline</label>
 
-                    <DatePicker
-                        style={{ width: '100%' }}
-                        name="material_insurance_deadline"
-                        onChange={handleMaterialChange}
-                    />
+                        <DatePicker
+                            className={cx('custom-datepicker')}
+                            name="material_insurance_deadline"
+                            onChange={handleMaterialChange}
+                        />
+                    </div>
                 </div>
             </div>
-            <button className={cx('btn btn-primary')} onClick={handleCreateCar}>
-                Thêm xe
-            </button>
+            <div className={cx('row')}>
+                <div className={cx('col-12')}>
+                    <div className={cx('form-group')}>
+                        <label>Mô tả chi tiết</label>
+
+                        <textarea
+                            rows={4}
+                            name="description"
+                            className="form-control"
+                            placeholder="Mô tả chi tiết"
+                            value={description}
+                            onChange={(e) => setDescription(String(e.target.value))}
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div className={cx('d-flex align-items-center')}>
+                <button className="theme-btn" onClick={handleCreateCar}>
+                    Thêm xe
+                </button>
+            </div>
         </div>
     );
 };

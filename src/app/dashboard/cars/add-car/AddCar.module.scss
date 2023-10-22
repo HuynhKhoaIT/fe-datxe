@@ -1,0 +1,7 @@
+.custom-datepicker {
+    width: 100%;
+    padding: 13px;
+    &:hover {
+        border-color: var(--theme-color) !important;
+    }
+}

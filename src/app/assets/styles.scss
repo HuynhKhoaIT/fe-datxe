@@ -792,7 +792,7 @@ label {
     padding: 8px 0 10px 0;
     position: relative;
     background: var(--color-dark);
-    z-index: 9999;
+    z-index: 99;
 }
 
 .header-top::before {
@@ -903,7 +903,7 @@ label {
     padding-top: 0px;
     padding-bottom: 0px;
     box-shadow: var(--box-shadow);
-    z-index: 999;
+    z-index: 9;
 }
 
 .navbar.fixed-top {
@@ -6797,4 +6797,9 @@ body.rtl-mode .price-wrapper {
 .btn-submit {
     background-color: var(--theme-color);
     border-radius: 0px 8px 8px 0;
+}
+
+.ant-picker-focused.ant-picker.ant-picker-focused {
+    border-color: var(--theme-color) !important;
+    box-shadow: none !important;
 }
