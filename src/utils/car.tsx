@@ -30,3 +30,19 @@ export const getCars = async () => {
         throw new Error('Lỗi trong quá trình lấy thông tin xe');
     }
 };
+
+export const addCar = async (newCar: Object, token: String) => {
+    try {
+        if (token) {
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const res = await axios.post(`${GET_CAR_ENDPOINT}`, newCar, config);
+            console.log(res);
+            return res.data.data as ICar;
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình tạo thông tin xe');
+    }
+};
