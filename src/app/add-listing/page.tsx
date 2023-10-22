@@ -1,4 +1,3 @@
-import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
 export default function AddListing() {
     return (
         <main className="main">
@@ -6,9 +5,7 @@ export default function AddListing() {
             <div className="user-profile py-120">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-3">
-                            <ProfileSidebar />
-                        </div>
+                        <div className="col-lg-3">{/* <ProfileSidebar /> */}</div>
                         <div className="col-lg-9">
                             <div className="user-profile-wrapper">
                                 <div className="user-profile-card">

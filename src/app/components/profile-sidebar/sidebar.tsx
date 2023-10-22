@@ -22,7 +22,7 @@ const ProfileSidebar = async ({ page = 'dashboard' }: { page: string }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="dashboard/profile" className={`list-group-item ${page == 'profile' && 'active'}`}>
+                    <Link href="/dashboard/profile" className={`list-group-item ${page == 'profile' && 'active'}`}>
                         <i className="far fa-user"></i> Hồ sơ của tôi
                     </Link>
                 </li>

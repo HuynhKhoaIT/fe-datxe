@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 export function SideBarItem({ category }: { category: ICategory }) {
     const router = useRouter();
 
-    const catId: string = category.id;
-    const name: string = category ? category.name : '';
+    const catId = category.id;
+    const name = category ? category.name : '';
 
     let queryParams: URLSearchParams;
 
@@ -40,7 +40,7 @@ export function SideBarItem({ category }: { category: ICategory }) {
                     className="form-check-input"
                     type="checkbox"
                     id={category.id?.toString()}
-                    defaultChecked={checkHandler('cat_id', catId)}
+                    // defaultChecked={checkHandler('cat_id', catId)}
                     onClick={(e) => handleClick(e.target as HTMLInputElement)}
                 />
                 <label className="form-check-label" htmlFor={category.id?.toString()}>

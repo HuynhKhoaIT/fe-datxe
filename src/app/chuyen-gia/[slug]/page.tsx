@@ -19,7 +19,7 @@ export default async function Home({ params }: { params: { slug: number } }) {
                                 <div className="banner-garage-box">
                                     <div className="garage-info">
                                         <div className="garage-logo">
-                                            <img src={garageData.logo} alt="" />
+                                            <img src={garageData?.logo} alt="" />
                                         </div>
                                         <div className="garage-title">
                                             <h5>{garageData.name}</h5>

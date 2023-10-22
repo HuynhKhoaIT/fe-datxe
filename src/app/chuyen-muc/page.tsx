@@ -9,16 +9,16 @@ export default async function Category() {
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
-            <div className="shop-area bg py-120">
+            <div className="shop-area bg pt-60 pb-60">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-3">
                             <SideBar />
                         </div>
                         <div className="col-lg-9">
-                            <div className="col-md-12">
+                            {/* <div className="col-md-12">
                                 <Sort />
-                            </div>
+                            </div> */}
                             <div className="shop-item-wrapper">
                                 <div className="row">
                                     {category_list?.map((category: ICategory, index) => (
