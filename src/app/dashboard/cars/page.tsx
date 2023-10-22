@@ -27,9 +27,9 @@ export default async function Cars() {
                                                     <i className="far fa-search"></i>
                                                 </div>
                                             </div>
-                                            <a href="#" className="theme-btn">
+                                            <Link href="cars/add-car" className="theme-btn">
                                                 <span className="far fa-plus-circle"></span>Thêm xe
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
