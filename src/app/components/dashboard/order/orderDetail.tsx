@@ -1,7 +1,7 @@
 'use client';
 import { IOrderDetail } from '@/interfaces/orderDetail';
 import React from 'react';
-export default function OrderDetailItem({ items }: { items: IOrderDetail }) {
+export default function OrderDetailItem({ items = [] }: { items: IOrderDetail }) {
     return (
         <table className="table table-striped">
             <thead>

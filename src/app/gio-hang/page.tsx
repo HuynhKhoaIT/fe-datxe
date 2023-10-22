@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import CartItem from '../components/cart/cartItem';
+import { CustomerInfo } from '../components/cart/customerInfo';
 import { checkOut } from '@/utils/order';
 import moment from 'moment';
 import { redirect, useRouter } from 'next/navigation';
@@ -83,43 +84,11 @@ export default function Cart() {
     return (
         <main className="main">
             <form onSubmit={handleCheckOut} method="post">
-                <div className="shop-cart py-120">
+                <div className="shop-cart pt-60 pb-60">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="checkout-widget">
-                                    <h4 className="checkout-widget-title">Thông tin khách hàng</h4>
-                                    <div className="checkout-form">
-                                        <div className="row">
-                                            <div className="col-lg-12">
-                                                <div className="form-group">
-                                                    <label>Họ Tên</label>
-                                                    <input type="text" className="form-control" placeholder="Họ Tên" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <div className="form-group">
-                                                    <label>Email</label>
-                                                    <input
-                                                        type="email"
-                                                        className="form-control"
-                                                        placeholder="Nhập Email"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <div className="form-group">
-                                                    <label>Điện thoại</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Nhập số điện thoại"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <CustomerInfo />
                             </div>
                             <div className="col col-md-6">
                                 <div className="checkout-widget">

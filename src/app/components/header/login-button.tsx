@@ -1,13 +1,12 @@
-'use client';
+// 'use client';
 import { faArrowRightFromBracket, faCircleUser, faSortDown, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
-import LoginForm from '../login/LoginForm';
 
 const cx = classNames.bind(styles);
 
@@ -30,7 +29,7 @@ const SigninButton = () => {
                             trigger="click"
                             render={(attrs) => (
                                 <div className={cx('accout-result')}>
-                                    <Link href={'/account'}>
+                                    <Link href={'/dashboard'}>
                                         <FontAwesomeIcon icon={faUser} />
                                         <p>Xem hồ sơ</p>
                                     </Link>
