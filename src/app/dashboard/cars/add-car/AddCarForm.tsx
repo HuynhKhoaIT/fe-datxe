@@ -24,7 +24,7 @@ const AddCartForm = () => {
     const openNotification = () => {
         api.info({
             message: `Thành công`,
-            description: 'Sản phẩm đã được thêm vào giỏ hàng',
+            description: 'Xe đã được thêm thành công',
             icon: <CheckOutlined style={{ color: 'green' }} />,
         });
     };
