@@ -63,13 +63,10 @@ export default function Cart() {
 
     const handleCheckOut = async () => {
         try {
-            await checkOut(
-                {
-                    date: date,
-                    time: time,
-                },
-                '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY',
-            );
+            await checkOut({
+                date: date,
+                time: time,
+            });
             // redirect('/dashboard');
             // RouteKind.
             // Rouge_Script.
