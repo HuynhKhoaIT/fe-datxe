@@ -10,11 +10,24 @@ import styles from './AddCar.module.scss';
 import classNames from 'classnames/bind';
 import { IBrand } from '@/interfaces/brand';
 const cx = classNames.bind(styles);
+import { useRouter } from 'next/navigation';
+import { notification } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 
 const AddCartForm = () => {
     const { data: session } = useSession();
+    const router = useRouter();
 
     const token = session?.user?.token;
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = () => {
+        api.info({
+            message: `Thành công`,
+            description: 'Sản phẩm đã được thêm vào giỏ hàng',
+            icon: <CheckOutlined style={{ color: 'green' }} />,
+        });
+    };
 
     const [brandsData, setBrandsData] = useState<IBrand[]>([]);
     const [models, setModels] = useState<IBrand[]>([]);
@@ -85,6 +98,8 @@ const AddCartForm = () => {
                 description,
             };
             const createdCar = await addCar(newCar, token ?? '');
+            router.push('/dashboard/cars');
+            openNotification();
             console.log('Car created:', createdCar);
         } catch (error) {
             console.error('Error creating car:', error);
