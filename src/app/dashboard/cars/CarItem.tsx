@@ -12,6 +12,7 @@ import { deleteCar } from '@/utils/car';
 import { notification } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { useSession } from 'next-auth/react';
+import { getBrand } from '@/utils/branch';
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +23,7 @@ const CarItem = ({ item }: any) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-
+    const [brand, setBrand] = useState<IBrand[]>();
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -52,6 +53,18 @@ const CarItem = ({ item }: any) => {
         });
     };
 
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const brand: IBrand[] = await getBrand(item.brand_id);
+                setBrand(brand);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        fetchData();
+    }, []);
+
     const handledeleteCar = async () => {
         try {
             const createdCar = await deleteCar(item.id, token ?? '');
@@ -60,6 +73,7 @@ const CarItem = ({ item }: any) => {
             console.error('Error delete car:', error);
         }
     };
+    console.log(brand);
     return (
         <>
             {contextHolder}
@@ -74,7 +88,7 @@ const CarItem = ({ item }: any) => {
                         </a>
                     </div>
                 </td>
-                <td>{item.brand_id}</td>
+                <td></td>
                 <td>5 days ago</td>
                 <td>$50,650</td>
                 <td>

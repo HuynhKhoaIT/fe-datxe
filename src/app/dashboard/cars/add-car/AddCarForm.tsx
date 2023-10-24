@@ -37,8 +37,7 @@ const AddCartForm = () => {
     const [kmRepairt, setKmRepairt] = useState<Number>();
     const [brandId, setBrandId] = useState<Number>();
     const [machineNumber, setMachineNumber] = useState<Number>();
-    const [description, setDescription] = useState<String>();
-
+    const [description, setDescription] = useState('');
     const [dateRepairt, setDateRepairt] = useState('');
     const [registrationDeadline, setRegistrationDeadline] = useState('');
     const [civilDeadline, setCivilDeadline] = useState('');
@@ -64,7 +63,7 @@ const AddCartForm = () => {
     const selectBrand = async (value: number) => {
         try {
             setAutomakerId(value.toString());
-            // const dong_xe: IBrand[] = await getModels(value);
+            setBrandId(value);
             const dong_xe: IBrand[] = await getModels(value);
             setModels(dong_xe);
         } catch (error) {}
@@ -101,7 +100,6 @@ const AddCartForm = () => {
             const createdCar = await addCar(newCar, token ?? '');
             router.push('/dashboard/cars');
             openNotification();
-            console.log('Car created:', createdCar);
         } catch (error) {
             console.error('Error creating car:', error);
         }
@@ -274,7 +272,7 @@ const AddCartForm = () => {
                             className="form-control"
                             placeholder="Mô tả chi tiết"
                             value={description?.toString()}
-                            onChange={(e) => setDescription(String(e.target.value))}
+                            onChange={(e) => setDescription(e.target.value)}
                         ></textarea>
                     </div>
                 </div>
