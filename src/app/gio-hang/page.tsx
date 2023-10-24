@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import CartItem from '../components/cart/cartItem';
 import { CustomerInfo } from '../components/cart/customerInfo';
 import { checkOut } from '@/utils/order';
-import moment from 'moment';
-import { redirect, useRouter } from 'next/navigation';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 import { CarInfoCart } from '../components/cart/carInfo';
 export default function Cart() {
     const { push } = useRouter();
-    const [time, setTime] = useState(moment().format('hh:mm'));
-    const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
+    const [time, setTime] = useState(dayjs().format('hh:mm'));
+    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
