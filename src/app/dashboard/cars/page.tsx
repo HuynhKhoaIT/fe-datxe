@@ -1,10 +1,8 @@
+import React from 'react';
 import { ProfileSidebar } from '@/app/components/profile-sidebar/sidebar';
-import { ICar } from '@/interfaces/car';
 import { getCars } from '@/utils/car';
-import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-
+import CarItem from './CarItem';
 export default async function CarsPage() {
     const cars = await getCars();
     return (
@@ -45,54 +43,7 @@ export default async function CarsPage() {
                                                         <th>Hành động</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    {cars?.map((car: ICar) => (
-                                                        <tr>
-                                                            <td>
-                                                                <div className="table-list-info">
-                                                                    <a href="#">
-                                                                        <img src="/assets/img/car/01.jpg" alt="" />
-                                                                        <div className="table-list-content">
-                                                                            <h6>{car.licensePlates}</h6>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                            <td>Ferrari</td>
-                                                            <td>5 days ago</td>
-                                                            <td>$50,650</td>
-                                                            <td>
-                                                                <span className="badge badge-success">Active</span>
-                                                            </td>
-                                                            <td>
-                                                                <a
-                                                                    href="#"
-                                                                    className="btn btn-outline-secondary btn-sm rounded-2"
-                                                                    data-bs-toggle="tooltip"
-                                                                    title="Details"
-                                                                >
-                                                                    <FontAwesomeIcon icon={faEye} />
-                                                                </a>
-                                                                <a
-                                                                    href="#"
-                                                                    className="btn btn-outline-secondary btn-sm rounded-2"
-                                                                    data-bs-toggle="tooltip"
-                                                                    title="Edit"
-                                                                >
-                                                                    <FontAwesomeIcon icon={faPen} />
-                                                                </a>
-                                                                <a
-                                                                    href="#"
-                                                                    className="btn btn-outline-danger btn-sm rounded-2"
-                                                                    data-bs-toggle="tooltip"
-                                                                    title="Delete"
-                                                                >
-                                                                    <FontAwesomeIcon icon={faTrash} />
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
+                                                <tbody>{cars?.map((item, index) => <CarItem item={item} />)}</tbody>
                                             </table>
                                         </div>
                                         {/* <!-- pagination --> */}
@@ -138,6 +89,7 @@ export default async function CarsPage() {
                     </div>
                 </div>
             </div>
+
             {/* <!-- user-profile end --> */}
         </main>
     );

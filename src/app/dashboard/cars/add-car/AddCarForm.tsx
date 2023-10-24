@@ -95,7 +95,8 @@ const AddCartForm = () => {
                 registration_deadline: registrationDeadline,
                 civil_insurance_deadline: civilDeadline,
                 material_insurance_deadline: materialDeadline,
-                description,
+                automaker_id: automakerId,
+                description: description,
             };
             const createdCar = await addCar(newCar, token ?? '');
             router.push('/dashboard/cars');
@@ -107,6 +108,7 @@ const AddCartForm = () => {
     };
     return (
         <div className={cx('wrapper-car')}>
+            {contextHolder}
             <div className={cx('row')}>
                 <div className={cx('col-4')}>
                     <div className={cx('form-group')}>

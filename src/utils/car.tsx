@@ -46,3 +46,35 @@ export const addCar = async (newCar: Object, token: String) => {
         throw new Error('Lỗi trong quá trình tạo thông tin xe');
     }
 };
+
+export const deleteCar = async (carId: string, token: string) => {
+    try {
+        if (token) {
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const res = await axios.delete(`${GET_CAR_ENDPOINT}/${carId}`, config);
+            console.log(res);
+            return res.data.data as ICar;
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình xóa thông tin xe');
+    }
+};
+
+export const updateCar = async (carId: string, updatedCarData: Object, token: string) => {
+    try {
+        if (token) {
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const res = await axios.put(`${GET_CAR_ENDPOINT}/${carId}`, updatedCarData, config);
+            console.log(res);
+            return res.data.data as ICar;
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình cập nhật thông tin xe');
+    }
+};
