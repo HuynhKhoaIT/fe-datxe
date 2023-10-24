@@ -3,7 +3,7 @@ import { ProfileSidebar } from '@/app/components/profile-sidebar/sidebar';
 import { getServerSession } from 'next-auth/next';
 
 import React from 'react';
-export default async function Profile() {
+export default async function ProfilePage() {
     const session = await getServerSession(authOptions);
     return (
         <main className="main">

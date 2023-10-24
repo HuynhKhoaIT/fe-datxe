@@ -3,12 +3,10 @@ import ProductDetail from '../../components/product/productDetail';
 import { IProduct } from '@/interfaces/product';
 import Product from '@/app/components/product/product';
 import { getProductDetail, getProductsRelated } from '@/utils/product';
-import { ICategory } from '@/interfaces/category';
-import { getCategories } from '@/utils/category';
 
 export default async function SingleShop({ params }: { params: { slug: number } }) {
     const data: IProduct = await getProductDetail(params.slug);
-    const related: IProduct[] = await getProductsRelated(data.categoryId, data.garageId, 8);
+    const related: IProduct[] = await getProductsRelated(data?.categoryId?.toString(), data.garageId?.toString(), 8);
 
     return (
         <main className="main">
