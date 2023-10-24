@@ -16,8 +16,8 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
  */
 
 export const getCars = async () => {
+    const session = await getServerSession(authOptions);
     try {
-        const session = await getServerSession(authOptions);
         if (session?.user?.token) {
             const config = {
                 headers: { Authorization: `Bearer ${session?.user?.token}` },
