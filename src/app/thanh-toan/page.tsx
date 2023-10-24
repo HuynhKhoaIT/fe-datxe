@@ -6,13 +6,10 @@ export default function Checkout() {
     const handleCheckOut = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await checkOut(
-                {
-                    date: '2023-01-01',
-                    time: '20:00:00',
-                },
-                '1436|5ZgrHyobWoDHP4gS3PtWm2vVcMWNDgeFZk2p4DzY',
-            );
+            await checkOut({
+                date: '2023-01-01',
+                time: '20:00:00',
+            });
             console.log('Login successful'); // Handle success (e.g., redirect to a different page)
         } catch (error: any) {
             console.log('Login fail');

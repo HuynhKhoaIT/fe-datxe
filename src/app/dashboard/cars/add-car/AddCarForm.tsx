@@ -17,7 +17,7 @@ const AddCartForm = () => {
     const token = session?.user?.token;
 
     const [brandsData, setBrandsData] = useState<IBrand[]>([]);
-    const [models, setModels] = useState([]);
+    const [models, setModels] = useState<IBrand[]>([]);
     const [licensePlates, setLicensePlates] = useState('');
     const [colorCar, setColorCar] = useState('');
     const [vinNumber, setVinNumber] = useState<Number>();
@@ -30,32 +30,30 @@ const AddCartForm = () => {
     const [registrationDeadline, setRegistrationDeadline] = useState('');
     const [civilDeadline, setCivilDeadline] = useState('');
     const [materialDeadline, setMaterialDeadline] = useState('');
-    const handleDateRepairtChange = (date: string) => {
+    function handleDateRepairtChange(date: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setDateRepairt(dateString);
-    };
-    const handleRegistrationChange = (date: string) => {
+    }
+    function handleRegistrationChange(date: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setRegistrationDeadline(dateString);
-    };
-    const handleCivilChange = (date: string) => {
+    }
+    function handleCivilChange(date: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setCivilDeadline(dateString);
-    };
-    const handleMaterialChange = (date: string) => {
+    }
+    function handleMaterialChange(date: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setMaterialDeadline(dateString);
-    };
+    }
     const [automakerId, setAutomakerId] = useState('');
-    const [carNameId, setCarNameId] = useState();
+    const [carNameId, setCarNameId] = useState('0');
     const selectBrand = async (value: number) => {
         try {
             setAutomakerId(value.toString());
+            // const dong_xe: IBrand[] = await getModels(value);
             const dong_xe: IBrand[] = await getModels(value);
-            let dong_xe = await getModels(value);
-            if (dong_xe) {
-                setModels(dong_xe);
-            }
+            setModels(dong_xe);
         } catch (error) {}
     };
     useEffect(() => {
@@ -207,7 +205,8 @@ const AddCartForm = () => {
                         <DatePicker
                             className={cx('custom-datepicker')}
                             name="date_repair"
-                            onChange={handleDateRepairtChange}
+                            // onChange={handleDateRepairtChange}
+                            onChange={(date) => handleDateRepairtChange(date?.toString())}
                         />
                     </div>
                 </div>
@@ -220,7 +219,7 @@ const AddCartForm = () => {
                         <DatePicker
                             className={cx('custom-datepicker')}
                             name="registration_deadline"
-                            onChange={handleRegistrationChange}
+                            onChange={(date) => handleRegistrationChange(date)}
                         />
                     </div>
                 </div>
@@ -231,7 +230,7 @@ const AddCartForm = () => {
                         <DatePicker
                             className={cx('custom-datepicker')}
                             name="civil_insurance_deadline"
-                            onChange={handleCivilChange}
+                            onChange={(date) => handleCivilChange(date)}
                         />
                     </div>
                 </div>
@@ -242,7 +241,7 @@ const AddCartForm = () => {
                         <DatePicker
                             className={cx('custom-datepicker')}
                             name="material_insurance_deadline"
-                            onChange={handleMaterialChange}
+                            onChange={(date) => handleMaterialChange(date)}
                         />
                     </div>
                 </div>
@@ -257,7 +256,7 @@ const AddCartForm = () => {
                             name="description"
                             className="form-control"
                             placeholder="Mô tả chi tiết"
-                            value={description}
+                            value={description?.toString()}
                             onChange={(e) => setDescription(String(e.target.value))}
                         ></textarea>
                     </div>

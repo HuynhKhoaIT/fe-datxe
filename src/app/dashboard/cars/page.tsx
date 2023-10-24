@@ -5,7 +5,7 @@ import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
-export default async function Cars() {
+export default async function CarsPage() {
     const cars = await getCars();
     return (
         <main className="main">

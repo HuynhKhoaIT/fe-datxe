@@ -74,10 +74,12 @@ export function showStatus(status: any) {
     return s;
 }
 
-export const checkOut = async (dataForm = {}, token = '') => {
-    const config = {
-        headers: { Authorization: `Bearer ${token}` },
-    };
-    const res = await axios.post(`${GET_ORDER_ENDPOINT}`, dataForm, config);
-    console.log(res);
+export const checkOut = async (dataForm = {}) => {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.token) {
+        const config = {
+            headers: { Authorization: `Bearer ${session?.user?.token}` },
+        };
+        const res = await axios.post(`${GET_ORDER_ENDPOINT}`, dataForm, config);
+    }
 };

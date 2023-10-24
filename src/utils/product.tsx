@@ -43,7 +43,7 @@ export const getProductsHot = async ({ limit = 8 }) => {
     }
 };
 
-export const getProductsRelated = async (categoryId: string, garageId: string, limit: number) => {
+export const getProductsRelated = async (categoryId: string = '', garageId: string = '', limit: number) => {
     try {
         const res = await axios.get(
             `${GET_PRODUCT_ENDPOINT}?cat_id=${categoryId}&garage_id=${garageId}&limit=${limit}`,
