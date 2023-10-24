@@ -71,7 +71,6 @@ export default function Cart() {
             // RouteKind.
             // Rouge_Script.
             push('/dashboard');
-            // console.log(); // Handle success (e.g., redirect to a different page)
             alert('order successful');
         } catch (error: any) {
             console.log('order fail');
