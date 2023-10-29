@@ -1,7 +1,6 @@
 import { getProductsSearch } from '@/utils/product';
 import { SideBar } from '../components/shop-sidebar/sideBar';
 import { Sort } from '../components/shop-sort/sort';
-import { Pagination } from '../components/pagination-area/pagination-area';
 import SearchData from '../components/search/SearchData';
 
 export default async function Search() {
@@ -18,7 +17,6 @@ export default async function Search() {
                                 <Sort />
                             </div>
                             <SearchData />
-                            <Pagination />
                         </div>
                     </div>
                 </div>
