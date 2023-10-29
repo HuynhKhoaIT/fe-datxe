@@ -13,9 +13,7 @@ export default async function Search() {
                             <SideBar />
                         </div>
                         <div className="col-lg-9">
-                            <div className="col-md-12">
-                                <Sort />
-                            </div>
+                            <div className="col-md-12">{/* <Sort /> */}</div>
                             <SearchData />
                         </div>
                     </div>
