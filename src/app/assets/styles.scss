@@ -5269,10 +5269,24 @@ label {
     text-align: center;
     transition: var(--transition);
 }
+.ant-pagination {
+    display: flex;
+    justify-content: flex-end;
+}
+.ant-pagination .ant-pagination-item {
+    border: none;
+    background: var(--color-dark);
+    color: var(--color-white);
+    transition: var(--transition);
+    &:hover {
+        background: var(--theme-color) !important;
+    }
+}
 
 .pagination .page-link:hover,
-.pagination .page-item.active .page-link {
-    background: var(--theme-color);
+.pagination .page-item.active .page-link,
+.ant-pagination .ant-pagination-item-active {
+    background: var(--theme-color) !important;
     color: var(--color-white);
 }
 

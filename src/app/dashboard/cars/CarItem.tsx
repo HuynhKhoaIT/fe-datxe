@@ -15,9 +15,11 @@ import { useSession } from 'next-auth/react';
 import { getBrand } from '@/utils/branch';
 
 const cx = classNames.bind(styles);
-
-const CarItem = ({ item }: any) => {
-    console.log(item);
+interface CarItemProps {
+    item: any; // Replace 'any' with the actual type of 'item'
+    onDeleteCar(): void;
+}
+const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
 
@@ -33,7 +35,8 @@ const CarItem = ({ item }: any) => {
     };
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
-        handledeleteCar();
+        onDeleteCar();
+        // handledeleteCar();
     };
 
     const handleCancel = () => {
@@ -73,7 +76,6 @@ const CarItem = ({ item }: any) => {
             console.error('Error delete car:', error);
         }
     };
-    console.log(brand);
     return (
         <>
             {contextHolder}

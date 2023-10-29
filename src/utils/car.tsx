@@ -15,12 +15,12 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
  * @return {Promise<void>}
  */
 
-export const getCars = async () => {
-    const session = await getServerSession(authOptions);
+export const getCars = async (token: string) => {
+    // const session = await getServerSession(authOptions);
     try {
-        if (session?.user?.token) {
+        if (token) {
             const config = {
-                headers: { Authorization: `Bearer ${session?.user?.token}` },
+                headers: { Authorization: `Bearer ${token}` },
             };
             const res = await axios.get(`${GET_CAR_ENDPOINT}`, config);
             return res.data.data as Promise<ICar[]>;
@@ -38,7 +38,6 @@ export const addCar = async (newCar: Object, token: String) => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const res = await axios.post(`${GET_CAR_ENDPOINT}`, newCar, config);
-            console.log(res);
             return res.data.data as ICar;
         }
     } catch (error) {
@@ -54,7 +53,6 @@ export const deleteCar = async (carId: string, token: string) => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const res = await axios.delete(`${GET_CAR_ENDPOINT}/${carId}`, config);
-            console.log(res);
             return res.data.data as ICar;
         }
     } catch (error) {

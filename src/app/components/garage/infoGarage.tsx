@@ -2,7 +2,6 @@ import { IGarage } from '@/interfaces/garage';
 import React from 'react';
 
 export default function InfoGarage({ infoGara }: { infoGara: IGarage }) {
-    console.log('11111', infoGara);
     return (
         <div className="col-sm-4 invoice-col">
             THÔNG TIN CHUYÊN GIA

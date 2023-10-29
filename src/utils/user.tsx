@@ -18,12 +18,12 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
  * @return {Promise<void>}
  */
 
-export const getMyAccount = async () => {
-    const session = await getServerSession(authOptions);
+export const getMyAccount = async (token: String) => {
+    // const session = await getServerSession(authOptions);
     try {
-        if (session?.user?.token) {
+        if (token) {
             const config = {
-                headers: { Authorization: `Bearer ${session?.user?.token}` },
+                headers: { Authorization: `Bearer ${token}` },
             };
             const res = await axios.get(`${GET_MY_ACCOUNT_ENDPOINT}`, config);
             return res.data.data as Promise<IUser>;
