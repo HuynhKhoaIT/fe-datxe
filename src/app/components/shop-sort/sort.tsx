@@ -1,7 +1,8 @@
-export async function Sort() {
+import React from 'react';
+export async function Sort({ lengthData }: { lengthData: number }) {
     return (
         <div className="shop-sort">
-            <h5>Showing 1-10 of 50 Results</h5>
+            <h5>Hiển thị 8 sản phẩm trong {lengthData} sản phẩm</h5>
             <div className="shop-sort-box">
                 <select className="select">
                     <option value="1">Sort By Default</option>
