@@ -10,7 +10,7 @@ export default async function SingleShop({ params }: { params: { slug: number } 
 
     return (
         <main className="main">
-            <div className="shop-item-single bg py-120">
+            <div className="shop-item-single bg pd-50">
                 <div className="container">
                     <ProductDetail ProductDetail={data} />
                     <div className="related-item">

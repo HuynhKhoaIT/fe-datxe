@@ -46,19 +46,19 @@ const AddCartForm = () => {
     const [civilDeadline, setCivilDeadline] = useState('');
     const [materialDeadline, setMaterialDeadline] = useState('');
     function handleDateRepairtChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
+        const dateString = dayjs(date).format('DD-MM-YYYY');
         setDateRepairt(dateString);
     }
     function handleRegistrationChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
+        const dateString = dayjs(date).format('DD-MM-YYYY');
         setRegistrationDeadline(dateString);
     }
     function handleCivilChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
+        const dateString = dayjs(date).format('DD-MM-YYYY');
         setCivilDeadline(dateString);
     }
     function handleMaterialChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
+        const dateString = dayjs(date).format('DD-MM-YYYY');
         setMaterialDeadline(dateString);
     }
     const [automakerId, setAutomakerId] = useState('');
@@ -224,6 +224,7 @@ const AddCartForm = () => {
                     <div className={cx('form-group')}>
                         <label>Date Repairt</label>
                         <DatePicker
+                            format={'DD/MM/YYYY'}
                             className={cx('custom-datepicker')}
                             name="date_repair"
                             // onChange={handleDateRepairtChange}
@@ -238,6 +239,7 @@ const AddCartForm = () => {
                         <label>Registration Deadline</label>
 
                         <DatePicker
+                            format={'DD/MM/YYYY'}
                             className={cx('custom-datepicker')}
                             name="registration_deadline"
                             onChange={(date) => handleRegistrationChange(date)}
@@ -249,6 +251,7 @@ const AddCartForm = () => {
                         <label>civil deadline</label>
 
                         <DatePicker
+                            format={'DD/MM/YYYY'}
                             className={cx('custom-datepicker')}
                             name="civil_insurance_deadline"
                             onChange={(date) => handleCivilChange(date)}
@@ -260,6 +263,7 @@ const AddCartForm = () => {
                         <label>material deadline</label>
 
                         <DatePicker
+                            format={'DD/MM/YYYY'}
                             className={cx('custom-datepicker')}
                             name="material_insurance_deadline"
                             onChange={(date) => handleMaterialChange(date)}

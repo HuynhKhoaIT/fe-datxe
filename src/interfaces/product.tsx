@@ -8,5 +8,5 @@ export interface IProduct {
     categoryId?: BigInteger;
     entryPrice?: BigInteger;
     price?: BigInteger;
-    garageId?: BigInteger;
+    garageId?: number;
 }
