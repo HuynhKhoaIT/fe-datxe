@@ -8,9 +8,6 @@ export default async function Category() {
     const category_list = await getCategories();
     return (
         <div>
-            <div className="col-md-12">
-                <Sort />
-            </div>
             <div className="shop-item-wrapper">
                 <div className="row">
                     {category_list?.map((category: ICategory, index) => (
