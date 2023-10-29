@@ -1,4 +1,5 @@
 export interface ICar {
+    map(arg0: (item: any, index: any) => import('react').JSX.Element): import('react').ReactNode;
     id?: BigInteger;
     licensePlates?: string;
     automakerId?: BigInteger;

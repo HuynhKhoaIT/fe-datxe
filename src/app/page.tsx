@@ -21,15 +21,6 @@ export default async function Home() {
                     <SlideBanners />
                 </div>
             </div>
-            {/* <div className="find-car">
-                <div className="container">
-                    <div className="find-car-form">
-                        <h4 className="find-car-title">Tìm kiếm sản phẩm/ dịch vụ</h4>
-                        <Search />
-                    </div>
-                </div>
-            </div> */}
-
             <div className="car-category pt-40 pb-40 bg-white">
                 <div className="container">
                     <div className="row">

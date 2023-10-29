@@ -25,6 +25,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                         <div className={cx('form-group')}>
                             <label>Biển số xe</label>
                             <input
+                                readOnly={true}
                                 type="text"
                                 name="license_plates"
                                 className="form-control"
@@ -38,6 +39,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                             <label>Hãng xe</label>
 
                             <input
+                                readOnly={true}
                                 type="text"
                                 name="color"
                                 className="form-control"
@@ -50,6 +52,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                         <div className={cx('form-group')}>
                             <label>Dòng xe</label>
                             <input
+                                readOnly={true}
                                 type="text"
                                 name="color"
                                 className="form-control"
@@ -64,6 +67,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                         <div className={cx('form-group')}>
                             <label>Màu xe</label>
                             <input
+                                readOnly={true}
                                 type="text"
                                 name="color"
                                 className="form-control"
@@ -76,24 +80,26 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                         <div className={cx('form-group')}>
                             <label>Vin Number</label>
                             <input
+                                readOnly={true}
                                 type="number"
                                 name="vin_number"
                                 className="form-control"
                                 placeholder="Vin Number"
                                 value={data.vinNumber?.toString()}
-                            ></input>
+                            />
                         </div>
                     </div>
                     <div className={cx('col col-md-4')}>
                         <div className={cx('form-group')}>
                             <label>Machine Number</label>
                             <input
+                                readOnly={true}
                                 type="number"
                                 name="machine_number"
                                 className="form-control"
                                 placeholder="Machine Number"
                                 value={data.machineNumber?.toString()}
-                            ></input>
+                            />
                         </div>
                     </div>
                 </div>
@@ -102,6 +108,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                         <div className={cx('form-group')}>
                             <label>Km repairt</label>
                             <input
+                                readOnly={true}
                                 type="number"
                                 name="km_repairt"
                                 className="form-control"

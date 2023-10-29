@@ -57,14 +57,11 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
 
     const addProductToLocalStorage = () => {
         if (ProductDetail && session?.user) {
-            console.log(ProductDetail);
             const productId = ProductDetail.id;
             const garageId = ProductDetail.garageId;
             const existingCartItems = JSON.parse(localStorage.getItem('cartData') || '[]');
             const index = existingCartItems.findIndex((item: any) => item.product.id === productId);
             const idCar = existingCartItems.findIndex((item: any) => item.product.garageId === garageId);
-            console.log(idCar);
-            console.log(existingCartItems);
 
             if (existingCartItems.length > 0 && idCar === -1) {
                 showModal();

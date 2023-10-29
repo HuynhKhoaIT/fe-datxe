@@ -9,15 +9,12 @@ const SearchData = () => {
     const searchParams = useSearchParams();
     const search = searchParams.get('s');
     const catID = searchParams.get('cat_id');
-    console.log('search', search);
     const [productData, setProductData] = useState<IProduct[]>([]);
     useEffect(() => {
         async function fetchProducts() {
             if (search !== null) {
                 try {
                     const newProductData = await getProductsSearch(`s=${search}`);
-                    console.log('newProductData', newProductData);
-
                     setProductData(newProductData);
                 } catch (error) {
                     console.error('Lỗi khi tải dữ liệu sản phẩm:', error);

@@ -1,0 +1,16 @@
+.loading-container {
+    height: 100vh;
+    background-color: #ffffffcc;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loading-component {
+    height: 100%;
+    background-color: #ffffffcc;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

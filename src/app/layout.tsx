@@ -8,7 +8,8 @@ import './globals.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Provider from './Provider';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
+import { LoadingPage } from './components/loading';
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: IProps) {
             <body className={inter.className}>
                 <Provider>
                     <Header />
-                    {children}
+                    <Suspense fallback={<LoadingPage />}>{children}</Suspense>
                     <MyFooter />
                 </Provider>
             </body>

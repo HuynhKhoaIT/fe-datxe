@@ -25,7 +25,6 @@ function LoginForm() {
             // console.log('Login successful');
             // await router.push('/');
         } catch (error) {
-            console.log('Login fail');
             console.error('Login error:', error.message);
         }
     };

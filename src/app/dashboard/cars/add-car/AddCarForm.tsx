@@ -5,7 +5,7 @@ import { addCar } from '@/utils/car';
 import { useSession } from 'next-auth/react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
-import { DatePicker } from 'antd';
+import { Button, DatePicker } from 'antd';
 import styles from './AddCar.module.scss';
 import classNames from 'classnames/bind';
 import { IBrand } from '@/interfaces/brand';
@@ -13,6 +13,9 @@ const cx = classNames.bind(styles);
 import { useRouter } from 'next/navigation';
 import { notification } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const AddCartForm = () => {
     const { data: session } = useSession();
@@ -79,6 +82,9 @@ const AddCartForm = () => {
         }
         fetchData();
     }, []);
+    const handleCancel = async () => {
+        router.push('/dashboard');
+    };
     const handleCreateCar = async () => {
         try {
             const newCar = {
@@ -277,10 +283,20 @@ const AddCartForm = () => {
                     </div>
                 </div>
             </div>
-            <div className={cx('d-flex align-items-center')}>
-                <button className="theme-btn" onClick={handleCreateCar}>
+            <div className={cx('d-flex align-items-center justify-content-end')}>
+                <Button danger key="cancel" onClick={handleCancel} icon={<StopOutlined />}>
+                    Huỷ bỏ
+                </Button>
+                <Button
+                    style={{ marginLeft: '12px' }}
+                    key="submit"
+                    htmlType="submit"
+                    type="primary"
+                    onClick={handleCreateCar}
+                    icon={<FontAwesomeIcon icon={faPlus} />}
+                >
                     Thêm xe
-                </button>
+                </Button>
             </div>
         </div>
     );

@@ -25,7 +25,6 @@ function Search({}) {
     useEffect(() => {
         const fetchApi = async () => {
             const result = await getProductsSearch(`s=${debouncedValue}`);
-            console.log(result);
         };
         fetchApi();
     }, [debouncedValue]);
