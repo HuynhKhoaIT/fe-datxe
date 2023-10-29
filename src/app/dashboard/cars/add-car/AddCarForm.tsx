@@ -74,7 +74,7 @@ const AddCartForm = () => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const data: ICar[] = await getBrands();
+                const data = await getBrands();
                 setBrandsData(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
