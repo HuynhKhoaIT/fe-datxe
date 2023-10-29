@@ -8,7 +8,7 @@ export default function Setting() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-3">
-                            <ProfileSidebar page="orders" />
+                            <ProfileSidebar />
                         </div>
                         <div className="col-lg-9">
                             <div className="user-profile-wrapper">
