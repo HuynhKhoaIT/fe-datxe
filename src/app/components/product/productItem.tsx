@@ -3,7 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faEye, faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IProduct } from '@/interfaces/product';
+import { useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+
 const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
+    const pathParm = useParams();
+    const Parm = usePathname();
+
+    console.log(Parm);
+    console.log(pathParm);
+    let isCategory = Parm?.includes('chuyen-muc');
+    console.log(isCategory);
     return (
         <div key={key} className="col-md-6 col-lg-4 col-xl-3">
             <div className="shop-item">
@@ -30,9 +40,15 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
                         <FontAwesomeIcon icon={faStar} />
                         <FontAwesomeIcon icon={faStar} />
                     </div>
-                    <Link href={`/san-pham/${product.id}`}>
-                        <h4 className="shop-item-title">{product.name}</h4>
-                    </Link>
+                    {isCategory ? (
+                        <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
+                            <h4 className="shop-item-title">{product.name}</h4>
+                        </Link>
+                    ) : (
+                        <Link href={`/san-pham/${product.id}`}>
+                            <h4 className="shop-item-title">{product.name}</h4>
+                        </Link>
+                    )}
                     <div className="shop-item-price">
                         <del>{product.price?.toLocaleString()}đ</del> {product.price?.toLocaleString()}đ
                     </div>
