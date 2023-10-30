@@ -1,8 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import CartItem from '../components/cart/cartItem';
 import { CustomerInfo } from '../components/cart/customerInfo';
-import { checkOut } from '@/utils/order';
+import { checkOutCart } from '@/utils/order';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { CarInfoCart } from '../components/cart/carInfo';
@@ -61,17 +61,16 @@ export default function Cart() {
         }
     }, []);
 
-    const handleCheckOut = async () => {
+    const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         try {
-            await checkOut({
-                date: date,
-                time: time,
-            });
+            await checkOutCart({ date: date, time: time, cartData: cartData });
+            // await checkOutCart();
             // redirect('/dashboard');
             // RouteKind.
             // Rouge_Script.
-            push('/dashboard');
-            alert('order successful');
+            // push('/dashboard');
+            // alert('order successful');
         } catch (error: any) {
             console.log('order fail');
             console.error('order error:', error.message); // Handle order errors
@@ -79,7 +78,7 @@ export default function Cart() {
     };
     return (
         <main className="main">
-            <form method="post">
+            <form method="post" onSubmit={onSubmit}>
                 <div className="shop-cart pt-60 pb-60">
                     <div className="container">
                         <div className="row">
@@ -184,7 +183,7 @@ export default function Cart() {
                                                 </li>
                                             </ul>
                                             <div className="text-end mt-40">
-                                                <button className="theme-btn" onClick={handleCheckOut}>
+                                                <button type="submit" className="theme-btn">
                                                     Đặt lịch<i className="fas fa-arrow-right-long"></i>
                                                 </button>
                                             </div>

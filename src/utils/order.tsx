@@ -74,12 +74,18 @@ export function showStatus(status: any) {
     return s;
 }
 
-export const checkOut = async (dataForm = {}) => {
+export const checkOutCart = async ({ date = '', time = '', cartData = {} }) => {
     const session = await getServerSession(authOptions);
     if (session?.user?.token) {
         const config = {
             headers: { Authorization: `Bearer ${session?.user?.token}` },
         };
-        const res = await axios.post(`${GET_ORDER_ENDPOINT}`, dataForm, config);
+
+        const data = {
+            time: time,
+            date: date,
+            items: {},
+        };
+        const res = await axios.post(`${GET_ORDER_ENDPOINT}`, data, config);
     }
 };
