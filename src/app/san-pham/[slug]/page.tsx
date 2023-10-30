@@ -12,8 +12,8 @@ export default async function SingleShop({ params }: { params: { slug: number } 
 
     return (
         <main className="main">
-            <div className="shop-item-single bg pd-50">
-                <div className="container">
+            <div className="shop-item-single  ">
+                <div className="container position-relative pd-50">
                     <Breadcrumb
                         separator=">"
                         style={{ padding: '16px 0', position: 'absolute', top: '0', left: 12 }}
@@ -28,9 +28,12 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                             {
                                 title: (
                                     <Link href="./" style={{ color: '#1890ff' }}>
-                                        Chuyên mục
+                                        Sản phẩm
                                     </Link>
                                 ),
+                            },
+                            {
+                                title: data?.name,
                             },
                         ]}
                     />
