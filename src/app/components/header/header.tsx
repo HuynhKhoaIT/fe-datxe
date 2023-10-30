@@ -5,7 +5,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import SigninButton from './login-button';
-import Search from './Search';
+import Search from '../search/Search';
 const Header = () => {
     return (
         <header className="header">
