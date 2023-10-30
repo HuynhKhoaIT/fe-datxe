@@ -1,15 +1,31 @@
 'use client';
 
-import { checkOut } from '@/utils/order';
-
+import { checkOutCart } from '@/utils/order';
+import { useSession } from 'next-auth/react';
+import React from 'react';
 export default function Checkout() {
+    const { data: session, status } = useSession();
+    const token = session?.user?.token;
+
     const handleCheckOut = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log('thanh toán');
         try {
-            await checkOut({
-                date: '2023-01-01',
-                time: '20:00:00',
-            });
+            const date = '2021-10-10';
+            const time = '10:10:00';
+            const cartData = [
+                {
+                    id: 1,
+                    quantity: 1,
+                    price: 11111,
+                },
+                {
+                    id: 2,
+                    quantity: 1,
+                    price: 11111,
+                },
+            ];
+            const checkOut = await checkOutCart(date, time, cartData, token ?? '');
             console.log('Login successful'); // Handle success (e.g., redirect to a different page)
         } catch (error: any) {
             console.log('Login fail');

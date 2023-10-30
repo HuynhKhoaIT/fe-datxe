@@ -74,12 +74,27 @@ export function showStatus(status: any) {
     return s;
 }
 
-export const checkOut = async (dataForm = {}) => {
-    const session = await getServerSession(authOptions);
-    if (session?.user?.token) {
-        const config = {
-            headers: { Authorization: `Bearer ${session?.user?.token}` },
-        };
-        const res = await axios.post(`${GET_ORDER_ENDPOINT}`, dataForm, config);
+export const checkOutCart = async (date: string, time: string, cartData: object, token: string) => {
+    console.log(token);
+    console.log(date);
+    console.log(time);
+    console.log(cartData);
+
+    try {
+        if (token) {
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const data = {
+                time: time,
+                date: date,
+                items: cartData,
+            };
+            const res = await axios.post(`${GET_ORDER_ENDPOINT}`, data, config);
+            return res.data.data;
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình tạo thông tin xe');
     }
 };
