@@ -4,6 +4,7 @@ import { getProductsSearch } from '@/utils/product';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ProductItem } from '../product/productItem';
+import { Pagination } from '../pagination-area/pagination-area';
 
 const SearchData = () => {
     const searchParams = useSearchParams();
@@ -12,7 +13,7 @@ const SearchData = () => {
     const [productData, setProductData] = useState<IProduct[]>([]);
     useEffect(() => {
         async function fetchProducts() {
-            if (search !== null) {
+            if (search !== null && catID === null) {
                 try {
                     const newProductData = await getProductsSearch(`s=${search}`);
                     setProductData(newProductData);
@@ -25,15 +26,8 @@ const SearchData = () => {
             }
         }
         fetchProducts();
-    }, [search]);
-
-    return (
-        <div className="shop-item-wrapper">
-            <div className="row align-items-center">
-                {productData?.map((product: IProduct, index) => <ProductItem product={product} key={index} />)}
-            </div>
-        </div>
-    );
+    }, [search, catID]);
+    return <Pagination data={productData} />;
 };
 
 export default SearchData;

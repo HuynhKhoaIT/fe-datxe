@@ -1,36 +1,33 @@
 'use client';
 import { ICategory } from '@/interfaces/category';
-import { useRouter } from 'next/navigation';
-
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 export function SideBarItem({ category }: { category: ICategory }) {
     const router = useRouter();
-
-    const catId = category.id;
-    const name = category ? category.name : '';
-
-    let queryParams: URLSearchParams;
-
+    const catId = category?.id;
+    const name = category ? category?.name : '';
+    const pathname = usePathname();
+    const searchParams = useSearchParams()!;
+    let params = new URLSearchParams(searchParams);
     function handleClick(checkbox: HTMLInputElement) {
         const checkboxes = document.querySelectorAll('input[name="category"]');
-
         checkboxes.forEach((item) => {
             if (item !== checkbox) (item as HTMLInputElement).checked = false;
         });
 
         if (checkbox.checked === false) {
-            queryParams.delete('cat_id');
+            params?.delete('cat_id');
         } else {
-            queryParams.set('cat_id', `${category?.id}`);
+            params?.set('cat_id', `${catId}`);
         }
-        const path = window.location.pathname + '?' + queryParams.toString();
+        const path = pathname + '?' + params?.toString();
         router.push(path);
     }
 
-    function checkHandler(checkBoxType: string, checkBoxValue: string) {
-        queryParams = new URLSearchParams(window.location.search);
-        const value = queryParams.get(checkBoxType);
-        return checkBoxValue == value;
-    }
+    const checkHandler = (checkBoxType: string, checkBoxValue: string) => {
+        const params = new URLSearchParams(searchParams);
+        const value = params.get(checkBoxType);
+        return checkBoxValue === value;
+    };
 
     return (
         <li>
@@ -38,9 +35,9 @@ export function SideBarItem({ category }: { category: ICategory }) {
                 <input
                     name="category"
                     className="form-check-input"
-                    type="checkbox"
+                    type="checkBox"
                     id={category.id?.toString()}
-                    // defaultChecked={checkHandler('cat_id', catId)}
+                    checked={checkHandler('cat_id', catId?.toString() ?? '')}
                     onClick={(e) => handleClick(e.target as HTMLInputElement)}
                 />
                 <label className="form-check-label" htmlFor={category.id?.toString()}>
