@@ -88,8 +88,9 @@ export default function Cart() {
         console.log('thanh toán');
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
+            console.log(checkOut);
             localStorage.removeItem('carData');
-            router.push('/');
+            // router.push('/');
             openNotification();
         } catch (error: any) {
             console.log('Login fail');
