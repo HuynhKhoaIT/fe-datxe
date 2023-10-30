@@ -31,13 +31,13 @@ export default async function SingleShop({
             try {
                 const data: IProduct = await getProductDetail(params.detail);
                 setProductData(data);
-
-                if (data.categoryId && data.garageId) {
+                if (data?.categoryId && data?.garageId) {
                     const related: IProduct[] = await getProductsRelated(
                         data.categoryId.toString(),
                         data.garageId.toString(),
                         8,
                     );
+                    console.log(related);
                     setRelatedProducts(related);
                 }
                 const categories = await getCategories();
@@ -54,6 +54,8 @@ export default async function SingleShop({
             return;
         }
     });
+    console.log(relatedProducts);
+
     return (
         <main className="main">
             <div className="shop-item-single bg pd-50 position-relative">
