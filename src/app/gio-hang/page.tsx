@@ -6,13 +6,36 @@ import { checkOutCart } from '@/utils/order';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { CarInfoCart } from '../components/cart/carInfo';
+import { useSession } from 'next-auth/react';
+import { notification } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
+
 export default function Cart() {
-    const { push } = useRouter();
+    const router = useRouter();
+    const { data: session, status } = useSession();
+    const token = session?.user?.token;
     const [time, setTime] = useState(dayjs().format('hh:mm'));
     const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
+
+    const transformedProducts = cartData?.map((item) => {
+        return {
+            id: item?.product?.id,
+            quantity: item?.quantity,
+            price: item?.product?.price,
+        };
+    });
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = () => {
+        api.info({
+            message: `Thành công`,
+            description: 'Đặt lịch thành công',
+            icon: <CheckOutlined style={{ color: 'green' }} />,
+        });
+    };
     // tăng số lượng sản phẩm
     const incrementQuantity = (productId: number) => {
         const updateCartData = cartData.map((item) => {
@@ -60,24 +83,22 @@ export default function Cart() {
             setCartData(parsedCartData);
         }
     }, []);
-
-    const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log('thanh toán');
         try {
-            await checkOutCart({ date: date, time: time, cartData: cartData });
-            // await checkOutCart();
-            // redirect('/dashboard');
-            // RouteKind.
-            // Rouge_Script.
-            // push('/dashboard');
-            // alert('order successful');
+            const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
+            localStorage.removeItem('carData');
+            router.push('/');
+            openNotification();
         } catch (error: any) {
-            console.log('order fail');
-            console.error('order error:', error.message); // Handle order errors
+            console.log('Login fail');
+            console.error('Login error:', error.message);
         }
     };
     return (
         <main className="main">
+            {contextHolder}
             <form method="post" onSubmit={onSubmit}>
                 <div className="shop-cart pt-60 pb-60">
                     <div className="container">

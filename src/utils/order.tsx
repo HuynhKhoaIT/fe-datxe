@@ -74,18 +74,27 @@ export function showStatus(status: any) {
     return s;
 }
 
-export const checkOutCart = async ({ date = '', time = '', cartData = {} }) => {
-    const session = await getServerSession(authOptions);
-    if (session?.user?.token) {
-        const config = {
-            headers: { Authorization: `Bearer ${session?.user?.token}` },
-        };
+export const checkOutCart = async (date: string, time: string, cartData: object, token: string) => {
+    console.log(token);
+    console.log(date);
+    console.log(time);
+    console.log(cartData);
 
-        const data = {
-            time: time,
-            date: date,
-            items: {},
-        };
-        const res = await axios.post(`${GET_ORDER_ENDPOINT}`, data, config);
+    try {
+        if (token) {
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const data = {
+                time: time,
+                date: date,
+                items: cartData,
+            };
+            const res = await axios.post(`${GET_ORDER_ENDPOINT}`, data, config);
+            return res.data.data;
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình tạo thông tin xe');
     }
 };
