@@ -89,8 +89,8 @@ export default function Cart() {
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
             console.log(checkOut);
-            localStorage.removeItem('carData');
-            // router.push('/');
+            localStorage.setItem('carData', JSON.stringify([]));
+            router.push('/');
             openNotification();
         } catch (error: any) {
             console.log('Login fail');
