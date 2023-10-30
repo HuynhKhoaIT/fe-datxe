@@ -1,5 +1,5 @@
 export interface ICategory {
-    id?: BigInteger;
+    id?: number;
     name?: string;
     description?: string;
     thumbnail?: string;

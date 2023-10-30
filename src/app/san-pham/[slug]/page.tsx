@@ -3,6 +3,8 @@ import ProductDetail from '../../components/product/productDetail';
 import { IProduct } from '@/interfaces/product';
 import Product from '@/app/components/product/product';
 import { getProductDetail, getProductsRelated } from '@/utils/product';
+import { Breadcrumb } from 'antd';
+import Link from 'next/link';
 
 export default async function SingleShop({ params }: { params: { slug: number } }) {
     const data: IProduct = await getProductDetail(params.slug);
@@ -12,6 +14,26 @@ export default async function SingleShop({ params }: { params: { slug: number } 
         <main className="main">
             <div className="shop-item-single bg pd-50">
                 <div className="container">
+                    <Breadcrumb
+                        separator=">"
+                        style={{ padding: '16px 0', position: 'absolute', top: '0', left: 12 }}
+                        items={[
+                            {
+                                title: (
+                                    <Link href="/" style={{ color: '#1890ff' }}>
+                                        Trang chủ
+                                    </Link>
+                                ),
+                            },
+                            {
+                                title: (
+                                    <Link href="./" style={{ color: '#1890ff' }}>
+                                        Chuyên mục
+                                    </Link>
+                                ),
+                            },
+                        ]}
+                    />
                     <ProductDetail ProductDetail={data} />
                     <div className="related-item">
                         <div className="row">
