@@ -1,14 +1,50 @@
+'use client';
 import Categories from '@/app/components/category/categories';
 import Product from '@/app/components/product/product';
+import { ICategory } from '@/interfaces/category';
+import { IGarage } from '@/interfaces/garage';
 import { IProduct } from '@/interfaces/product';
 import { getCategoriesByGar } from '@/utils/category';
 import { getGarage } from '@/utils/garage';
 import { getProductByGar } from '@/utils/product';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-export default async function Home({ params }: { params: { slug: number } }) {
-    const initialCategoryData = await getCategoriesByGar();
-    const garageData = await getGarage(params.slug);
-    const initialProductData: IProduct[] = await getProductByGar(params.slug, 8);
+export default function Home({ params }: { params: { slug: string } }) {
+    const searchParams = useSearchParams();
+    const garageId: string = searchParams.get('garageId') || '';
+    const [initialCategoryData, setInitialCategoryData] = useState<ICategory[]>([]);
+    const [garageData, setGarageData] = useState<IGarage>();
+    const [initialProductData, setInitialProductData] = useState<IProduct[]>([]);
+
+    console.log(initialProductData);
+    console.log(initialCategoryData);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (garageId?.length > 0) {
+                    const categoryData = await getCategoriesByGar(garageId);
+                    setInitialCategoryData(categoryData);
+                } else {
+                    const categoryData = await getCategoriesByGar(params.slug);
+                    setInitialCategoryData(categoryData);
+                }
+
+                const garage = await getGarage(params.slug);
+                setGarageData(garage?.data);
+
+                const productData = await getProductByGar(garageId, 8);
+                setInitialProductData(productData);
+            } catch (error) {
+                // Xử lý lỗi khi có lỗi trong quá trình gọi API
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData(); // Gọi hàm fetchData khi component được mount
+    }, [params.slug]); // Thêm params.slug vào dependency array để useEffect chạy lại khi params.slug thay đổi (nếu params.slug là một dependency)
+
     return (
         <main className="main">
             <div className="">
@@ -22,8 +58,8 @@ export default async function Home({ params }: { params: { slug: number } }) {
                                             <img src={garageData?.logo} alt="" />
                                         </div>
                                         <div className="garage-title">
-                                            <h5>{garageData.name}</h5>
-                                            <p>{garageData.code}</p>
+                                            <h5>{garageData?.name}</h5>
+                                            <p>{garageData?.code}</p>
                                         </div>
                                     </div>
                                     <div className="garage-contact">

@@ -10,14 +10,16 @@ import styles from './Product.module.scss';
 import Link from 'next/link';
 const cx = classNames.bind(styles);
 
-function ProductGarage({ garageId }: { garageId: number }) {
-    const [garageData, setGarageData] = useState<IGarage | undefined>(undefined);
+function ProductGarage({ garageId }: { garageId: string }) {
+    const [garageData, setGarageData] = useState<IGarage>();
 
     useEffect(() => {
         const fetchGarageData = async () => {
             try {
-                const data = await getGarage(garageId);
-                setGarageData(data);
+                const res = await getGarage(garageId);
+                if (res?.data) {
+                    setGarageData(res.data);
+                }
             } catch (error) {
                 console.error('Error fetching garage data:', error);
             }
@@ -25,7 +27,7 @@ function ProductGarage({ garageId }: { garageId: number }) {
 
         fetchGarageData();
     }, [garageId]);
-
+    console.log(garageData);
     return (
         <div className={cx('garageItem')}>
             <Col span={8}>
@@ -52,7 +54,12 @@ function ProductGarage({ garageId }: { garageId: number }) {
                             >
                                 Chat ngay
                             </Button>
-                            <Button href="#" style={{ borderRadius: '0' }} icon={<ShopOutlined />}>
+
+                            <Button
+                                href={`/chuyen-gia/${garageId}`}
+                                style={{ borderRadius: '0' }}
+                                icon={<ShopOutlined />}
+                            >
                                 Xem shop
                             </Button>
                         </Space>

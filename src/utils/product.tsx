@@ -55,7 +55,7 @@ export const getProductsRelated = async (categoryId: string = '', garageId: stri
     }
 };
 
-export const getProductByGar = async (garageId = 0, limit = 8) => {
+export const getProductByGar = async (garageId: string, limit = 8) => {
     try {
         const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?Garage_id=${garageId}&limit=${limit}`);
         return res.data.data as Promise<IProduct[]>;
