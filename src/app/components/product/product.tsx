@@ -1,13 +1,13 @@
 'use client';
 import { IProduct } from '@/interfaces/product';
 import { getProductsHot } from '@/utils/product';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductItem } from './productItem';
 
 export default function Product({ initialProductData }: { initialProductData: IProduct[] }) {
-    const [productData, setProductData] = useState<IProduct[]>(initialProductData);
+    const [productData, setProductData] = useState<IProduct[]>([]);
     const [limit, setLimit] = useState<number>(8);
-
+    console.log(productData);
     const handleButtonClick = async () => {
         // Tăng limit
         const newLimit = limit + 4;
@@ -19,6 +19,10 @@ export default function Product({ initialProductData }: { initialProductData: IP
         // Cập nhật dữ liệu sản phẩm
         setProductData(newProductData);
     };
+    console.log(initialProductData);
+    useEffect(() => {
+        setProductData(initialProductData);
+    }, [initialProductData]);
 
     return (
         <>
