@@ -22,7 +22,7 @@ export const getCategories = async () => {
     }
 };
 
-export const getCategoriesByGar = async (garageId = 0) => {
+export const getCategoriesByGar = async (garageId: string) => {
     try {
         const res = await axios.get(`${GET_CATEGORY_ENDPOINT}?Garage_id=${garageId}`);
         return res.data.data as Promise<ICategory[]>;

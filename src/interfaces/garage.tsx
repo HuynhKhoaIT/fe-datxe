@@ -1,5 +1,6 @@
 export interface IGarage {
-    id?: BigInteger;
+    data: any;
+    id?: number;
     name?: string;
     phoneNumber?: string;
     address?: string;
