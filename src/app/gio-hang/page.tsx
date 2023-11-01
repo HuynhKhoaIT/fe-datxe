@@ -102,22 +102,18 @@ export default function Cart() {
     };
 
     useEffect(() => {
-        // Lấy dữ liệu từ Local Storage
         const existingCartData = localStorage.getItem('cartData');
         if (existingCartData) {
-            // Chuyển đổi chuỗi JSON thành mảng JavaScript
             const parsedCartData = JSON.parse(existingCartData);
             setCartData(parsedCartData);
         }
     }, []);
     const onSubmit = async () => {
-        console.log('thanh toán');
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
-            console.log(checkOut);
-            localStorage.setItem('carData', JSON.stringify([]));
-            router.push('/');
+            localStorage.removeItem('cartData');
             openNotification();
+            router.push('./gio-hang');
         } catch (error: any) {
             console.log('Login fail');
             console.error('Login error:', error.message);
