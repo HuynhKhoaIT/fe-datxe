@@ -1,34 +1,65 @@
+'use client';
 import { useSession } from 'next-auth/react';
-const CarInfoCart = () => {
+import { Card, Col, Form, Input, Row, Select } from 'antd';
+import { Option } from 'antd/lib/mentions';
+import { ICar } from '@/interfaces/car';
+import { useState } from 'react';
+import { getCar } from '@/utils/car';
+const CarInfoCart = ({ cars }: { cars: ICar }) => {
     const { data: session, status } = useSession();
+    const token = session?.user?.token;
+    const [car, setCar] = useState<ICar>();
+    const selectCar = async (value: string) => {
+        console.log(value);
+        try {
+            const car = await getCar(token ?? '', value);
+            setCar(car);
+        } catch (error) {}
+    };
+    const carOptions = cars.map((car) => (
+        <Option key={car.id} value={car.id.toString()}>
+            {car.licensePlates}
+        </Option>
+    ));
+    console.log(car);
     return (
-        <div className="checkout-form">
-            <div className="row">
-                <div className="col-lg-6">
-                    <div className="form-group">
-                        <label>Biển số</label>
-                        <input type="text" className="form-control" placeholder="Biển số" />
-                    </div>
-                </div>
-                <div className="col-lg-6">
-                    <div className="form-group">
-                        <label>Hãng Xe</label>
-                        <input type="text" className="form-control" placeholder="Hãng Xe" />
-                    </div>
-                </div>
-                <div className="col-lg-6">
-                    <div className="form-group">
-                        <label>Dòng Xe</label>
-                        <input type="text" className="form-control" placeholder="Dòng xe" />
-                    </div>
-                </div>
-                <div className="col-lg-6">
-                    <div className="form-group">
-                        <label>Năm sản xuất</label>
-                        <input type="text" className="form-control" placeholder="Năm sản xuất" />
-                    </div>
-                </div>
-            </div>
+        <div id="root">
+            <Card>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            label="Biển số"
+                            name="username"
+                            rules={[{ required: true, message: 'Vui lòng chọn biển số' }]}
+                            wrapperCol={{ span: 24 }}
+                        >
+                            <Select placeholder="Biển số" onChange={(value) => selectCar(value)}>
+                                {carOptions}
+                                <Option value="disabled" disabled>
+                                    Disabled
+                                </Option>
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="Hãng Xe" name="username">
+                            <Input placeholder="Hãng Xe" readOnly />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item label="Dòng xe" name="username">
+                            <Input placeholder="Dòng xe" readOnly />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="Năm sản xuất" name="username">
+                            <Input placeholder="Năm sản xuất" readOnly />
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Card>
         </div>
     );
 };

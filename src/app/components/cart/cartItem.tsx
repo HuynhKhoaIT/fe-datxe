@@ -2,6 +2,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Button } from 'antd';
 interface CartItemProps {
     item: {
         product: {
@@ -34,13 +35,13 @@ function CartItem({ item, decrementQuantity, incrementQuantity, deleteItem }: Ca
             </td>
             <td>
                 <div className="cart-qty">
-                    <button onClick={() => decrementQuantity(item.product.id)} className="minus-btn">
+                    <Button type="default" onClick={() => decrementQuantity(item.product.id)}>
                         <FontAwesomeIcon icon={faMinus} />
-                    </button>
+                    </Button>
                     <input className="quantity" type="text" value={item.quantity} readOnly />
-                    <button onClick={() => incrementQuantity(item.product.id)} className="plus-btn">
+                    <Button type="default" onClick={() => incrementQuantity(item.product.id)}>
                         <FontAwesomeIcon icon={faPlus} />
-                    </button>
+                    </Button>
                 </div>
             </td>
             <td>

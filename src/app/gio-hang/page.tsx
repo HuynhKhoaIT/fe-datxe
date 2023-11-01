@@ -1,21 +1,25 @@
 'use client';
 import React, { FormEvent, useEffect, useState } from 'react';
 import CartItem from '../components/cart/cartItem';
-import { CustomerInfo } from '../components/cart/customerInfo';
 import { checkOutCart } from '@/utils/order';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { CarInfoCart } from '../components/cart/carInfo';
 import { useSession } from 'next-auth/react';
-import { notification } from 'antd';
+import { Button, Card, Col, DatePicker, Form, Input, Row, TimePicker, notification } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import { ICar } from '@/interfaces/car';
+import { getCars } from '@/utils/car';
 
 export default function Cart() {
+    const [form] = Form.useForm();
     const router = useRouter();
     const { data: session, status } = useSession();
     const token = session?.user?.token;
-    const [time, setTime] = useState(dayjs().format('hh:mm'));
-    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
+    const [api, contextHolder] = notification.useNotification();
+    const [time, setTime] = useState('');
+    const [date, setDate] = useState('');
+    const [cars, setCars] = useState<ICar[]>([]);
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
@@ -27,7 +31,30 @@ export default function Cart() {
             price: item?.product?.price,
         };
     });
-    const [api, contextHolder] = notification.useNotification();
+
+    function handleDateChange(date: any) {
+        const dateString = dayjs(date).format('DD-MM-YYYY');
+        setDate(dateString);
+    }
+    function handleTimeChange(date: any) {
+        const time = dayjs(date).format('hh:mm');
+        setTime(time);
+    }
+
+    //Lấy danh sách xe
+    const fetchCars = async () => {
+        try {
+            if (token) {
+                const fetchedCars = await getCars(token);
+                setCars(fetchedCars ?? []);
+            }
+        } catch (error) {
+            console.error('Error fetching cars:', error);
+        }
+    };
+    useEffect(() => {
+        fetchCars();
+    }, [token]);
 
     const openNotification = () => {
         api.info({
@@ -83,8 +110,7 @@ export default function Cart() {
             setCartData(parsedCartData);
         }
     }, []);
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const onSubmit = async () => {
         console.log('thanh toán');
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
@@ -100,57 +126,107 @@ export default function Cart() {
     return (
         <main className="main">
             {contextHolder}
-            <form method="post" onSubmit={onSubmit}>
+            <Form form={form} onFinish={onSubmit} layout="vertical">
                 <div className="shop-cart pt-60 pb-60">
                     <div className="container">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <CustomerInfo />
-                            </div>
-                            <div className="col col-md-6">
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <div className="checkout-widget">
+                                    <h4 className="checkout-widget-title">Thông tin khách hàng</h4>
+                                    <Card>
+                                        <Row gutter={16}>
+                                            <Col span={24}>
+                                                <Form.Item label="Họ Tên" name="name" wrapperCol={{ span: 24 }}>
+                                                    <Input
+                                                        placeholder="Họ Tên"
+                                                        readOnly
+                                                        defaultValue={session?.user?.name || ''}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                        <Row gutter={16}>
+                                            <Col span={12}>
+                                                <Form.Item label="Email" name="email">
+                                                    <Input
+                                                        placeholder="Email"
+                                                        readOnly
+                                                        defaultValue={session?.user?.email ?? ''}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={12}>
+                                                <Form.Item label="Điện thoại" name="phone">
+                                                    <Input
+                                                        placeholder="Điện thoại"
+                                                        readOnly
+                                                        defaultValue={session?.user?.phone ?? ''}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                </div>
+                            </Col>
+                            <Col span={12}>
                                 <div className="checkout-widget">
                                     <h4 className="checkout-widget-title">Thông tin Xe</h4>
-                                    <CarInfoCart />
+                                    <CarInfoCart cars={cars} />
                                 </div>
-                            </div>
-                            <div className="col col-md-12">
-                                <div className="bg-white mb-20 p-4">
-                                    <div className="row">
-                                        <div className="col-lg-6">
-                                            <div className="form-group">
-                                                <label>Ngày</label>
-                                                <input
-                                                    type="date"
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={24}>
+                                <Card className="bg-white mb-20 p-4">
+                                    <Row gutter={16}>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="Ngày"
+                                                name="date"
+                                                wrapperCol={{ span: 24 }}
+                                                rules={[
+                                                    { required: true, message: 'Vui lòng chọn một ngày' },
+                                                    ({ getFieldValue }) => ({
+                                                        validator(rule, value) {
+                                                            if (!value || dayjs(value).isAfter(dayjs(), 'day')) {
+                                                                return Promise.resolve();
+                                                            }
+                                                            return Promise.reject(
+                                                                'Ngày phải lớn hơn hoặc bằng ngày hiện tại',
+                                                            );
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <DatePicker
+                                                    format={'DD/MM/YYYY'}
                                                     name="date"
-                                                    className="form-control"
-                                                    placeholder="Ngày"
-                                                    required
-                                                    value={date}
-                                                    onChange={(e) => setDate(e.target.value)}
+                                                    style={{ width: '100%' }}
+                                                    onChange={(date) => handleDateChange(date?.toString())}
                                                 />
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-6">
-                                            <div className="form-group">
-                                                <label>Giờ</label>
-                                                <input
-                                                    type="time"
-                                                    name="time"
-                                                    className="form-control"
-                                                    placeholder="Giờ"
-                                                    required
-                                                    value={time}
-                                                    onChange={(e) => setTime(e.target.value)}
+                                            </Form.Item>
+                                        </Col>
+
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="Thời gian"
+                                                name="time"
+                                                wrapperCol={{ span: 24 }}
+                                                rules={[{ required: true, message: 'Vui lòng chọn thời gian' }]}
+                                            >
+                                                <TimePicker
+                                                    onChange={(time) => handleTimeChange(time?.toString())}
+                                                    style={{ width: '100%' }}
                                                 />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        </Row>
                     </div>
                     <div className="container">
-                        <div className="shop-cart-wrapper">
+                        <Card className="shop-cart-wrapper">
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead>
@@ -176,23 +252,21 @@ export default function Cart() {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="cart-footer">
-                                <div className="row">
-                                    <div className="col-md-6 col-lg-4">
-                                        <div className="cart-coupon">
-                                            <div className="form-group">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Your Coupon Code"
-                                                />
-                                                <button className="coupon-btn">
-                                                    Apply <i className="fas fa-arrow-right-long"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6 col-lg-8">
+                            <Card className="cart-footer">
+                                <Row>
+                                    <Col span={8}>
+                                        <Form.Item className="cart-coupon ">
+                                            <Input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Your Coupon Code"
+                                            />
+                                            <Button className="coupon-btn" type="primary">
+                                                Apply
+                                            </Button>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={16}>
                                         <div className="cart-summary">
                                             <ul>
                                                 <li>
@@ -204,19 +278,24 @@ export default function Cart() {
                                                     <span>{calculateSubTotal().toLocaleString()}đ</span>
                                                 </li>
                                             </ul>
-                                            <div className="text-end mt-40">
-                                                <button type="submit" className="theme-btn">
-                                                    Đặt lịch<i className="fas fa-arrow-right-long"></i>
-                                                </button>
-                                            </div>
+                                            <Form.Item style={{ textAlign: 'right' }}>
+                                                <Button
+                                                    className="theme-btn"
+                                                    type="primary"
+                                                    htmlType="submit"
+                                                    // style={{ background: 'var(--theme-color)' }}
+                                                >
+                                                    Đặt lịch
+                                                </Button>
+                                            </Form.Item>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </Card>
                     </div>
                 </div>
-            </form>
+            </Form>
         </main>
     );
 }
