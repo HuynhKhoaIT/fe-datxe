@@ -111,9 +111,13 @@ export default function Cart() {
     const onSubmit = async () => {
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
-            localStorage.removeItem('cartData');
             openNotification();
-            router.push('./gio-hang');
+            localStorage.setItem('cartData', JSON.stringify([]));
+            const existingCartData = localStorage.getItem('cartData');
+            if (existingCartData) {
+                const parsedCartData = JSON.parse(existingCartData);
+                setCartData(parsedCartData);
+            }
         } catch (error: any) {
             console.log('Login fail');
             console.error('Login error:', error.message);
