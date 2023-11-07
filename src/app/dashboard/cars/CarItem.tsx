@@ -13,6 +13,7 @@ import { notification } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { useSession } from 'next-auth/react';
 import { getBrand } from '@/utils/branch';
+import UpdateModal from './UpdateModal';
 
 const cx = classNames.bind(styles);
 interface CarItemProps {
@@ -24,14 +25,20 @@ const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
     const token = session?.user?.token;
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [brand, setBrand] = useState<IBrand[]>();
     const showModal = () => {
         setIsModalOpen(true);
     };
+    const showUpdateModal = () => {
+        setIsUpdateModalOpen(true);
+    };
 
     const handleOk = () => {
         setIsModalOpen(false);
+        setIsUpdateModalOpen(false);
     };
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
@@ -41,6 +48,7 @@ const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
 
     const handleCancel = () => {
         setIsModalOpen(false);
+        setIsUpdateModalOpen(false);
     };
     const handleDeleteCancel = () => {
         setIsModalDeleteOpen(false);
@@ -106,7 +114,7 @@ const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
                         <FontAwesomeIcon icon={faEye} />
                     </i>
                     <i
-                        onClick={showModal}
+                        onClick={showUpdateModal}
                         className="btn btn-outline-secondary btn-sm rounded-2"
                         data-bs-toggle="tooltip"
                         title="Edit"
@@ -126,6 +134,7 @@ const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
             <Modal title="Delete" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
                 <p>Bạn có muốn xoá không?</p>
             </Modal>
+            <UpdateModal open={isUpdateModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={item} />
             <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={item} />
         </>
     );
