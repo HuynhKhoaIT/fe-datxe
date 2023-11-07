@@ -10,6 +10,8 @@ import { IBrand } from '@/interfaces/brand';
 import AddCartForm from './add-car/AddCarForm';
 import { getBrand, getBrands, getModels } from '@/utils/branch';
 import dayjs from 'dayjs';
+const { TextArea } = Input;
+
 const cx = classNames.bind(styles);
 
 const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
@@ -219,17 +221,17 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                 </Row>
                 <Row>
                     <Col span={24}>
-                        <div className={cx('form-group')}>
-                            <label>Mô tả chi tiết</label>
-
-                            <textarea
-                                rows={4}
+                        <Form.Item label="Mô tả chi tiết">
+                            <TextArea
+                                showCount
                                 name="description"
-                                className="form-control"
+                                maxLength={100}
+                                onChange={(e) => setDescription(e.target.value)}
                                 placeholder="Mô tả chi tiết"
-                                value={data.description?.toString()}
-                            ></textarea>
-                        </div>
+                                defaultValue={data.description}
+                                style={{ height: 120, resize: 'none' }}
+                            />
+                        </Form.Item>
                     </Col>
                 </Row>
             </Form>
