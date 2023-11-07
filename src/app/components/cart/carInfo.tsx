@@ -1,61 +1,76 @@
-'use client';
 import { useSession } from 'next-auth/react';
 import { Card, Col, Form, Input, Row, Select } from 'antd';
-import { Option } from 'antd/lib/mentions';
 import { ICar } from '@/interfaces/car';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getCar } from '@/utils/car';
-const CarInfoCart = ({ cars }: { cars: ICar }) => {
-    const { data: session, status } = useSession();
+import { getBrand, getModels } from '@/utils/branch';
+
+const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
+    const { data: session } = useSession();
     const token = session?.user?.token;
     const [car, setCar] = useState<ICar>();
+    const [brand, setBrand] = useState('');
+    const [model, setModel] = useState('');
+
     const selectCar = async (value: string) => {
-        console.log(value);
         try {
-            const car = await getCar(token ?? '', value);
-            setCar(car);
-        } catch (error) {}
+            const selectedCar = await getCar(token ?? '', value);
+            setCar(selectedCar);
+        } catch (error) {
+            console.error('Error selecting car:', error);
+        }
     };
-    const carOptions = cars.map((car) => (
-        <Option key={car.id} value={car.id.toString()}>
+
+    const carOptions = cars?.map((car) => (
+        <Select.Option key={car.id} value={car.id}>
             {car.licensePlates}
-        </Option>
+        </Select.Option>
     ));
-    console.log(car);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (car) {
+                    const brandData = await getBrand(car.automakerId ?? 0);
+                    setBrand(brandData.name);
+
+                    const modelData = await getBrand(car.carNameId ?? 0);
+                    setModel(modelData.name);
+                    console.log(modelData);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [car]);
+
     return (
         <div id="root">
             <Card>
                 <Row gutter={16}>
-                    <Col span={12}>
+                    <Col span={24}>
                         <Form.Item
                             label="Biển số"
-                            name="username"
+                            name="licensePlates"
                             rules={[{ required: true, message: 'Vui lòng chọn biển số' }]}
                             wrapperCol={{ span: 24 }}
                         >
                             <Select placeholder="Biển số" onChange={(value) => selectCar(value)}>
                                 {carOptions}
-                                <Option value="disabled" disabled>
-                                    Disabled
-                                </Option>
                             </Select>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="Hãng Xe" name="username">
-                            <Input placeholder="Hãng Xe" readOnly />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={16}>
                     <Col span={12}>
-                        <Form.Item label="Dòng xe" name="username">
-                            <Input placeholder="Dòng xe" readOnly />
+                        <Form.Item label="Hãng Xe">
+                            <Input placeholder="Hãng Xe" name="brand" readOnly value={brand || ''} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Năm sản xuất" name="username">
-                            <Input placeholder="Năm sản xuất" readOnly />
+                        <Form.Item label="Dòng xe">
+                            <Input placeholder="Dòng xe" readOnly value={model || ''} />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -63,4 +78,5 @@ const CarInfoCart = ({ cars }: { cars: ICar }) => {
         </div>
     );
 };
+
 export { CarInfoCart };

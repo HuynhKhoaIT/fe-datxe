@@ -126,7 +126,7 @@ const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
             <Modal title="Delete" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
                 <p>Bạn có muốn xoá không?</p>
             </Modal>
-            <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={item || {}} />
+            <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={item} />
         </>
     );
 };

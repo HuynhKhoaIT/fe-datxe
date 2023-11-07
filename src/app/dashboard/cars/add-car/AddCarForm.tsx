@@ -46,19 +46,19 @@ const AddCartForm = () => {
     const [civilDeadline, setCivilDeadline] = useState('');
     const [materialDeadline, setMaterialDeadline] = useState('');
     function handleDateRepairtChange(date: any) {
-        const dateString = dayjs(date).format('DD-MM-YYYY');
+        const dateString = dayjs(date).format('YYYY-MM-DD');
         setDateRepairt(dateString);
     }
     function handleRegistrationChange(date: any) {
-        const dateString = dayjs(date).format('DD-MM-YYYY');
+        const dateString = dayjs(date).format('YYYY-MM-DD');
         setRegistrationDeadline(dateString);
     }
     function handleCivilChange(date: any) {
-        const dateString = dayjs(date).format('DD-MM-YYYY');
+        const dateString = dayjs(date).format('YYYY-MM-DD');
         setCivilDeadline(dateString);
     }
     function handleMaterialChange(date: any) {
-        const dateString = dayjs(date).format('DD-MM-YYYY');
+        const dateString = dayjs(date).format('YYYY-MM-DD');
         setMaterialDeadline(dateString);
     }
     const [automakerId, setAutomakerId] = useState('');
