@@ -20,10 +20,10 @@ const { TextArea } = Input;
 
 const AddCartForm = () => {
     const { data: session } = useSession();
+    const token = session?.user?.token;
     const router = useRouter();
     const [form] = Form.useForm();
 
-    const token = session?.user?.token;
     const [api, contextHolder] = notification.useNotification();
 
     const openNotification = () => {
@@ -309,7 +309,12 @@ const AddCartForm = () => {
             <Row gutter={10}>
                 <Col span={8}>
                     <Form.Item label="Biển số xe">
-                        <Input type="text" name="licensePlates" placeholder="Biển số xe" />
+                        <Input
+                            type="text"
+                            name="licensePlates"
+                            placeholder="Biển số xe"
+                            onChange={(e) => setLicensePlates(e.target.value)}
+                        />
                     </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -384,19 +389,34 @@ const AddCartForm = () => {
                 </Col>
                 <Col span={8}>
                     <Form.Item label="Date Repairt">
-                        <DatePicker format={'DD/MM/YYYY'} name="date_repair" style={{ width: '100%' }} />
+                        <DatePicker
+                            format={'DD/MM/YYYY'}
+                            name="date_repair"
+                            style={{ width: '100%' }}
+                            onChange={(date) => handleDateRepairtChange(date?.toString())}
+                        />
                     </Form.Item>
                 </Col>
             </Row>
             <Row className={cx('row')}>
                 <Col span={8}>
                     <Form.Item label="Registration Deadline">
-                        <DatePicker format={'DD/MM/YYYY'} name="registration_deadline" style={{ width: '100%' }} />
+                        <DatePicker
+                            format={'DD/MM/YYYY'}
+                            name="registration_deadline"
+                            style={{ width: '100%' }}
+                            onChange={(date) => handleRegistrationChange(date)}
+                        />
                     </Form.Item>
                 </Col>
                 <Col span={8}>
                     <Form.Item label="Civil deadline">
-                        <DatePicker format={'DD/MM/YYYY'} name="civil_insurance_deadline" style={{ width: '100%' }} />
+                        <DatePicker
+                            format={'DD/MM/YYYY'}
+                            name="civil_insurance_deadline"
+                            style={{ width: '100%' }}
+                            onChange={(date) => handleCivilChange(date)}
+                        />
                     </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -404,6 +424,7 @@ const AddCartForm = () => {
                         <DatePicker
                             format={'DD/MM/YYYY'}
                             name="material_insurance_deadline"
+                            onChange={(date) => handleMaterialChange(date)}
                             style={{ width: '100%' }}
                         />
                     </Form.Item>
