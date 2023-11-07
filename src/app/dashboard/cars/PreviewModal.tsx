@@ -25,18 +25,18 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     const [model, setModel] = useState('');
     const [brandsData, setBrandsData] = useState<IBrand[]>([]);
     const [models, setModels] = useState<IBrand[]>([]);
-    const [colorCar, setColorCar] = useState('');
-    const [vinNumber, setVinNumber] = useState<Number>();
-    const [kmRepairt, setKmRepairt] = useState<Number>();
-    const [brandId, setBrandId] = useState<Number>();
-    const [machineNumber, setMachineNumber] = useState<Number>();
-    const [description, setDescription] = useState('');
-    const [dateRepairt, setDateRepairt] = useState('');
-    const [registrationDeadline, setRegistrationDeadline] = useState('');
-    const [civilDeadline, setCivilDeadline] = useState('');
-    const [materialDeadline, setMaterialDeadline] = useState('');
-    const [automakerId, setAutomakerId] = useState('');
-    const [carNameId, setCarNameId] = useState('0');
+    const [colorCar, setColorCar] = useState(data.color);
+    const [vinNumber, setVinNumber] = useState<Number>(data.vinNumber);
+    const [kmRepairt, setKmRepairt] = useState<Number>(data.kmRepairt);
+    const [brandId, setBrandId] = useState<Number>(data.automakerId);
+    const [machineNumber, setMachineNumber] = useState<Number>(data.machineNumber);
+    const [description, setDescription] = useState(data.description);
+    const [dateRepairt, setDateRepairt] = useState(data.dateRepairt);
+    const [registrationDeadline, setRegistrationDeadline] = useState(data.registrationDate);
+    const [civilDeadline, setCivilDeadline] = useState(data.civilDeadline);
+    const [materialDeadline, setMaterialDeadline] = useState(data.materialInsuranceDate);
+    const [automakerId, setAutomakerId] = useState(data.automakerId);
+    const [carNameId, setCarNameId] = useState(data.carNameId);
     function handleDateRepairtChange(date: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setDateRepairt(dateString);
@@ -109,8 +109,10 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                 automaker_id: automakerId,
                 description: description,
             };
+            console.log(newCar);
+            console.log(data.id);
             const createdCar = await updateCar(data.id, newCar, token ?? '');
-            // openNotification();
+            onCancel();
         } catch (error) {
             console.error('Error creating car:', error);
         }
