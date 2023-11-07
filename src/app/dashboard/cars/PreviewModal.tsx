@@ -10,14 +10,16 @@ import { IBrand } from '@/interfaces/brand';
 import AddCartForm from './add-car/AddCarForm';
 import { getBrand, getBrands, getModels } from '@/utils/branch';
 import dayjs from 'dayjs';
+import { useSession } from 'next-auth/react';
+import { updateCar } from '@/utils/car';
 const { TextArea } = Input;
 
 const cx = classNames.bind(styles);
 
 const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     const [form] = Form.useForm();
-
-    console.log(data);
+    const { data: session } = useSession();
+    const token = session?.user?.token;
 
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
@@ -89,12 +91,37 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
         };
         fetchData();
     }, []);
+    const handleUpdateCar = async () => {
+        try {
+            const newCar = {
+                customer_id: session?.user?.id,
+                number_plates: data.licensePlates,
+                color: colorCar,
+                car_name_id: carNameId,
+                brand_id: brandId,
+                vin_number: vinNumber,
+                machine_number: machineNumber,
+                km_repairt: kmRepairt,
+                date_repairt: dateRepairt,
+                registration_deadline: registrationDeadline,
+                civil_insurance_deadline: civilDeadline,
+                material_insurance_deadline: materialDeadline,
+                automaker_id: automakerId,
+                description: description,
+            };
+            const createdCar = await updateCar(data.id, newCar, token ?? '');
+            // openNotification();
+        } catch (error) {
+            console.error('Error creating car:', error);
+        }
+    };
     return (
         <Modal
             title="Thông tin chi tiết"
             open={open}
-            onOk={onOk}
-            footer={false}
+            onOk={() => {
+                handleUpdateCar();
+            }}
             onCancel={onCancel}
             style={{ zIndex: '99999' }}
             {...props}

@@ -20,10 +20,10 @@ const { TextArea } = Input;
 
 const AddCartForm = () => {
     const { data: session } = useSession();
+    const token = session?.user?.token;
     const router = useRouter();
     const [form] = Form.useForm();
 
-    const token = session?.user?.token;
     const [api, contextHolder] = notification.useNotification();
 
     const openNotification = () => {
