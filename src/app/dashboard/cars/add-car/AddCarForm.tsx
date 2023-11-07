@@ -5,7 +5,7 @@ import { addCar } from '@/utils/car';
 import { useSession } from 'next-auth/react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
-import { Button, DatePicker } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import styles from './AddCar.module.scss';
 import classNames from 'classnames/bind';
 import { IBrand } from '@/interfaces/brand';
@@ -16,10 +16,12 @@ import { CheckOutlined } from '@ant-design/icons';
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+const { TextArea } = Input;
 
 const AddCartForm = () => {
     const { data: session } = useSession();
     const router = useRouter();
+    const [form] = Form.useForm();
 
     const token = session?.user?.token;
     const [api, contextHolder] = notification.useNotification();
@@ -111,198 +113,317 @@ const AddCartForm = () => {
         }
     };
     return (
-        <div className={cx('wrapper-car')}>
-            {contextHolder}
-            <div className={cx('row')}>
-                <div className={cx('col-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Biển số xe</label>
-                        <input
-                            type="text"
-                            name="license_plates"
-                            className="form-control"
-                            placeholder="Biển số xe"
-                            value={licensePlates}
-                            onChange={(e) => setLicensePlates(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div className={cx('col col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Hãng xe</label>
+        // <Form form={form} layout="vertical">
+        //     {contextHolder}
+        //     <div className={cx('row')}>
+        //         <div className={cx('col-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Biển số xe</label>
+        //                 <input
+        //                     type="text"
+        //                     name="license_plates"
+        //                     className="form-control"
+        //                     placeholder="Biển số xe"
+        //                     value={licensePlates}
+        //                     onChange={(e) => setLicensePlates(e.target.value)}
+        //                 />
+        //             </div>
+        //         </div>
+        //         <div className={cx('col col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Hãng xe</label>
 
-                        <select
-                            className={cx('form-control')}
-                            required
-                            name="automaker_id"
-                            id="automaker_id"
-                            onChange={(e) => selectBrand(Number(e.target.value))}
-                        >
-                            <option>Chọn hãng xe</option>
+        //                 <select
+        //                     className={cx('form-control')}
+        //                     required
+        //                     name="automaker_id"
+        //                     id="automaker_id"
+        //                     onChange={(e) => selectBrand(Number(e.target.value))}
+        //                 >
+        //                     <option>Chọn hãng xe</option>
 
+        //                     {brandsData &&
+        //                         brandsData?.map((brand: IBrand) => (
+        //                             <option value={brand.id?.toString()}>{brand.name}</option>
+        //                         ))}
+        //                 </select>
+        //             </div>
+        //         </div>
+        //         <div className={cx('col col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Dòng xe</label>
+        //                 <select
+        //                     className="form-control"
+        //                     placeholder="Dòng xe"
+        //                     name="car_name_id"
+        //                     required
+        //                     onChange={(e) => setCarNameId(e.target.value)}
+        //                 >
+        //                     <option>Chọn dòng xe</option>
+        //                     {models.map((model: IBrand) => (
+        //                         <option value={model?.id?.toString()}>{model?.name}</option>
+        //                     ))}
+        //                 </select>
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className={cx('row')}>
+        //         <div className={cx('col-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Màu xe</label>
+        //                 <input
+        //                     type="text"
+        //                     name="color"
+        //                     className="form-control"
+        //                     placeholder="Màu xe"
+        //                     value={colorCar}
+        //                     onChange={(e) => setColorCar(e.target.value)}
+        //                 />
+        //             </div>
+        //         </div>
+        //         <div className={cx('col col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Vin Number</label>
+        //                 <input
+        //                     type="number"
+        //                     name="vin_number"
+        //                     className="form-control"
+        //                     placeholder="Vin Number"
+        //                     value={vinNumber?.toString()}
+        //                     onChange={(e) => setVinNumber(Number(e.target.value))}
+        //                 ></input>
+        //             </div>
+        //         </div>
+        //         <div className={cx('col col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Machine Number</label>
+        //                 <input
+        //                     type="number"
+        //                     name="machine_number"
+        //                     className="form-control"
+        //                     placeholder="Machine Number"
+        //                     value={machineNumber?.toString()}
+        //                     onChange={(e) => setMachineNumber(Number(e.target.value))}
+        //                 ></input>
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className={cx('row')}>
+        //         <div className={cx('col-4 col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Km repairt</label>
+        //                 <input
+        //                     type="number"
+        //                     name="km_repairt"
+        //                     className="form-control"
+        //                     placeholder="Km repairt"
+        //                     value={kmRepairt?.toString()}
+        //                     onChange={(e) => setKmRepairt(Number(e.target.value))}
+        //                 />
+        //             </div>
+        //         </div>
+        //         <div className={cx('col-4 col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Date Repairt</label>
+        //                 <DatePicker
+        //                     format={'DD/MM/YYYY'}
+        //                     className={cx('custom-datepicker')}
+        //                     name="date_repair"
+        //                     // onChange={handleDateRepairtChange}
+        //                     onChange={(date) => handleDateRepairtChange(date?.toString())}
+        //                 />
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className={cx('row')}>
+        //         <div className={cx('col-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Registration Deadline</label>
+
+        //                 <DatePicker
+        //                     format={'DD/MM/YYYY'}
+        //                     className={cx('custom-datepicker')}
+        //                     name="registration_deadline"
+        //                     onChange={(date) => handleRegistrationChange(date)}
+        //                 />
+        //             </div>
+        //         </div>
+        //         <div className={cx('col col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>civil deadline</label>
+
+        //                 <DatePicker
+        //                     format={'DD/MM/YYYY'}
+        //                     className={cx('custom-datepicker')}
+        //                     name="civil_insurance_deadline"
+        //                     onChange={(date) => handleCivilChange(date)}
+        //                 />
+        //             </div>
+        //         </div>
+        //         <div className={cx('col col-md-4')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>material deadline</label>
+
+        //                 <DatePicker
+        //                     format={'DD/MM/YYYY'}
+        //                     className={cx('custom-datepicker')}
+        //                     name="material_insurance_deadline"
+        //                     onChange={(date) => handleMaterialChange(date)}
+        //                 />
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className={cx('row')}>
+        //         <div className={cx('col-12')}>
+        //             <div className={cx('form-group')}>
+        //                 <label>Mô tả chi tiết</label>
+
+        //                 <textarea
+        //                     rows={4}
+        //                     name="description"
+        //                     className="form-control"
+        //                     placeholder="Mô tả chi tiết"
+        //                     value={description?.toString()}
+        //                     onChange={(e) => setDescription(e.target.value)}
+        //                 ></textarea>
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className={cx('d-flex align-items-center justify-content-end')}>
+        //         <Button danger key="cancel" onClick={handleCancel} icon={<StopOutlined />}>
+        //             Huỷ bỏ
+        //         </Button>
+        //         <Button
+        //             style={{ marginLeft: '12px' }}
+        //             key="submit"
+        //             htmlType="submit"
+        //             type="primary"
+        //             onClick={handleCreateCar}
+        //             icon={<FontAwesomeIcon icon={faPlus} />}
+        //         >
+        //             Thêm xe
+        //         </Button>
+        //     </div>
+        // </Form>
+        <Form form={form} layout="vertical">
+            <Row gutter={10}>
+                <Col span={8}>
+                    <Form.Item label="Biển số xe">
+                        <Input type="text" name="licensePlates" placeholder="Biển số xe" />
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item label="Hãng xe">
+                        <Select placeholder="Chọn hãng xe" onChange={(value) => selectBrand(Number(value))}>
+                            <Select.Option>Chọn hãng xe</Select.Option>
                             {brandsData &&
-                                brandsData?.map((brand: IBrand) => (
-                                    <option value={brand.id?.toString()}>{brand.name}</option>
+                                brandsData?.map((brand: IBrand, index) => (
+                                    <Select.Option key={index} value={brand.id?.toString()}>
+                                        {brand.name}
+                                    </Select.Option>
                                 ))}
-                        </select>
-                    </div>
-                </div>
-                <div className={cx('col col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Dòng xe</label>
-                        <select
-                            className="form-control"
-                            placeholder="Dòng xe"
-                            name="car_name_id"
-                            required
-                            onChange={(e) => setCarNameId(e.target.value)}
-                        >
-                            <option>Chọn dòng xe</option>
-                            {models.map((model: IBrand) => (
-                                <option value={model?.id?.toString()}>{model?.name}</option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div className={cx('row')}>
-                <div className={cx('col-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Màu xe</label>
-                        <input
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item label="Dòng xe">
+                        <Select placeholder="Chọn dòng xe" onChange={(e) => setCarNameId(e)}>
+                            <Select.Option>Chọn dòng xe</Select.Option>
+                            {models &&
+                                models?.map((model: IBrand, index) => (
+                                    <Select.Option key={index} value={model.id?.toString()}>
+                                        {model.name}
+                                    </Select.Option>
+                                ))}
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={10}>
+                <Col span={8}>
+                    <Form.Item label="Màu xe">
+                        <Input
                             type="text"
                             name="color"
-                            className="form-control"
                             placeholder="Màu xe"
-                            value={colorCar}
                             onChange={(e) => setColorCar(e.target.value)}
                         />
-                    </div>
-                </div>
-                <div className={cx('col col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Vin Number</label>
-                        <input
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item label="Vin Number">
+                        <Input
                             type="number"
                             name="vin_number"
-                            className="form-control"
                             placeholder="Vin Number"
-                            value={vinNumber?.toString()}
                             onChange={(e) => setVinNumber(Number(e.target.value))}
-                        ></input>
-                    </div>
-                </div>
-                <div className={cx('col col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Machine Number</label>
-                        <input
+                        />
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item label="Machine Number">
+                        <Input
                             type="number"
                             name="machine_number"
-                            className="form-control"
                             placeholder="Machine Number"
-                            value={machineNumber?.toString()}
                             onChange={(e) => setMachineNumber(Number(e.target.value))}
-                        ></input>
-                    </div>
-                </div>
-            </div>
-            <div className={cx('row')}>
-                <div className={cx('col-4 col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Km repairt</label>
-                        <input
+                        />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row gutter={10}>
+                <Col span={8}>
+                    <Form.Item label="Km repairt">
+                        <Input
                             type="number"
                             name="km_repairt"
-                            className="form-control"
                             placeholder="Km repairt"
-                            value={kmRepairt?.toString()}
                             onChange={(e) => setKmRepairt(Number(e.target.value))}
                         />
-                    </div>
-                </div>
-                <div className={cx('col-4 col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Date Repairt</label>
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item label="Date Repairt">
+                        <DatePicker format={'DD/MM/YYYY'} name="date_repair" style={{ width: '100%' }} />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row className={cx('row')}>
+                <Col span={8}>
+                    <Form.Item label="Registration Deadline">
+                        <DatePicker format={'DD/MM/YYYY'} name="registration_deadline" style={{ width: '100%' }} />
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item label="Civil deadline">
+                        <DatePicker format={'DD/MM/YYYY'} name="civil_insurance_deadline" style={{ width: '100%' }} />
+                    </Form.Item>
+                </Col>
+                <Col span={8}>
+                    <Form.Item label="Material deadline">
                         <DatePicker
                             format={'DD/MM/YYYY'}
-                            className={cx('custom-datepicker')}
-                            name="date_repair"
-                            // onChange={handleDateRepairtChange}
-                            onChange={(date) => handleDateRepairtChange(date?.toString())}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className={cx('row')}>
-                <div className={cx('col-4')}>
-                    <div className={cx('form-group')}>
-                        <label>Registration Deadline</label>
-
-                        <DatePicker
-                            format={'DD/MM/YYYY'}
-                            className={cx('custom-datepicker')}
-                            name="registration_deadline"
-                            onChange={(date) => handleRegistrationChange(date)}
-                        />
-                    </div>
-                </div>
-                <div className={cx('col col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>civil deadline</label>
-
-                        <DatePicker
-                            format={'DD/MM/YYYY'}
-                            className={cx('custom-datepicker')}
-                            name="civil_insurance_deadline"
-                            onChange={(date) => handleCivilChange(date)}
-                        />
-                    </div>
-                </div>
-                <div className={cx('col col-md-4')}>
-                    <div className={cx('form-group')}>
-                        <label>material deadline</label>
-
-                        <DatePicker
-                            format={'DD/MM/YYYY'}
-                            className={cx('custom-datepicker')}
                             name="material_insurance_deadline"
-                            onChange={(date) => handleMaterialChange(date)}
+                            style={{ width: '100%' }}
                         />
-                    </div>
-                </div>
-            </div>
-            <div className={cx('row')}>
-                <div className={cx('col-12')}>
-                    <div className={cx('form-group')}>
-                        <label>Mô tả chi tiết</label>
-
-                        <textarea
-                            rows={4}
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row>
+                <Col span={24}>
+                    <Form.Item label="Mô tả chi tiết">
+                        <TextArea
+                            showCount
                             name="description"
-                            className="form-control"
-                            placeholder="Mô tả chi tiết"
-                            value={description?.toString()}
+                            maxLength={100}
                             onChange={(e) => setDescription(e.target.value)}
-                        ></textarea>
-                    </div>
-                </div>
-            </div>
-            <div className={cx('d-flex align-items-center justify-content-end')}>
-                <Button danger key="cancel" onClick={handleCancel} icon={<StopOutlined />}>
-                    Huỷ bỏ
-                </Button>
-                <Button
-                    style={{ marginLeft: '12px' }}
-                    key="submit"
-                    htmlType="submit"
-                    type="primary"
-                    onClick={handleCreateCar}
-                    icon={<FontAwesomeIcon icon={faPlus} />}
-                >
-                    Thêm xe
-                </Button>
-            </div>
-        </div>
+                            placeholder="Mô tả chi tiết"
+                            style={{ height: 120, resize: 'none' }}
+                        />
+                    </Form.Item>
+                </Col>
+            </Row>
+        </Form>
     );
 };
 export default AddCartForm;
