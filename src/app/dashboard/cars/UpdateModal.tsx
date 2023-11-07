@@ -16,7 +16,7 @@ const { TextArea } = Input;
 
 const cx = classNames.bind(styles);
 
-const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
+const UpdateModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     const [form] = Form.useForm();
     const { data: session } = useSession();
     const token = session?.user?.token;
@@ -91,12 +91,41 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
         };
         fetchData();
     }, []);
-
+    const handleUpdateCar = async () => {
+        try {
+            const newCar = {
+                customer_id: session?.user?.id,
+                number_plates: data.licensePlates,
+                color: colorCar,
+                car_name_id: carNameId,
+                brand_id: brandId,
+                vin_number: vinNumber,
+                machine_number: machineNumber,
+                km_repairt: kmRepairt,
+                date_repairt: dateRepairt,
+                registration_deadline: registrationDeadline,
+                civil_insurance_deadline: civilDeadline,
+                material_insurance_deadline: materialDeadline,
+                automaker_id: automakerId,
+                description: description,
+            };
+            console.log(newCar);
+            console.log(data.id);
+            const createdCar = await updateCar(data.id, newCar, token ?? '');
+            onCancel();
+        } catch (error) {
+            console.error('Error creating car:', error);
+        }
+    };
     return (
         <Modal
-            title="Thông tin chi tiết"
+            title="Chỉnh sửa thông tin xe của bạn"
             open={open}
-            onOk={onOk}
+            onOk={() => {
+                handleUpdateCar();
+            }}
+            okText="Cập nhật"
+            cancelText="Huỷ"
             onCancel={onCancel}
             style={{ zIndex: '99999' }}
             {...props}
@@ -116,77 +145,125 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                     </Col>
                     <Col span={8}>
                         <Form.Item label="Hãng xe">
-                            <Input readOnly type="text" name="brandCar" defaultValue={brand} />
+                            <Select
+                                placeholder="Chọn hãng xe"
+                                onChange={(value) => selectBrand(Number(value))}
+                                defaultValue={brand}
+                            >
+                                <Select.Option>Chọn hãng xe</Select.Option>
+                                {brandsData &&
+                                    brandsData?.map((brand: IBrand, index) => (
+                                        <Select.Option key={index} value={brand.id?.toString()}>
+                                            {brand.name}
+                                        </Select.Option>
+                                    ))}
+                            </Select>
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item label="Dòng xe">
-                            <Input readOnly type="text" name="modelCar" defaultValue={model} />
+                            <Select placeholder="Chọn dòng xe" onChange={(e) => setCarNameId(e)} defaultValue={model}>
+                                <Select.Option>Chọn dòng xe</Select.Option>
+                                {models &&
+                                    models?.map((model: IBrand, index) => (
+                                        <Select.Option key={index} value={model.id?.toString()}>
+                                            {model.name}
+                                        </Select.Option>
+                                    ))}
+                            </Select>
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={10}>
                     <Col span={8}>
                         <Form.Item label="Màu xe">
-                            <Input readOnly type="text" name="color" defaultValue={data.color} />
+                            <Input
+                                type="text"
+                                name="color"
+                                placeholder="Màu xe"
+                                defaultValue={data.color}
+                                onChange={(e) => setColorCar(e.target.value)}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item label="Vin Number">
-                            <Input readOnly type="number" name="vin_number" defaultValue={Number(data.vinNumber)} />
+                            <Input
+                                type="number"
+                                name="vin_number"
+                                placeholder="Vin Number"
+                                defaultValue={Number(data.vinNumber)}
+                                onChange={(e) => setVinNumber(Number(e.target.value))}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item label="Machine Number">
-                            <Input readOnly type="number" name="machine_number" />
+                            <Input
+                                type="number"
+                                name="machine_number"
+                                placeholder="Machine Number"
+                                // defaultValue={Number(data.vinNumber)}
+                                onChange={(e) => setMachineNumber(Number(e.target.value))}
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={10}>
                     <Col span={8}>
                         <Form.Item label="Km repairt">
-                            <Input readOnly type="number" name="km_repairt" defaultValue={data.kmRepairt?.toString()} />
+                            <Input
+                                type="number"
+                                name="km_repairt"
+                                placeholder="Km repairt"
+                                defaultValue={data.kmRepairt?.toString()}
+                                onChange={(e) => setKmRepairt(Number(e.target.value))}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item label="Date Repairt">
-                            <Input
-                                value={dayjs(data.maintenanceDate).format('DD/MM/YYYY')}
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
+                                defaultValue={dayjs(data.maintenanceDate)}
                                 name="date_repair"
                                 style={{ width: '100%' }}
-                                readOnly
+                                onChange={(date) => handleDateRepairtChange(date?.toString())}
                             />
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={10}>
+                <Row className={cx('row')}>
                     <Col span={8}>
                         <Form.Item label="Registration Deadline">
-                            <Input
-                                value={dayjs(data.registrationDate).format('DD/MM/YYYY')}
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
+                                defaultValue={dayjs(data.registrationDate)}
                                 name="registration_deadline"
                                 style={{ width: '100%' }}
-                                readOnly
+                                onChange={(date) => handleRegistrationChange(date)}
                             />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item label="Civil deadline">
-                            <Input
-                                value={dayjs(data.civilDeadline).format('DD/MM/YYYY')}
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
                                 name="civil_insurance_deadline"
+                                defaultValue={dayjs(data.registrationDate)}
                                 style={{ width: '100%' }}
-                                readOnly
+                                onChange={(date) => handleCivilChange(date)}
                             />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item label="Material deadline">
-                            <Input
-                                value={dayjs(data.materialDeadline).format('DD/MM/YYYY')}
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
                                 name="material_insurance_deadline"
+                                defaultValue={dayjs(data.registrationDate)}
+                                onChange={(date) => handleMaterialChange(date)}
                                 style={{ width: '100%' }}
-                                readOnly
                             />
                         </Form.Item>
                     </Col>
@@ -210,4 +287,4 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
         </Modal>
     );
 };
-export default PreviewModal;
+export default UpdateModal;
