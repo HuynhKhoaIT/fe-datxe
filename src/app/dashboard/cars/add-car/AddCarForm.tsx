@@ -305,7 +305,7 @@ const AddCartForm = () => {
         //         </Button>
         //     </div>
         // </Form>
-        <Form form={form} layout="vertical">
+        <Form form={form} onFinish={handleCreateCar} layout="vertical">
             <Row gutter={10}>
                 <Col span={8}>
                     <Form.Item label="Biển số xe">
@@ -422,6 +422,21 @@ const AddCartForm = () => {
                         />
                     </Form.Item>
                 </Col>
+            </Row>
+            <Row justify="end" gutter={12}>
+                <Button danger key="cancel" onClick={handleCancel} icon={<StopOutlined />}>
+                    Huỷ bỏ
+                </Button>
+                <Button
+                    style={{ marginLeft: '12px' }}
+                    key="submit"
+                    htmlType="submit"
+                    type="primary"
+                    onClick={handleCreateCar}
+                    icon={<FontAwesomeIcon icon={faPlus} />}
+                >
+                    Thêm xe
+                </Button>
             </Row>
         </Form>
     );

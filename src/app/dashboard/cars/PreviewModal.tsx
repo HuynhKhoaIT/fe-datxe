@@ -23,7 +23,6 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     const [model, setModel] = useState('');
     const [brandsData, setBrandsData] = useState<IBrand[]>([]);
     const [models, setModels] = useState<IBrand[]>([]);
-    const [licensePlates, setLicensePlates] = useState('');
     const [colorCar, setColorCar] = useState('');
     const [vinNumber, setVinNumber] = useState<Number>();
     const [kmRepairt, setKmRepairt] = useState<Number>();
@@ -64,17 +63,16 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
 
                     const modelData = await getBrand(data.carNameId ?? 0);
                     setModel(modelData.name);
+
                     const dong_xe: IBrand[] = await getModels(data.automakerId);
                     setModels(dong_xe);
-
-                    console.log(modelData);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
         fetchData();
-    }, [data]);
+    }, []);
     return (
         <Modal
             title="Thông tin chi tiết"
