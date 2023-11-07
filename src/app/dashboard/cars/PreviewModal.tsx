@@ -35,6 +35,22 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     const [materialDeadline, setMaterialDeadline] = useState('');
     const [automakerId, setAutomakerId] = useState('');
     const [carNameId, setCarNameId] = useState('0');
+    function handleDateRepairtChange(date: any) {
+        const dateString = dayjs(date).format('YYYY-MM-DD');
+        setDateRepairt(dateString);
+    }
+    function handleRegistrationChange(date: any) {
+        const dateString = dayjs(date).format('YYYY-MM-DD');
+        setRegistrationDeadline(dateString);
+    }
+    function handleCivilChange(date: any) {
+        const dateString = dayjs(date).format('YYYY-MM-DD');
+        setCivilDeadline(dateString);
+    }
+    function handleMaterialChange(date: any) {
+        const dateString = dayjs(date).format('YYYY-MM-DD');
+        setMaterialDeadline(dateString);
+    }
     const selectBrand = async (value: number) => {
         try {
             setAutomakerId(value.toString());
@@ -181,6 +197,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                                 defaultValue={dayjs(data.maintenanceDate)}
                                 name="date_repair"
                                 style={{ width: '100%' }}
+                                onChange={(date) => handleDateRepairtChange(date?.toString())}
                             />
                         </Form.Item>
                     </Col>
@@ -193,6 +210,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                                 defaultValue={dayjs(data.registrationDate)}
                                 name="registration_deadline"
                                 style={{ width: '100%' }}
+                                onChange={(date) => handleRegistrationChange(date)}
                             />
                         </Form.Item>
                     </Col>
@@ -203,6 +221,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                                 name="civil_insurance_deadline"
                                 defaultValue={dayjs(data.registrationDate)}
                                 style={{ width: '100%' }}
+                                onChange={(date) => handleCivilChange(date)}
                             />
                         </Form.Item>
                     </Col>
@@ -212,6 +231,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                                 format={'DD/MM/YYYY'}
                                 name="material_insurance_deadline"
                                 defaultValue={dayjs(data.registrationDate)}
+                                onChange={(date) => handleMaterialChange(date)}
                                 style={{ width: '100%' }}
                             />
                         </Form.Item>
