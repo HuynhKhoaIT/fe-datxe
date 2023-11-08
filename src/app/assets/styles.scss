@@ -673,7 +673,6 @@ label {
 .theme-btn {
     font-size: 16px;
     color: var(--color-white);
-    padding: 12px 20px;
     transition: all 0.5s;
     text-transform: capitalize;
     position: relative;
@@ -4677,8 +4676,7 @@ label {
 .coupon-btn {
     position: absolute;
     right: 5px;
-    top: 5px;
-    padding: 8px 14px;
+    top: 22%;
     font-weight: 500;
     color: var(--color-white);
     border: none;
@@ -4689,6 +4687,7 @@ label {
 
 .coupon-btn:hover {
     background: var(--color-dark);
+    color: var(--color-white);
 }
 
 .cart-summary {
