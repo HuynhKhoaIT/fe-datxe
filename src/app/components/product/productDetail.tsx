@@ -93,7 +93,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
             <Col span={24}>
                 <Row className={cx('product-detail')}>
                     <Col span={10}>
-                        <div className="item-gallery mb-5">
+                        <div className="item-gallery">
                             <div className="flexslider-thumbnails">
                                 <ul className="slides">
                                     <li data-thumb="/assets/img/shop/01.jpg" rel="adjustX:10, adjustY:">
@@ -128,7 +128,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                             <div className="single-item-action">
                                 <h5 className="title">Số lượng:</h5>
                                 <div className="cart-qty">
-                                    <button className="minus-btn bg-white" onClick={decrementValue}>
+                                    <button className="minus-btn" onClick={decrementValue}>
                                         <FontAwesomeIcon icon={faMinus} />
                                     </button>
                                     <input
@@ -137,7 +137,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                                         value={inputValue}
                                         onChange={(e) => setInputValue(parseInt(e.target.value) || 1)}
                                     />
-                                    <button className="plus-btn bg-white" onClick={incrementValue}>
+                                    <button className="plus-btn" onClick={incrementValue}>
                                         <FontAwesomeIcon icon={faPlus} />
                                     </button>
                                 </div>

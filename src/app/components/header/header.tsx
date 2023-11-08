@@ -1,12 +1,21 @@
 'use client';
 import { faCartShopping, faPhoneVolume } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import SigninButton from './login-button';
 import Search from '../search/Search';
 const Header = () => {
+    useEffect(() => {
+        // Lấy dữ liệu từ Local Storage
+        const existingCartData = localStorage.getItem('cartData');
+        if (existingCartData) {
+            // Chuyển đổi chuỗi JSON thành mảng JavaScript
+            const parsedCartData = JSON.parse(existingCartData);
+            console.log(parsedCartData);
+        }
+    }, []);
     return (
         <header className="header">
             {/* <!-- top header --> */}

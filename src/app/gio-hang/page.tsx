@@ -85,12 +85,10 @@ export default function Cart() {
     }, []);
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('thanh toán');
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
-            console.log(checkOut);
             localStorage.setItem('carData', JSON.stringify([]));
-            router.push('/');
+            router.push('/dashboard/order/' + checkOut.id);
             openNotification();
         } catch (error: any) {
             console.log('Login fail');
