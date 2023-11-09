@@ -40,7 +40,6 @@ const AddCartForm = () => {
     const [colorCar, setColorCar] = useState('');
     const [vinNumber, setVinNumber] = useState<Number>();
     const [kmRepairt, setKmRepairt] = useState<Number>();
-    const [brandId, setBrandId] = useState<Number>();
     const [machineNumber, setMachineNumber] = useState<Number>();
     const [description, setDescription] = useState('');
     const [dateRepairt, setDateRepairt] = useState('');
@@ -68,7 +67,6 @@ const AddCartForm = () => {
     const selectBrand = async (value: number) => {
         try {
             setAutomakerId(value.toString());
-            setBrandId(value);
             const dong_xe: IBrand[] = await getModels(value);
             setModels(dong_xe);
         } catch (error) {}
@@ -94,7 +92,6 @@ const AddCartForm = () => {
                 number_plates: licensePlates,
                 color: colorCar,
                 car_name_id: carNameId,
-                brand_id: brandId,
                 vin_number: vinNumber,
                 machine_number: machineNumber,
                 km_repairt: kmRepairt,
