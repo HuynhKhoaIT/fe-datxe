@@ -258,7 +258,6 @@ const AddCartForm = () => {
                     key="submit"
                     htmlType="submit"
                     type="primary"
-                    onClick={handleCreateCar}
                     icon={<FontAwesomeIcon icon={faPlus} />}
                 >
                     Thêm xe

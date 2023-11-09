@@ -16,7 +16,7 @@ const { TextArea } = Input;
 
 const cx = classNames.bind(styles);
 
-const UpdateModal = ({ data, onOk, open, onCancel, ...props }: any) => {
+const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
     const [form] = Form.useForm();
     const { data: session } = useSession();
     const token = session?.user?.token;
@@ -113,6 +113,7 @@ const UpdateModal = ({ data, onOk, open, onCancel, ...props }: any) => {
             };
             console.log(newCar);
             const createdCar = await updateCar(data.id, newCar, token ?? '');
+            fetchCars();
             onCancel();
         } catch (error) {
             console.error('Error creating car:', error);
