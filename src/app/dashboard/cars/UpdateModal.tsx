@@ -21,7 +21,7 @@ const cx = classNames.bind(styles);
 
 const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
     const [api, contextHolder] = notification.useNotification();
-
+    const [disabled, setDisabled] = useState(true);
     const openNotification = (title: string, message: string) => {
         api.info({
             message: title,
@@ -105,6 +105,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                     setVinNumber(data.vinNumber);
                     setMaterialDeadline(data.materialInsuranceDate);
                     setBrandId(data.automakerId);
+                    selectBrand(data.automakerId);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -131,10 +132,9 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                 description: description,
             };
             const createdCar = await updateCar(data.id, newCar, token ?? '');
+            openNotification('Thành công', 'Cập nhật thành công');
             onCancel();
             fetchCars();
-            openNotification('Thất bại', 'Cập nhật thất bại');
-            openNotification('Thành công', 'Cập nhật thành công');
         } catch (error) {
             openNotification('Thất bại', 'Cập nhật thất bại');
             console.error('Error creating car:', error);
@@ -145,8 +145,6 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
             title="Chỉnh sửa thông tin xe của bạn"
             open={open}
             destroyOnClose={true}
-            okText="Cập nhật"
-            cancelText="Huỷ"
             onCancel={onCancel}
             footer={false}
             style={{ zIndex: '99999' }}
@@ -172,7 +170,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                                 <Select
                                     placeholder="Chọn hãng xe"
                                     defaultValue={brand}
-                                    onChange={(value) => selectBrand(Number(value))}
+                                    onChange={(value) => {
+                                        setDisabled(false);
+                                        selectBrand(Number(value));
+                                    }}
                                 >
                                     <Select.Option>Chọn hãng xe</Select.Option>
                                     {brandsData &&
@@ -188,7 +189,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                             <Form.Item label="Dòng xe">
                                 <Select
                                     placeholder="Chọn dòng xe"
-                                    onChange={(e) => setCarNameId(e)}
+                                    onChange={(e) => {
+                                        setDisabled(false);
+                                        setCarNameId(e);
+                                    }}
                                     defaultValue={model}
                                 >
                                     <Select.Option>Chọn dòng xe</Select.Option>
@@ -210,7 +214,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                                     name="color"
                                     placeholder="Màu xe"
                                     defaultValue={data?.color}
-                                    onChange={(e) => setColorCar(e.target.value)}
+                                    onChange={(e) => {
+                                        setDisabled(false);
+                                        setColorCar(e.target.value);
+                                    }}
                                 />
                             </Form.Item>
                         </Col>
@@ -221,7 +228,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                                     name="vin_number"
                                     placeholder="Vin Number"
                                     defaultValue={Number(data.vinNumber)}
-                                    onChange={(e) => setVinNumber(Number(e.target.value))}
+                                    onChange={(e) => {
+                                        setDisabled(false);
+                                        setVinNumber(Number(e.target.value));
+                                    }}
                                 />
                             </Form.Item>
                         </Col>
@@ -243,7 +253,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                                     defaultValue={dayjs(data.maintenanceDate)}
                                     name="date_repair"
                                     style={{ width: '100%' }}
-                                    onChange={(date) => handleDateRepairtChange(date?.toString())}
+                                    onChange={(date) => {
+                                        setDisabled(false);
+                                        handleDateRepairtChange(date?.toString());
+                                    }}
                                 />
                             </Form.Item>
                         </Col>
@@ -269,7 +282,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                                     defaultValue={dayjs(data.registrationDate)}
                                     name="registration_deadline"
                                     style={{ width: '100%' }}
-                                    onChange={(date) => handleRegistrationChange(date)}
+                                    onChange={(date) => {
+                                        setDisabled(false);
+                                        handleRegistrationChange(date);
+                                    }}
                                 />
                             </Form.Item>
                         </Col>
@@ -280,7 +296,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                                     name="civil_insurance_deadline"
                                     defaultValue={dayjs(data.civilDeadline)}
                                     style={{ width: '100%' }}
-                                    onChange={(date) => handleCivilChange(date)}
+                                    onChange={(date) => {
+                                        setDisabled(false);
+                                        handleCivilChange(date);
+                                    }}
                                 />
                             </Form.Item>
                         </Col>
@@ -290,7 +309,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                                     format={'DD/MM/YYYY'}
                                     name="material_insurance_deadline"
                                     defaultValue={dayjs(data.materialInsuranceDate)}
-                                    onChange={(date) => handleMaterialChange(date)}
+                                    onChange={(date) => {
+                                        setDisabled(false);
+                                        handleMaterialChange(date);
+                                    }}
                                     style={{ width: '100%' }}
                                 />
                             </Form.Item>
@@ -316,6 +338,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                             Huỷ bỏ
                         </Button>
                         <Button
+                            disabled={disabled}
                             style={{ marginLeft: '12px' }}
                             key="submit"
                             htmlType="submit"
