@@ -36,6 +36,23 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
     const [materialDeadline, setMaterialDeadline] = useState(data?.materialInsuranceDate);
     const [automakerId, setAutomakerId] = useState(data?.automakerId);
     const [carNameId, setCarNameId] = useState(data?.carNameId);
+    console.log('brand', brand);
+    console.log('model', model);
+
+    console.log('brandsData', brandsData);
+
+    console.log('models', models);
+
+    console.log('colorCar', colorCar);
+
+    console.log('vinNumber', vinNumber);
+
+    console.log('kmRepairt', kmRepairt);
+
+    console.log('dateRepairt', dateRepairt);
+
+    console.log('registrationDeadline', registrationDeadline);
+
     function handleDateRepairtChange(date: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setDateRepairt(dateString);
@@ -74,20 +91,20 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
         const fetchData = async () => {
             try {
                 console.log(data);
-                if (data?.automakerId) {
+                if (data) {
                     setAutomakerId(data.automakerId);
+                    setBrand(data.brandName);
+                    setModel(data.modelName);
+                    setCarNameId(data.carNameId);
+                    setColorCar(data.color);
+                    setCivilDeadline(data.civilInsuranceDate);
+                    setDateRepairt(data.dateRepairt);
+                    setKmRepairt(data.kmRepairt);
+                    setRegistrationDeadline(data.registrationDate);
+                    setVinNumber(data.vinNumber);
+                    setMaterialDeadline(data.materialInsuranceDate);
                 }
-                console.log(data.automakerId);
-                setBrand(data.brandName);
-                setModel(data.modelName);
-                setCarNameId(data.carNameId);
-                setColorCar(data.color);
-                setCivilDeadline(data.civilInsuranceDate);
-                setDateRepairt(data.dateRepairt);
-                setKmRepairt(data.kmRepairt);
-                setRegistrationDeadline(data.registrationDate);
-                setVinNumber(data.vinNumber);
-                setMaterialDeadline(data.materialInsuranceDate);
+                console.log(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
