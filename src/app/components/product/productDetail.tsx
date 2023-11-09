@@ -5,9 +5,9 @@ import { faHeart, faStar, faStarHalfStroke } from '@fortawesome/free-regular-svg
 import { faCartShopping, faMinus, faPlus, faRightLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
-import { notification, Modal, Row, Col, Space } from 'antd';
+import { notification, Modal, Row, Col, Space, Spin } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import ProductGarage from './ProductGarage';
 import classNames from 'classnames/bind';

@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react';
-import { Card, Col, Form, Input, Row, Select } from 'antd';
+import { Card, Col, Form, Input, Row, Select, Spin } from 'antd';
 import { ICar } from '@/interfaces/car';
 import { useEffect, useState } from 'react';
 import { getCar } from '@/utils/car';
@@ -11,7 +11,7 @@ const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
     const [car, setCar] = useState<ICar>();
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
-
+    const [loading, setLoading] = useState(false);
     const selectCar = async (value: string) => {
         try {
             const selectedCar = await getCar(token ?? '', value);
@@ -30,14 +30,15 @@ const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setLoading(true);
                 if (car) {
                     const brandData = await getBrand(car.automakerId ?? 0);
                     setBrand(brandData.name);
 
                     const modelData = await getBrand(car.carNameId ?? 0);
                     setModel(modelData.name);
-                    console.log(modelData);
                 }
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -47,34 +48,36 @@ const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
 
     return (
         <div id="root">
-            <Card>
-                <Row gutter={16}>
-                    <Col span={24}>
-                        <Form.Item
-                            label="Biển số"
-                            name="licensePlates"
-                            rules={[{ required: true, message: 'Vui lòng chọn biển số' }]}
-                            wrapperCol={{ span: 24 }}
-                        >
-                            <Select placeholder="Biển số" onChange={(value) => selectCar(value)}>
-                                {carOptions}
-                            </Select>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item label="Hãng Xe">
-                            <Input placeholder="Hãng Xe" name="brand" readOnly value={brand || ''} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="Dòng xe">
-                            <Input placeholder="Dòng xe" readOnly value={model || ''} />
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Card>
+            <Spin spinning={loading}>
+                <Card>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item
+                                label="Biển số"
+                                name="licensePlates"
+                                rules={[{ required: true, message: 'Vui lòng chọn biển số' }]}
+                                wrapperCol={{ span: 24 }}
+                            >
+                                <Select placeholder="Biển số" onChange={(value) => selectCar(value)}>
+                                    {carOptions}
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label="Hãng Xe">
+                                <Input placeholder="Hãng Xe" name="brand" readOnly value={brand || ''} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Dòng xe">
+                                <Input placeholder="Dòng xe" readOnly value={model || ''} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Card>
+            </Spin>
         </div>
     );
 };

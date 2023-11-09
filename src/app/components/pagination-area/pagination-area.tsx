@@ -7,7 +7,7 @@ import { IProduct } from '@/interfaces/product';
 import ProductData from '../product/ProductData';
 import { Sort } from '../shop-sort/sort';
 
-const Pagination = ({ data }: { data: IProduct[] }) => {
+const Pagination = ({ data }: { data: any }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8;
     const indexOfLastItem = currentPage * itemsPerPage;

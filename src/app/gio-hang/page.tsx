@@ -6,10 +6,12 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { CarInfoCart } from '../components/cart/carInfo';
 import { useSession } from 'next-auth/react';
-import { Button, Card, Col, DatePicker, Form, Input, Row, TimePicker, notification } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
+import { Avatar, Button, Card, Col, DatePicker, Form, Input, Modal, Row, Table, TimePicker, notification } from 'antd';
+import { CheckOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ICar } from '@/interfaces/car';
 import { getCars } from '@/utils/car';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function Cart() {
     const [form] = Form.useForm();
@@ -20,10 +22,24 @@ export default function Cart() {
     const [time, setTime] = useState('');
     const [date, setDate] = useState('');
     const [cars, setCars] = useState<ICar[]>([]);
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+    const [deleteRow, setDeleteRow] = useState<any>();
+
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
 
+    const handleDeleteOk = () => {
+        setIsModalDeleteOpen(false);
+        deleteItem(deleteRow);
+    };
+    const handleDeleteCancel = () => {
+        setIsModalDeleteOpen(false);
+    };
+    const handleOpenModalDelete = (record: any) => {
+        setIsModalDeleteOpen(true);
+        setDeleteRow(record);
+    };
     const transformedProducts = cartData?.map((item) => {
         return {
             id: item?.product?.id,
@@ -126,6 +142,63 @@ export default function Cart() {
             console.error('Login error:', error.message);
         }
     };
+
+    const columns: any = [
+        {
+            title: 'Hình',
+            dataIndex: ['product', 'thumbnail'],
+            key: 'image',
+            width: '100px',
+            render: (record: string) => <Avatar shape="square" src={record} style={{ width: '70px' }} />,
+        },
+        {
+            title: 'Tên',
+            dataIndex: ['product', 'name'],
+            key: 'ten',
+        },
+        {
+            title: 'Giá',
+            dataIndex: ['product', 'price'],
+            key: 'gia',
+            render: (record: any) => <span>{record.toLocaleString()}đ</span>,
+        },
+        {
+            title: 'Số lượng',
+            key: 'soLuong',
+            width: '200px',
+            align: 'center',
+            render: (record: any) => (
+                <>
+                    <Button type="link" onClick={() => decrementQuantity(record.product.id)}>
+                        <FontAwesomeIcon icon={faMinus} />
+                    </Button>
+                    <span style={{ padding: '10px' }}>{record.quantity}</span>
+                    <Button type="link" onClick={() => incrementQuantity(record.product.id)}>
+                        <FontAwesomeIcon icon={faPlus} />
+                    </Button>
+                </>
+            ),
+        },
+        {
+            title: 'Thành tiền',
+            key: 'thanhTien',
+            width: '120px',
+            align: 'right',
+            render: (record: any) => <span>{(record?.product.price * record.quantity).toLocaleString()}đ</span>,
+        },
+        {
+            title: 'Hành động',
+            dataIndex: ['product', 'id'],
+            width: '50px',
+            align: 'center',
+            render: (record: number) => (
+                <Button type="link" onClick={() => handleOpenModalDelete(record)} style={{ padding: 0 }}>
+                    <DeleteOutlined style={{ color: 'red' }} />
+                </Button>
+            ),
+        },
+    ];
+    console.log(cartData);
     return (
         <main className="main">
             {contextHolder}
@@ -133,7 +206,7 @@ export default function Cart() {
                 <div className="shop-cart pt-60 pb-60">
                     <div className="container">
                         <Row gutter={16}>
-                            <Col span={12}>
+                            <Col xs={24} md={24} lg={12} xl={12}>
                                 <div className="checkout-widget">
                                     <h4 className="checkout-widget-title">Thông tin khách hàng</h4>
                                     <Card>
@@ -171,7 +244,7 @@ export default function Cart() {
                                     </Card>
                                 </div>
                             </Col>
-                            <Col span={12}>
+                            <Col span={12} xs={24} md={24} lg={12} xl={12}>
                                 <div className="checkout-widget">
                                     <h4 className="checkout-widget-title">Thông tin Xe</h4>
                                     <CarInfoCart cars={cars} />
@@ -182,7 +255,7 @@ export default function Cart() {
                             <Col span={24}>
                                 <Card className="bg-white mb-20 p-4">
                                     <Row gutter={16}>
-                                        <Col span={12}>
+                                        <Col xs={24} md={24} lg={12} xl={12}>
                                             <Form.Item
                                                 label="Ngày"
                                                 name="date"
@@ -210,7 +283,7 @@ export default function Cart() {
                                             </Form.Item>
                                         </Col>
 
-                                        <Col span={12}>
+                                        <Col xs={24} md={24} lg={12} xl={12}>
                                             <Form.Item
                                                 label="Thời gian"
                                                 name="time"
@@ -231,7 +304,7 @@ export default function Cart() {
                     <div className="container">
                         <Card className="shop-cart-wrapper">
                             <div className="table-responsive">
-                                <table className="table">
+                                {/* <table className="table">
                                     <thead>
                                         <tr>
                                             <th>Hình</th>
@@ -253,11 +326,13 @@ export default function Cart() {
                                             />
                                         ))}
                                     </tbody>
-                                </table>
+                                </table> */}
+                                <Table dataSource={cartData} columns={columns} />
                             </div>
+
                             <Card className="cart-footer">
-                                <Row>
-                                    <Col span={8}>
+                                <Row justify="space-between">
+                                    <Col xs={24} md={8} lg={8} xl={8}>
                                         <Form.Item className="cart-coupon ">
                                             <Input
                                                 type="text"
@@ -269,29 +344,27 @@ export default function Cart() {
                                             </Button>
                                         </Form.Item>
                                     </Col>
-                                    <Col span={16}>
-                                        <div className="cart-summary">
-                                            <ul>
-                                                <li>
-                                                    <strong>Tổng tiền hàng:</strong>{' '}
-                                                    <span>{calculateSubTotal().toLocaleString()}đ</span>
-                                                </li>
-                                                <li className="cart-total">
-                                                    <strong>Tổng cộng:</strong>{' '}
-                                                    <span>{calculateSubTotal().toLocaleString()}đ</span>
-                                                </li>
-                                            </ul>
-                                            <Form.Item style={{ textAlign: 'right' }}>
-                                                <Button
-                                                    className="theme-btn"
-                                                    type="primary"
-                                                    htmlType="submit"
-                                                    // style={{ background: 'var(--theme-color)' }}
-                                                >
-                                                    Đặt lịch
-                                                </Button>
-                                            </Form.Item>
-                                        </div>
+                                    <Col xs={24} md={12} lg={8} xl={8}>
+                                        <ul>
+                                            <li>
+                                                <strong>Tổng tiền hàng:</strong>{' '}
+                                                <span>{calculateSubTotal().toLocaleString()}đ</span>
+                                            </li>
+                                            <li className="cart-total">
+                                                <strong>Tổng cộng:</strong>{' '}
+                                                <span>{calculateSubTotal().toLocaleString()}đ</span>
+                                            </li>
+                                        </ul>
+                                        <Form.Item style={{ textAlign: 'right' }}>
+                                            <Button
+                                                className="theme-btn"
+                                                type="primary"
+                                                htmlType="submit"
+                                                // style={{ background: 'var(--theme-color)' }}
+                                            >
+                                                Đặt lịch
+                                            </Button>
+                                        </Form.Item>
                                     </Col>
                                 </Row>
                             </Card>
@@ -299,6 +372,9 @@ export default function Cart() {
                     </div>
                 </div>
             </Form>
+            <Modal title="Delete" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
+                <p>Bạn có muốn xoá không?</p>
+            </Modal>
         </main>
     );
 }
