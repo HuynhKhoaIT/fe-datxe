@@ -92,7 +92,6 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log(data);
                 if (data) {
                     setAutomakerId(data.automakerId);
                     setBrand(data.brandName);
@@ -100,14 +99,13 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                     setCarNameId(data.carNameId);
                     setColorCar(data.color);
                     setCivilDeadline(data.civilInsuranceDate);
-                    setDateRepairt(data.dateRepairt);
+                    setDateRepairt(data.maintenanceDate);
                     setKmRepairt(data.kmRepairt);
                     setRegistrationDeadline(data.registrationDate);
                     setVinNumber(data.vinNumber);
                     setMaterialDeadline(data.materialInsuranceDate);
                     setBrandId(data.automakerId);
                 }
-                console.log(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -132,17 +130,16 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                 brand_id: brandId,
                 description: description,
             };
-            console.log(newCar);
             const createdCar = await updateCar(data.id, newCar, token ?? '');
             onCancel();
             fetchCars();
+            openNotification('Thất bại', 'Cập nhật thất bại');
             openNotification('Thành công', 'Cập nhật thành công');
         } catch (error) {
             openNotification('Thất bại', 'Cập nhật thất bại');
             console.error('Error creating car:', error);
         }
     };
-    console.log(brand);
     return (
         <Modal
             title="Chỉnh sửa thông tin xe của bạn"

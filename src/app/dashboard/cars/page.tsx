@@ -91,7 +91,6 @@ export default function CarsPage() {
     };
     useEffect(() => {
         setLoading(true);
-        console.log('cars2');
         const updateTableData = async () => {
             const updatedData = await fetchDataForTable();
             setCars2(updatedData);
