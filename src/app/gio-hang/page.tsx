@@ -108,9 +108,12 @@ export default function Cart() {
             setCartData(parsedCartData);
         }
     }, []);
-    const onSubmit = async () => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
+            localStorage.setItem('carData', JSON.stringify([]));
+            router.push('/dashboard/order/' + checkOut.id);
             openNotification();
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');

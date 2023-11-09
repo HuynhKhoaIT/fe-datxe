@@ -4771,7 +4771,12 @@ label {
 .shop-item-single .flexslider-thumbnails img {
     width: 100%;
     border-radius: 10px;
-    background: #fef6ef;
+}
+.shop-item-single .item-gallery {
+    aspect-ratio: 1;
+    background: url(https://v2.dlbd.vn/storage/uploads/no_image.png) no-repeat;
+    background-size: cover;
+    border-radius: 10px;
 }
 
 .shop-item-single .flex-control-thumbs {
@@ -4885,7 +4890,10 @@ label {
 }
 
 .single-item-details {
-    margin-top: 30px;
+    // margin-top: 30px;
+}
+.single-item-info {
+    padding-left: 25px;
 }
 
 .single-item-desc {
@@ -4925,7 +4933,7 @@ label {
 }
 
 .related-item {
-    margin-top: 100px;
+    margin-top: 40px;
 }
 
 .related-item .site-title {

@@ -75,11 +75,6 @@ export function showStatus(status: any) {
 }
 
 export const checkOutCart = async (date: string, time: string, cartData: object, token: string) => {
-    console.log(token);
-    console.log(date);
-    console.log(time);
-    console.log(cartData);
-
     try {
         if (token) {
             const config = {
