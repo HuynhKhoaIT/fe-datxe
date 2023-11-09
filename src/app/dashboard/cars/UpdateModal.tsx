@@ -53,23 +53,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
     const [materialDeadline, setMaterialDeadline] = useState(data?.materialInsuranceDate);
     const [automakerId, setAutomakerId] = useState(data?.automakerId);
     const [carNameId, setCarNameId] = useState(data?.carNameId);
-    console.log('brand', brand);
-    console.log('model', model);
-
-    console.log('brandsData', brandsData);
-
-    console.log('models', models);
-
-    console.log('colorCar', colorCar);
-
-    console.log('vinNumber', vinNumber);
-
-    console.log('kmRepairt', kmRepairt);
-
-    console.log('dateRepairt', dateRepairt);
-
-    console.log('registrationDeadline', registrationDeadline);
-
+    const [brandId, setBrandId] = useState<Number>();
     function handleDateRepairtChange(date: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setDateRepairt(dateString);
@@ -89,6 +73,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
     const selectBrand = async (value: number) => {
         try {
             setAutomakerId(value);
+            setBrandId(value);
             const dong_xe: IBrand[] = await getModels(value);
             setModels(dong_xe);
         } catch (error) {}
@@ -143,14 +128,14 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                 civil_insurance_deadline: civilDeadline,
                 material_insurance_deadline: materialDeadline,
                 automaker_id: automakerId,
+                brand_id: brandId,
                 description: description,
             };
             console.log(newCar);
             const createdCar = await updateCar(data.id, newCar, token ?? '');
-            openNotification('Thành công', 'Cập nhật thành công');
-
-            fetchCars();
             onCancel();
+            openNotification('Thành công', 'Cập nhật thành công');
+            fetchCars();
         } catch (error) {
             openNotification('Thất bại', 'Cập nhật thất bại');
 
