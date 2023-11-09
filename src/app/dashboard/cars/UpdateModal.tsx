@@ -1,9 +1,9 @@
 'use client';
-import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { ICar } from '@/interfaces/car';
-import { Col, DatePicker, Form, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, notification } from 'antd';
 import styles from './add-car/AddCar.module.scss';
 import classNames from 'classnames/bind';
 import { IBrand } from '@/interfaces/brand';
@@ -12,11 +12,28 @@ import { getBrand, getBrands, getModels } from '@/utils/branch';
 import dayjs from 'dayjs';
 import { useSession } from 'next-auth/react';
 import { updateCar } from '@/utils/car';
+import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { CheckOutlined, ExclamationOutlined } from '@ant-design/icons';
+
 const { TextArea } = Input;
 
 const cx = classNames.bind(styles);
 
 const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = (title: string, message: string) => {
+        api.info({
+            message: title,
+            description: message,
+            icon:
+                title === 'Thành công' ? (
+                    <CheckOutlined style={{ color: 'green' }} />
+                ) : (
+                    <ExclamationOutlined style={{ color: 'red' }} />
+                ),
+        });
+    };
     const [form] = Form.useForm();
     const { data: session } = useSession();
     const token = session?.user?.token;
@@ -130,9 +147,13 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
             };
             console.log(newCar);
             const createdCar = await updateCar(data.id, newCar, token ?? '');
+            openNotification('Thành công', 'Cập nhật thành công');
+
             fetchCars();
             onCancel();
         } catch (error) {
+            openNotification('Thất bại', 'Cập nhật thất bại');
+
             console.error('Error creating car:', error);
         }
     };
@@ -141,18 +162,17 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
         <Modal
             title="Chỉnh sửa thông tin xe của bạn"
             open={open}
-            onOk={() => {
-                handleUpdateCar();
-            }}
             destroyOnClose={true}
             okText="Cập nhật"
             cancelText="Huỷ"
             onCancel={onCancel}
+            footer={false}
             style={{ zIndex: '99999' }}
             {...props}
         >
+            {contextHolder}
             <Spin spinning={loading}>
-                <Form form={form} layout="vertical" preserve={false}>
+                <Form form={form} onFinish={handleUpdateCar} layout="vertical" preserve={false}>
                     <Row gutter={10}>
                         <Col span={8}>
                             <Form.Item label="Biển số xe">
@@ -309,6 +329,20 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                         </Form.Item>
                     </Col>
                 </Row> */}
+                    <Row justify="end" gutter={12}>
+                        <Button danger key="cancel" onClick={onCancel} icon={<StopOutlined />}>
+                            Huỷ bỏ
+                        </Button>
+                        <Button
+                            style={{ marginLeft: '12px' }}
+                            key="submit"
+                            htmlType="submit"
+                            type="primary"
+                            icon={<FontAwesomeIcon icon={faPlus} />}
+                        >
+                            Cập nhật
+                        </Button>
+                    </Row>
                 </Form>
             </Spin>
         </Modal>

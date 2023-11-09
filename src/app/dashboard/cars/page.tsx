@@ -50,12 +50,7 @@ export default function CarsPage() {
         setIsModalOpen(false);
         setIsUpdateModalOpen(false);
     };
-    const handleUpdateOk = () => {
-        setIsUpdateModalOpen(false);
-        openNotification('Cập nhật thành công');
 
-        fetchCars();
-    };
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
         handleDeleteCar(deleteRow);
@@ -235,7 +230,6 @@ export default function CarsPage() {
             </Modal>
             <UpdateModal
                 open={isUpdateModalOpen}
-                onOk={handleUpdateOk}
                 fetchCars={() => fetchCars()}
                 onCancel={handleCancel}
                 width={800}
