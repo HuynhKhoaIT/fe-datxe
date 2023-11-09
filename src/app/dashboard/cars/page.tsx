@@ -1,22 +1,69 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { getCars, deleteCar } from '@/utils/car';
 import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import CarItem from './CarItem';
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Button, Modal, Spin, Table, Tooltip } from 'antd';
+import { getBrand } from '@/utils/branch';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import PreviewModal from './PreviewModal';
+import UpdateModal from './UpdateModal';
 export default function CarsPage() {
-    // const cars = await getCars();
     const { data: session } = useSession();
-    const token = session?.user?.token;
 
-    const [cars, setCars] = useState<ICar>([]);
+    const token = session?.user?.token;
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [detail, setDetail] = useState({});
+    const [deleteRow, setDeleteRow] = useState('');
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const showDetails = (e: React.MouseEvent<HTMLElement, MouseEvent>, record: object) => {
+        e.stopPropagation();
+        setDetail(record);
+        setIsModalOpen(true);
+    };
+    const showUpdateModal = (record: object) => {
+        setDetail(record);
+        setIsUpdateModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+        setDetail({});
+        setIsUpdateModalOpen(false);
+    };
+    const handleUpdateOk = () => {
+        setIsUpdateModalOpen(false);
+        fetchCars();
+    };
+    const handleDeleteOk = () => {
+        setIsModalDeleteOpen(false);
+        handleDeleteCar(deleteRow);
+    };
+    const handleOpenModalDelete = (record: any) => {
+        setIsModalDeleteOpen(true);
+        setDeleteRow(record.id);
+    };
+    const handleDeleteCancel = () => {
+        setIsModalDeleteOpen(false);
+    };
+    const [cars, setCars] = useState<ICar[]>([]);
+    const [cars2, setCars2] = useState<ICar[]>([]);
+
     const fetchCars = async () => {
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
                 setCars(fetchedCars ?? []);
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error fetching cars:', error);
@@ -25,6 +72,33 @@ export default function CarsPage() {
     useEffect(() => {
         fetchCars();
     }, [token]);
+    const fetchBrandData = async (automakerId: number) => {
+        const brandData = await getBrand(automakerId);
+        return brandData.name;
+    };
+
+    const fetchModelData = async (carNameId: number) => {
+        const modelData = await getBrand(carNameId);
+        return modelData.name;
+    };
+    useEffect(() => {
+        const updateTableData = async () => {
+            const updatedData = await fetchDataForTable();
+            setCars2(updatedData);
+        };
+        updateTableData();
+    }, [cars]);
+
+    const fetchDataForTable = async () => {
+        const updatedCars = await Promise.all(
+            cars.map(async (car) => {
+                const brandName = await fetchBrandData(car.automakerId ?? 0);
+                const modelName = await fetchModelData(car.carNameId ?? 0);
+                return { ...car, brandName, modelName };
+            }),
+        );
+        return updatedCars;
+    };
 
     const handleDeleteCar = async (carId: string) => {
         try {
@@ -34,6 +108,64 @@ export default function CarsPage() {
             console.error('Error deleting car:', error);
         }
     };
+
+    const columns = [
+        {
+            title: 'Biển số',
+            dataIndex: 'licensePlates',
+        },
+        {
+            title: 'Màu xe',
+            dataIndex: 'color',
+        },
+        {
+            title: 'Hãng',
+            dataIndex: 'brandName',
+            render: (brandName: string) => {
+                return <div>{brandName}</div>;
+            },
+        },
+        {
+            title: 'Dòng',
+            dataIndex: 'modelName',
+            render: (modelName: string) => {
+                return <div>{modelName}</div>;
+            },
+        },
+        {
+            title: 'Registration Date',
+            dataIndex: 'registrationDate',
+        },
+
+        {
+            title: 'Hàng động',
+            render: (record: object) => (
+                <span>
+                    <Tooltip title="Details">
+                        <Button
+                            type="primary"
+                            icon={<FontAwesomeIcon icon={faEye} />}
+                            onClick={(e) => showDetails(e, record)}
+                        />
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                        <Button
+                            type="default"
+                            icon={<FontAwesomeIcon icon={faPen} />}
+                            onClick={() => showUpdateModal(record)}
+                        />
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <Button
+                            danger
+                            icon={<FontAwesomeIcon icon={faTrash} />}
+                            onClick={(e) => handleOpenModalDelete(record)}
+                        />
+                    </Tooltip>
+                </span>
+            ),
+        },
+    ];
     return (
         <div className="user-profile-wrapper">
             <Breadcrumb
@@ -68,26 +200,23 @@ export default function CarsPage() {
                 </div>
                 <div className="col-lg-12">
                     <div className="table-responsive">
-                        <table className="table text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Thông tin</th>
-                                    <th>Hãng</th>
-                                    <th>Dòng</th>
-                                    <th>Năm</th>
-                                    <th>Hạn bảo dưỡng</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cars?.map((item, index) => (
-                                    <CarItem key={item.id} item={item} onDeleteCar={() => handleDeleteCar(item.id)} />
-                                ))}
-                            </tbody>
-                        </table>
+                        <Spin spinning={loading}>
+                            <Table dataSource={cars2} columns={columns} />
+                        </Spin>
                     </div>
                 </div>
             </div>
+            <Modal title="Delete" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
+                <p>Bạn có muốn xoá không?</p>
+            </Modal>
+            <UpdateModal
+                open={isUpdateModalOpen}
+                onOk={handleUpdateOk}
+                onCancel={handleCancel}
+                width={800}
+                data={detail ? detail : {}}
+            />
+            <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={detail} />
         </div>
     );
 }

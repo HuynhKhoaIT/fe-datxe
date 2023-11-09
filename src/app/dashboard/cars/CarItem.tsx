@@ -3,7 +3,7 @@ import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { ICar } from '@/interfaces/car';
-import { DatePicker, Modal } from 'antd';
+import { DatePicker, Modal, Spin } from 'antd';
 import styles from './add-car/AddCar.module.scss';
 import classNames from 'classnames/bind';
 import { IBrand } from '@/interfaces/brand';
@@ -17,13 +17,14 @@ import UpdateModal from './UpdateModal';
 
 const cx = classNames.bind(styles);
 interface CarItemProps {
-    item: any; // Replace 'any' with the actual type of 'item'
+    item: any;
     onDeleteCar(): void;
+    fetchCars(): void;
 }
-const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
+const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar, fetchCars }) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
-
+    const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
@@ -38,7 +39,10 @@ const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
 
     const handleOk = () => {
         setIsModalOpen(false);
+    };
+    const handleUpdateOk = () => {
         setIsUpdateModalOpen(false);
+        fetchCars();
     };
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
@@ -134,7 +138,13 @@ const CarItem: React.FC<CarItemProps> = ({ item, onDeleteCar }) => {
             <Modal title="Delete" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
                 <p>Bạn có muốn xoá không?</p>
             </Modal>
-            <UpdateModal open={isUpdateModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={item} />
+            <UpdateModal
+                open={isUpdateModalOpen}
+                onOk={handleUpdateOk}
+                onCancel={handleCancel}
+                width={800}
+                data={item}
+            />
             <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={item} />
         </>
     );
