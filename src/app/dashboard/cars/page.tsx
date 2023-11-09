@@ -11,6 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
+import { notification } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
+
 export default function CarsPage() {
     const { data: session } = useSession();
 
@@ -21,7 +24,15 @@ export default function CarsPage() {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [detail, setDetail] = useState({});
     const [deleteRow, setDeleteRow] = useState('');
+    const [api, contextHolder] = notification.useNotification();
 
+    const openNotification = (message: string) => {
+        api.info({
+            message: `Thành công`,
+            description: message,
+            icon: <CheckOutlined style={{ color: 'green' }} />,
+        });
+    };
     const handleOk = () => {
         setIsModalOpen(false);
     };
@@ -37,11 +48,12 @@ export default function CarsPage() {
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setDetail({});
         setIsUpdateModalOpen(false);
     };
     const handleUpdateOk = () => {
         setIsUpdateModalOpen(false);
+        openNotification('Cập nhật thành công');
+
         fetchCars();
     };
     const handleDeleteOk = () => {
@@ -84,6 +96,7 @@ export default function CarsPage() {
     };
     useEffect(() => {
         setLoading(true);
+        console.log('cars2');
         const updateTableData = async () => {
             const updatedData = await fetchDataForTable();
             setCars2(updatedData);
@@ -110,6 +123,8 @@ export default function CarsPage() {
     const handleDeleteCar = async (carId: string) => {
         try {
             await deleteCar(carId, token ?? '');
+            openNotification('Xoá thành công');
+
             fetchCars();
         } catch (error) {
             console.error('Error deleting car:', error);
@@ -175,6 +190,8 @@ export default function CarsPage() {
     ];
     return (
         <div className="user-profile-wrapper">
+            {contextHolder}
+
             <Breadcrumb
                 style={{ padding: '16px 20px', position: 'absolute' }}
                 items={[
@@ -219,6 +236,7 @@ export default function CarsPage() {
             <UpdateModal
                 open={isUpdateModalOpen}
                 onOk={handleUpdateOk}
+                fetchCars={() => fetchCars()}
                 onCancel={handleCancel}
                 width={800}
                 data={detail ? detail : {}}
