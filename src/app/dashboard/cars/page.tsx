@@ -59,6 +59,7 @@ export default function CarsPage() {
     const [cars2, setCars2] = useState<ICar[]>([]);
 
     const fetchCars = async () => {
+        console.log('update or delete');
         try {
             if (token) {
                 const fetchedCars = await getCars(token);

@@ -28,7 +28,6 @@ const UpdateModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     const [colorCar, setColorCar] = useState(data?.color);
     const [vinNumber, setVinNumber] = useState<Number>(data?.vinNumber);
     const [kmRepairt, setKmRepairt] = useState<Number>(data?.kmRepairt);
-    const [brandId, setBrandId] = useState<Number>(data?.automakerId);
     const [machineNumber, setMachineNumber] = useState<Number>(data?.machineNumber);
     const [description, setDescription] = useState(data?.description);
     const [dateRepairt, setDateRepairt] = useState(data?.dateRepairt);
@@ -55,8 +54,7 @@ const UpdateModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     }
     const selectBrand = async (value: number) => {
         try {
-            setAutomakerId(value.toString());
-            setBrandId(value);
+            setAutomakerId(value);
             const dong_xe: IBrand[] = await getModels(value);
             setModels(dong_xe);
         } catch (error) {}
@@ -77,15 +75,15 @@ const UpdateModal = ({ data, onOk, open, onCancel, ...props }: any) => {
             try {
                 setBrand(data.brandName);
                 setModel(data.modelName);
-                setAutomakerId(data?.automakerId);
-                setCarNameId(data?.carNameId);
-                setColorCar(data?.color);
-                setCivilDeadline(data?.civilInsuranceDate);
-                setDateRepairt(data?.dateRepairt);
-                setKmRepairt(data?.kmRepairt);
-                setRegistrationDeadline(data?.registrationDate);
-                setVinNumber(data?.vinNumber);
-                setMaterialDeadline(data?.materialInsuranceDate);
+                setAutomakerId(data.automakerId);
+                setCarNameId(data.carNameId);
+                setColorCar(data.color);
+                setCivilDeadline(data.civilInsuranceDate);
+                setDateRepairt(data.dateRepairt);
+                setKmRepairt(data.kmRepairt);
+                setRegistrationDeadline(data.registrationDate);
+                setVinNumber(data.vinNumber);
+                setMaterialDeadline(data.materialInsuranceDate);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
