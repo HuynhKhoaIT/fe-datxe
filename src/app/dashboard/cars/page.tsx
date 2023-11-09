@@ -82,19 +82,25 @@ export default function CarsPage() {
         return modelData.name;
     };
     useEffect(() => {
+        setLoading(true);
         const updateTableData = async () => {
             const updatedData = await fetchDataForTable();
             setCars2(updatedData);
+            setLoading(false);
         };
         updateTableData();
     }, [cars]);
 
-    const fetchDataForTable = async () => {
+    const fetchDataForTable = async (): Promise<ICar[]> => {
         const updatedCars = await Promise.all(
-            cars.map(async (car) => {
-                const brandName = await fetchBrandData(car.automakerId ?? 0);
-                const modelName = await fetchModelData(car.carNameId ?? 0);
-                return { ...car, brandName, modelName };
+            cars.map(async (car: ICar) => {
+                if (car.automakerId && car.carNameId) {
+                    const brandName = await fetchBrandData(car.automakerId);
+                    const modelName = await fetchModelData(car.carNameId);
+                    return { ...car, brandName, modelName };
+                } else {
+                    return car;
+                }
             }),
         );
         return updatedCars;
