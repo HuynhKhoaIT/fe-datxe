@@ -73,9 +73,13 @@ const UpdateModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log(data);
+                if (data?.automakerId) {
+                    setAutomakerId(data.automakerId);
+                }
+                console.log(data.automakerId);
                 setBrand(data.brandName);
                 setModel(data.modelName);
-                setAutomakerId(data.automakerId);
                 setCarNameId(data.carNameId);
                 setColorCar(data.color);
                 setCivilDeadline(data.civilInsuranceDate);
