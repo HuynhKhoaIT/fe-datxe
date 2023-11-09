@@ -113,161 +113,163 @@ const AddCartForm = () => {
         }
     };
     return (
-        <Form form={form} onFinish={handleCreateCar} layout="vertical">
+        <div>
             {contextHolder}
-            <Row gutter={10}>
-                <Col span={8}>
-                    <Form.Item label="Biển số xe">
-                        <Input
-                            type="text"
-                            name="licensePlates"
-                            placeholder="Biển số xe"
-                            onChange={(e) => setLicensePlates(e.target.value)}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Hãng xe">
-                        <Select placeholder="Chọn hãng xe" onChange={(value) => selectBrand(Number(value))}>
-                            <Select.Option>Chọn hãng xe</Select.Option>
-                            {brandsData &&
-                                brandsData?.map((brand: IBrand, index) => (
-                                    <Select.Option key={index} value={brand.id?.toString()}>
-                                        {brand.name}
-                                    </Select.Option>
-                                ))}
-                        </Select>
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Dòng xe">
-                        <Select placeholder="Chọn dòng xe" onChange={(e) => setCarNameId(e)}>
-                            <Select.Option>Chọn dòng xe</Select.Option>
-                            {models &&
-                                models?.map((model: IBrand, index) => (
-                                    <Select.Option key={index} value={model.id?.toString()}>
-                                        {model.name}
-                                    </Select.Option>
-                                ))}
-                        </Select>
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={10}>
-                <Col span={8}>
-                    <Form.Item label="Màu xe">
-                        <Input
-                            type="text"
-                            name="color"
-                            placeholder="Màu xe"
-                            onChange={(e) => setColorCar(e.target.value)}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Vin Number">
-                        <Input
-                            type="number"
-                            name="vin_number"
-                            placeholder="Vin Number"
-                            onChange={(e) => setVinNumber(Number(e.target.value))}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Machine Number">
-                        <Input
-                            type="number"
-                            name="machine_number"
-                            placeholder="Machine Number"
-                            onChange={(e) => setMachineNumber(Number(e.target.value))}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={10}>
-                <Col span={8}>
-                    <Form.Item label="Km repairt">
-                        <Input
-                            type="number"
-                            name="km_repairt"
-                            placeholder="Km repairt"
-                            onChange={(e) => setKmRepairt(Number(e.target.value))}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Date Repairt">
-                        <DatePicker
-                            format={'DD/MM/YYYY'}
-                            name="date_repair"
-                            style={{ width: '100%' }}
-                            onChange={(date) => handleDateRepairtChange(date?.toString())}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row className={cx('row')}>
-                <Col span={8}>
-                    <Form.Item label="Registration Deadline">
-                        <DatePicker
-                            format={'DD/MM/YYYY'}
-                            name="registration_deadline"
-                            style={{ width: '100%' }}
-                            onChange={(date) => handleRegistrationChange(date)}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Civil deadline">
-                        <DatePicker
-                            format={'DD/MM/YYYY'}
-                            name="civil_insurance_deadline"
-                            style={{ width: '100%' }}
-                            onChange={(date) => handleCivilChange(date)}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Material deadline">
-                        <DatePicker
-                            format={'DD/MM/YYYY'}
-                            name="material_insurance_deadline"
-                            onChange={(date) => handleMaterialChange(date)}
-                            style={{ width: '100%' }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24}>
-                    <Form.Item label="Mô tả chi tiết">
-                        <TextArea
-                            showCount
-                            name="description"
-                            maxLength={100}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Mô tả chi tiết"
-                            style={{ height: 120, resize: 'none' }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify="end" gutter={12}>
-                <Button danger key="cancel" onClick={handleCancel} icon={<StopOutlined />}>
-                    Huỷ bỏ
-                </Button>
-                <Button
-                    style={{ marginLeft: '12px' }}
-                    key="submit"
-                    htmlType="submit"
-                    type="primary"
-                    icon={<FontAwesomeIcon icon={faPlus} />}
-                >
-                    Thêm xe
-                </Button>
-            </Row>
-        </Form>
+            <Form form={form} onFinish={handleCreateCar} layout="vertical">
+                <Row gutter={10}>
+                    <Col span={8}>
+                        <Form.Item label="Biển số xe">
+                            <Input
+                                type="text"
+                                name="licensePlates"
+                                placeholder="Biển số xe"
+                                onChange={(e) => setLicensePlates(e.target.value)}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item label="Hãng xe">
+                            <Select placeholder="Chọn hãng xe" onChange={(value) => selectBrand(Number(value))}>
+                                <Select.Option>Chọn hãng xe</Select.Option>
+                                {brandsData &&
+                                    brandsData?.map((brand: IBrand, index) => (
+                                        <Select.Option key={index} value={brand.id?.toString()}>
+                                            {brand.name}
+                                        </Select.Option>
+                                    ))}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item label="Dòng xe">
+                            <Select placeholder="Chọn dòng xe" onChange={(e) => setCarNameId(e)}>
+                                <Select.Option>Chọn dòng xe</Select.Option>
+                                {models &&
+                                    models?.map((model: IBrand, index) => (
+                                        <Select.Option key={index} value={model.id?.toString()}>
+                                            {model.name}
+                                        </Select.Option>
+                                    ))}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={10}>
+                    <Col span={8}>
+                        <Form.Item label="Màu xe">
+                            <Input
+                                type="text"
+                                name="color"
+                                placeholder="Màu xe"
+                                onChange={(e) => setColorCar(e.target.value)}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item label="Vin Number">
+                            <Input
+                                type="number"
+                                name="vin_number"
+                                placeholder="Vin Number"
+                                onChange={(e) => setVinNumber(Number(e.target.value))}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item label="Machine Number">
+                            <Input
+                                type="number"
+                                name="machine_number"
+                                placeholder="Machine Number"
+                                onChange={(e) => setMachineNumber(Number(e.target.value))}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={10}>
+                    <Col span={8}>
+                        <Form.Item label="Km repairt">
+                            <Input
+                                type="number"
+                                name="km_repairt"
+                                placeholder="Km repairt"
+                                onChange={(e) => setKmRepairt(Number(e.target.value))}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item label="Date Repairt">
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
+                                name="date_repair"
+                                style={{ width: '100%' }}
+                                onChange={(date) => handleDateRepairtChange(date?.toString())}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row className={cx('row')}>
+                    <Col span={8}>
+                        <Form.Item label="Registration Deadline">
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
+                                name="registration_deadline"
+                                style={{ width: '100%' }}
+                                onChange={(date) => handleRegistrationChange(date)}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item label="Civil deadline">
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
+                                name="civil_insurance_deadline"
+                                style={{ width: '100%' }}
+                                onChange={(date) => handleCivilChange(date)}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item label="Material deadline">
+                            <DatePicker
+                                format={'DD/MM/YYYY'}
+                                name="material_insurance_deadline"
+                                onChange={(date) => handleMaterialChange(date)}
+                                style={{ width: '100%' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        <Form.Item label="Mô tả chi tiết">
+                            <TextArea
+                                showCount
+                                name="description"
+                                maxLength={100}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Mô tả chi tiết"
+                                style={{ height: 120, resize: 'none' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row justify="end" gutter={12}>
+                    <Button danger key="cancel" onClick={handleCancel} icon={<StopOutlined />}>
+                        Huỷ bỏ
+                    </Button>
+                    <Button
+                        style={{ marginLeft: '12px' }}
+                        key="submit"
+                        htmlType="submit"
+                        type="primary"
+                        icon={<FontAwesomeIcon icon={faPlus} />}
+                    >
+                        Thêm xe
+                    </Button>
+                </Row>
+            </Form>
+        </div>
     );
 };
 export default AddCartForm;
