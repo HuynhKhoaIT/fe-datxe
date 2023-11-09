@@ -91,6 +91,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
     }, []);
     useEffect(() => {
         const fetchData = async () => {
+            setDisabled(true);
             try {
                 if (data) {
                     setAutomakerId(data.automakerId);
