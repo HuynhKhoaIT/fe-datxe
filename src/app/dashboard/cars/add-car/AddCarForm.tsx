@@ -114,6 +114,7 @@ const AddCartForm = () => {
     };
     return (
         <Form form={form} onFinish={handleCreateCar} layout="vertical">
+            {contextHolder}
             <Row gutter={10}>
                 <Col span={8}>
                     <Form.Item label="Biển số xe">

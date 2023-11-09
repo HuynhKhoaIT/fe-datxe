@@ -105,6 +105,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                     setRegistrationDeadline(data.registrationDate);
                     setVinNumber(data.vinNumber);
                     setMaterialDeadline(data.materialInsuranceDate);
+                    setBrandId(data.automakerId);
                 }
                 console.log(data);
             } catch (error) {
@@ -134,11 +135,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
             console.log(newCar);
             const createdCar = await updateCar(data.id, newCar, token ?? '');
             onCancel();
-            openNotification('Thành công', 'Cập nhật thành công');
             fetchCars();
+            openNotification('Thành công', 'Cập nhật thành công');
         } catch (error) {
             openNotification('Thất bại', 'Cập nhật thất bại');
-
             console.error('Error creating car:', error);
         }
     };
