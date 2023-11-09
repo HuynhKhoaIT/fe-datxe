@@ -3,6 +3,7 @@ import { IProduct } from '@/interfaces/product';
 import { getProductsHot } from '@/utils/product';
 import { useEffect, useState } from 'react';
 import { ProductItem } from './productItem';
+import { Button } from 'antd';
 
 export default function Product({ initialProductData }: { initialProductData: IProduct[] }) {
     const [productData, setProductData] = useState<IProduct[]>([]);
@@ -30,9 +31,9 @@ export default function Product({ initialProductData }: { initialProductData: IP
                 {productData?.map((product: IProduct, index: number) => <ProductItem product={product} key={index} />)}
             </div>
             <div className="text-center mt-4">
-                <button onClick={handleButtonClick} className="theme-btn">
-                    Xem Thêm <i className="far fa-arrow-rotate-right"></i>
-                </button>
+                <Button onClick={handleButtonClick} className="theme-btn">
+                    Xem Thêm
+                </Button>
             </div>
         </>
     );

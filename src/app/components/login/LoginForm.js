@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-
+import { Button } from 'antd';
 function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -78,9 +78,9 @@ function LoginForm() {
                     </Link>
                 </div>
                 <div className="d-flex align-items-center">
-                    <button type="submit" className="theme-btn">
+                    <Button type="submit" className="theme-btn">
                         <FontAwesomeIcon icon={faArrowRightToBracket} /> Đăng nhập
-                    </button>
+                    </Button>
                 </div>
             </form>
             <div className="login-footer">
