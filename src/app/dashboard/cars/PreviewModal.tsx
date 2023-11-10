@@ -1,13 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Col, Form, Input, Modal, Row, Spin } from 'antd';
-import styles from './add-car/AddCar.module.scss';
-import classNames from 'classnames/bind';
 import { getBrand } from '@/utils/branch';
 import dayjs from 'dayjs';
 const { TextArea } = Input;
-
-const cx = classNames.bind(styles);
 
 const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
     const [form] = Form.useForm();

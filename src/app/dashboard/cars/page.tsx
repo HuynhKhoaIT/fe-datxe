@@ -5,7 +5,7 @@ import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import CarItem from './CarItem';
-import { Breadcrumb, Button, Modal, Spin, Table, Tooltip } from 'antd';
+import { Breadcrumb, Button, Input, Modal, Spin, Table, Tooltip } from 'antd';
 import { getBrand } from '@/utils/branch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -13,12 +13,15 @@ import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
 import { notification } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import AddCarModal from './AddCarModal';
+const { Search } = Input;
 
 export default function CarsPage() {
     const { data: session } = useSession();
 
     const token = session?.user?.token;
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -36,19 +39,27 @@ export default function CarsPage() {
     const handleOk = () => {
         setIsModalOpen(false);
     };
+    // Mở modal xem chi tiết
     const showDetails = (e: React.MouseEvent<HTMLElement, MouseEvent>, record: object) => {
         e.stopPropagation();
         setDetail(record);
         setIsModalOpen(true);
     };
+
+    // mở modal edit
     const showUpdateModal = (record: object) => {
         setDetail(record);
         setIsUpdateModalOpen(true);
     };
-
+    // Mở modal thêm car
+    const showAddModal = () => {
+        setIsAddModalOpen(true);
+    };
+    // Đóng modal
     const handleCancel = () => {
         setIsModalOpen(false);
         setIsUpdateModalOpen(false);
+        setIsAddModalOpen(false);
     };
 
     const handleDeleteOk = () => {
@@ -125,7 +136,7 @@ export default function CarsPage() {
         }
     };
 
-    const columns = [
+    const columns: any = [
         {
             title: 'Biển số',
             dataIndex: 'licensePlates',
@@ -155,23 +166,26 @@ export default function CarsPage() {
 
         {
             title: 'Hàng động',
+            align: 'center',
+            width: 140,
             render: (record: object) => (
                 <span>
-                    <Tooltip title="Details">
+                    <Tooltip placement="bottom" title="Chi tiết">
                         <Button
                             type="primary"
                             icon={<FontAwesomeIcon icon={faEye} />}
                             onClick={(e) => showDetails(e, record)}
                         />
                     </Tooltip>
-                    <Tooltip title="Edit">
+                    <Tooltip placement="bottom" title="Chỉnh sửa">
                         <Button
+                            style={{ margin: '0 5px' }}
                             type="default"
                             icon={<FontAwesomeIcon icon={faPen} />}
                             onClick={() => showUpdateModal(record)}
                         />
                     </Tooltip>
-                    <Tooltip title="Delete">
+                    <Tooltip placement="bottom" title="Xoá">
                         <Button
                             danger
                             icon={<FontAwesomeIcon icon={faTrash} />}
@@ -207,13 +221,17 @@ export default function CarsPage() {
                     <div className="user-profile-card-header-right">
                         <div className="user-profile-search">
                             <div className="form-group">
-                                <input type="text" className="form-control" placeholder="Tìm..." />
-                                <i className="far fa-search"></i>
+                                <Search
+                                    placeholder="input search text"
+                                    allowClear
+                                    // onSearch={onSearch}
+                                    style={{ width: 200 }}
+                                />
                             </div>
                         </div>
-                        <Link href="cars/add-car" className="theme-btn">
-                            <span className="far fa-plus-circle"></span>Thêm xe
-                        </Link>
+                        <Button className="theme-btn" onClick={() => showAddModal()}>
+                            Thêm xe
+                        </Button>
                     </div>
                 </div>
                 <div className="col-lg-12">
@@ -234,6 +252,7 @@ export default function CarsPage() {
                 width={800}
                 data={detail ? detail : {}}
             />
+            <AddCarModal width={800} open={isAddModalOpen} onCancel={handleCancel} />
             <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={detail} />
         </div>
     );

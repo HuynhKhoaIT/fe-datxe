@@ -91,7 +91,14 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
         <Row>
             {contextHolder}
             <Col span={24}>
-                <Row className={cx('product-detail')}>
+                <Row
+                    className={cx('product-detail')}
+                    gutter={22}
+                    style={{
+                        marginLeft: '0px',
+                        marginRight: '0px',
+                    }}
+                >
                     <Col span={10}>
                         <div className="item-gallery mb-5">
                             <div className="flexslider-thumbnails">
