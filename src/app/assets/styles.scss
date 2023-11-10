@@ -4440,10 +4440,15 @@ label {
 }
 
 .shop-item-title {
-    font-size: 20px;
     color: var(--color-dark);
     transition: var(--transition);
-    min-height: 50px;
+    height: 40px;
+
+    font-size: 18px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .shop-item-title:hover {
@@ -4465,6 +4470,7 @@ label {
 }
 
 .shop-item-img {
+    width: 100%;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -4519,7 +4525,8 @@ label {
     transition: var(--transition);
 }
 
-.shop-item-meta a {
+.shop-item-meta a,
+.shop-item-meta p {
     display: block;
     width: 40px;
     height: 40px;
@@ -4530,9 +4537,11 @@ label {
     color: var(--theme-color);
     margin-bottom: 15px;
     font-size: 18px;
+    cursor: pointer;
 }
 
-.shop-item-meta a:hover {
+.shop-item-meta a:hover,
+.shop-item-meta p:hover {
     background: var(--theme-color);
     color: var(--color-white);
 }
@@ -4770,6 +4779,7 @@ label {
 
 .shop-item-single .flexslider-thumbnails img {
     width: 100%;
+    max-height: 370px;
     border-radius: 10px;
 }
 .shop-item-single .item-gallery {
@@ -4789,7 +4799,8 @@ label {
 }
 
 .single-item-title {
-    font-size: 28px;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .single-item-rating {
@@ -4937,7 +4948,8 @@ label {
 }
 
 .related-item .site-title {
-    font-size: 30px;
+    font-size: 26px;
+    color: rgba(0, 0, 0, 0.54);
 }
 
 @media all and (max-width: 767px) {
@@ -5653,10 +5665,6 @@ body.rtl-mode .price-wrapper {
     position: absolute;
     left: 12px;
     top: 15px;
-}
-
-.user-profile-card-header .theme-btn {
-    padding: 8px 15px;
 }
 
 .profile-info-list li {

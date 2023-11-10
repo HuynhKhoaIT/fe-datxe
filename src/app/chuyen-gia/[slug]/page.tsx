@@ -7,6 +7,7 @@ import { IProduct } from '@/interfaces/product';
 import { getCategoriesByGar } from '@/utils/category';
 import { getGarage } from '@/utils/garage';
 import { getProductByGar } from '@/utils/product';
+import { Spin } from 'antd';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -16,9 +17,6 @@ export default function Home({ params }: { params: { slug: string } }) {
     const [initialCategoryData, setInitialCategoryData] = useState<ICategory[]>([]);
     const [garageData, setGarageData] = useState<IGarage>();
     const [initialProductData, setInitialProductData] = useState<IProduct[]>([]);
-
-    console.log(initialProductData);
-    console.log(initialCategoryData);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,7 +31,6 @@ export default function Home({ params }: { params: { slug: string } }) {
 
                 const garage = await getGarage(params.slug);
                 setGarageData(garage?.data);
-
                 const productData = await getProductByGar(garageId, 8);
                 setInitialProductData(productData);
             } catch (error) {

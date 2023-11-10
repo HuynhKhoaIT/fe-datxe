@@ -47,23 +47,21 @@ function ProductGarage({ garageId }: { garageId: string }) {
                                 {garageData?.name}
                             </Link>
                             <Space className={cx()}>
-                                <Button
-                                    href="#"
-                                    style={{ borderRadius: '0' }}
-                                    type="primary"
-                                    danger
-                                    icon={<MessageOutlined />}
-                                >
-                                    Chat ngay
-                                </Button>
-
-                                <Button
-                                    href={`/chuyen-gia/${garageId}`}
-                                    style={{ borderRadius: '0' }}
-                                    icon={<ShopOutlined />}
-                                >
-                                    Xem shop
-                                </Button>
+                                <Link href={`#`}>
+                                    <Button
+                                        style={{ borderRadius: '0' }}
+                                        type="primary"
+                                        danger
+                                        icon={<MessageOutlined />}
+                                    >
+                                        Chat ngay
+                                    </Button>
+                                </Link>
+                                <Link href={`/chuyen-gia/${garageId}`}>
+                                    <Button icon={<ShopOutlined />} style={{ borderRadius: '0' }}>
+                                        Xem shop
+                                    </Button>
+                                </Link>
                             </Space>
                         </Col>
                     </Row>

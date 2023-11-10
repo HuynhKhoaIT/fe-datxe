@@ -1,13 +1,9 @@
 'use client';
-import { faEye, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { ICar } from '@/interfaces/car';
 import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, notification } from 'antd';
-import styles from './add-car/AddCar.module.scss';
-import classNames from 'classnames/bind';
 import { IBrand } from '@/interfaces/brand';
-import AddCartForm from './add-car/AddCarForm';
 import { getBrand, getBrands, getModels } from '@/utils/branch';
 import dayjs from 'dayjs';
 import { useSession } from 'next-auth/react';
@@ -16,8 +12,6 @@ import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { CheckOutlined, ExclamationOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
-
-const cx = classNames.bind(styles);
 
 const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
     const [api, contextHolder] = notification.useNotification();
@@ -275,7 +269,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                         </Form.Item>
                     </Col>
                 </Row> */}
-                    <Row className={cx('row')}>
+                    <Row gutter={10}>
                         <Col span={8}>
                             <Form.Item label="Registration Deadline">
                                 <DatePicker

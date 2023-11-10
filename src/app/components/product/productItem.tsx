@@ -5,27 +5,105 @@ import Link from 'next/link';
 import { IProduct } from '@/interfaces/product';
 import { useParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
+import { CheckOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { Modal, notification } from 'antd';
 
 const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
     const pathParm = useParams();
     const Parm = usePathname();
     let isCategory = Parm?.includes('chuyen-muc');
+    const { data: session } = useSession();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = () => {
+        api.info({
+            message: `Thành công`,
+            description: 'Sản phẩm đã được thêm vào giỏ hàng',
+            icon: <CheckOutlined style={{ color: 'green' }} />,
+        });
+    };
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+        const existingCartItems = JSON.parse('[]');
+        existingCartItems.push({
+            garageId: product.garageId,
+            product: product,
+            quantity: 1,
+        });
+        localStorage.setItem('cartData', JSON.stringify(existingCartItems));
+        openNotification();
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const addProductToLocalStorage = () => {
+        if (product && session?.user) {
+            const productId = product.id;
+            const garageId = product.garageId;
+            const existingCartItems = JSON.parse(localStorage.getItem('cartData') || '[]');
+            const index = existingCartItems.findIndex((item: any) => item.product.id === productId);
+            const idCar = existingCartItems.findIndex((item: any) => item.product.garageId === garageId);
+
+            if (existingCartItems.length > 0 && idCar === -1) {
+                showModal();
+            } else {
+                if (index !== -1) {
+                    existingCartItems[index].quantity += 1;
+                } else {
+                    existingCartItems.push({
+                        garageId: garageId,
+                        product: product,
+                        quantity: 1,
+                    });
+                }
+
+                localStorage.setItem('cartData', JSON.stringify(existingCartItems));
+                openNotification();
+            }
+        } else {
+            signIn();
+        }
+    };
     return (
         <div key={key} className="col-md-6 col-lg-4 col-xl-3">
+            {contextHolder}
+
             <div className="shop-item">
                 <div className="shop-item-img">
                     <span className="shop-item-sale">Sale</span>
-                    <img src={product.thumbnail} alt="" />
+                    {isCategory ? (
+                        <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
+                            <img src={product.thumbnail} alt="" />
+                        </Link>
+                    ) : (
+                        <Link href={`/san-pham/${product.id}`}>
+                            <img src={product.thumbnail} alt="" />
+                        </Link>
+                    )}
                     <div className="shop-item-meta">
                         <Link href="#">
                             <FontAwesomeIcon icon={faHeart} />
                         </Link>
-                        <Link href="#">
-                            <FontAwesomeIcon icon={faEye} />
-                        </Link>
-                        <Link href="#">
+                        {isCategory ? (
+                            <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
+                                <FontAwesomeIcon icon={faEye} />
+                            </Link>
+                        ) : (
+                            <Link href={`/san-pham/${product.id}`}>
+                                <FontAwesomeIcon icon={faEye} />
+                            </Link>
+                        )}
+                        <p onClick={addProductToLocalStorage}>
                             <FontAwesomeIcon icon={faCartShopping} />
-                        </Link>
+                        </p>
                     </div>
                 </div>
                 <div className="shop-item-info">
@@ -50,6 +128,15 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
                     </div>
                 </div>
             </div>
+            <Modal
+                title="Thông báo"
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                style={{ zIndex: '99999' }}
+            >
+                <p>Bạn đang đặt hàng với 2 chuyên gia khác nhau? Bạn có muốn xóa giỏ hàng để thêm sản phẩm mới?</p>
+            </Modal>
         </div>
     );
 };

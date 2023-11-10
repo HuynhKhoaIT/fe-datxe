@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { ICar } from '@/interfaces/car';
 import { DatePicker, Modal, Spin } from 'antd';
-import styles from './add-car/AddCar.module.scss';
 import classNames from 'classnames/bind';
 import { IBrand } from '@/interfaces/brand';
 import PreviewModal from './PreviewModal';
@@ -15,7 +14,6 @@ import { useSession } from 'next-auth/react';
 import { getBrand } from '@/utils/branch';
 import UpdateModal from './UpdateModal';
 
-const cx = classNames.bind(styles);
 interface CarItemProps {
     item: any;
     onDeleteCar(): void;
