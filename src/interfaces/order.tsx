@@ -2,7 +2,7 @@ export interface IOrder {
     id?: BigInteger;
     code?: string;
     customerId?: BigInteger;
-    garageId?: number;
+    garageId?: string;
     subTotal?: BigInteger;
     total?: BigInteger;
     totalDiscount?: BigInteger;

@@ -44,9 +44,6 @@ const CategoryItem = async ({ params }: { params: { slug: number } }) => {
                     ]}
                 />
                 <Pagination data={productData} />
-                {/* <Suspense fallback={<LoadingComponent />}>
-                    <Pagination data={productData} />
-                </Suspense> */}
             </div>
         </LayoutListProduct>
     );

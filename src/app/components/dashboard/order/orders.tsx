@@ -29,7 +29,7 @@ export default function Orders() {
         fetchData();
     }, [token]);
 
-    const fetchOrderData = async (garageId: number) => {
+    const fetchOrderData = async (garageId: string) => {
         const garageData = await getGarage(garageId);
         return garageData?.data;
     };
