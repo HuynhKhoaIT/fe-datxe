@@ -236,9 +236,7 @@ export default function CarsPage() {
                 </div>
                 <div className="col-lg-12">
                     <div className="table-responsive">
-                        <Spin spinning={loading}>
-                            <Table dataSource={cars2} columns={columns} />
-                        </Spin>
+                        <Table loading={loading} dataSource={cars2} columns={columns} />
                     </div>
                 </div>
             </div>

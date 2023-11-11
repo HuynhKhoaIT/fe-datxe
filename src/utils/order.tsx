@@ -15,12 +15,11 @@ import { IOrderDetail } from '@/interfaces/orderDetail';
  *
  * @return {Promise<void>}
  */
-export const getOrders = async ({ pageNo = 1 }) => {
-    const session = await getServerSession(authOptions);
-    if (session?.user?.token) {
+export const getOrders = async (token: String, pageNo = 1) => {
+    if (token) {
         try {
             const config = {
-                headers: { Authorization: `Bearer ${session?.user?.token}` },
+                headers: { Authorization: `Bearer ${token}` },
             };
             const res = await axios.get(`${GET_ORDER_ENDPOINT}?page=${pageNo}`, config);
             return res.data.data as Promise<IOrder[]>;
