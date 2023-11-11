@@ -20,7 +20,7 @@ const Pagination = ({ data }: { data: any }) => {
 
     return (
         <div>
-            <Sort lengthData={data?.length ?? 0} />
+            {data.length > 8 ? <Sort lengthData={data?.length ?? 0} /> : <h5>Hiển thị {data.length} sản phẩm</h5>}
             <div className="shop-item-wrapper">
                 <div className="row">
                     <ProductData product_data={currentItems} />

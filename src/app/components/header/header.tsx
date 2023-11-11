@@ -5,7 +5,8 @@ import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import SigninButton from './login-button';
-import Search from '../search/Search';
+import SearchForm from '../search/Search';
+
 const Header = () => {
     useEffect(() => {
         // Lấy dữ liệu từ Local Storage
@@ -71,7 +72,7 @@ const Header = () => {
                             />
                         </Link>
                         <div className="collapse navbar-collapse nav-search" id="main_nav">
-                            <Search />
+                            <SearchForm />
                             <div className="nav-right">
                                 <div className="cart-btn">
                                     <Link href="/gio-hang" className="nav-right-link">

@@ -26,7 +26,6 @@ export const getGarage = async (id: string) => {
     console.log(id);
     try {
         const res = await axios.get(`${GET_GARAGE_ENDPOINT}/${id}`);
-        console.log(res);
         return res.data as Promise<IGarage>;
     } catch (error) {
         console.error(error);

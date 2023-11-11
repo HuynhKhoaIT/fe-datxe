@@ -32,7 +32,6 @@ export const getCars = async (token: string) => {
 };
 
 export const getCar = async (token: string, carId: string) => {
-    // const session = await getServerSession(authOptions);
     try {
         if (token) {
             const config = {

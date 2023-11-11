@@ -27,14 +27,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--theme-color);
+        background-color: var(--theme-color) !important;
         height: 34px;
         margin-right: 5px;
         min-width: 60px;
         max-width: 190px;
         border-radius: none !important;
         &:hover {
-            background-color: var(--theme-color);
+            background-color: var(--theme-color) !important;
         }
     }
     .clear-btn {
@@ -110,4 +110,9 @@
     .search {
         height: 32px;
     }
+}
+
+// antd css
+.input-affix-wrapper:hover {
+    border-color: var(--theme-color) !important;
 }
