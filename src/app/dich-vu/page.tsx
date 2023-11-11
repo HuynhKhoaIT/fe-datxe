@@ -14,7 +14,7 @@ export default async function Shop() {
                             <SideBar />
                         </div>
                         <div className="col-lg-9">
-                            <Sort lengthData={product_data?.length} />
+                            {/* <Sort lengthData={product_data?.length} /> */}
                             <ServiceData product_data={product_data} />
                         </div>
                     </div>
