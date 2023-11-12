@@ -54,6 +54,7 @@ export default function Orders() {
                 if (order.garageId && order.carId) {
                     const garage = await fetchOrderData(order.garageId);
                     const car = await fetchCarData(order.carId);
+                    order.status = showStatus(order.status);
                     return { ...order, garage, car };
                 } else {
                     return order;
@@ -63,7 +64,6 @@ export default function Orders() {
         return updatedCars;
     };
 
-    console.log(ordersData2);
     const columns: any = [
         {
             title: 'Tên chuyên gia',

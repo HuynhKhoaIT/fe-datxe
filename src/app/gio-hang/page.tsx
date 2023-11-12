@@ -124,11 +124,10 @@ export default function Cart() {
         }
     }, []);
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        // e.preventDefault();
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
             localStorage.setItem('carData', JSON.stringify([]));
-            router.push('/dashboard/order/' + checkOut.id);
             openNotification();
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');
@@ -136,6 +135,7 @@ export default function Cart() {
                 const parsedCartData = JSON.parse(existingCartData);
                 setCartData(parsedCartData);
             }
+            router.push('/dashboard/order/' + checkOut.id);
         } catch (error: any) {
             console.log('Login fail');
             console.error('Login error:', error.message);
