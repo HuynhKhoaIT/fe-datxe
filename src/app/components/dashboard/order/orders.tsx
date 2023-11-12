@@ -1,20 +1,20 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Table, Spin } from 'antd';
+import { Table, Spin, Modal } from 'antd';
 import { getGarage } from '@/utils/garage';
 import { getOrders, showStatus } from '@/utils/order';
 import { IOrder } from '@/interfaces/order';
 import { useSession } from 'next-auth/react';
 import { getCar } from '@/utils/car';
+import { useRouter } from 'next/navigation';
 
 export default function Orders() {
     const { data: session } = useSession();
+    const router = useRouter();
     const token = session?.user?.token;
     const [ordersData, setOrdersData] = useState<IOrder[]>([]);
     const [ordersData2, setOrdersData2] = useState<IOrder[]>([]);
-
     const [loading, setLoading] = useState<boolean>(true);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -95,6 +95,9 @@ export default function Orders() {
             dataIndex: 'total',
         },
     ];
+    const handleRowClick = (record: any) => {
+        router.push(`/dashboard/order/${record.id}`);
+    };
 
     return (
         <div className="user-profile-wrapper">
@@ -108,6 +111,9 @@ export default function Orders() {
                                 loading={loading}
                                 pagination={{ pageSize: 6 }}
                                 dataSource={ordersData2}
+                                onRow={(record) => ({
+                                    onClick: () => handleRowClick(record),
+                                })}
                                 columns={columns}
                             />
                         </div>
