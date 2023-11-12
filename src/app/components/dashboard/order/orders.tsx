@@ -7,6 +7,7 @@ import { IOrder } from '@/interfaces/order';
 import { useSession } from 'next-auth/react';
 import { getCar } from '@/utils/car';
 import { useRouter } from 'next/navigation';
+import dayjs from 'dayjs';
 
 export default function Orders() {
     const { data: session } = useSession();
@@ -80,11 +81,15 @@ export default function Orders() {
         },
         {
             title: 'Ngày sửa',
-            dataIndex: 'date',
-        },
-        {
-            title: 'Giờ sửa',
-            dataIndex: 'time',
+            // dataIndex: 'date',
+            render: (data: any) => {
+                return (
+                    <div>
+                        <span>{dayjs(data?.date).format('DD-MM-YYYY')} </span>
+                        <span>{data?.time}</span>
+                    </div>
+                );
+            },
         },
         {
             title: 'Tình trạng',
