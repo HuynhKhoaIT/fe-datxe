@@ -4470,14 +4470,30 @@ label {
 }
 
 .shop-item-img {
-    width: 100%;
+    max-width: 276px;
+    max-height: 276px;
     text-align: center;
     position: relative;
     z-index: 1;
 }
+.shop-item-img-200 {
+    max-width: 200px;
+    max-height: 200px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+.shop-item-img-200 a {
+    max-width: 200px;
+    max-height: 200px;
+}
 
 .shop-item-img img {
     border-radius: 10px;
+    height: 276px;
+}
+.shop-item-img-200 img {
+    height: 200px;
 }
 
 .shop-item-img::before {
