@@ -1,5 +1,4 @@
 import Orders from '../components/dashboard/order/orders';
-import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
 import React from 'react';
 export default async function Dashboard() {
     return (
