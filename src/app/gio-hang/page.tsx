@@ -19,12 +19,11 @@ export default function Cart() {
     const { data: session, status } = useSession();
     const token = session?.user?.token;
     const [api, contextHolder] = notification.useNotification();
-    const [time, setTime] = useState('');
-    const [date, setDate] = useState('');
+    const [time, setTime] = useState(dayjs().format('HH:mm'));
+    const [date, setDate] = useState(dayjs().format('DD-MM-YYYY'));
     const [cars, setCars] = useState<ICar[]>([]);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [deleteRow, setDeleteRow] = useState<any>();
-
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
@@ -259,17 +258,18 @@ export default function Cart() {
                                                 wrapperCol={{ span: 24 }}
                                                 rules={[
                                                     { required: true, message: 'Vui lòng chọn một ngày' },
-                                                    ({ getFieldValue }) => ({
-                                                        validator(rule, value) {
-                                                            if (!value || dayjs(value).isAfter(dayjs(), 'day')) {
-                                                                return Promise.resolve();
-                                                            }
-                                                            return Promise.reject(
-                                                                'Ngày phải lớn hơn hoặc bằng ngày hiện tại',
-                                                            );
-                                                        },
-                                                    }),
+                                                    // ({ getFieldValue }) => ({
+                                                    //     validator(rule, value) {
+                                                    //         if (!value || dayjs(value).isAfter(dayjs(), 'day')) {
+                                                    //             return Promise.resolve();
+                                                    //         }
+                                                    //         return Promise.reject(
+                                                    //             'Ngày phải lớn hơn hoặc bằng ngày hiện tại',
+                                                    //         );
+                                                    //     },
+                                                    // }),
                                                 ]}
+                                                initialValue={dayjs()}
                                             >
                                                 <DatePicker
                                                     format={'DD/MM/YYYY'}
@@ -286,6 +286,7 @@ export default function Cart() {
                                                 name="time"
                                                 wrapperCol={{ span: 24 }}
                                                 rules={[{ required: true, message: 'Vui lòng chọn thời gian' }]}
+                                                initialValue={dayjs()}
                                             >
                                                 <TimePicker
                                                     onChange={(time) => handleTimeChange(time?.toString())}
