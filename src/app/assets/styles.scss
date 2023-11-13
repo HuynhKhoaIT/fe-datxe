@@ -372,7 +372,9 @@ label {
 .pd-50 {
     padding: 50px 0;
 }
-
+.pd-t-50 {
+    padding-top: 50px;
+}
 .py-120 {
     padding: 120px 0;
 }
@@ -6851,4 +6853,40 @@ body.rtl-mode .price-wrapper {
 
 .ant-input-affix-wrapper:focus-within {
     border-color: var(--theme-color) !important;
+}
+
+// garage
+.garage-info-section {
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    margin: 10px 0;
+}
+.garage-contact {
+    margin-top: 20px;
+}
+.list-category {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-x: scroll;
+}
+
+// css slider
+.slider-background {
+    margin-left: -12px;
+    background-color: #08221b;
+}
+.slider-background .text-banner {
+    padding: 0 20px;
+}
+.slider-background .text-banner h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #fff;
+}
+.slider-background .text-banner h2 span {
+    font-size: 24px;
+    font-weight: 300;
+}
+.slider-background .text-banner p {
+    color: #fff;
 }
