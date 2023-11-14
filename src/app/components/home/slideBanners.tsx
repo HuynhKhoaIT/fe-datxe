@@ -41,7 +41,7 @@ const SlideBanners = () => {
                     </h3>
                     <p>Bạn là gara/ nhà cung cấp phụ tung. Hãy tham gia để trở thành chuyên gia ngay hôm nay.</p>
                 </div>
-                <Link href={'/dang-ky'} className="pd-t-50">
+                <Link href={'https://v2.dlbd.vn/register'} className="pd-t-50">
                     <button className="btn theme-btn" type="button">
                         Đăng ký
                     </button>
