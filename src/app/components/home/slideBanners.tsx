@@ -36,10 +36,10 @@ const SlideBanners = () => {
             </div>
             <div className="col-md-4 d-flex flex-column align-items-center justify-content-center slider-background">
                 <div className="text-banner">
-                    <h2>
+                    <h3>
                         <span>Dành cho </span>chuyên gia
-                    </h2>
-                    <p>Bạn là gara/ nhà cung cấp phụ tung. Hãy tham gia để trở thành chuyên gia ngay hôm nay</p>
+                    </h3>
+                    <p>Bạn là gara/ nhà cung cấp phụ tung. Hãy tham gia để trở thành chuyên gia ngay hôm nay.</p>
                 </div>
                 <Link href={'/dang-ky'} className="pd-t-50">
                     <button className="btn theme-btn" type="button">

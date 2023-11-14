@@ -6872,18 +6872,19 @@ body.rtl-mode .price-wrapper {
 
 // css slider
 .slider-background {
-    margin-left: -12px;
+    margin-left: -13px;
     background-color: #08221b;
 }
 .slider-background .text-banner {
     padding: 0 20px;
 }
-.slider-background .text-banner h2 {
+.slider-background .text-banner h3 {
     text-align: center;
     font-size: 24px;
+    margin-bottom: 12px;
     color: #fff;
 }
-.slider-background .text-banner h2 span {
+.slider-background .text-banner h3 span {
     font-size: 24px;
     font-weight: 300;
 }
