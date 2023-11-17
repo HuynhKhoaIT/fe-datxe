@@ -12,9 +12,6 @@ import { useState } from 'react';
 import { IEventCalendar } from '../domain/EventCalendar';
 import { useSession } from 'next-auth/react';
 
-interface CalendarSchedulerProps {
-    eventsCalendar: IEventCalendar[];
-}
 const sampleEvents: IEventCalendar[] = [
     {
         _id: '1',
