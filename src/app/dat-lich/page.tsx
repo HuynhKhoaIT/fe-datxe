@@ -33,7 +33,7 @@ const sampleEvents: IEventCalendar[] = [
     // Add more events as needed
 ];
 
-export default function CalendarScheduler({ eventsCalendar }: CalendarSchedulerProps) {
+export default function CalendarScheduler() {
     const [eventInfos, setEventInfos] = useState();
     const [isEditCard, setIsEditCard] = useState<boolean>(false);
     // const [opened, { open, close }] = useDisclosure(false);
