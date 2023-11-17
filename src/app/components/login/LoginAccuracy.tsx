@@ -1,10 +1,29 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Avatar, Grid, Input, Button, PinInput } from '@mantine/core';
 import { IconChevronLeft, IconBrandGoogle } from '@tabler/icons-react';
 import IconGoogle from '../../assets/images/google.svg';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+
 export function LoginFormAccuracy() {
+    const [countdown, setCountdown] = useState<number>(59);
+    const searchParams = useSearchParams();
+
+    const phone = searchParams.get('phone');
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+
+        if (countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown((prevCountdown) => prevCountdown - 1);
+            }, 1000);
+        }
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, [countdown]);
     return (
         <div className="login-form">
             <Link href={'/dang-nhap'}>
@@ -23,7 +42,7 @@ export function LoginFormAccuracy() {
                 <h3>Nhập mã xác minh</h3>
                 <p>
                     Bạn vui lòng nhập mã gồm 6 chữ số vừa được gửi đến{' '}
-                    <span style={{ color: 'var(--theme-color' }}> 0869950091</span>
+                    <span style={{ color: 'var(--theme-color' }}> {phone}</span>
                 </p>
             </div>
 
@@ -41,7 +60,9 @@ export function LoginFormAccuracy() {
                 </Button>
             </form>
             <div className="other-accuracy">
-                <p className="other-accuracy__time">Gửi lại mã sau 55s</p>
+                <p className="other-accuracy__time">
+                    Gửi lại mã sau {countdown}s {countdown == 0 && <div onClick={() => setCountdown(59)}>Gửi lại</div>}
+                </p>
                 <p className="other-accuracy__title">Mã xác minh có hiệu lực trong vòng 15 phút</p>
             </div>
         </div>

@@ -1,16 +1,39 @@
 'use client';
-import React from 'react';
-import { Box, Avatar, Grid, Input, Button } from '@mantine/core';
+import React, { useState } from 'react';
+import { Box, Avatar, Grid, Input, Button, TextInput } from '@mantine/core';
 import { IconBrandFacebook, IconBrandGoogle } from '@tabler/icons-react';
 import IconGoogle from '../../assets/images/google.svg';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
+import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+interface FormInputs {
+    name: string;
+    phone: string;
+}
 export function LoginFormInput() {
     const router = useRouter();
-    const handleSubmit = (e: { preventDefault: () => void }) => {
-        e.preventDefault();
-        router.push('./dang-nhap/xac-thuc');
+    const [phone, setPhone] = useState<string>();
+    const [fullName, setfullName] = useState<string>();
+
+    // const handleSubmit = (e: { preventDefault: () => void }) => {
+    //     e.preventDefault();
+    //     router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
+    // };
+    const form = useForm({
+        initialValues: {
+            name: '',
+            phone: '',
+        },
+
+        validate: {
+            name: hasLength({ min: 2, max: 30 }, 'Name must be 2-30 characters long'),
+            phone: hasLength({ min: 2, max: 11 }, 'phone must be 2-10 characters long'),
+        },
+    });
+    const onSubmit = () => {
+        console.log(form.values);
+        const { name, phone } = form.values;
+        router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
     };
     return (
         <div className="login-form">
@@ -28,8 +51,23 @@ export function LoginFormInput() {
                 <p>Đăng nhập hoặc tạo tài khoản</p>
             </div>
 
-            <form className="login-form-input" onSubmit={handleSubmit}>
-                <Input style={{ borderBottom: '1px solid #ddd' }} variant="unstyled" placeholder="Số điện thoại" />
+            <form className="login-form-input" onSubmit={form.onSubmit(onSubmit)}>
+                <TextInput
+                    withAsterisk
+                    style={{ borderBottom: '1px solid #ddd' }}
+                    variant="unstyled"
+                    placeholder="Họ và tên"
+                    // onChange={(e) => setfullName(e.target.value)}
+                    {...form.getInputProps('name')}
+                />
+                <br></br>
+                <TextInput
+                    withAsterisk
+                    style={{ borderBottom: '1px solid #ddd' }}
+                    variant="unstyled"
+                    placeholder="Số điện thoại"
+                    {...form.getInputProps('phone')}
+                />
                 <Button
                     className="login-btn"
                     variant="filled"
