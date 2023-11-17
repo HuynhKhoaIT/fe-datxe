@@ -133,6 +133,7 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+
     box-sizing: border-box;
 }
 
@@ -146,7 +147,7 @@ body {
 }
 
 a {
-    color: var(--color-dark);
+    // color: var(--color-dark);
     display: inline-block;
 }
 
@@ -671,7 +672,22 @@ label {
 /*====================
 8. Theme button
 ======================*/
-
+// .primary-btn {
+//     font-size: 16px;
+//     color: var(--color-white);
+//     transition: all 0.5s;
+//     text-transform: capitalize;
+//     position: relative;
+//     border-radius: 13px;
+//     font-weight: 500;
+//     cursor: pointer;
+//     text-align: center;
+//     overflow: hidden;
+//     border: none;
+//     background: var(--theme-color);
+//     box-shadow: var(--box-shadow);
+//     z-index: 1;
+// }
 .theme-btn {
     font-size: 16px;
     color: var(--color-white);
@@ -4802,7 +4818,8 @@ label {
 }
 .shop-item-single .item-gallery {
     aspect-ratio: 1;
-    background: url(https://v2.dlbd.vn/storage/uploads/no_image.png) no-repeat;
+    background-color: #fff;
+    // background: url(https://v2.dlbd.vn/storage/uploads/no_image.png) no-repeat;
     background-size: cover;
     border-radius: 10px;
 }
@@ -6857,9 +6874,20 @@ body.rtl-mode .price-wrapper {
 
 // garage
 .garage-info-section {
-    background: #fff;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    margin: 10px 0;
+    padding: 40px;
+    background-color: var(--color-white);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
+    // color: var(--color-white);
+}
+.garage-info-left {
+    padding: 12px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+.garage-info-right {
+    padding-left: 20px;
+}
+.garage-info-right li {
+    margin-bottom: 12px;
 }
 .garage-contact {
     margin-top: 20px;
@@ -6890,4 +6918,187 @@ body.rtl-mode .price-wrapper {
 }
 .slider-background .text-banner p {
     color: #fff;
+}
+
+// Modal cho page Đặt lịch
+.custom-modal {
+    // display: flex;
+    display: block;
+    background-color: #fff;
+    margin: auto;
+    width: 500px;
+    height: 600px;
+    // top: '50%';
+    // left: '50%';
+    // right: 'auto';
+    // bottom: 'auto';
+    // transform: 'translate(-50%, -50%)';
+    z-index: 999;
+}
+
+.custom-overlay {
+    z-index: 999;
+}
+// swiper
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+// body {
+//     background: #000;
+//     color: #000;
+// }
+
+.swiper {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.swiper-slide {
+    background-size: cover;
+    background-position: center;
+}
+
+.my-swiper2 {
+    height: 80%;
+    width: 100%;
+}
+
+.my-swiper {
+    height: 20%;
+    box-sizing: border-box;
+    padding: 10px 10px;
+    margin-top: 10px;
+}
+
+.my-swiper .swiper-slide {
+    width: 33.333%;
+    height: 100%;
+    opacity: 0.4;
+}
+
+.my-swiper .swiper-slide-thumb-active {
+    opacity: 1;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.swiper-button-next,
+.swiper-button-prev {
+    color: #fff !important;
+}
+// Login
+.login-form {
+    padding: 30px 18px;
+}
+.login-title-1 {
+    font-size: 24px;
+    font-weight: 300;
+    padding: 20px 0;
+}
+.login-title-2 {
+    padding: 20px 0;
+}
+.login-title-2 p {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+.login-form-input {
+    padding: 20px 0;
+}
+.login-form-input .login-btn {
+    margin-top: 50px;
+}
+.other-login {
+    padding: 20px 0;
+}
+.other-login .other-login__title {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    position: relative;
+}
+.other-login .other-login__title::before {
+    content: '';
+    position: absolute;
+    width: calc(50% - 76px);
+    height: 1px;
+    background-color: #555;
+    left: 0;
+    top: 12px;
+}
+.other-login .other-login__title::after {
+    content: '';
+    position: absolute;
+    background-color: #555;
+    width: calc(50% - 76px);
+    height: 1px;
+    right: 0;
+    top: 12px;
+}
+.other-login__btn {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.other-login__rules {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+.other-login__rules a {
+    color: var(--theme-color);
+    text-decoration: underline;
+}
+// login-accuracy-input
+.login-accuracy-input {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.login-accuracy-input input {
+    border-radius: 0px;
+    border-bottom: 1px solid #ddd;
+}
+
+.other-accuracy {
+    padding: 20px 0;
+}
+.other-accuracy__time {
+    color: #0dcaf0;
+}
+
+.login-title-2 h3 {
+    font-size: 26px;
+    font-weight: 450;
 }

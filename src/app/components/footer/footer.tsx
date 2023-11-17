@@ -1,9 +1,15 @@
 'use client';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF, faLinkedinIn, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
-import { faCaretRight, faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { faPaperPlane, faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import {
+    IconPhone,
+    IconLocation,
+    IconMail,
+    IconCaretRight,
+    IconBrandFacebook,
+    IconBrandYoutube,
+    IconBrandInstagram,
+    IconBrandTwitter,
+    IconSend,
+} from '@tabler/icons-react';
 
 const MyFooter = () => (
     <footer className="footer-area">
@@ -23,19 +29,19 @@ const MyFooter = () => (
                                 <li>
                                     <a href="tel:+21236547898">
                                         <i>
-                                            <FontAwesomeIcon icon={faPhone} />
+                                            <IconPhone size={16} />
                                         </i>
                                         +2 123 654 7898
                                     </a>
                                 </li>
                                 <li>
-                                    <FontAwesomeIcon icon={faLocationDot} />
+                                    <IconLocation size={16} />
                                     25/B Milford Road, New York
                                 </li>
                                 <li>
                                     <a href="mailto:info@example.com">
                                         <i>
-                                            <FontAwesomeIcon icon={faEnvelope} />
+                                            <IconMail size={16} />
                                         </i>
                                         info@example.com
                                     </a>
@@ -49,32 +55,32 @@ const MyFooter = () => (
                             <ul className="footer-list">
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> About Us
+                                        <IconCaretRight size={16} /> About Us
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Update News
+                                        <IconCaretRight size={16} /> Update News
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Testimonials
+                                        <IconCaretRight size={16} /> Testimonials
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Terms Of Service
+                                        <IconCaretRight size={16} /> Terms Of Service
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Privacy policy
+                                        <IconCaretRight size={16} /> Privacy policy
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Our Dealers
+                                        <IconCaretRight size={16} /> Our Dealers
                                     </a>
                                 </li>
                             </ul>
@@ -86,32 +92,32 @@ const MyFooter = () => (
                             <ul className="footer-list">
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> FAQ's
+                                        <IconCaretRight size={16} /> FAQ's
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Affiliates
+                                        <IconCaretRight size={16} /> Affiliates
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Booking Tips
+                                        <IconCaretRight size={16} /> Booking Tips
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Sell Vehicles
+                                        <IconCaretRight size={16} /> Sell Vehicles
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Contact Us
+                                        <IconCaretRight size={16} /> Contact Us
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <FontAwesomeIcon icon={faCaretRight} /> Sitemap
+                                        <IconCaretRight size={16} /> Sitemap
                                     </a>
                                 </li>
                             </ul>
@@ -126,7 +132,7 @@ const MyFooter = () => (
                                     <form action="#">
                                         <input type="email" className="form-control" placeholder="Your Email" />
                                         <button className="theme-btn" type="submit">
-                                            Subscribe Now <FontAwesomeIcon icon={faPaperPlane} />
+                                            Subscribe Now <IconSend size={16} />
                                         </button>
                                     </form>
                                 </div>
@@ -148,22 +154,22 @@ const MyFooter = () => (
                         <ul className="footer-social">
                             <li>
                                 <a href="#">
-                                    <FontAwesomeIcon icon={faFacebookF} />
+                                    <IconBrandFacebook size={16} />
                                 </a>
                             </li>
                             <li>
                                 <a href="#">
-                                    <FontAwesomeIcon icon={faTwitter} />
+                                    <IconBrandTwitter size={16} />
                                 </a>
                             </li>
                             <li>
                                 <a href="#">
-                                    <FontAwesomeIcon icon={faLinkedinIn} />
+                                    <IconBrandInstagram size={16} />
                                 </a>
                             </li>
                             <li>
                                 <a href="#">
-                                    <FontAwesomeIcon icon={faYoutube} />
+                                    <IconBrandYoutube size={16} />
                                 </a>
                             </li>
                         </ul>

@@ -2,36 +2,31 @@
 import { IProduct } from '@/interfaces/product';
 import { faFacebookF, faInstagram, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faHeart, faStar, faStarHalfStroke } from '@fortawesome/free-regular-svg-icons';
-import { faCartShopping, faMinus, faPlus, faRightLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faCartShopping, faChevronRight, faMinus, faPlus, faRightLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import React, { Suspense, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
-import { notification, Modal, Row, Col, Space, Spin } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
+import { Grid, Modal, Button, Group } from '@mantine/core';
 import ProductGarage from './ProductGarage';
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
+import ProductSlider from './ProductSlider';
+import { notifications } from '@mantine/notifications';
+
 const cx = classNames.bind(styles);
 function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
     const { data: session } = useSession();
-    const [api, contextHolder] = notification.useNotification();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [inputValue, setInputValue] = useState(1);
-    const openNotification = () => {
-        api.info({
-            message: `Thành công`,
-            description: 'Sản phẩm đã được thêm vào giỏ hàng',
-            icon: <CheckOutlined style={{ color: 'green' }} />,
-        });
-    };
 
     const showModal = () => {
         setIsModalOpen(true);
     };
 
     const handleOk = () => {
+        console.log('123');
         setIsModalOpen(false);
         const existingCartItems = JSON.parse('[]');
         existingCartItems.push({
@@ -40,7 +35,10 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
             quantity: inputValue,
         });
         localStorage.setItem('cartData', JSON.stringify(existingCartItems));
-        openNotification();
+        notifications.show({
+            title: 'Thành công',
+            message: 'Sản phẩm được thêm vào giỏ hàng.',
+        });
     };
 
     const handleCancel = () => {
@@ -81,17 +79,19 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                 }
 
                 localStorage.setItem('cartData', JSON.stringify(existingCartItems));
-                openNotification();
+                notifications.show({
+                    title: 'Thành công',
+                    message: 'Sản phẩm được thêm vào giỏ hàng.',
+                });
             }
         } else {
             signIn();
         }
     };
     return (
-        <Row>
-            {contextHolder}
-            <Col span={24}>
-                <Row
+        <Grid>
+            <Grid.Col span={12}>
+                <Grid
                     className={cx('product-detail')}
                     gutter={22}
                     style={{
@@ -99,18 +99,14 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                         marginRight: '0px',
                     }}
                 >
-                    <Col span={10}>
+                    <Grid.Col span={5}>
                         <div className="item-gallery">
                             <div className="flexslider-thumbnails">
-                                <ul className="slides">
-                                    <li data-thumb="/assets/img/shop/01.jpg" rel="adjustX:10, adjustY:">
-                                        <img src={ProductDetail.thumbnail} alt="image" />
-                                    </li>
-                                </ul>
+                                <ProductSlider />
                             </div>
                         </div>
-                    </Col>
-                    <Col span={14}>
+                    </Grid.Col>
+                    <Grid.Col span={7}>
                         <div className="single-item-info">
                             <h4 className="single-item-title">{ProductDetail.name}</h4>
                             <div className="single-item-price">
@@ -120,11 +116,15 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                                 </h4>
                             </div>
 
-                            <p className="mb-4">
-                                There are many variations of passages of Lorem Ipsum available, but the majority have
-                                suffered alteration in some form, by injected humour, or randomised words which don't
-                                look even slightly believable.
-                            </p>
+                            <div className="mb-4">
+                                <p>
+                                    Áp dụng: <Link href={''}>Audi-A4</Link>, <Link href={''}>Audi-A5</Link>,{' '}
+                                    <Link href={''}>Audi-A6</Link>
+                                </p>
+                                <p>
+                                    Danh mục: <Link href={''}>Sửa chữa chung</Link>
+                                </p>
+                            </div>
 
                             <div className="single-item-content">
                                 <h5>
@@ -180,13 +180,13 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                                 </Link>
                             </div>
                         </div>
-                    </Col>
-                </Row>
-            </Col>
-            <Col span={24}>
+                    </Grid.Col>
+                </Grid>
+            </Grid.Col>
+            <Grid.Col span={12}>
                 {ProductDetail && ProductDetail.garageId && <ProductGarage garageId={ProductDetail.garageId} />}
-            </Col>
-            <Col span={24}>
+            </Grid.Col>
+            <Grid.Col span={12}>
                 <div className={cx('single-item-details', 'product-description')}>
                     <nav>
                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
@@ -210,17 +210,30 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                         </div>
                     </div>
                 </div>
-            </Col>
-            <Modal
-                title="Thông báo"
-                open={isModalOpen}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                style={{ zIndex: '99999' }}
-            >
-                <p>Bạn đang đặt hàng với 2 chuyên gia khác nhau? Bạn có muốn xóa giỏ hàng để thêm sản phẩm mới?</p>
+            </Grid.Col>
+            <Modal title="Thông báo" opened={isModalOpen} onClose={handleCancel}>
+                <div>Bạn đang đặt hàng với 2 chuyên gia khác nhau? Bạn có muốn xóa giỏ hàng để thêm sản phẩm mới?</div>
+                <Group justify="end" style={{ marginTop: 10 }}>
+                    <Button
+                        variant="outline"
+                        key="cancel"
+                        onClick={handleCancel}
+                        color="red"
+                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                    >
+                        Huỷ bỏ
+                    </Button>
+                    <Button
+                        style={{ marginLeft: '12px' }}
+                        onClick={handleOk}
+                        variant="filled"
+                        leftSection={<FontAwesomeIcon icon={faChevronRight} />}
+                    >
+                        Tiếp tục
+                    </Button>
+                </Group>
             </Modal>
-        </Row>
+        </Grid>
     );
 }
 

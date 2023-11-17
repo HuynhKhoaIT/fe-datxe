@@ -1,13 +1,13 @@
 'use client';
 import { useSession } from 'next-auth/react';
-import { LoginFormInput } from '../components/login/Login';
+import { LoginFormAccuracy } from '../../components/login/LoginAccuracy';
 import React from 'react';
 import { redirect } from 'next/navigation';
 
-export default function Login() {
+export default function LoginAccuracy() {
     const { data: session } = useSession();
     if (session && session.user) {
         redirect('/dashboard');
     }
-    return <LoginFormInput />;
+    return <LoginFormAccuracy />;
 }

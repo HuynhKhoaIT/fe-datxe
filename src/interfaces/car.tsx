@@ -13,4 +13,6 @@ export interface ICar {
     description?: string;
     kmRepair?: number;
     machineNumber?: number;
+    brandName?: string;
+    modelName?: string;
 }

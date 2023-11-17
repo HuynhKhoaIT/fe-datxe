@@ -10,7 +10,7 @@ interface CategoryProps {
 
 export default function Categories({ initialCategoryData }: { initialCategoryData: ICategory[] }) {
     return (
-        <div className="row">
+        <div className="row d-flex flex-row flex-nowrap">
             {initialCategoryData?.map((category: ICategory, index) => <CategoryItem category={category} key={index} />)}
         </div>
     );
