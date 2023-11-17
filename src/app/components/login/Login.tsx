@@ -4,6 +4,7 @@ import { Box, Avatar, Grid, Input, Button } from '@mantine/core';
 import { IconBrandFacebook, IconBrandGoogle } from '@tabler/icons-react';
 import IconGoogle from '../../assets/images/google.svg';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export function LoginFormInput() {
     const router = useRouter();
@@ -86,6 +87,11 @@ export function LoginFormInput() {
                             ></path>
                         </svg>
                     </Button>
+                </div>
+                <div className="login-footer">
+                    <p>
+                        Bạn không có tài khoản? <Link href="dang-ky">Đăng Ký</Link>
+                    </p>
                 </div>
                 <p className="other-login__rules">
                     Bằng việc tiếp tục, bạn hãy chấp nhận <a href="/"> Điều khoản sử dụng</a>
