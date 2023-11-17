@@ -1,24 +1,29 @@
 'use client';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import CartItem from '../components/cart/cartItem';
 import { checkOutCart } from '@/utils/order';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { CarInfoCart } from '../components/cart/carInfo';
 import { useSession } from 'next-auth/react';
-import { Avatar, Button, Card, Col, DatePicker, Form, Input, Modal, Row, Table, TimePicker, notification } from 'antd';
-import { CheckOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Grid, Modal, TextInput, Box, Select, Button, Group, Table, NumberInput, Card, Avatar } from '@mantine/core';
+import { DateInput, TimeInput } from '@mantine/dates';
+import { ActionIcon, rem } from '@mantine/core';
 import { ICar } from '@/interfaces/car';
 import { getCars } from '@/utils/car';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faChevronRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 export default function Cart() {
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
+    const ref = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const { data: session, status } = useSession();
     const token = session?.user?.token;
-    const [api, contextHolder] = notification.useNotification();
+    // const [api, contextHolder] = notification.useNotification();
     const [time, setTime] = useState(dayjs().format('HH:mm'));
     const [date, setDate] = useState(dayjs().format('DD-MM-YYYY'));
     const [cars, setCars] = useState<ICar[]>([]);
@@ -71,13 +76,13 @@ export default function Cart() {
         fetchCars();
     }, [token]);
 
-    const openNotification = () => {
-        api.info({
-            message: `Thành công`,
-            description: 'Đặt lịch thành công',
-            icon: <CheckOutlined style={{ color: 'green' }} />,
-        });
-    };
+    // const openNotification = () => {
+    //     api.info({
+    //         message: `Thành công`,
+    //         description: 'Đặt lịch thành công',
+    //         icon: <CheckOutlined style={{ color: 'green' }} />,
+    //     });
+    // };
     // tăng số lượng sản phẩm
     const incrementQuantity = (productId: number) => {
         const updateCartData = cartData.map((item) => {
@@ -128,7 +133,7 @@ export default function Cart() {
         try {
             const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
             localStorage.setItem('carData', JSON.stringify([]));
-            openNotification();
+            // openNotification();
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');
             if (existingCartData) {
@@ -142,239 +147,222 @@ export default function Cart() {
         }
     };
 
-    const columns: any = [
-        {
-            title: 'Hình',
-            dataIndex: ['product', 'thumbnail'],
-            key: 'image',
-            width: '100px',
-            render: (record: string) => <Avatar shape="square" src={record} style={{ width: '70px' }} />,
-        },
-        {
-            title: 'Tên',
-            dataIndex: ['product', 'name'],
-            key: 'ten',
-        },
-        {
-            title: 'Giá',
-            dataIndex: ['product', 'price'],
-            key: 'gia',
-            render: (record: any) => <span>{record.toLocaleString()}đ</span>,
-        },
-        {
-            title: 'Số lượng',
-            key: 'soLuong',
-            width: '200px',
-            align: 'center',
-            render: (record: any) => (
-                <>
-                    <Button type="link" onClick={() => decrementQuantity(record.product.id)}>
-                        <FontAwesomeIcon icon={faMinus} />
+    const pickerControl = (
+        <ActionIcon variant="subtle" color="gray" onClick={() => ref.current?.showPicker()}>
+            <FontAwesomeIcon icon={faClock} />
+        </ActionIcon>
+    );
+
+    const renderRows = () => {
+        // if (loading) {
+        //     return (
+        //         <tr>
+        //             <td colSpan={7}>
+        //                 <Center>
+        //                     <Loader size={36} />
+        //                 </Center>
+        //             </td>
+        //         </tr>
+        //     );
+        // }
+
+        return cartData?.map((record) => (
+            <Table.Tr key={record.product.id}>
+                <Table.Td>
+                    <Avatar variant="filled" radius="sm" size="lg" src={record.product.thumbnail} />
+                </Table.Td>
+                <Table.Td>{record.product.name}</Table.Td>
+                <Table.Td>{record.product.price.toLocaleString()}đ</Table.Td>
+
+                <Table.Td width={180} align="center">
+                    <>
+                        <Button variant="transparent" onClick={() => decrementQuantity(record.product.id)}>
+                            <FontAwesomeIcon icon={faMinus} />
+                        </Button>
+                        <span style={{ padding: '10px' }}>{record.quantity}</span>
+                        <Button variant="transparent" onClick={() => incrementQuantity(record.product.id)}>
+                            <FontAwesomeIcon icon={faPlus} />
+                        </Button>
+                    </>
+                </Table.Td>
+                <Table.Td>
+                    <span>{(record?.product.price * record.quantity).toLocaleString()}đ</span>
+                </Table.Td>
+
+                <Table.Td width={30} align="center">
+                    <Button
+                        variant="transparent"
+                        color="red"
+                        onClick={() => handleOpenModalDelete(record)}
+                        style={{ padding: 0 }}
+                    >
+                        <FontAwesomeIcon icon={faTrashCan} />
                     </Button>
-                    <span style={{ padding: '10px' }}>{record.quantity}</span>
-                    <Button type="link" onClick={() => incrementQuantity(record.product.id)}>
-                        <FontAwesomeIcon icon={faPlus} />
-                    </Button>
-                </>
-            ),
-        },
-        {
-            title: 'Thành tiền',
-            key: 'thanhTien',
-            width: '120px',
-            align: 'right',
-            render: (record: any) => <span>{(record?.product.price * record.quantity).toLocaleString()}đ</span>,
-        },
-        {
-            title: 'Hành động',
-            dataIndex: ['product', 'id'],
-            width: '50px',
-            align: 'center',
-            render: (record: number) => (
-                <Button type="link" onClick={() => handleOpenModalDelete(record)} style={{ padding: 0 }}>
-                    <DeleteOutlined style={{ color: 'red' }} />
-                </Button>
-            ),
-        },
-    ];
-    console.log(cartData);
+                </Table.Td>
+            </Table.Tr>
+        ));
+    };
+
     return (
         <main className="main">
-            {contextHolder}
-            <Form form={form} onFinish={onSubmit} layout="vertical">
+            {/* {contextHolder} */}
+            <form onSubmit={onSubmit}>
                 <div className="shop-cart pt-60 pb-60">
                     <div className="container">
-                        <Row gutter={16}>
-                            <Col xs={24} md={24} lg={12} xl={12}>
+                        <Grid gutter={16}>
+                            <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
                                 <div className="checkout-widget">
                                     <h4 className="checkout-widget-title">Thông tin khách hàng</h4>
                                     <Card>
-                                        <Row gutter={16}>
-                                            <Col span={24}>
-                                                <Form.Item label="Họ Tên" name="name" wrapperCol={{ span: 24 }}>
-                                                    <Input
-                                                        placeholder="Họ Tên"
-                                                        readOnly
-                                                        defaultValue={session?.user?.name || ''}
-                                                    />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={16}>
-                                            <Col span={12}>
-                                                <Form.Item label="Email" name="email">
-                                                    <Input
-                                                        placeholder="Email"
-                                                        readOnly
-                                                        defaultValue={session?.user?.email ?? ''}
-                                                    />
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={12}>
-                                                <Form.Item label="Điện thoại" name="phone">
-                                                    <Input
-                                                        placeholder="Điện thoại"
-                                                        readOnly
-                                                        defaultValue={session?.user?.phone ?? ''}
-                                                    />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
+                                        <Grid gutter={16}>
+                                            <Grid.Col span={12}>
+                                                <TextInput
+                                                    label="Họ Tên"
+                                                    placeholder="Họ Tên"
+                                                    readOnly
+                                                    defaultValue={session?.user?.name || ''}
+                                                />
+                                            </Grid.Col>
+                                        </Grid>
+                                        <Grid gutter={16}>
+                                            <Grid.Col span={6}>
+                                                <TextInput
+                                                    label="Email"
+                                                    placeholder="Email"
+                                                    readOnly
+                                                    defaultValue={session?.user?.email ?? ''}
+                                                />
+                                            </Grid.Col>
+                                            <Grid.Col span={6}>
+                                                <TextInput
+                                                    label="Điện thoại"
+                                                    placeholder="Điện thoại"
+                                                    readOnly
+                                                    defaultValue={session?.user?.phone ?? ''}
+                                                />
+                                            </Grid.Col>
+                                        </Grid>
                                     </Card>
                                 </div>
-                            </Col>
-                            <Col span={12} xs={24} md={24} lg={12} xl={12}>
+                            </Grid.Col>
+                            <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
                                 <div className="checkout-widget">
                                     <h4 className="checkout-widget-title">Thông tin Xe</h4>
                                     <CarInfoCart cars={cars} />
                                 </div>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
+                            </Grid.Col>
+                        </Grid>
+                        <Grid>
+                            <Grid.Col span={12}>
                                 <Card className="bg-white mb-20 p-4">
-                                    <Row gutter={16}>
-                                        <Col xs={24} md={24} lg={12} xl={12}>
-                                            <Form.Item
+                                    <Grid gutter={16}>
+                                        <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
+                                            <DateInput
                                                 label="Ngày"
+                                                valueFormat={'DD/MM/YYYY'}
                                                 name="date"
-                                                wrapperCol={{ span: 24 }}
-                                                rules={[
-                                                    { required: true, message: 'Vui lòng chọn một ngày' },
-                                                    // ({ getFieldValue }) => ({
-                                                    //     validator(rule, value) {
-                                                    //         if (!value || dayjs(value).isAfter(dayjs(), 'day')) {
-                                                    //             return Promise.resolve();
-                                                    //         }
-                                                    //         return Promise.reject(
-                                                    //             'Ngày phải lớn hơn hoặc bằng ngày hiện tại',
-                                                    //         );
-                                                    //     },
-                                                    // }),
-                                                ]}
-                                                initialValue={dayjs()}
-                                            >
-                                                <DatePicker
-                                                    format={'DD/MM/YYYY'}
-                                                    name="date"
-                                                    style={{ width: '100%' }}
-                                                    onChange={(date) => handleDateChange(date?.toString())}
-                                                />
-                                            </Form.Item>
-                                        </Col>
+                                                defaultValue={new Date()}
+                                                style={{ width: '100%' }}
+                                                onChange={(date) => handleDateChange(date?.toString())}
+                                            />
+                                        </Grid.Col>
 
-                                        <Col xs={24} md={24} lg={12} xl={12}>
-                                            <Form.Item
+                                        <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
+                                            <TimeInput
+                                                withSeconds
+                                                defaultValue={new Date().toLocaleTimeString('en-US', { hour12: false })}
                                                 label="Thời gian"
-                                                name="time"
-                                                wrapperCol={{ span: 24 }}
-                                                rules={[{ required: true, message: 'Vui lòng chọn thời gian' }]}
-                                                initialValue={dayjs()}
-                                            >
-                                                <TimePicker
-                                                    onChange={(time) => handleTimeChange(time?.toString())}
-                                                    style={{ width: '100%' }}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
+                                                ref={ref}
+                                                onChange={(time) => handleTimeChange(time?.toString())}
+                                                rightSection={pickerControl}
+                                            />
+                                        </Grid.Col>
+                                    </Grid>
                                 </Card>
-                            </Col>
-                        </Row>
+                            </Grid.Col>
+                        </Grid>
                     </div>
                     <div className="container">
                         <Card className="shop-cart-wrapper">
                             <div className="table-responsive">
-                                {/* <table className="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Hình</th>
-                                            <th>Tên</th>
-                                            <th>Giá</th>
-                                            <th>Số lượng</th>
-                                            <th>Thành tiền</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {cartData.map((item, index) => (
-                                            <CartItem
-                                                key={index}
-                                                item={item}
-                                                decrementQuantity={decrementQuantity}
-                                                incrementQuantity={incrementQuantity}
-                                                deleteItem={deleteItem}
-                                            />
-                                        ))}
-                                    </tbody>
-                                </table> */}
-                                <Table dataSource={cartData} columns={columns} />
+                                <Table>
+                                    <Table.Thead>
+                                        <Table.Tr>
+                                            <Table.Th>Hình ảnh</Table.Th>
+                                            <Table.Th>Tên</Table.Th>
+                                            <Table.Th>Giá</Table.Th>
+                                            <Table.Th style={{ textAlign: 'center' }}>Số lượng</Table.Th>
+                                            <Table.Th>Thành tiền</Table.Th>
+                                            <Table.Th>Hành động</Table.Th>
+                                        </Table.Tr>
+                                    </Table.Thead>
+                                    <Table.Tbody>{renderRows()}</Table.Tbody>
+                                </Table>
                             </div>
 
                             <Card className="cart-footer">
-                                <Row justify="space-between">
-                                    <Col xs={24} md={8} lg={8} xl={8}>
-                                        <Form.Item className="cart-coupon ">
-                                            <Input
+                                <Grid justify="space-between">
+                                    <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
+                                        <Group className="cart-coupon " pos="relative">
+                                            <TextInput
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Your Coupon Code"
                                             />
-                                            <Button className="coupon-btn" type="primary">
+                                            <Button className="coupon-btn" variant="filled" pos="absolute">
                                                 Apply
                                             </Button>
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} md={12} lg={8} xl={8}>
+                                        </Group>
+                                    </Grid.Col>
+                                    <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
                                         <ul>
                                             <li>
-                                                <strong>Tổng tiền hàng:</strong>{' '}
+                                                <strong>Tổng tiền hàng:</strong>
                                                 <span>{calculateSubTotal().toLocaleString()}đ</span>
                                             </li>
                                             <li className="cart-total">
-                                                <strong>Tổng cộng:</strong>{' '}
+                                                <strong>Tổng cộng:</strong>
                                                 <span>{calculateSubTotal().toLocaleString()}đ</span>
                                             </li>
                                         </ul>
-                                        <Form.Item style={{ textAlign: 'right' }}>
+                                        <Group justify="end">
                                             <Button
                                                 className="theme-btn"
-                                                type="primary"
-                                                htmlType="submit"
+                                                variant="filled"
+                                                type="submit"
                                                 // style={{ background: 'var(--theme-color)' }}
                                             >
                                                 Đặt lịch
                                             </Button>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
+                                        </Group>
+                                    </Grid.Col>
+                                </Grid>
                             </Card>
                         </Card>
                     </div>
                 </div>
-            </Form>
-            <Modal title="Delete" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
-                <p>Bạn có muốn xoá không?</p>
+            </form>
+            <Modal title="Delete" opened={isModalDeleteOpen} onClose={handleDeleteCancel}>
+                <div>Bạn có muốn xoá không?</div>
+                <Group justify="end" style={{ marginTop: 10 }}>
+                    <Button
+                        variant="outline"
+                        key="cancel"
+                        onClick={handleDeleteCancel}
+                        color="red"
+                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                    >
+                        Huỷ bỏ
+                    </Button>
+                    <Button
+                        style={{ marginLeft: '12px' }}
+                        onClick={handleDeleteOk}
+                        variant="filled"
+                        leftSection={<FontAwesomeIcon icon={faChevronRight} />}
+                    >
+                        Tiếp tục
+                    </Button>
+                </Group>
             </Modal>
         </main>
     );

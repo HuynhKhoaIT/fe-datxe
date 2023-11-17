@@ -5,11 +5,18 @@ import { MyFooter } from './components/footer/footer';
 import 'bootstrap/dist/css/bootstrap.css';
 import './assets/styles.scss';
 import './globals.css';
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
+import { Notifications } from '@mantine/notifications';
+
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Provider from './Provider';
 import { ReactNode, Suspense } from 'react';
 import { LoadingPage } from './components/loading';
+import { MantineProvider } from '@mantine/core';
+
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -25,9 +32,12 @@ export default function RootLayout({ children }: IProps) {
         <html lang="vi">
             <body className={inter.className}>
                 <Provider>
-                    <Header />
-                    <Suspense fallback={<LoadingPage />}>{children}</Suspense>
-                    <MyFooter />
+                    <MantineProvider>
+                        <Notifications position="top-right" />
+                        <Header />
+                        <Suspense fallback={<LoadingPage />}>{children}</Suspense>
+                        <MyFooter />
+                    </MantineProvider>
                 </Provider>
             </body>
         </html>

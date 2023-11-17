@@ -5,20 +5,19 @@ import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import CarItem from './CarItem';
-import { Breadcrumb, Button, Input, Modal, Spin, Table, Tooltip } from 'antd';
+// import { Breadcrumb, Button, Input, Modal, Spin, Tooltip } from 'antd';
 import { getBrand } from '@/utils/branch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faChevronRight, faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
 import { notification } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import AddCarModal from './AddCarModal';
-const { Search } = Input;
+import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group } from '@mantine/core';
 
 export default function CarsPage() {
     const { data: session } = useSession();
-
     const token = session?.user?.token;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -136,71 +135,57 @@ export default function CarsPage() {
         }
     };
 
-    const columns: any = [
-        {
-            title: 'Biển số',
-            dataIndex: 'licensePlates',
-        },
-        {
-            title: 'Màu xe',
-            dataIndex: 'color',
-        },
-        {
-            title: 'Hãng',
-            dataIndex: 'brandName',
-            render: (brandName: string) => {
-                return <div>{brandName}</div>;
-            },
-        },
-        {
-            title: 'Dòng',
-            dataIndex: 'modelName',
-            render: (modelName: string) => {
-                return <div>{modelName}</div>;
-            },
-        },
-        {
-            title: 'Registration Date',
-            dataIndex: 'registrationDate',
-        },
+    const [selectedRow, setSelectedRow] = useState<number>();
 
-        {
-            title: 'Hàng động',
-            align: 'center',
-            width: 140,
-            render: (record: object) => (
-                <span>
-                    <Tooltip placement="bottom" title="Chi tiết">
-                        <Button
-                            type="primary"
-                            icon={<FontAwesomeIcon icon={faEye} />}
-                            onClick={(e) => showDetails(e, record)}
-                        />
-                    </Tooltip>
-                    <Tooltip placement="bottom" title="Chỉnh sửa">
-                        <Button
-                            style={{ margin: '0 5px' }}
-                            type="default"
-                            icon={<FontAwesomeIcon icon={faPen} />}
-                            onClick={() => showUpdateModal(record)}
-                        />
-                    </Tooltip>
-                    <Tooltip placement="bottom" title="Xoá">
-                        <Button
-                            danger
-                            icon={<FontAwesomeIcon icon={faTrash} />}
-                            onClick={(e) => handleOpenModalDelete(record)}
-                        />
-                    </Tooltip>
-                </span>
-            ),
-        },
-    ];
+    const renderRows = () => {
+        if (loading) {
+            return (
+                <tr>
+                    <td colSpan={7}>
+                        <Center>
+                            <Loader size={36} />
+                        </Center>
+                    </td>
+                </tr>
+            );
+        }
+
+        return cars2.map((record) => (
+            <Table.Tr key={record.id}>
+                <Table.Td>
+                    <Radio checked={selectedRow === record.id} onChange={() => setSelectedRow(record.id)} />
+                </Table.Td>
+                <Table.Td>{record.licensePlates}</Table.Td>
+                <Table.Td>{record.color}</Table.Td>
+                <Table.Td>{record.brandName}</Table.Td>
+                <Table.Td>{record.modelName}</Table.Td>
+                <Table.Td>{record.registrationDate}</Table.Td>
+                <Table.Td>
+                    <Button size="xs" variant="transparent" onClick={(e) => showDetails(e, record)}>
+                        <FontAwesomeIcon icon={faEye} />
+                    </Button>
+                    <Button
+                        size="xs"
+                        style={{ margin: '0 5px' }}
+                        variant="transparent"
+                        color="gray"
+                        onClick={() => showUpdateModal(record)}
+                    >
+                        <FontAwesomeIcon icon={faPen} />
+                    </Button>
+                    <Button size="xs" variant="transparent" color="red" onClick={(e) => handleOpenModalDelete(record)}>
+                        <FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} />
+                    </Button>
+                </Table.Td>
+            </Table.Tr>
+        ));
+    };
+
     return (
         <div className="user-profile-wrapper">
             {contextHolder}
 
-            <Breadcrumb
+            {/* <Breadcrumb
                 style={{ padding: '16px 20px', position: 'absolute' }}
                 items={[
                     {
@@ -214,19 +199,19 @@ export default function CarsPage() {
                         title: 'Danh sách xe',
                     },
                 ]}
-            />
+            /> */}
             <div className="user-profile-card profile-ad" style={{ padding: '40px' }}>
                 <div className="user-profile-card-header">
                     <h4 className="user-profile-card-title">Xe của tôi</h4>
                     <div className="user-profile-card-header-right">
                         <div className="user-profile-search">
                             <div className="form-group">
-                                <Search
+                                {/* <Search
                                     placeholder="input search text"
                                     allowClear
                                     // onSearch={onSearch}
                                     style={{ width: 200 }}
-                                />
+                                /> */}
                             </div>
                         </div>
                         <Button className="theme-btn" onClick={() => showAddModal()}>
@@ -236,12 +221,44 @@ export default function CarsPage() {
                 </div>
                 <div className="col-lg-12">
                     <div className="table-responsive">
-                        <Table loading={loading} dataSource={cars2} columns={columns} />
+                        <Table>
+                            <Table.Thead>
+                                <Table.Tr>
+                                    <Table.Th>Mặc định</Table.Th>
+                                    <Table.Th>Biển số</Table.Th>
+                                    <Table.Th>Màu xe</Table.Th>
+                                    <Table.Th>Hãng xe</Table.Th>
+                                    <Table.Th>Dòng xe</Table.Th>
+                                    <Table.Th>Ngày đăng ký</Table.Th>
+                                    <Table.Th>Hành động</Table.Th>
+                                </Table.Tr>
+                            </Table.Thead>
+                            <Table.Tbody>{renderRows()}</Table.Tbody>
+                        </Table>
                     </div>
                 </div>
             </div>
-            <Modal title="Delete" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
-                <p>Bạn có muốn xoá không?</p>
+            <Modal title="Delete" opened={isModalDeleteOpen} onClose={handleDeleteCancel}>
+                <div>Bạn có muốn xoá không?</div>
+                <Group justify="end" style={{ marginTop: 10 }}>
+                    <Button
+                        variant="filled"
+                        key="cancel"
+                        onClick={handleDeleteCancel}
+                        color="red"
+                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                    >
+                        Huỷ bỏ
+                    </Button>
+                    <Button
+                        style={{ marginLeft: '12px' }}
+                        onClick={handleDeleteOk}
+                        variant="filled"
+                        leftSection={<FontAwesomeIcon icon={faChevronRight} />}
+                    >
+                        Tiếp tục
+                    </Button>
+                </Group>
             </Modal>
             <UpdateModal
                 open={isUpdateModalOpen}

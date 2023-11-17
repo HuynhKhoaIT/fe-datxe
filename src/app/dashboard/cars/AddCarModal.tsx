@@ -5,44 +5,28 @@ import { addCar } from '@/utils/car';
 import { useSession } from 'next-auth/react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select } from 'antd';
-import classNames from 'classnames/bind';
+import { Grid, Modal, TextInput, Box, Select, Button, Group, Textarea, NumberInput } from '@mantine/core';
+import { DateInput } from '@mantine/dates';
+import { notifications } from '@mantine/notifications';
 import { IBrand } from '@/interfaces/brand';
 import { useRouter } from 'next/navigation';
-import { notification } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-const { TextArea } = Input;
-
-// const cx = classNames.bind(styles);
+import { faBan, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const AddCarModal = ({ open, onCancel, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const router = useRouter();
-    const [form] = Form.useForm();
 
-    const [api, contextHolder] = notification.useNotification();
-
-    const openNotification = () => {
-        api.info({
-            message: `Thành công`,
-            description: 'Xe đã được thêm thành công',
-            icon: <CheckOutlined style={{ color: 'green' }} />,
-        });
-    };
-
-    const [brandsData, setBrandsData] = useState<IBrand[]>([]);
-    const [models, setModels] = useState<IBrand[]>([]);
+    const [brandsData, setBrandsData] = useState<any>([]);
+    const [models, setModels] = useState<any>([]);
     const [licensePlates, setLicensePlates] = useState('');
     const [colorCar, setColorCar] = useState('');
-    const [vinNumber, setVinNumber] = useState<Number>();
-    const [kmRepairt, setKmRepairt] = useState<Number>();
+    const [vinNumber, setVinNumber] = useState<string | number>();
+    const [kmRepairt, setKmRepairt] = useState<any>();
     const [brandId, setBrandId] = useState<Number>();
-    const [machineNumber, setMachineNumber] = useState<Number>();
-    const [description, setDescription] = useState('');
+    const [machineNumber, setMachineNumber] = useState<string | number>();
+    const [description, setDescription] = useState<any>();
     const [dateRepairt, setDateRepairt] = useState('');
     const [registrationDeadline, setRegistrationDeadline] = useState('');
     const [civilDeadline, setCivilDeadline] = useState('');
@@ -64,20 +48,28 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
         setMaterialDeadline(dateString);
     }
     const [automakerId, setAutomakerId] = useState('');
-    const [carNameId, setCarNameId] = useState('0');
+    const [carNameId, setCarNameId] = useState<string | null>();
     const selectBrand = async (value: number) => {
         try {
             setAutomakerId(value.toString());
             setBrandId(value);
             const dong_xe: IBrand[] = await getModels(value);
-            setModels(dong_xe);
+            const newModels = dong_xe?.map((model) => ({
+                value: model.id?.toString() || '',
+                label: model.name || '',
+            }));
+            setModels(newModels);
         } catch (error) {}
     };
     useEffect(() => {
         async function fetchData() {
             try {
                 const data = await getBrands();
-                setBrandsData(data);
+                const newFormat = data?.map((brand) => ({
+                    value: brand.id?.toString() || '',
+                    label: brand.name || '',
+                }));
+                setBrandsData(newFormat);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -106,9 +98,11 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
                 description: description,
             };
             const createdCar = await addCar(newCar, token ?? '');
-            // router.push('/dashboard/cars');
             onCancel();
-            openNotification();
+            notifications.show({
+                title: 'Default notification',
+                message: 'Hey there, your code is awesome! 🤥',
+            });
         } catch (error) {
             console.error('Error creating car:', error);
         }
@@ -116,170 +110,164 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
 
     return (
         <Modal
-            title="Thông tin chi tiết"
-            open={open}
-            onCancel={onCancel}
-            footer={false}
-            style={{ zIndex: '99999' }}
+            size={800}
+            title="Thêm xe"
+            opened={open}
+            closeButtonProps
+            onClose={onCancel}
+            lockScroll={false}
+            forceRender={!open}
             {...props}
         >
-            <div>
-                {contextHolder}
-                <Form form={form} onFinish={handleCreateCar} layout="vertical">
-                    <Row gutter={10}>
-                        <Col span={8}>
-                            <Form.Item label="Biển số xe">
-                                <Input
-                                    type="text"
-                                    name="licensePlates"
-                                    placeholder="Biển số xe"
-                                    onChange={(e) => setLicensePlates(e.target.value)}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Hãng xe">
-                                <Select placeholder="Chọn hãng xe" onChange={(value) => selectBrand(Number(value))}>
-                                    <Select.Option>Chọn hãng xe</Select.Option>
-                                    {brandsData &&
-                                        brandsData?.map((brand: IBrand, index) => (
-                                            <Select.Option key={index} value={brand.id?.toString()}>
-                                                {brand.name}
-                                            </Select.Option>
-                                        ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Dòng xe">
-                                <Select placeholder="Chọn dòng xe" onChange={(e) => setCarNameId(e)}>
-                                    <Select.Option>Chọn dòng xe</Select.Option>
-                                    {models &&
-                                        models?.map((model: IBrand, index) => (
-                                            <Select.Option key={index} value={model.id?.toString()}>
-                                                {model.name}
-                                            </Select.Option>
-                                        ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={10}>
-                        <Col span={8}>
-                            <Form.Item label="Màu xe">
-                                <Input
-                                    type="text"
-                                    name="color"
-                                    placeholder="Màu xe"
-                                    onChange={(e) => setColorCar(e.target.value)}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Vin Number">
-                                <Input
-                                    type="number"
-                                    name="vin_number"
-                                    placeholder="Vin Number"
-                                    onChange={(e) => setVinNumber(Number(e.target.value))}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Machine Number">
-                                <Input
-                                    type="number"
-                                    name="machine_number"
-                                    placeholder="Machine Number"
-                                    onChange={(e) => setMachineNumber(Number(e.target.value))}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={10}>
-                        <Col span={8}>
-                            <Form.Item label="Km repairt">
-                                <Input
-                                    type="number"
-                                    name="km_repairt"
-                                    placeholder="Km repairt"
-                                    onChange={(e) => setKmRepairt(Number(e.target.value))}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Date Repairt">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    name="date_repair"
-                                    style={{ width: '100%' }}
-                                    onChange={(date) => handleDateRepairtChange(date?.toString())}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={10}>
-                        <Col span={8}>
-                            <Form.Item label="Registration Deadline">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    name="registration_deadline"
-                                    style={{ width: '100%' }}
-                                    onChange={(date) => handleRegistrationChange(date)}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Civil deadline">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    name="civil_insurance_deadline"
-                                    style={{ width: '100%' }}
-                                    onChange={(date) => handleCivilChange(date)}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Material deadline">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    name="material_insurance_deadline"
-                                    onChange={(date) => handleMaterialChange(date)}
-                                    style={{ width: '100%' }}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={24}>
-                            <Form.Item label="Mô tả chi tiết">
-                                <TextArea
-                                    showCount
-                                    name="description"
-                                    maxLength={100}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Mô tả chi tiết"
-                                    style={{ height: 120, resize: 'none' }}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row justify="end" gutter={12}>
-                        <Button danger key="cancel" onClick={handleCancel} icon={<StopOutlined />}>
+            <Box maw={800} mx="auto">
+                <form onSubmit={handleCreateCar}>
+                    <Grid gutter={10}>
+                        <Grid.Col span={4}>
+                            <TextInput
+                                label="Biển số xe"
+                                type="text"
+                                name="licensePlates"
+                                placeholder="Biển số xe"
+                                onChange={(e) => setLicensePlates(e.target.value)}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <Select
+                                label="Hãng xe"
+                                checkIconPosition="right"
+                                placeholder="Chọn hãng xe"
+                                data={brandsData}
+                                onChange={(value) => {
+                                    selectBrand(Number(value));
+                                }}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <Select
+                                label="Dòng xe"
+                                checkIconPosition="right"
+                                placeholder="Chọn dòng xe"
+                                data={models}
+                                onChange={(e) => {
+                                    setCarNameId(e);
+                                }}
+                            ></Select>
+                        </Grid.Col>
+                    </Grid>
+                    <Grid gutter={10}>
+                        <Grid.Col span={4}>
+                            <TextInput
+                                label="Color"
+                                type="text"
+                                name="color"
+                                placeholder="Màu xe"
+                                onChange={(e) => {
+                                    setColorCar(e.target.value);
+                                }}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <NumberInput
+                                label="Vin number"
+                                name="vin_number"
+                                placeholder="Vin Number"
+                                onChange={setVinNumber}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <NumberInput
+                                label="Machine Number"
+                                name="machine_number"
+                                placeholder="Machine Number"
+                                onChange={setMachineNumber}
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Grid gutter={10}>
+                        <Grid.Col span={4}>
+                            <NumberInput
+                                label="Km repairt"
+                                name="km_repairt"
+                                placeholder="Km repairt"
+                                onChange={setKmRepairt}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Date Repairt"
+                                valueFormat={'DD/MM/YYYY'}
+                                onChange={(date) => {
+                                    handleDateRepairtChange(date?.toString());
+                                }}
+                                placeholder="Date Repairt"
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Grid gutter={10}>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Registration Deadline"
+                                valueFormat={'DD/MM/YYYY'}
+                                onChange={(date) => {
+                                    handleRegistrationChange(date?.toString());
+                                }}
+                                placeholder="Registration Deadline"
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Civil deadline"
+                                valueFormat={'DD/MM/YYYY'}
+                                onChange={(date) => {
+                                    handleCivilChange(date?.toString());
+                                }}
+                                placeholder="Civil deadline"
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Material deadline"
+                                valueFormat={'DD/MM/YYYY'}
+                                onChange={(date) => {
+                                    handleMaterialChange(date?.toString());
+                                }}
+                                placeholder="Material deadline"
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Grid>
+                        <Grid.Col span={12}>
+                            <Textarea
+                                label="Mô tả chi tiết"
+                                name="description"
+                                maxLength={100}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Mô tả chi tiết"
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Group justify="end" style={{ marginTop: 10 }}>
+                        <Button
+                            variant="outline"
+                            key="cancel"
+                            onClick={handleCancel}
+                            color="red"
+                            leftSection={<FontAwesomeIcon icon={faBan} />}
+                        >
                             Huỷ bỏ
                         </Button>
                         <Button
                             style={{ marginLeft: '12px' }}
                             key="submit"
-                            htmlType="submit"
-                            type="primary"
-                            icon={<FontAwesomeIcon icon={faPlus} />}
+                            type="submit"
+                            variant="filled"
+                            leftSection={<FontAwesomeIcon icon={faPlus} />}
                         >
                             Thêm xe
                         </Button>
-                    </Row>
-                </Form>
-            </div>
+                    </Group>
+                </form>
+            </Box>
         </Modal>
     );
 };

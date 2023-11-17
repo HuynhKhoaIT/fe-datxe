@@ -1,9 +1,20 @@
 import { useSession } from 'next-auth/react';
-import { Card, Col, Form, Input, Row, Select, Spin } from 'antd';
 import { ICar } from '@/interfaces/car';
 import { useEffect, useState } from 'react';
 import { getCar } from '@/utils/car';
 import { getBrand, getModels } from '@/utils/branch';
+import {
+    Grid,
+    LoadingOverlay,
+    TextInput,
+    Box,
+    Select,
+    Button,
+    Group,
+    Textarea,
+    NumberInput,
+    Card,
+} from '@mantine/core';
 
 const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
     const { data: session } = useSession();
@@ -12,7 +23,7 @@ const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
     const [loading, setLoading] = useState(false);
-    const selectCar = async (value: string) => {
+    const selectCar = async (value: any) => {
         try {
             const selectedCar = await getCar(token ?? '', value);
             setCar(selectedCar);
@@ -20,13 +31,11 @@ const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
             console.error('Error selecting car:', error);
         }
     };
-
-    const carOptions = cars?.map((car) => (
-        <Select.Option key={car.id} value={car.id}>
-            {car.licensePlates}
-        </Select.Option>
-    ));
-
+    console.log(cars);
+    const newModels = cars?.map((car) => ({
+        value: car.id?.toString() || '',
+        label: car.licensePlates || '',
+    }));
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -48,36 +57,31 @@ const CarInfoCart = ({ cars }: { cars: ICar[] }) => {
 
     return (
         <div id="root">
-            <Spin spinning={loading}>
-                <Card>
-                    <Row gutter={16}>
-                        <Col span={24}>
-                            <Form.Item
-                                label="Biển số"
-                                name="licensePlates"
-                                rules={[{ required: true, message: 'Vui lòng chọn biển số' }]}
-                                wrapperCol={{ span: 24 }}
-                            >
-                                <Select placeholder="Biển số" onChange={(value) => selectCar(value)}>
-                                    {carOptions}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item label="Hãng Xe">
-                                <Input placeholder="Hãng Xe" name="brand" readOnly value={brand || ''} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item label="Dòng xe">
-                                <Input placeholder="Dòng xe" readOnly value={model || ''} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                </Card>
-            </Spin>
+            <Card pos="relative">
+                <LoadingOverlay visible={loading} loaderProps={{ children: 'Loading...' }} />
+
+                <Grid gutter={16}>
+                    <Grid.Col span={12}>
+                        <Select
+                            label="Biển số"
+                            checkIconPosition="right"
+                            placeholder="Biển số"
+                            data={newModels}
+                            onChange={(value) => {
+                                selectCar(value);
+                            }}
+                        ></Select>
+                    </Grid.Col>
+                </Grid>
+                <Grid gutter={16}>
+                    <Grid.Col span={6}>
+                        <TextInput label="Hãng Xe" placeholder="Hãng Xe" name="brand" readOnly value={brand || ''} />
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <TextInput label="Dòng xe" placeholder="Dòng xe" readOnly value={model || ''} />
+                    </Grid.Col>
+                </Grid>
+            </Card>
         </div>
     );
 };

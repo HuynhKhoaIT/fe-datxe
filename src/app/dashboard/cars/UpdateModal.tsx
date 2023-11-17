@@ -1,43 +1,26 @@
 'use client';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Spin, notification } from 'antd';
 import { IBrand } from '@/interfaces/brand';
+import { Grid, Modal, TextInput, Box, Select, Button, Group, NumberInput } from '@mantine/core';
+
 import { getBrand, getBrands, getModels } from '@/utils/branch';
 import dayjs from 'dayjs';
 import { useSession } from 'next-auth/react';
 import { updateCar } from '@/utils/car';
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
-import { CheckOutlined, ExclamationOutlined } from '@ant-design/icons';
-
-const { TextArea } = Input;
+import { DateInput } from '@mantine/dates';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
-    const [api, contextHolder] = notification.useNotification();
     const [disabled, setDisabled] = useState(true);
-    const openNotification = (title: string, message: string) => {
-        api.info({
-            message: title,
-            description: message,
-            icon:
-                title === 'Thành công' ? (
-                    <CheckOutlined style={{ color: 'green' }} />
-                ) : (
-                    <ExclamationOutlined style={{ color: 'red' }} />
-                ),
-        });
-    };
-    const [form] = Form.useForm();
     const { data: session } = useSession();
     const token = session?.user?.token;
-    const [loading, setLoading] = useState(false);
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
     const [brandsData, setBrandsData] = useState<IBrand[]>([]);
-    const [models, setModels] = useState<IBrand[]>([]);
+    const [models, setModels] = useState<any>([]);
     const [colorCar, setColorCar] = useState(data?.color);
-    const [vinNumber, setVinNumber] = useState<Number>(data?.vinNumber);
+    const [vinNumber, setVinNumber] = useState<string | number>(data?.vinNumber);
     const [kmRepairt, setKmRepairt] = useState<Number>(data?.kmRepairt);
     const [machineNumber, setMachineNumber] = useState<Number>(data?.machineNumber);
     const [description, setDescription] = useState(data?.description);
@@ -69,7 +52,11 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
             setAutomakerId(value);
             setBrandId(value);
             const dong_xe: IBrand[] = await getModels(value);
-            setModels(dong_xe);
+            const newModels = dong_xe?.map((model) => ({
+                value: model.id?.toString() || '',
+                label: model.name || '',
+            }));
+            setModels(newModels);
         } catch (error) {}
     };
     useEffect(() => {
@@ -89,8 +76,8 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
             try {
                 if (data) {
                     setAutomakerId(data.automakerId);
-                    setBrand(data.brandName);
-                    setModel(data.modelName);
+                    setBrand(data.automakerId);
+                    setModel(data.carNameId);
                     setCarNameId(data.carNameId);
                     setColorCar(data.color);
                     setCivilDeadline(data.civilInsuranceDate);
@@ -108,7 +95,8 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
         };
         fetchData();
     }, [open]);
-    const handleUpdateCar = async () => {
+    const handleUpdateCar = async (event: { preventDefault: () => void }) => {
+        event.preventDefault();
         try {
             const newCar = {
                 customer_id: session?.user?.id,
@@ -126,225 +114,159 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                 brand_id: brandId,
                 description: description,
             };
+            console.log(newCar);
             const createdCar = await updateCar(data.id, newCar, token ?? '');
-            openNotification('Thành công', 'Cập nhật thành công');
             onCancel();
             fetchCars();
         } catch (error) {
-            openNotification('Thất bại', 'Cập nhật thất bại');
             console.error('Error creating car:', error);
         }
     };
+    const newFormat = brandsData?.map((brand) => ({
+        value: brand.id?.toString() || '',
+        label: brand.name || '',
+    }));
     return (
         <Modal
+            size={800}
             title="Chỉnh sửa thông tin xe của bạn"
-            open={open}
-            destroyOnClose={true}
-            onCancel={onCancel}
-            footer={false}
-            style={{ zIndex: '99999' }}
+            opened={open}
+            closeButtonProps
+            onClose={onCancel}
+            lockScroll={false}
+            forceRender={!open}
             {...props}
         >
-            {contextHolder}
-            <Spin spinning={loading}>
-                <Form form={form} onFinish={handleUpdateCar} layout="vertical" preserve={false}>
-                    <Row gutter={10}>
-                        <Col span={8}>
-                            <Form.Item label="Biển số xe">
-                                <Input
-                                    readOnly
-                                    type="text"
-                                    name="licensePlates"
-                                    placeholder="Biển số xe"
-                                    value={data.licensePlates}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Hãng xe">
-                                <Select
-                                    placeholder="Chọn hãng xe"
-                                    defaultValue={brand}
-                                    onChange={(value) => {
-                                        setDisabled(false);
-                                        selectBrand(Number(value));
-                                    }}
-                                >
-                                    <Select.Option>Chọn hãng xe</Select.Option>
-                                    {brandsData &&
-                                        brandsData?.map((brand: IBrand, index) => (
-                                            <Select.Option key={index} value={brand.id?.toString()}>
-                                                {brand.name}
-                                            </Select.Option>
-                                        ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Dòng xe">
-                                <Select
-                                    placeholder="Chọn dòng xe"
-                                    onChange={(e) => {
-                                        setDisabled(false);
-                                        setCarNameId(e);
-                                    }}
-                                    defaultValue={model}
-                                >
-                                    <Select.Option>Chọn dòng xe</Select.Option>
-                                    {models &&
-                                        models?.map((model: IBrand, index) => (
-                                            <Select.Option key={index} value={model.id?.toString()}>
-                                                {model.name}
-                                            </Select.Option>
-                                        ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={10}>
-                        <Col span={8}>
-                            <Form.Item label="Màu xe">
-                                <Input
-                                    type="text"
-                                    name="color"
-                                    placeholder="Màu xe"
-                                    defaultValue={data?.color}
-                                    onChange={(e) => {
-                                        setDisabled(false);
-                                        setColorCar(e.target.value);
-                                    }}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Vin Number">
-                                <Input
-                                    type="number"
-                                    name="vin_number"
-                                    placeholder="Vin Number"
-                                    defaultValue={Number(data.vinNumber)}
-                                    onChange={(e) => {
-                                        setDisabled(false);
-                                        setVinNumber(Number(e.target.value));
-                                    }}
-                                />
-                            </Form.Item>
-                        </Col>
-                        {/* <Col span={8}>
-                        <Form.Item label="Machine Number">
-                            <Input
-                                type="number"
-                                name="machine_number"
-                                placeholder="Machine Number"
-                                // defaultValue={Number(data.vinNumber)}
-                                onChange={(e) => setMachineNumber(Number(e.target.value))}
+            <Box maw={800} mx="auto">
+                <form onSubmit={handleUpdateCar}>
+                    <Grid gutter={10}>
+                        <Grid.Col span={4}>
+                            <TextInput
+                                label="Biển số xe"
+                                readOnly
+                                type="text"
+                                name="licensePlates"
+                                placeholder="Biển số xe"
+                                value={data.licensePlates}
                             />
-                        </Form.Item>
-                    </Col> */}
-                        <Col span={8}>
-                            <Form.Item label="Date Repairt">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    defaultValue={dayjs(data.maintenanceDate)}
-                                    name="date_repair"
-                                    style={{ width: '100%' }}
-                                    onChange={(date) => {
-                                        setDisabled(false);
-                                        handleDateRepairtChange(date?.toString());
-                                    }}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    {/* <Row gutter={10}>
-                    <Col span={8}>
-                        <Form.Item label="Km repairt">
-                            <Input
-                                type="number"
-                                name="km_repairt"
-                                placeholder="Km repairt"
-                                defaultValue={data.kmRepairt?.toString()}
-                                onChange={(e) => setKmRepairt(Number(e.target.value))}
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <Select
+                                label="Hãng xe"
+                                checkIconPosition="right"
+                                placeholder="Chọn hãng xe"
+                                defaultValue={brand}
+                                data={newFormat}
+                                onChange={(value) => {
+                                    setDisabled(false);
+                                    selectBrand(Number(value));
+                                }}
                             />
-                        </Form.Item>
-                    </Col>
-                </Row> */}
-                    <Row gutter={10}>
-                        <Col span={8}>
-                            <Form.Item label="Registration Deadline">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    defaultValue={dayjs(data.registrationDate)}
-                                    name="registration_deadline"
-                                    style={{ width: '100%' }}
-                                    onChange={(date) => {
-                                        setDisabled(false);
-                                        handleRegistrationChange(date);
-                                    }}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Civil deadline">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    name="civil_insurance_deadline"
-                                    defaultValue={dayjs(data.civilDeadline)}
-                                    style={{ width: '100%' }}
-                                    onChange={(date) => {
-                                        setDisabled(false);
-                                        handleCivilChange(date);
-                                    }}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item label="Material deadline">
-                                <DatePicker
-                                    format={'DD/MM/YYYY'}
-                                    name="material_insurance_deadline"
-                                    defaultValue={dayjs(data.materialInsuranceDate)}
-                                    onChange={(date) => {
-                                        setDisabled(false);
-                                        handleMaterialChange(date);
-                                    }}
-                                    style={{ width: '100%' }}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    {/* <Row>
-                    <Col span={24}>
-                        <Form.Item label="Mô tả chi tiết">
-                            <TextArea
-                                showCount
-                                name="description"
-                                maxLength={100}
-                                onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Mô tả chi tiết"
-                                defaultValue={data.description}
-                                style={{ height: 120, resize: 'none' }}
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <Select
+                                label="Dòng xe"
+                                checkIconPosition="right"
+                                placeholder="Chọn dòng xe"
+                                data={models}
+                                onChange={(e) => {
+                                    setDisabled(false);
+                                    setCarNameId(e);
+                                }}
+                                defaultValue={model}
+                            ></Select>
+                        </Grid.Col>
+                    </Grid>
+                    <Grid gutter={10}>
+                        <Grid.Col span={4}>
+                            <TextInput
+                                label="Color"
+                                type="text"
+                                name="color"
+                                placeholder="Màu xe"
+                                defaultValue={data?.color}
+                                onChange={(e) => {
+                                    setDisabled(false);
+                                    setColorCar(e.target.value);
+                                }}
                             />
-                        </Form.Item>
-                    </Col>
-                </Row> */}
-                    <Row justify="end" gutter={12}>
-                        <Button danger key="cancel" onClick={onCancel} icon={<StopOutlined />}>
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <NumberInput
+                                label="Vin number"
+                                name="vin_number"
+                                placeholder="Vin Number"
+                                defaultValue={Number(data.vinNumber)}
+                                onChange={setVinNumber}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Date Repairt"
+                                valueFormat={'DD/MM/YYYY'}
+                                defaultValue={data?.maintenanceDate ? dayjs(data?.maintenanceDate).toDate() : null}
+                                onChange={(date) => {
+                                    setDisabled(false);
+                                    handleDateRepairtChange(date?.toString());
+                                }}
+                                placeholder="Date Repairt"
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Grid gutter={10}>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Registration Deadline"
+                                valueFormat={'DD/MM/YYYY'}
+                                defaultValue={dayjs(data.registrationDate).toDate()}
+                                onChange={(date) => {
+                                    setDisabled(false);
+                                    handleRegistrationChange(date?.toString());
+                                }}
+                                placeholder="Registration Deadline"
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Civil deadline"
+                                valueFormat={'DD/MM/YYYY'}
+                                defaultValue={dayjs(data.civilDeadline).toDate()}
+                                onChange={(date) => {
+                                    setDisabled(false);
+                                    handleCivilChange(date?.toString());
+                                }}
+                                placeholder="Civil deadline"
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <DateInput
+                                label="Material deadline"
+                                valueFormat={'DD/MM/YYYY'}
+                                defaultValue={dayjs(data.materialInsuranceDate).toDate()}
+                                onChange={(date) => {
+                                    setDisabled(false);
+                                    handleMaterialChange(date?.toString());
+                                }}
+                                placeholder="Material deadline"
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Group justify="end" style={{ marginTop: 10 }}>
+                        <Button
+                            variant="outline"
+                            color="red"
+                            size="xs"
+                            onClick={onCancel}
+                            leftSection={<FontAwesomeIcon icon={faBan} />}
+                        >
                             Huỷ bỏ
                         </Button>
-                        <Button
-                            disabled={disabled}
-                            style={{ marginLeft: '12px' }}
-                            key="submit"
-                            htmlType="submit"
-                            type="primary"
-                            icon={<FontAwesomeIcon icon={faPlus} />}
-                        >
+                        <Button variant="filled" size="xs" type="submit">
                             Cập nhật
                         </Button>
-                    </Row>
-                </Form>
-            </Spin>
+                    </Group>
+                </form>
+            </Box>
         </Modal>
     );
 };

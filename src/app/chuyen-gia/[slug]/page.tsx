@@ -7,9 +7,10 @@ import { IProduct } from '@/interfaces/product';
 import { getCategoriesByGar } from '@/utils/category';
 import { getGarage } from '@/utils/garage';
 import { getProductByGar } from '@/utils/product';
-import { Spin } from 'antd';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { IconBuildingStore, IconStar, IconCar, IconUsers, IconUserCheck } from '@tabler/icons-react';
 
 export default function Home({ params }: { params: { slug: string } }) {
     const searchParams = useSearchParams();
@@ -47,11 +48,14 @@ export default function Home({ params }: { params: { slug: string } }) {
             <div className="">
                 <div className="garage-info-section">
                     <div className="container">
-                        <div className="row">
-                            <div className="col col-md-7">
+                        <div className="row justify-content-between">
+                            <div className="col col-md-4 garage-info-left">
                                 <div className="banner-garage-box">
-                                    <div className="garage-info">
-                                        <div className="garage-logo">
+                                    <div className="garage-info d-flex align-items-center">
+                                        <div
+                                            className="garage-logo"
+                                            style={{ width: '70px', height: 'auto', marginRight: '20px' }}
+                                        >
                                             <img src={garageData?.logo} alt="" />
                                         </div>
                                         <div className="garage-title">
@@ -60,24 +64,73 @@ export default function Home({ params }: { params: { slug: string } }) {
                                         </div>
                                     </div>
                                     <div className="garage-contact">
-                                        <div className="garage-contact-inner">
-                                            <button className="btn btn-phone" type="button">
-                                                Liên hệ
-                                            </button>
-                                            <button className="btn btn-phone" type="button">
-                                                Theo dõi
-                                            </button>
+                                        <div className="garage-contact-inner row">
+                                            <div className="col-md-6">
+                                                <button
+                                                    style={{ width: '100%' }}
+                                                    type="button"
+                                                    className="btn btn-outline-primary"
+                                                >
+                                                    Liên hệ
+                                                </button>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <button
+                                                    type="button"
+                                                    style={{ width: '100%' }}
+                                                    className="btn btn-outline-warning"
+                                                >
+                                                    Theo dõi
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col col-md-5">
+                            <div className="col col-md-3 garage-info-right">
                                 <ul>
-                                    <li>Sản phẩm: 100+</li>
-                                    <li>Dịch vụ: 200+</li>
-                                    <li>Đánh giá: 4/5</li>
-                                    <li>Tham Gia: Ngày 22/12/2020</li>
+                                    <li>
+                                        <span>
+                                            <IconBuildingStore size={16} />{' '}
+                                        </span>
+                                        Sản phẩm: <span style={{ color: 'var(--theme-color)' }}>100+</span>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            <IconCar size={16} />{' '}
+                                        </span>
+                                        Dịch vụ: <span style={{ color: 'var(--theme-color)' }}>200+</span>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            <IconStar size={16} />{' '}
+                                        </span>
+                                        Đánh giá: <span style={{ color: 'var(--theme-color)' }}>4/5</span>
+                                    </li>
                                 </ul>
+                            </div>
+                            <div className="col col-md-3 garage-info-right">
+                                <ul>
+                                    <li>
+                                        <span>
+                                            <IconUserCheck size={16} />{' '}
+                                        </span>
+                                        Tham Gia: <span style={{ color: 'var(--theme-color)' }}>Ngày 22/12/2020</span>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            <IconUsers size={16} />{' '}
+                                        </span>
+                                        Đang theo dõi: <span style={{ color: 'var(--theme-color)' }}>1k</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="col col-md-2">
+                                <Link href={'/dat-lich'} style={{ width: '100%' }}>
+                                    <button type="button" style={{ width: '100%' }} className="btn btn-warning">
+                                        Đặt lịch
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -98,7 +151,9 @@ export default function Home({ params }: { params: { slug: string } }) {
                             </div>
                         </div>
                     </div>
-                    <Categories initialCategoryData={initialCategoryData} />
+                    <div className="list-category ">
+                        <Categories initialCategoryData={initialCategoryData} />
+                    </div>
                 </div>
             </div>
 
