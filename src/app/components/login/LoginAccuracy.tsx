@@ -1,11 +1,15 @@
 'use client';
 import React from 'react';
 import { Box, Avatar, Grid, Input, Button, PinInput } from '@mantine/core';
-import { IconBrandFacebook, IconBrandGoogle } from '@tabler/icons-react';
+import { IconChevronLeft, IconBrandGoogle } from '@tabler/icons-react';
 import IconGoogle from '../../assets/images/google.svg';
+import Link from 'next/link';
 export function LoginFormAccuracy() {
     return (
         <div className="login-form">
+            <Link href={'/dang-nhap'}>
+                <IconChevronLeft size={32} color="var(--theme-color)" />
+            </Link>
             <div className="d-flex justify-content-center flex-column align-items-center ">
                 <Avatar
                     src="https://datxe.com/wp-content/uploads/2021/08/cropped-logo-DatXE-App-vuong-1.jpg"
