@@ -31,9 +31,9 @@ export default function Product({ initialProductData }: { initialProductData: IP
                 {productData?.map((product: IProduct, index: number) => <ProductItem product={product} key={index} />)}
             </div>
             <div className="text-center mt-4">
-                <Button onClick={handleButtonClick} className="theme-btn">
+                <button onClick={handleButtonClick} className="theme-btn">
                     Xem Thêm
-                </Button>
+                </button>
             </div>
         </>
     );

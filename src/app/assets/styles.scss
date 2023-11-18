@@ -696,6 +696,7 @@ label {
     position: relative;
     border-radius: 13px;
     font-weight: 500;
+    padding: 4px 12px;
     cursor: pointer;
     text-align: center;
     overflow: hidden;
@@ -720,7 +721,7 @@ label {
 }
 
 .theme-btn:hover {
-    color: var(--color-white) !important;
+    color: var(--color-white);
 }
 
 .theme-btn:hover::before {
