@@ -79,7 +79,8 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
     const handleCancel = async () => {
         router.push('/dashboard');
     };
-    const handleCreateCar = async () => {
+    const handleCreateCar = async (event: { preventDefault: () => void }) => {
+        event.preventDefault();
         try {
             const newCar = {
                 customer_id: session?.user?.id,

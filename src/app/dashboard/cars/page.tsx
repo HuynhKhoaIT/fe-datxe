@@ -14,7 +14,7 @@ import UpdateModal from './UpdateModal';
 import { notification } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import AddCarModal from './AddCarModal';
-import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group } from '@mantine/core';
+import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
 
 export default function CarsPage() {
     const { data: session } = useSession();
@@ -136,7 +136,15 @@ export default function CarsPage() {
     };
 
     const [selectedRow, setSelectedRow] = useState<number>();
+    const itemsPerPage: number = 10;
 
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const paginatedData = cars2.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
     const renderRows = () => {
         if (loading) {
             return (
@@ -150,9 +158,9 @@ export default function CarsPage() {
             );
         }
 
-        return cars2.map((record) => (
+        return paginatedData.map((record) => (
             <Table.Tr key={record.id}>
-                <Table.Td>
+                <Table.Td w={'100px'}>
                     <Radio checked={selectedRow === record.id} onChange={() => setSelectedRow(record.id)} />
                 </Table.Td>
                 <Table.Td>{record.licensePlates}</Table.Td>
@@ -224,7 +232,7 @@ export default function CarsPage() {
                         <Table>
                             <Table.Thead>
                                 <Table.Tr>
-                                    <Table.Th>Mặc định</Table.Th>
+                                    <Table.Th align="center">Mặc định</Table.Th>
                                     <Table.Th>Biển số</Table.Th>
                                     <Table.Th>Màu xe</Table.Th>
                                     <Table.Th>Hãng xe</Table.Th>
@@ -235,6 +243,11 @@ export default function CarsPage() {
                             </Table.Thead>
                             <Table.Tbody>{renderRows()}</Table.Tbody>
                         </Table>
+                        <Pagination
+                            style={{ marginTop: '16px', display: 'flex', justifyContent: 'end' }}
+                            total={Math.ceil(cars2.length / itemsPerPage)}
+                            onChange={handlePageChange}
+                        />
                     </div>
                 </div>
             </div>

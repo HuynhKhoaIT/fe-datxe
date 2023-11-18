@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, Modal } from 'antd';
+// import { Table, Spin, Modal } from 'antd';
+import { Table, Checkbox, Radio, Loader, Center, Pagination, Modal, Group } from '@mantine/core';
 import { getGarage } from '@/utils/garage';
 import { getOrders, showStatus } from '@/utils/order';
 import { IOrder } from '@/interfaces/order';
@@ -14,7 +15,7 @@ export default function Orders() {
     const router = useRouter();
     const token = session?.user?.token;
     const [ordersData, setOrdersData] = useState<IOrder[]>([]);
-    const [ordersData2, setOrdersData2] = useState<IOrder[]>([]);
+    const [ordersData2, setOrdersData2] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(true);
     useEffect(() => {
         const fetchData = async () => {
@@ -65,43 +66,47 @@ export default function Orders() {
         return updatedCars;
     };
 
-    const columns: any = [
-        {
-            title: 'Tên chuyên gia',
-            dataIndex: ['garage', 'name'],
-            width: 140,
-        },
-        {
-            title: 'Biển số',
-            dataIndex: ['car', 'licensePlates'],
-        },
-        {
-            title: 'Mã đơn hàng',
-            dataIndex: 'code',
-        },
-        {
-            title: 'Ngày sửa',
-            // dataIndex: 'date',
-            render: (data: any) => {
-                return (
-                    <div>
-                        <span>{dayjs(data?.date).format('DD-MM-YYYY')} </span>
-                        <span>{data?.time}</span>
-                    </div>
-                );
-            },
-        },
-        {
-            title: 'Tình trạng',
-            dataIndex: 'status',
-        },
-        {
-            title: 'Tổng đơn hàng',
-            dataIndex: 'total',
-        },
-    ];
     const handleRowClick = (record: any) => {
         router.push(`/dashboard/order/${record.id}`);
+    };
+
+    const itemsPerPage: number = 10;
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const paginatedData = ordersData2.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
+    const renderRows = () => {
+        if (loading) {
+            return (
+                <tr>
+                    <td colSpan={7}>
+                        <Center>
+                            <Loader size={36} />
+                        </Center>
+                    </td>
+                </tr>
+            );
+        }
+
+        return paginatedData.map((record: any) => (
+            <Table.Tr key={record.id} className="row-table" onClick={() => handleRowClick(record)}>
+                <Table.Td>{record.garage.name}</Table.Td>
+                <Table.Td>{record.car.licensePlates}</Table.Td>
+                <Table.Td>{record.code}</Table.Td>
+                <Table.Td>
+                    <div>
+                        <span>{dayjs(record?.date).format('DD-MM-YYYY')} </span>
+                        <span>{record?.time}</span>
+                    </div>
+                </Table.Td>
+                <Table.Td>{record.status}</Table.Td>
+                <Table.Td>{record.total}</Table.Td>
+            </Table.Tr>
+        ));
     };
 
     return (
@@ -110,19 +115,26 @@ export default function Orders() {
                 <div className="col-lg-12">
                     <div className="user-profile-card">
                         <h4 className="user-profile-card-title">Danh sách đơn hàng</h4>
-                        {/* <Spin spinning={loading}> */}
                         <div className="table-responsive">
-                            <Table
-                                loading={loading}
-                                pagination={{ pageSize: 6 }}
-                                dataSource={ordersData2}
-                                onRow={(record) => ({
-                                    onClick: () => handleRowClick(record),
-                                })}
-                                columns={columns}
+                            <Table style={{ overflow: 'hidden' }}>
+                                <Table.Thead>
+                                    <Table.Tr style={{ background: '#ddd' }}>
+                                        <Table.Th>Tên chuyên gia</Table.Th>
+                                        <Table.Th>Biển số</Table.Th>
+                                        <Table.Th>Mã đơn hàng</Table.Th>
+                                        <Table.Th>Ngày sửa</Table.Th>
+                                        <Table.Th>Tình trạng</Table.Th>
+                                        <Table.Th>Tổng đơn hàng</Table.Th>
+                                    </Table.Tr>
+                                </Table.Thead>
+                                <Table.Tbody>{renderRows()}</Table.Tbody>
+                            </Table>
+                            <Pagination
+                                style={{ marginTop: '16px', display: 'flex', justifyContent: 'end' }}
+                                total={Math.ceil(ordersData2.length / itemsPerPage)}
+                                onChange={handlePageChange}
                             />
                         </div>
-                        {/* </Spin> */}
                     </div>
                 </div>
             </div>
