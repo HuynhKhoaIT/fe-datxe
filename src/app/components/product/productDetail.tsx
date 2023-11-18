@@ -26,7 +26,6 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
     };
 
     const handleOk = () => {
-        console.log('123');
         setIsModalOpen(false);
         const existingCartItems = JSON.parse('[]');
         existingCartItems.push({

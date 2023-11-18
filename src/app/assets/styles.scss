@@ -147,7 +147,7 @@ body {
 }
 
 a {
-    // color: var(--color-dark);
+    color: var(--color-dark);
     display: inline-block;
 }
 
@@ -266,7 +266,7 @@ label {
 }
 
 /*====================
-4. Preloader
+4. Preloaderspan
 ======================*/
 
 .preloader {
@@ -4488,7 +4488,7 @@ label {
 }
 
 .shop-item-img {
-    max-width: 276px;
+    max-width: 100%;
     max-height: 276px;
     text-align: center;
     position: relative;
@@ -6455,7 +6455,33 @@ body.rtl-mode .price-wrapper {
 /*====================
 58. Footer css 
 ======================*/
-
+.dowload-app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.footer-widget-box__content {
+    text-indent: 20px;
+    text-align: justify;
+    letter-spacing: 1.5px;
+}
+.download-app__img {
+    max-width: 250px;
+}
+.download-app__img2 {
+    display: flex;
+    max-width: 250px;
+    margin-top: 20px;
+    margin-left: -55px;
+}
+.download-app__img2 span {
+    color: var(--color-white);
+}
+.download-app__img2 img {
+    max-width: 120px;
+    margin: 0 5px;
+}
 .footer-area {
     background: var(--color-dark);
     position: relative;
@@ -6470,10 +6496,18 @@ body.rtl-mode .price-wrapper {
     position: relative;
     z-index: 1;
 }
-
+.footer-logo {
+    margin-bottom: 30px;
+}
 .footer-logo img {
-    width: 250px;
-    margin-bottom: 35px;
+    width: 70px;
+    border-radius: 50%;
+}
+.footer-logo p {
+    margin-left: 12px;
+    font-size: 24px;
+    line-height: 25px;
+    font-weight: 300;
 }
 
 .copyright {
@@ -6540,7 +6574,7 @@ body.rtl-mode .price-wrapper {
     position: absolute;
     content: '';
     z-index: -1;
-    width: 90px;
+    width: 100px;
     height: 2px;
     background: rgba(255, 255, 255, 0.2);
     bottom: 0;
@@ -6555,7 +6589,9 @@ body.rtl-mode .price-wrapper {
     height: 2px;
     background-color: var(--theme-color);
     bottom: 0;
-    left: 18px;
+    left: 0;
+    -webkit-animation: heading-move 5s infinite linear;
+    animation: heading-move 5s infinite linear;
 }
 
 .footer-list {
@@ -7101,4 +7137,8 @@ body.rtl-mode .price-wrapper {
 .login-title-2 h3 {
     font-size: 26px;
     font-weight: 450;
+}
+.row-table:hover {
+    cursor: pointer;
+    background-color: #0dcaf0;
 }

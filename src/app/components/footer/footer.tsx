@@ -10,6 +10,10 @@ import {
     IconBrandTwitter,
     IconSend,
 } from '@tabler/icons-react';
+import download from '../../assets/images/Keu_goi_tai_ap.png';
+import android from '../../assets/images/Android.png';
+import ios from '../../assets/images/IOS.png';
+import Link from 'next/link';
 
 const MyFooter = () => (
     <footer className="footer-area">
@@ -18,32 +22,99 @@ const MyFooter = () => (
                 <div className="row footer-widget-wrapper pt-100 pb-70">
                     <div className="col-md-6 col-lg-4">
                         <div className="footer-widget-box about-us">
-                            <a href="#" className="footer-logo">
-                                <img src="assets/img/logo/logo-light.png" alt="" />
-                            </a>
-                            <p className="mb-3">
-                                We are many variations of passages available but the majority have suffered alteration
-                                in some form by injected humour words believable.
+                            <div className="d-flex align-items-center footer-logo">
+                                <img
+                                    src="https://datxe.com/wp-content/uploads/2021/08/cropped-logo-DatXE-App-vuong-1.jpg"
+                                    alt=""
+                                />
+                                <p className="mb-0">DatXe - Nền tảng đặt dịch vụ ô tô</p>
+                            </div>
+
+                            <p className="mb-3 footer-widget-box__content">
+                                Đặt lịch dịch vụ, mua hàng hoá tại 63 tỉnh thành trên toàn quốc. Nhiều gói dịch vụ hấp
+                                dẫn đang phù hợp với dòng xe của bạn đang giảm từ 10% - 30%. Hãy trải nghiệm ngay!
                             </p>
-                            <ul className="footer-contact">
+                            <div className="dowload-app">
+                                <img className="download-app__img" src={download.src} alt="" />
+                                <div className="download-app__img2">
+                                    <a href="https://apps.apple.com/us/app/datxe/id6444442159" target="_blank">
+                                        <img src={ios.src} alt="" />
+                                    </a>
+                                    <span className="mb-0">Hoặc</span>
+                                    <a
+                                        href="https://play.google.com/store/apps/details?id=dev.taivan.flutter_app_dlbd&pli=1"
+                                        target="_blank"
+                                    >
+                                        <img src={android.src} alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                        <div className="footer-widget-box list">
+                            <h4 className="footer-widget-title">Về DatXe</h4>
+                            <ul className="footer-list">
                                 <li>
-                                    <a href="tel:+21236547898">
-                                        <i>
-                                            <IconPhone size={16} />
-                                        </i>
-                                        +2 123 654 7898
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Giới thiệu DatXe
                                     </a>
                                 </li>
                                 <li>
-                                    <IconLocation size={16} />
-                                    25/B Milford Road, New York
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Điều khoản sử dụng
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="mailto:info@example.com">
-                                        <i>
-                                            <IconMail size={16} />
-                                        </i>
-                                        info@example.com
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Chính sách & quyền
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Tuyển dụng
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Chính sách bảo hành
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                        <div className="footer-widget-box list">
+                            <h4 className="footer-widget-title">TT hỗ trợ</h4>
+                            <ul className="footer-list">
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Câu hỏi thường gặp
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Hỗ trợ Chuyên gia
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Hỗ trợ người dùng
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Truyền thông & thương hiệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Đối tác & cộng tác viên
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <IconCaretRight size={16} /> Cộng đồng
                                     </a>
                                 </li>
                             </ul>
@@ -51,88 +122,14 @@ const MyFooter = () => (
                     </div>
                     <div className="col-md-6 col-lg-2">
                         <div className="footer-widget-box list">
-                            <h4 className="footer-widget-title">Quick Links</h4>
-                            <ul className="footer-list">
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> About Us
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Update News
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Testimonials
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Terms Of Service
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Privacy policy
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Our Dealers
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="col-md-6 col-lg-3">
-                        <div className="footer-widget-box list">
-                            <h4 className="footer-widget-title">Support Center</h4>
-                            <ul className="footer-list">
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> FAQ's
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Affiliates
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Booking Tips
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Sell Vehicles
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Contact Us
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <IconCaretRight size={16} /> Sitemap
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="col-md-6 col-lg-3">
-                        <div className="footer-widget-box list">
-                            <h4 className="footer-widget-title">Newsletter</h4>
+                            <h4 className="footer-widget-title">Có gì mới</h4>
                             <div className="footer-newsletter">
-                                <p>Subscribe Our Newsletter To Get Latest Update And News</p>
+                                <p>Luôn cập nhập những thông tin mới phù hợp với bạn.</p>
                                 <div className="subscribe-form">
                                     <form action="#">
                                         <input type="email" className="form-control" placeholder="Your Email" />
                                         <button className="theme-btn" type="submit">
-                                            Subscribe Now <IconSend size={16} />
+                                            Đăng ký ngay <IconSend size={16} />
                                         </button>
                                     </form>
                                 </div>
@@ -147,7 +144,7 @@ const MyFooter = () => (
                 <div className="row">
                     <div className="col-md-6 align-self-center">
                         <p className="copyright-text">
-                            &copy; Copyright <span id="date"></span> <a href="#"> MOTEX </a> All Rights Reserved.
+                            &copy; Copyright <span id="date"></span> <a href="#"> DATXE </a> All Rights Reserved.
                         </p>
                     </div>
                     <div className="col-md-6 align-self-center">
