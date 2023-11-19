@@ -65,7 +65,7 @@ export default function Home({ params }: { params: { slug: string } }) {
                                                 <button
                                                     style={{ width: '100%' }}
                                                     type="button"
-                                                    className="btn btn-outline-primary"
+                                                    className="btn btn-outline-primary "
                                                 >
                                                     Liên hệ
                                                 </button>
