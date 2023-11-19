@@ -12,5 +12,5 @@ export interface IGarage {
     distance?: BigInteger;
     rating?: BigInteger;
     description?: string;
-    createdeAt?: string;
+    createdAt?: string;
 }

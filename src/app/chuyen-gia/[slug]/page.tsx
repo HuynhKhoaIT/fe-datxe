@@ -10,7 +10,8 @@ import { getProductByGar } from '@/utils/product';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { IconBuildingStore, IconStar, IconCar, IconUsers, IconUserCheck } from '@tabler/icons-react';
+import { IconBuildingStore, IconStar, IconCar, IconUsers, IconUserCheck, IconPhoneCall } from '@tabler/icons-react';
+import dayjs from 'dayjs';
 
 export default function Home({ params }: { params: { slug: string } }) {
     const searchParams = useSearchParams();
@@ -18,7 +19,7 @@ export default function Home({ params }: { params: { slug: string } }) {
     const [initialCategoryData, setInitialCategoryData] = useState<ICategory[]>([]);
     const [garageData, setGarageData] = useState<IGarage>();
     const [initialProductData, setInitialProductData] = useState<IProduct[]>([]);
-
+    console.log(garageData);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -101,7 +102,8 @@ export default function Home({ params }: { params: { slug: string } }) {
                                         <span>
                                             <IconStar size={16} />{' '}
                                         </span>
-                                        Đánh giá: <span style={{ color: 'var(--theme-color)' }}>4/5</span>
+                                        Đánh giá:{' '}
+                                        <span style={{ color: 'var(--theme-color)' }}>{garageData?.rating}/5</span>
                                     </li>
                                 </ul>
                             </div>
@@ -109,9 +111,19 @@ export default function Home({ params }: { params: { slug: string } }) {
                                 <ul>
                                     <li>
                                         <span>
+                                            <IconPhoneCall size={16} />{' '}
+                                        </span>
+                                        Phone:{' '}
+                                        <span style={{ color: 'var(--theme-color)' }}>{garageData?.phoneNumber}</span>
+                                    </li>
+                                    <li>
+                                        <span>
                                             <IconUserCheck size={16} />{' '}
                                         </span>
-                                        Tham Gia: <span style={{ color: 'var(--theme-color)' }}>Ngày 22/12/2020</span>
+                                        Tham Gia:{' '}
+                                        <span style={{ color: 'var(--theme-color)' }}>
+                                            {dayjs(garageData?.createdAt).format('DD/MM/YYYY')}
+                                        </span>
                                     </li>
                                     <li>
                                         <span>
