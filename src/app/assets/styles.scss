@@ -6911,16 +6911,11 @@ body.rtl-mode .price-wrapper {
 }
 
 // garage
-.garage-info-section {
-    padding: 40px;
-    background-color: var(--color-white);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
-    // color: var(--color-white);
-}
-.garage-info-left {
-    padding: 12px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-}
+
+// .garage-info-left {
+//     padding: 12px;
+//     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+// }
 .garage-info-right {
     padding-left: 20px;
 }
