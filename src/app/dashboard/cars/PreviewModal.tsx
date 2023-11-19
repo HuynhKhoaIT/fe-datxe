@@ -26,12 +26,24 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
                         />
                     </Grid.Col>
                     <Grid.Col span={6}>
-                        <TextInput readOnly type="text" name="brandCar" label="Hãng xe" value={data.brandName} />
+                        <TextInput
+                            readOnly
+                            type="text"
+                            name="brandCar"
+                            label="Hãng xe"
+                            value={data?.brandCarName?.name}
+                        />
                     </Grid.Col>
                 </Grid>
                 <Grid gutter={10}>
                     <Grid.Col span={6}>
-                        <TextInput readOnly type="text" name="modelCar" label="Dòng xe" value={data.modelName} />
+                        <TextInput
+                            readOnly
+                            type="text"
+                            name="modelCar"
+                            label="Dòng xe"
+                            value={data?.modelCarName?.name}
+                        />
                     </Grid.Col>
                     <Grid.Col span={6}>
                         <TextInput readOnly type="text" name="color" label="Màu xe" value={data.color} />

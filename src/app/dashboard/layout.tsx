@@ -1,7 +1,6 @@
 import { ReactNode, Suspense } from 'react';
 import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
 import { LoadingComponent } from '../components/loading';
-import { Col, Row } from 'antd';
 
 interface IProps {
     children: ReactNode;
@@ -11,12 +10,12 @@ export default function DashboardLayout({ children }: IProps) {
         <main className="main">
             <div className="user-profile pt-40 pb-40">
                 <div className="container">
-                    <Row gutter={24}>
-                        <Col span={6}>
+                    <div className="row">
+                        <div className="col-md-3">
                             <ProfileSidebar />
-                        </Col>
-                        <Col span={18}>{children}</Col>
-                    </Row>
+                        </div>
+                        <div className="col-md-9">{children}</div>
+                    </div>
                 </div>
             </div>
         </main>

@@ -5,12 +5,11 @@ import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import CarItem from './CarItem';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faChevronRight, faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faBan, faChevronRight, faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { IconChevronRight, IconEye, IconPencil, IconTrash, IconBan } from '@tabler/icons-react';
 import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
-import { notification } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
 import AddCarModal from './AddCarModal';
 import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
 
@@ -146,8 +145,12 @@ export default function CarsPage() {
 
         return paginatedData.map((record) => (
             <Table.Tr key={record.id}>
-                <Table.Td w={'100px'}>
-                    <Radio checked={selectedRow?.id === record.id} onChange={() => handleRadioChange(record)} />
+                <Table.Td>
+                    <Radio
+                        style={{ display: 'flex', justifyContent: 'center' }}
+                        checked={selectedRow?.id === record.id}
+                        onChange={() => handleRadioChange(record)}
+                    />
                 </Table.Td>
                 <Table.Td>{record.licensePlates}</Table.Td>
                 <Table.Td>{record.color}</Table.Td>
@@ -155,20 +158,27 @@ export default function CarsPage() {
                 <Table.Td>{record.modelCarName?.name}</Table.Td>
                 <Table.Td>{record.registrationDate}</Table.Td>
                 <Table.Td>
-                    <Button size="xs" variant="transparent" onClick={(e) => showDetails(e, record)}>
-                        <FontAwesomeIcon icon={faEye} />
+                    <Button size="xs" p={5} variant="transparent" onClick={(e) => showDetails(e, record)}>
+                        <IconEye size={16} />
                     </Button>
                     <Button
                         size="xs"
                         style={{ margin: '0 5px' }}
                         variant="transparent"
                         color="gray"
+                        p={5}
                         onClick={() => showUpdateModal(record)}
                     >
-                        <FontAwesomeIcon icon={faPen} />
+                        <IconPencil size={16} />
                     </Button>
-                    <Button size="xs" variant="transparent" color="red" onClick={(e) => handleOpenModalDelete(record)}>
-                        <FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} />
+                    <Button
+                        size="xs"
+                        p={5}
+                        variant="transparent"
+                        color="red"
+                        onClick={(e) => handleOpenModalDelete(record)}
+                    >
+                        <IconTrash size={16} color="red" />
                     </Button>
                 </Table.Td>
             </Table.Tr>
@@ -221,7 +231,7 @@ export default function CarsPage() {
                         key="cancel"
                         onClick={handleDeleteCancel}
                         color="red"
-                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                        leftSection={<IconBan />}
                     >
                         Huỷ bỏ
                     </Button>
@@ -229,7 +239,7 @@ export default function CarsPage() {
                         style={{ marginLeft: '12px' }}
                         onClick={handleDeleteOk}
                         variant="filled"
-                        leftSection={<FontAwesomeIcon icon={faChevronRight} />}
+                        leftSection={<IconChevronRight />}
                     >
                         Tiếp tục
                     </Button>
@@ -256,7 +266,7 @@ export default function CarsPage() {
                         color="red"
                         size="xs"
                         onClick={() => setOpenModalCarDefault(false)}
-                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                        leftSection={<IconBan />}
                     >
                         Huỷ bỏ
                     </Button>
