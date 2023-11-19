@@ -113,7 +113,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                     <Grid.Col span={5}>
                         <div className="item-gallery">
                             <div className="flexslider-thumbnails">
-                                <ProductSlider />
+                                <ProductSlider images={ProductDetail?.thumbnail} />
                             </div>
                         </div>
                     </Grid.Col>

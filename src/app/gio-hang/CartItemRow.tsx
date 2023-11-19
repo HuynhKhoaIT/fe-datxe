@@ -15,11 +15,11 @@ const CartItemRow = ({ record, decrementQuantity, incrementQuantity, handleOpenM
             <Table.Td width={180} align="center">
                 <>
                     <Button variant="transparent" onClick={() => decrementQuantity(record.product.id)}>
-                        <IconMinus />
+                        <IconMinus size={16} />
                     </Button>
                     <span style={{ padding: '10px' }}>{record.quantity}</span>
                     <Button variant="transparent" onClick={() => incrementQuantity(record.product.id)}>
-                        <IconPlus />
+                        <IconPlus size={16} />
                     </Button>
                 </>
             </Table.Td>

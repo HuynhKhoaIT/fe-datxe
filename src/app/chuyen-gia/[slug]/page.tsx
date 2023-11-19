@@ -48,13 +48,10 @@ export default function Home({ params }: { params: { slug: string } }) {
                 <div className="garage-info-section">
                     <div className="container">
                         <div className="row justify-content-between">
-                            <div className="col col-md-4 garage-info-left">
+                            <div className="col col-md-5 garage-info-left">
                                 <div className="banner-garage-box">
                                     <div className="garage-info d-flex align-items-center">
-                                        <div
-                                            className="garage-logo"
-                                            style={{ width: '70px', height: 'auto', marginRight: '20px' }}
-                                        >
+                                        <div className="garage-logo" style={{ width: 90 }}>
                                             <img src={garageData?.logo} alt="" />
                                         </div>
                                         <div className="garage-title">
@@ -86,7 +83,7 @@ export default function Home({ params }: { params: { slug: string } }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col col-md-3 garage-info-right">
+                            <div className="col col-md-2 garage-info-right">
                                 <ul>
                                     <li>
                                         <span>
