@@ -15,12 +15,12 @@ export default function Orders() {
     const router = useRouter();
     const token = session?.user?.token;
     const [ordersData, setOrdersData] = useState<IOrder[]>([]);
-    const [ordersData2, setOrdersData2] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(true);
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const orders = await getOrders(token ?? '', 1);
+                console.log(orders);
                 setOrdersData(orders ?? []);
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -39,32 +39,6 @@ export default function Orders() {
         const carData = await getCar(token ?? '', carId ?? '');
         return carData;
     };
-    useEffect(() => {
-        setLoading(true);
-        const updateTableData = async () => {
-            const updatedData = await fetchDataForTable();
-
-            setOrdersData2(updatedData);
-            setLoading(false);
-        };
-        updateTableData();
-    }, [ordersData]);
-
-    const fetchDataForTable = async (): Promise<IOrder[]> => {
-        const updatedCars = await Promise.all(
-            ordersData.map(async (order: IOrder) => {
-                if (order.garageId && order.carId) {
-                    const garage = await fetchOrderData(order.garageId);
-                    const car = await fetchCarData(order.carId);
-                    order.status = showStatus(order.status);
-                    return { ...order, garage, car };
-                } else {
-                    return order;
-                }
-            }),
-        );
-        return updatedCars;
-    };
 
     const handleRowClick = (record: any) => {
         router.push(`/dashboard/order/${record.id}`);
@@ -74,7 +48,7 @@ export default function Orders() {
 
     const [currentPage, setCurrentPage] = useState(1);
 
-    const paginatedData = ordersData2.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const paginatedData = ordersData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
@@ -131,7 +105,7 @@ export default function Orders() {
                             </Table>
                             <Pagination
                                 style={{ marginTop: '16px', display: 'flex', justifyContent: 'end' }}
-                                total={Math.ceil(ordersData2.length / itemsPerPage)}
+                                total={Math.ceil(ordersData.length / itemsPerPage)}
                                 onChange={handlePageChange}
                             />
                         </div>

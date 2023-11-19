@@ -5,8 +5,6 @@ import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import CarItem from './CarItem';
-// import { Breadcrumb, Button, Input, Modal, Spin, Tooltip } from 'antd';
-import { getBrand } from '@/utils/branch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faChevronRight, faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import PreviewModal from './PreviewModal';
@@ -26,15 +24,7 @@ export default function CarsPage() {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [detail, setDetail] = useState({});
     const [deleteRow, setDeleteRow] = useState('');
-    const [api, contextHolder] = notification.useNotification();
-
-    const openNotification = (message: string) => {
-        api.info({
-            message: `Thành công`,
-            description: message,
-            icon: <CheckOutlined style={{ color: 'green' }} />,
-        });
-    };
+    const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
     const handleOk = () => {
         setIsModalOpen(false);
     };
@@ -73,13 +63,14 @@ export default function CarsPage() {
         setIsModalDeleteOpen(false);
     };
     const [cars, setCars] = useState<ICar[]>([]);
-    const [cars2, setCars2] = useState<ICar[]>([]);
 
+    console.log(cars);
     const fetchCars = async () => {
         console.log('update or delete');
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
+                console.log(fetchedCars);
                 setCars(fetchedCars ?? []);
                 setLoading(false);
             }
@@ -90,44 +81,10 @@ export default function CarsPage() {
     useEffect(() => {
         fetchCars();
     }, [token]);
-    const fetchBrandData = async (automakerId: number) => {
-        const brandData = await getBrand(automakerId);
-        return brandData.name;
-    };
-
-    const fetchModelData = async (carNameId: number) => {
-        const modelData = await getBrand(carNameId);
-        return modelData.name;
-    };
-    useEffect(() => {
-        setLoading(true);
-        const updateTableData = async () => {
-            const updatedData = await fetchDataForTable();
-            setCars2(updatedData);
-            setLoading(false);
-        };
-        updateTableData();
-    }, [cars]);
-
-    const fetchDataForTable = async (): Promise<ICar[]> => {
-        const updatedCars = await Promise.all(
-            cars.map(async (car: ICar) => {
-                if (car.automakerId && car.carNameId) {
-                    const brandName = await fetchBrandData(car.automakerId);
-                    const modelName = await fetchModelData(car.carNameId);
-                    return { ...car, brandName, modelName };
-                } else {
-                    return car;
-                }
-            }),
-        );
-        return updatedCars;
-    };
 
     const handleDeleteCar = async (carId: string) => {
         try {
             await deleteCar(carId, token ?? '');
-            openNotification('Xoá thành công');
 
             fetchCars();
         } catch (error) {
@@ -135,16 +92,45 @@ export default function CarsPage() {
         }
     };
 
-    const [selectedRow, setSelectedRow] = useState<number>();
+    // xe mặc định lưu trên localStorage
+    const [selectedRow, setSelectedRow] = useState<any>();
+    const [dataCarDefault, setdataCartDefault] = useState<any>();
+
+    const handleRadioChange = (selectedRecord: any) => {
+        setOpenModalCarDefault(true);
+        setdataCartDefault(selectedRecord);
+        if (typeof window !== 'undefined' && window.localStorage) {
+            localStorage.setItem('carDefault', JSON.stringify(selectedRecord));
+        } else {
+            console.error('localStorage is not available');
+        }
+    };
+    const handleCarDefault = () => {
+        localStorage.setItem('carDefault', JSON.stringify(dataCarDefault));
+        setSelectedRow(dataCarDefault);
+        setOpenModalCarDefault(false);
+    };
+
     const itemsPerPage: number = 10;
 
     const [currentPage, setCurrentPage] = useState(1);
 
-    const paginatedData = cars2.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const paginatedData = cars.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
     };
+
+    useEffect(() => {
+        // Lấy dữ liệu từ Local Storage
+        const existingCarData = localStorage.getItem('carDefault');
+        if (existingCarData) {
+            // Chuyển đổi chuỗi JSON thành mảng JavaScript
+            const parsedCarData = JSON.parse(existingCarData);
+            console.log(parsedCarData);
+            setSelectedRow(parsedCarData);
+        }
+    }, []);
     const renderRows = () => {
         if (loading) {
             return (
@@ -161,12 +147,12 @@ export default function CarsPage() {
         return paginatedData.map((record) => (
             <Table.Tr key={record.id}>
                 <Table.Td w={'100px'}>
-                    <Radio checked={selectedRow === record.id} onChange={() => setSelectedRow(record.id)} />
+                    <Radio checked={selectedRow?.id === record.id} onChange={() => handleRadioChange(record)} />
                 </Table.Td>
                 <Table.Td>{record.licensePlates}</Table.Td>
                 <Table.Td>{record.color}</Table.Td>
-                <Table.Td>{record.brandName}</Table.Td>
-                <Table.Td>{record.modelName}</Table.Td>
+                <Table.Td>{record.brandCarName?.name}</Table.Td>
+                <Table.Td>{record.modelCarName?.name}</Table.Td>
                 <Table.Td>{record.registrationDate}</Table.Td>
                 <Table.Td>
                     <Button size="xs" variant="transparent" onClick={(e) => showDetails(e, record)}>
@@ -191,36 +177,12 @@ export default function CarsPage() {
 
     return (
         <div className="user-profile-wrapper">
-            {contextHolder}
-
-            {/* <Breadcrumb
-                style={{ padding: '16px 20px', position: 'absolute' }}
-                items={[
-                    {
-                        title: (
-                            <Link href="/dashboard" style={{ color: '#1890ff' }}>
-                                Tổng quan
-                            </Link>
-                        ),
-                    },
-                    {
-                        title: 'Danh sách xe',
-                    },
-                ]}
-            /> */}
             <div className="user-profile-card profile-ad" style={{ padding: '40px' }}>
                 <div className="user-profile-card-header">
                     <h4 className="user-profile-card-title">Xe của tôi</h4>
                     <div className="user-profile-card-header-right">
                         <div className="user-profile-search">
-                            <div className="form-group">
-                                {/* <Search
-                                    placeholder="input search text"
-                                    allowClear
-                                    // onSearch={onSearch}
-                                    style={{ width: 200 }}
-                                /> */}
-                            </div>
+                            <div className="form-group"></div>
                         </div>
                         <Button className="theme-btn" onClick={() => showAddModal()}>
                             Thêm xe
@@ -245,7 +207,7 @@ export default function CarsPage() {
                         </Table>
                         <Pagination
                             style={{ marginTop: '16px', display: 'flex', justifyContent: 'end' }}
-                            total={Math.ceil(cars2.length / itemsPerPage)}
+                            total={Math.ceil(cars.length / itemsPerPage)}
                             onChange={handlePageChange}
                         />
                     </div>
@@ -280,6 +242,29 @@ export default function CarsPage() {
                 width={800}
                 data={detail ? detail : {}}
             />
+            <Modal
+                size={400}
+                opened={openModalCarDefault}
+                onClose={() => setOpenModalCarDefault(false)}
+                title="Xe mặc định"
+                lockScroll={false}
+            >
+                <div>Biển số: {dataCarDefault?.licensePlates}</div>
+                <Group justify="end" style={{ marginTop: 10 }}>
+                    <Button
+                        variant="outline"
+                        color="red"
+                        size="xs"
+                        onClick={() => setOpenModalCarDefault(false)}
+                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                    >
+                        Huỷ bỏ
+                    </Button>
+                    <Button variant="filled" size="xs" onClick={() => handleCarDefault()}>
+                        Cập nhật
+                    </Button>
+                </Group>
+            </Modal>
             <AddCarModal width={800} open={isAddModalOpen} onCancel={handleCancel} />
             <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={detail} />
         </div>

@@ -9,4 +9,5 @@ export interface IProduct {
     entryPrice?: BigInteger;
     price?: BigInteger;
     garageId?: string;
+    garage?: any;
 }

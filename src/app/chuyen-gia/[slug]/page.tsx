@@ -42,7 +42,6 @@ export default function Home({ params }: { params: { slug: string } }) {
 
         fetchData(); // Gọi hàm fetchData khi component được mount
     }, [params.slug]); // Thêm params.slug vào dependency array để useEffect chạy lại khi params.slug thay đổi (nếu params.slug là một dependency)
-
     return (
         <main className="main">
             <div className="">
@@ -126,7 +125,7 @@ export default function Home({ params }: { params: { slug: string } }) {
                                 </ul>
                             </div>
                             <div className="col col-md-2">
-                                <Link href={'/dat-lich'} style={{ width: '100%' }}>
+                                <Link href={`/dat-lich?garage=${params?.slug}`} style={{ width: '100%' }}>
                                     <button type="button" style={{ width: '100%' }} className="btn btn-warning">
                                         Đặt lịch
                                     </button>

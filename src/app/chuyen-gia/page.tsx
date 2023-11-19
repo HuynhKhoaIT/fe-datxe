@@ -3,8 +3,8 @@ import { GarageItem } from '../components/garageItem/garageItem';
 import React, { useEffect, useState } from 'react';
 import { getGarages } from '@/utils/garage';
 import { IGarage } from '@/interfaces/garage';
-import { Col, List, Row } from 'antd';
 import { Pagination } from '../components/pagination-area/pagination-area';
+import { Grid, List } from '@mantine/core';
 export default async function Expert() {
     const [garageData, setGarageData] = useState<IGarage[]>([]);
 
@@ -25,25 +25,15 @@ export default async function Expert() {
             {/* <!-- shop-area --> */}
             <div className="shop-area car-area list bg pt-50 pb-50">
                 <div className="container">
-                    <List
-                        grid={{
-                            gutter: 16,
-                            xs: 1,
-                            sm: 2,
-                            md: 4,
-                            lg: 4,
-                            xl: 5,
-                            xxl: 6,
-                        }}
-                        dataSource={garageData}
-                        renderItem={(item) => (
-                            <List.Item>
+                    <div className="d-flex flex-wrap gap-2 ">
+                        {garageData.map((item, index) => (
+                            <div style={{ maxWidth: '270px' }}>
                                 <GarageItem garage={item} />
-                            </List.Item>
-                        )}
-                    />
-                    <Row>
-                        <Col span={24}>
+                            </div>
+                        ))}
+                    </div>
+                    <Grid>
+                        <Grid.Col span={12}>
                             {/* <div className="shop-item-wrapper">
                                 <Row>
                                     {garage_data.map((garage: IGarage, index) => (
@@ -52,8 +42,8 @@ export default async function Expert() {
                                 </Row>
                             </div> */}
                             {/* <Pagination data={garageData} /> */}
-                        </Col>
-                    </Row>
+                        </Grid.Col>
+                    </Grid>
                 </div>
             </div>
         </main>

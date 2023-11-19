@@ -10,3 +10,5 @@ export const POST_REGISTER_ENDPOINT = `${process.env.api}/register`;
 export const GET_BRAND_ENDPOINT = `${process.env.apiGuest}/car-brands`;
 export const GET_PRODUCT_DETAIL = `${process.env.apiGuest}/products`;
 export const GET_CAR_ENDPOINT = `${process.env.apiUser}/cars`;
+export const CUSTOMER_CARE_ENDPOINT = `${process.env.apiUser}/customer-care`;
+

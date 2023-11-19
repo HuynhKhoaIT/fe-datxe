@@ -1,9 +1,21 @@
 'use client';
 import { IProduct } from '@/interfaces/product';
-import { faFacebookF, faInstagram, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faHeart, faStar, faStarHalfStroke } from '@fortawesome/free-regular-svg-icons';
-import { faBan, faCartShopping, faChevronRight, faMinus, faPlus, faRightLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    IconHeart,
+    IconShoppingCart,
+    IconChevronRight,
+    IconMinus,
+    IconPlus,
+    IconBan,
+    IconArrowsRightLeft,
+    IconStar,
+    IconStarHalf,
+    IconBrandFacebook,
+    IconBrandInstagram,
+    IconBrandLinkedin,
+    IconBrandPinterest,
+    IconBrandTwitter,
+} from '@tabler/icons-react';
 import Link from 'next/link';
 import React, { Suspense, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
@@ -135,7 +147,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                                 <h5 className="title">Số lượng:</h5>
                                 <div className="cart-qty">
                                     <button className="minus-btn" onClick={decrementValue}>
-                                        <FontAwesomeIcon icon={faMinus} />
+                                        <IconMinus />
                                     </button>
                                     <input
                                         className="quantity bg-white"
@@ -144,16 +156,16 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                                         onChange={(e) => setInputValue(parseInt(e.target.value) || 1)}
                                     />
                                     <button className="plus-btn" onClick={incrementValue}>
-                                        <FontAwesomeIcon icon={faPlus} />
+                                        <IconPlus />
                                     </button>
                                 </div>
                                 <div className="item-single-btn-area">
                                     <button className="theme-btn" onClick={addProductToLocalStorage}>
-                                        <FontAwesomeIcon icon={faCartShopping} />
+                                        <IconShoppingCart />
                                         Thêm vào giỏ
                                     </button>
                                     <Link href="#" className="single-item-btn">
-                                        <FontAwesomeIcon icon={faHeart} />
+                                        <IconHeart />
                                     </Link>
                                 </div>
                             </div>
@@ -163,19 +175,19 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                             <div className="single-item-share">
                                 <span>Chia sẻ:</span>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faFacebookF} />
+                                    <IconBrandFacebook />
                                 </Link>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faTwitter} />
+                                    <IconBrandTwitter />
                                 </Link>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faInstagram} />
+                                    <IconBrandInstagram />
                                 </Link>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faLinkedinIn} />
+                                    <IconBrandLinkedin />
                                 </Link>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faPinterestP} />
+                                    <IconBrandPinterest />
                                 </Link>
                             </div>
                         </div>
@@ -183,7 +195,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                 </Grid>
             </Grid.Col>
             <Grid.Col span={12}>
-                {ProductDetail && ProductDetail.garageId && <ProductGarage garageId={ProductDetail.garageId} />}
+                {ProductDetail && ProductDetail.garage && <ProductGarage garage={ProductDetail.garage} />}
             </Grid.Col>
             <Grid.Col span={12}>
                 <div className={cx('single-item-details', 'product-description')}>
@@ -218,7 +230,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                         key="cancel"
                         onClick={handleCancel}
                         color="red"
-                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                        leftSection={<IconBan size={12} />}
                     >
                         Huỷ bỏ
                     </Button>
@@ -226,7 +238,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                         style={{ marginLeft: '12px' }}
                         onClick={handleOk}
                         variant="filled"
-                        leftSection={<FontAwesomeIcon icon={faChevronRight} />}
+                        leftSection={<IconChevronRight size={12} />}
                     >
                         Tiếp tục
                     </Button>

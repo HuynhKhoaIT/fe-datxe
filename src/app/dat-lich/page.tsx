@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 import { ModalInfosEventCalendar } from '../components/ModalInfosEventCalendar/index';
 import { useDisclosure } from '../hooks/useDisclosure';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { updateEventCalendar } from '../services/eventCalendarApi';
 // import { toast } from 'react-toastify';
 import { IEventCalendar } from '../domain/EventCalendar';
@@ -17,14 +17,14 @@ const sampleEvents: IEventCalendar[] = [
         _id: '1',
         title: 'Event 1',
         start: '2023-11-13T10:00:00',
-        end: '2023-11-13T12:00:00',
+        // end: '2023-11-13T12:00:00',
         user: 'user1',
     },
     {
         _id: '2',
         title: 'Event 2',
         start: '2023-11-15T14:00:00',
-        end: '2023-11-15T16:00:00',
+        // end: '2023-11-15T16:00:00',
         user: 'user2',
     },
     // Add more events as needed
@@ -34,7 +34,16 @@ export default function CalendarScheduler() {
     const [eventInfos, setEventInfos] = useState();
     const [isEditCard, setIsEditCard] = useState<boolean>(false);
     // const [opened, { open, close }] = useDisclosure(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [carDefault, setCarDefault] = useState<any>({});
+    useEffect(() => {
+        const existingCarData = localStorage.getItem('carDefault');
+        if (existingCarData) {
+            const parsedCarData = JSON.parse(existingCarData);
+            console.log(parsedCarData);
+            setCarDefault(parsedCarData);
+        }
+    }, []);
     const weekends = {
         weekendsVisible: true,
         currentEvents: [],
@@ -47,6 +56,7 @@ export default function CalendarScheduler() {
         setEventInfos(selectInfo);
         console.log(selectInfo);
         modalInfosEvent.handleOpen();
+        setIsModalOpen(true);
     };
 
     const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
@@ -82,13 +92,14 @@ export default function CalendarScheduler() {
     const { data: session } = useSession();
 
     return (
-        <div>
+        <div className="modal-datlich">
             <ModalInfosEventCalendar
-                open={modalInfosEvent.isOpen}
-                handleClose={modalInfosEvent.handleClose}
+                open={isModalOpen}
+                handleClose={() => setIsModalOpen(false)}
                 eventInfos={eventInfos}
                 isEditCard={isEditCard}
-                user={session?.user}
+                dataUser={session?.user}
+                carDefault={carDefault}
             />
 
             <FullCalendar
@@ -98,6 +109,7 @@ export default function CalendarScheduler() {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                    // right: 'timeGridWeek',
                 }}
                 slotLabelFormat={{
                     hour: 'numeric',
