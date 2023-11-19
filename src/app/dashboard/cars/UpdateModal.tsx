@@ -8,9 +8,7 @@ import dayjs from 'dayjs';
 import { useSession } from 'next-auth/react';
 import { updateCar } from '@/utils/car';
 import { DateInput } from '@mantine/dates';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
-
+import { IconBan } from '@tabler/icons-react';
 const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
     const [disabled, setDisabled] = useState(true);
     const { data: session } = useSession();
@@ -252,13 +250,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                         </Grid.Col>
                     </Grid>
                     <Group justify="end" style={{ marginTop: 10 }}>
-                        <Button
-                            variant="outline"
-                            color="red"
-                            size="xs"
-                            onClick={onCancel}
-                            leftSection={<FontAwesomeIcon icon={faBan} />}
-                        >
+                        <Button variant="outline" color="red" size="xs" onClick={onCancel} leftSection={<IconBan />}>
                             Huỷ bỏ
                         </Button>
                         <Button variant="filled" size="xs" type="submit">
