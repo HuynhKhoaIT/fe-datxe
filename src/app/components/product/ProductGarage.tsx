@@ -1,74 +1,61 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Avatar, Button, Space, Spin } from 'antd';
-import { UserOutlined, MessageOutlined, ShopOutlined } from '@ant-design/icons';
-import { IGarage } from '../../../interfaces/garage';
-import { getGarage } from '@/utils/garage';
-
+import { Grid, Avatar, Group, Button } from '@mantine/core';
+import { IconMessage, IconBuildingStore } from '@tabler/icons-react';
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
 import Link from 'next/link';
 const cx = classNames.bind(styles);
 
-function ProductGarage({ garageId }: { garageId: string }) {
-    const [garageData, setGarageData] = useState<IGarage>();
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        const fetchGarageData = async () => {
-            try {
-                const res = await getGarage(garageId);
-                if (res?.data) {
-                    setGarageData(res.data);
-                    setLoading(false);
-                }
-            } catch (error) {
-                console.error('Error fetching garage data:', error);
-            }
-        };
-
-        fetchGarageData();
-    }, [garageId]);
-    console.log(garageData);
+function ProductGarage({ garage }: { garage: any }) {
     return (
-        <Spin spinning={loading}>
-            <div className={cx('garageItem')}>
-                <Col span={8}>
-                    <Row className={cx('garage-info')}>
-                        <Col span={8} className={cx('info-left')}>
+        <div className={cx('garageItem')}>
+            <Grid>
+                <Grid.Col span={4}>
+                    <Grid className={cx('garage-info')}>
+                        <Grid.Col span={4} className={cx('info-left')}>
                             <Avatar
                                 size={84}
-                                icon={<UserOutlined />}
                                 style={{ border: '0.5px solid #ddd', marginLeft: '4px' }}
-                                src={garageData?.logo}
+                                src={`https://v2.dlbd.vn/storage/${garage?.logo}`}
                             />
-                        </Col>
-                        <Col span={16} className={cx('info-right')}>
-                            <Link href={'/'} className={cx('garage-name')}>
-                                {garageData?.name}
+                        </Grid.Col>
+                        <Grid.Col span={8} className={cx('info-right')}>
+                            <Link
+                                href={`/chuyen-gia/${garage?.code}?garageId=${garage?.id}`}
+                                className={cx('garage-name')}
+                            >
+                                {garage?.name}
                             </Link>
-                            <Space className={cx()}>
-                                <Link href={`#`}>
+                            <Group grow gap={10}>
+                                <Link href={`/chuyen-gia/${garage?.code}?garageId=${garage?.id}`}>
                                     <Button
                                         style={{ borderRadius: '0' }}
-                                        type="primary"
-                                        danger
-                                        icon={<MessageOutlined />}
+                                        color="red"
+                                        size="xs"
+                                        leftSection={<IconMessage size={12} />}
                                     >
                                         Chat ngay
                                     </Button>
                                 </Link>
-                                <Link href={`/chuyen-gia/${garageId}`}>
-                                    <Button icon={<ShopOutlined />} style={{ borderRadius: '0' }}>
+                                <Link href={`/chuyen-gia/${garage?.code}?garageId=${garage?.id}`}>
+                                    <Button
+                                        style={{ borderRadius: '0' }}
+                                        variant="outline"
+                                        color="gray"
+                                        size="xs"
+                                        leftSection={<IconBuildingStore size={12} />}
+                                    >
                                         Xem shop
                                     </Button>
                                 </Link>
-                            </Space>
-                        </Col>
-                    </Row>
-                </Col>
-                <Col span={16} className={cx('garage-right')}>
-                    <Row gutter={40}>
-                        <Col span={7} className={cx('garage-right__info')}>
+                            </Group>
+                        </Grid.Col>
+                    </Grid>
+                </Grid.Col>
+                <Grid.Col span={8} className={cx('garage-right')}>
+                    <Grid gutter={40}>
+                        <Grid.Col span={3.5} className={cx('garage-right__info')}>
                             <div className={cx('d-flex justify-content-between')}>
                                 <span className={cx('garage-right__title')}>Đánh giá</span>
                                 <span className={cx('garage-right__qtt')}>132.6k</span>
@@ -77,8 +64,8 @@ function ProductGarage({ garageId }: { garageId: string }) {
                                 <span className={cx('garage-right__title')}>Sản phẩm</span>
                                 <span className={cx('garage-right__qtt')}>200</span>
                             </div>
-                        </Col>
-                        <Col span={10} className={cx('garage-right__info')}>
+                        </Grid.Col>
+                        <Grid.Col span={5} className={cx('garage-right__info')}>
                             <div className={cx('d-flex justify-content-between')}>
                                 <span className={cx('garage-right__title')}>Tỉ lệ phản hồi</span>
                                 <span className={cx('garage-right__qtt')}>69%</span>
@@ -87,8 +74,8 @@ function ProductGarage({ garageId }: { garageId: string }) {
                                 <span className={cx('garage-right__title')}>Thời gian phản hồi</span>
                                 <span className={cx('garage-right__qtt')}>Trong vài giờ</span>
                             </div>
-                        </Col>
-                        <Col span={7} className={cx('garage-right__info')}>
+                        </Grid.Col>
+                        <Grid.Col span={3.5} className={cx('garage-right__info')}>
                             <div className={cx('d-flex justify-content-between')}>
                                 <span className={cx('garage-right__title')}>Tham gia</span>
                                 <span className={cx('garage-right__qtt')}>6 năm trước</span>
@@ -97,11 +84,11 @@ function ProductGarage({ garageId }: { garageId: string }) {
                                 <span className={cx('garage-right__title')}>Người theo dõi</span>
                                 <span className={cx('garage-right__qtt')}>379,1k</span>
                             </div>
-                        </Col>
-                    </Row>
-                </Col>
-            </div>
-        </Spin>
+                        </Grid.Col>
+                    </Grid>
+                </Grid.Col>
+            </Grid>
+        </div>
     );
 }
 

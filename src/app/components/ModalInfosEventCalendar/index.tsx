@@ -1,152 +1,224 @@
-// import { Button, Modal, TextField } from '@mui/material';
 import CalendarApi from '@fullcalendar/react';
-import React, { useState } from 'react';
-import Modal from 'react-modal';
+import React, { useEffect, useState } from 'react';
 import '@mantine/core/styles.css';
-// import { FormControl, InputLabel, Input, FormHelperText } from '@mui/material';
-// import { toast } from 'react-toastify';
-// import { ColorsCard, ListColorsCard } from '../../constants/ListColorsCard';
-// import {
-//   createEventCalendar,
-//   deleteEventCalendar,
-//   updateEventCalendar,
-// } from '../../services/eventCalendarApi';
-// import { BackgroundColorRounded, BoxContainer, SelectColors } from './styles';
-import { TextInput, Checkbox, Button, Group, Box, Grid, Textarea, NumberInput } from '@mantine/core';
+import { TextInput, Button, Group, Box, Grid, Textarea, Select, Radio, Modal } from '@mantine/core';
 import { useForm, hasLength } from '@mantine/form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { useSession } from 'next-auth/react';
+import { notifications } from '@mantine/notifications';
+
+import { DateTimePicker } from '@mantine/dates';
 import dayjs from 'dayjs';
+import { IconPlus } from '@tabler/icons-react';
+import { useSearchParams } from 'next/navigation';
+import { addCustomerCare, getCustomerCareCreate, getCustomerCares } from '@/utils/customerCare';
+import { useSession } from 'next-auth/react';
+import { getCar, getCars } from '@/utils/car';
 
-const customStyles = {
-    overlay: {
-        zIndex: 999,
-        backgroundColor: 'transparent',
-    },
-    content: {
-        width: '600px',
-        // height: '800px',
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 9999,
-        backgroundColor: '#fff',
-    },
-};
-interface ICardColor {
-    backgroundColor: string;
-    textColor: string;
-}
+export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefault, ...props }: any) => {
+    const { data: session } = useSession();
+    const token = session?.user?.token;
+    const searchParams = useSearchParams();
+    const garageId: string = searchParams.get('garage') || '';
+    const [customerCreate, setCustomerCreate] = useState<any>();
+    const [garageOptions, setGarageOptions] = useState<any>([]);
+    const [categoryOptions, setCategoryOptions] = useState<any>([]);
+    const [carOptions, setCaroptions] = useState<any>();
+    const [cars, setCars] = useState<any>([]);
+    const [carSelect, setCarSelect] = useState<any>();
 
-interface IModalInfosEventCalendaryProps {
-    open: boolean;
-    handleClose: () => void;
-    eventInfos: any;
-    isEditCard: boolean;
-    user: any;
-}
+    const fetchCars = async () => {
+        try {
+            if (token) {
+                const fetchedCars = await getCars(token);
+                const newModels = fetchedCars?.map((car) => ({
+                    value: car.id?.toString() || '',
+                    label: car.licensePlates || '',
+                }));
+                setCaroptions(newModels);
+                setCars(fetchedCars);
+            }
+        } catch (error) {
+            console.error('Error fetching cars:', error);
+        }
+    };
+    useEffect(() => {
+        fetchCars();
+    }, [token]);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (token) {
+                try {
+                    const customerCare: any = await getCustomerCareCreate(token, garageId ?? '');
+                    const garages: any = customerCare?.garages?.map((garage: { id: any; name: any }) => ({
+                        value: garage.id?.toString(),
+                        label: garage.name,
+                    }));
+                    console.log(garages);
+                    const categories: any = customerCare?.categories?.map((category: { id: any; name: any }) => ({
+                        value: category.id?.toString(),
+                        label: category.name,
+                    }));
+                    setCategoryOptions(categories);
+                    setGarageOptions(garages);
+                    setCustomerCreate(customerCare);
+                } catch (error) {
+                    console.log('API Response:', error);
+                }
+            }
+        };
 
-export const ModalInfosEventCalendar = ({
-    handleClose,
-    open,
-    eventInfos,
-    isEditCard,
-    user,
-}: IModalInfosEventCalendaryProps) => {
-    console.log(eventInfos?.startStr);
-
-    // Format the date
-    // let formattedDate = dayjs(eventInfos?.startStr).format('DD/MM/YYYY HH:mm:ss');
-
+        fetchData();
+    }, [token]);
     const form = useForm({
         initialValues: {
-            requireCustomer: '',
-            name: user?.name,
-            phone: user?.phone,
-            plate: '',
-            brand: '',
-            model: '',
-            nsx: '',
+            customer_request: '',
+            name: '',
+            phone: '',
             category: '',
-            // date: formattedDate,
             garaName: '',
             garaAddress: '',
-            note: '',
+            description: '',
+            garageId: '',
+            priority_level: '1',
+            arrival_time: '',
+            car_id: carDefault?.id,
         },
 
         validate: {
-            name: hasLength({ min: 2, max: 10 }, 'Name must be 2-10 characters long'),
+            // name: hasLength({ min: 2, max: 30 }, 'Name must be 2-10 characters long'),
         },
     });
+    useEffect(() => {
+        console.log(session?.user?.name);
+        if (customerCreate || carDefault) {
+            form.setValues({
+                customer_request: '',
+                name: customerCreate?.user?.name || session?.user?.name,
+                phone: customerCreate?.user?.phone || session?.user?.phone,
+                category: '97',
+                garaName: '',
+                garaAddress: '',
+                description: '',
+                garageId: customerCreate?.garages[0]?.id,
+                priority_level: '1',
+                arrival_time: eventInfos?.start || '',
+                // car_id: '',
+            });
+        }
+    }, [carDefault, customerCreate, eventInfos?.start]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const selectedCar = await getCar(token ?? '', form.values.car_id);
+                setCarSelect(selectedCar);
+            } catch (error) {
+                console.error('Error selecting car:', error);
+            }
+        };
+        fetchData();
+    }, [form.values.car_id]);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(form.values);
+        const { customer_request, description, priority_level, arrival_time, car_id, garageId } = form.values;
+        const newCustomerCare = {
+            customer_request: customer_request,
+            description: description,
+            priority_level: priority_level,
+            arrival_time: dayjs(arrival_time).format('YYYY/MM/DD HH:mm:ss'),
+            car_id: car_id,
+            garageId: garageId,
+        };
+        console.log(newCustomerCare);
+        try {
+            const createdCar = await addCustomerCare(newCustomerCare, token ?? '');
+            console.log('Customer care created:', createdCar);
+            notifications.show({
+                title: 'Thành công',
+                message: 'Đặt lịch thành công',
+            });
+            handleClose();
+        } catch (error) {
+            console.error('Error creating customer care:', error);
+            notifications.show({
+                title: 'Thất bại',
+                message: 'Đặt lịch thất bại',
+            });
+        }
+    };
     return (
-        <Modal isOpen={open} onRequestClose={handleClose} style={customStyles} contentLabel="Example Modal">
-            <div className="d-flex justify-content-between">
-                <h3>Title</h3>
-                <i onClick={handleClose} style={{ fontSize: '22px', cursor: 'pointer' }}>
-                    <FontAwesomeIcon icon={faXmark} style={{ fontSize: '22' }} />
-                </i>
-            </div>
-            <Box maw={700} mx="auto">
-                <form onSubmit={form.onSubmit((values) => console.log(values))}>
+        <Modal
+            size={500}
+            title="Đặt lịch hẹn dịch vụ"
+            opened={open}
+            onClose={handleClose}
+            trapFocus={false}
+            lockScroll={false}
+            {...props}
+        >
+            <Box maw={500} mx="auto">
+                <form onSubmit={handleSubmit}>
                     <Textarea
-                        label="Yêu cầu khách hàng"
                         placeholder="Yêu cầu khách hàng"
                         withAsterisk
-                        {...form.getInputProps('requireCustomer')}
+                        {...form.getInputProps('customer_request')}
                     />
+                    <Radio.Group withAsterisk defaultValue="1" {...form.getInputProps('priority_level')}>
+                        <Group mt="xs">
+                            <Radio value="1" label="Cao" />
+                            <Radio value="2" label="Trung bình" />
+                            <Radio value="3" label="Thấp" />
+                        </Group>
+                    </Radio.Group>
+
                     <Grid gutter={10} mt="md">
-                        <Grid.Col span={4}>
-                            <TextInput
-                                label="Name"
-                                placeholder="Name"
-                                defaultValue={user?.name}
-                                withAsterisk
-                                {...form.getInputProps('name')}
-                            />
+                        <Grid.Col span={6}>
+                            <TextInput placeholder="Name" withAsterisk {...form.getInputProps('name')} />
                         </Grid.Col>
-                        <Grid.Col span={4}>
+                        <Grid.Col span={6}>
                             <TextInput
-                                label="Phone"
                                 placeholder="Phone"
-                                defaultValue={user?.phone}
+                                defaultValue={customerCreate?.user?.phone}
                                 withAsterisk
                                 {...form.getInputProps('phone')}
                             />
                         </Grid.Col>
-                        <Grid.Col span={4}>
-                            <TextInput
-                                label="Biển số"
+                    </Grid>
+                    <Grid mt="md" justify="center">
+                        <Grid.Col span={6}>
+                            <Select
+                                checkIconPosition="right"
                                 placeholder="Biển số"
-                                withAsterisk
-                                {...form.getInputProps('plate')}
-                            />
+                                defaultValue={carDefault?.id}
+                                data={carOptions}
+                                {...form.getInputProps('car_id')}
+                                // onChange={(value) => {
+                                //     selectCar(value);
+                                // }}
+                            ></Select>
                         </Grid.Col>
                     </Grid>
                     <Grid gutter={10} mt="md">
                         <Grid.Col span={4}>
                             <TextInput
-                                label="Hãng xe"
                                 placeholder="Hãng xe"
+                                leftSection={<IconPlus size={22} color="blue" />}
                                 withAsterisk
-                                {...form.getInputProps('brand')}
+                                value={carSelect?.brandCarName?.name || carDefault?.brandCarName?.name}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <TextInput
-                                label="Dòng xe"
                                 placeholder="Dòng xe"
+                                leftSection={<IconPlus size={22} color="blue" />}
+                                value={carSelect?.modelCarName?.name || carDefault?.brandCarName?.name}
                                 withAsterisk
-                                {...form.getInputProps('model')}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <TextInput
-                                label="Năm sản xuất"
                                 placeholder="Năm sản xuất"
+                                leftSection={<IconPlus size={22} color="blue" />}
                                 withAsterisk
                                 {...form.getInputProps('nsx')}
                             />
@@ -154,50 +226,60 @@ export const ModalInfosEventCalendar = ({
                     </Grid>
                     <Grid gutter={10} mt="md">
                         <Grid.Col span={6}>
-                            <TextInput
-                                label="Danh mục đặt lịch"
+                            <Select
                                 placeholder="Danh mục đặt lịch"
                                 withAsterisk
+                                data={categoryOptions}
+                                leftSection={<IconPlus size={22} color="blue" />}
                                 {...form.getInputProps('category')}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <TextInput
-                                label="Thời gian đặt lịch"
+                            <DateTimePicker
+                                valueFormat="DD MM YYYY hh:mm A"
                                 placeholder="Thời gian đặt lịch"
-                                withAsterisk
-                                value={dayjs(eventInfos?.startStr).format('DD/MM/YYYY HH:mm:ss')}
+                                defaultValue={eventInfos?.start}
+                                leftSection={<IconPlus size={22} color="blue" />}
+                                {...form.getInputProps('arrival_time')}
                             />
                         </Grid.Col>
                     </Grid>
-                    <Grid gutter={10} mt="md">
-                        <Grid.Col span={6}>
-                            <TextInput
-                                label="Tên gara"
-                                placeholder="Tên gara"
-                                withAsterisk
-                                {...form.getInputProps('garaName')}
-                            />
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                            <TextInput
-                                label="Địa chỉ"
-                                placeholder="Địa chỉ"
-                                withAsterisk
-                                {...form.getInputProps('garaAddress')}
-                            />
-                        </Grid.Col>
-                    </Grid>
+                    {garageId.length > 0 && (
+                        <Grid gutter={10} mt="md">
+                            <Grid.Col span={6}>
+                                <TextInput
+                                    placeholder="Chọn CVDV"
+                                    leftSection={<IconPlus size={22} color="blue" />}
+                                    withAsterisk
+                                    {...form.getInputProps('garaName')}
+                                />
+                            </Grid.Col>
+                            <Grid.Col span={6}>
+                                <Select
+                                    placeholder="Chuyên gia"
+                                    data={garageOptions}
+                                    withAsterisk
+                                    {...form.getInputProps('garageId')}
+                                />
+                            </Grid.Col>
+                        </Grid>
+                    )}
 
-                    <Textarea
-                        label="Ghi chú cho CVDV"
-                        placeholder="Ghi chú cho CVDV"
-                        withAsterisk
-                        {...form.getInputProps('note')}
-                    />
-                    <Group justify="flex-end" mt="md">
-                        <Button type="submit" onClick={handleClose}>
-                            Submit
+                    <Grid mt="md">
+                        <Grid.Col span={12}>
+                            <Textarea
+                                placeholder="Ghi chú cho CVDV"
+                                withAsterisk
+                                {...form.getInputProps('description')}
+                            />
+                        </Grid.Col>
+                    </Grid>
+                    <Group grow preventGrowOverflow={false} wrap="nowrap" mt="md" className="footer-modal-schedule">
+                        <div>
+                            Đăng ký <a href="/">DatXe</a> để quản lý lịch sử xe, hoặc <a href="/">đăng nhập</a>
+                        </div>
+                        <Button w={100} bg={'var(--theme-color)'} type="submit" key="submit">
+                            Đặt lịch
                         </Button>
                     </Group>
                 </form>

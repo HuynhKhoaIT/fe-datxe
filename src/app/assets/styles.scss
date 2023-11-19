@@ -1113,6 +1113,7 @@ label {
 
     .navbar #main_nav {
         justify-content: flex-end;
+        align-items: end;
     }
 
     /* nav right */
@@ -6957,25 +6958,6 @@ body.rtl-mode .price-wrapper {
     color: #fff;
 }
 
-// Modal cho page Đặt lịch
-.custom-modal {
-    // display: flex;
-    display: block;
-    background-color: #fff;
-    margin: auto;
-    width: 500px;
-    height: 600px;
-    // top: '50%';
-    // left: '50%';
-    // right: 'auto';
-    // bottom: 'auto';
-    // transform: 'translate(-50%, -50%)';
-    z-index: 999;
-}
-
-.custom-overlay {
-    z-index: 999;
-}
 // swiper
 
 .swiper {
@@ -7142,4 +7124,17 @@ body.rtl-mode .price-wrapper {
 .row-table:hover {
     cursor: pointer;
     background-color: #0dcaf0;
+}
+
+// css modal dat lich
+.footer-modal-schedule {
+    font-size: 14px;
+}
+.footer-modal-schedule a {
+    color: var(--theme-color);
+}
+.modal-datlich .mantine-Modal-header {
+    background-color: var(--theme-color) !important;
+    margin-bottom: 20px;
+    color: #fff;
 }

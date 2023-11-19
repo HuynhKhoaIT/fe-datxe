@@ -6,16 +6,17 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { CarInfoCart } from '../components/cart/carInfo';
 import { useSession } from 'next-auth/react';
-import { Grid, Modal, TextInput, Box, Select, Button, Group, Table, NumberInput, Card, Avatar } from '@mantine/core';
+import { Grid, Modal, TextInput, Box, Select, Button, Group, Table, LoadingOverlay, Card, Avatar } from '@mantine/core';
 import { DateInput, TimeInput } from '@mantine/dates';
 import { ActionIcon, rem } from '@mantine/core';
 import { ICar } from '@/interfaces/car';
-import { getCars } from '@/utils/car';
+import { getCar, getCars } from '@/utils/car';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faChevronRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 import { faClock } from '@fortawesome/free-regular-svg-icons';
+import CartItemRow from './CartItemRow';
 
 export default function Cart() {
     // const [form] = Form.useForm();
@@ -23,15 +24,36 @@ export default function Cart() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const token = session?.user?.token;
-    // const [api, contextHolder] = notification.useNotification();
     const [time, setTime] = useState(dayjs().format('HH:mm'));
     const [date, setDate] = useState(dayjs().format('DD-MM-YYYY'));
-    const [cars, setCars] = useState<ICar[]>([]);
+    const [cars, setCars] = useState<any>([]);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [deleteRow, setDeleteRow] = useState<any>();
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
+    const [carOptions, setCaroptions] = useState<any>();
+
+    const [carDefault, setCarDefault] = useState<any>({});
+    const [carSelect, setCarSelect] = useState<any>();
+    const selectCar = async (value: any) => {
+        try {
+            const selectedCar = await getCar(token ?? '', value);
+            setCarSelect(selectedCar);
+        } catch (error) {
+            console.error('Error selecting car:', error);
+        }
+    };
+    useEffect(() => {
+        // Lấy dữ liệu từ Local Storage
+        const existingCarData = localStorage.getItem('carDefault');
+        if (existingCarData) {
+            // Chuyển đổi chuỗi JSON thành mảng JavaScript
+            const parsedCarData = JSON.parse(existingCarData);
+            console.log(parsedCarData);
+            setCarDefault(parsedCarData);
+        }
+    }, []);
 
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
@@ -66,7 +88,12 @@ export default function Cart() {
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
-                setCars(fetchedCars ?? []);
+                const newModels = fetchedCars?.map((car) => ({
+                    value: car.id?.toString() || '',
+                    label: car.licensePlates || '',
+                }));
+                setCaroptions(newModels);
+                setCars(fetchedCars);
             }
         } catch (error) {
             console.error('Error fetching cars:', error);
@@ -75,15 +102,6 @@ export default function Cart() {
     useEffect(() => {
         fetchCars();
     }, [token]);
-
-    // const openNotification = () => {
-    //     api.info({
-    //         message: `Thành công`,
-    //         description: 'Đặt lịch thành công',
-    //         icon: <CheckOutlined style={{ color: 'green' }} />,
-    //     });
-    // };
-    // tăng số lượng sản phẩm
     const incrementQuantity = (productId: number) => {
         const updateCartData = cartData.map((item) => {
             if (item.product.id === productId) {
@@ -142,8 +160,8 @@ export default function Cart() {
             }
             router.push('/dashboard/order/' + checkOut.id);
         } catch (error: any) {
-            console.log('Login fail');
-            console.error('Login error:', error.message);
+            console.log('Order fail');
+            console.error('Order error:', error.message);
         }
     };
 
@@ -154,58 +172,19 @@ export default function Cart() {
     );
 
     const renderRows = () => {
-        // if (loading) {
-        //     return (
-        //         <tr>
-        //             <td colSpan={7}>
-        //                 <Center>
-        //                     <Loader size={36} />
-        //                 </Center>
-        //             </td>
-        //         </tr>
-        //     );
-        // }
-
         return cartData?.map((record) => (
-            <Table.Tr key={record.product.id}>
-                <Table.Td>
-                    <Avatar variant="filled" radius="sm" size="lg" src={record.product.thumbnail} />
-                </Table.Td>
-                <Table.Td>{record.product.name}</Table.Td>
-                <Table.Td>{record.product.price.toLocaleString()}đ</Table.Td>
-
-                <Table.Td width={180} align="center">
-                    <>
-                        <Button variant="transparent" onClick={() => decrementQuantity(record.product.id)}>
-                            <FontAwesomeIcon icon={faMinus} />
-                        </Button>
-                        <span style={{ padding: '10px' }}>{record.quantity}</span>
-                        <Button variant="transparent" onClick={() => incrementQuantity(record.product.id)}>
-                            <FontAwesomeIcon icon={faPlus} />
-                        </Button>
-                    </>
-                </Table.Td>
-                <Table.Td>
-                    <span>{(record?.product.price * record.quantity).toLocaleString()}đ</span>
-                </Table.Td>
-
-                <Table.Td width={30} align="center">
-                    <Button
-                        variant="transparent"
-                        color="red"
-                        onClick={() => handleOpenModalDelete(record)}
-                        style={{ padding: 0 }}
-                    >
-                        <FontAwesomeIcon icon={faTrashCan} />
-                    </Button>
-                </Table.Td>
-            </Table.Tr>
+            <CartItemRow
+                key={record.product.id}
+                record={record}
+                decrementQuantity={decrementQuantity}
+                incrementQuantity={incrementQuantity}
+                handleOpenModalDelete={handleOpenModalDelete}
+            />
         ));
     };
 
     return (
         <main className="main">
-            {/* {contextHolder} */}
             <form onSubmit={onSubmit}>
                 <div className="shop-cart pt-60 pb-60">
                     <div className="container">
@@ -248,7 +227,47 @@ export default function Cart() {
                             <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
                                 <div className="checkout-widget">
                                     <h4 className="checkout-widget-title">Thông tin Xe</h4>
-                                    <CarInfoCart cars={cars} />
+                                    <Card pos="relative">
+                                        <Grid gutter={16}>
+                                            <Grid.Col span={12}>
+                                                <Select
+                                                    label="Biển số"
+                                                    checkIconPosition="right"
+                                                    placeholder="Biển số"
+                                                    value={carSelect?.modelCarName?.id || carDefault?.id?.toString()}
+                                                    data={carOptions}
+                                                    allowDeselect={false}
+                                                    onChange={(value) => {
+                                                        selectCar(value);
+                                                    }}
+                                                />
+                                            </Grid.Col>
+                                        </Grid>
+                                        <Grid gutter={16}>
+                                            <Grid.Col span={6}>
+                                                <TextInput
+                                                    label="Hãng Xe"
+                                                    defaultValue={carDefault?.brandCarName?.name}
+                                                    placeholder="Hãng Xe"
+                                                    readOnly
+                                                    value={
+                                                        carSelect?.brandCarName?.name || carDefault?.brandCarName?.name
+                                                    }
+                                                />
+                                            </Grid.Col>
+                                            <Grid.Col span={6}>
+                                                <TextInput
+                                                    label="Dòng xe"
+                                                    defaultValue={carDefault?.modelCarName?.name}
+                                                    placeholder="Dòng xe"
+                                                    readOnly
+                                                    value={
+                                                        carSelect?.modelCarName?.name || carDefault?.brandCarName?.name
+                                                    }
+                                                />
+                                            </Grid.Col>
+                                        </Grid>
+                                    </Card>
                                 </div>
                             </Grid.Col>
                         </Grid>

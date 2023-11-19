@@ -2,30 +2,21 @@ import React, { Suspense } from 'react';
 import { SideBar } from '../components/shop-sidebar/sideBar';
 import ProductsListPage from './ProductsListPage';
 import { LoadingComponent } from '../components/loading';
-import { Breadcrumb } from 'antd';
-import Link from 'next/link';
-
+import { Breadcrumbs, Anchor } from '@mantine/core';
+const items = [
+    { title: 'Trang chủ', href: '/' },
+    { title: 'Sản phẩm', color: 'black' },
+].map((item, index) => (
+    <Anchor href={item.href} key={index} c={item.color}>
+        {item.title}
+    </Anchor>
+));
 export default async function Shop() {
     return (
         <main className="main">
             <div className="shop-area bg ">
                 <div className="container">
-                    <Breadcrumb
-                        separator=">"
-                        style={{ padding: '16px 20px', position: 'absolute' }}
-                        items={[
-                            {
-                                title: (
-                                    <Link href="/" style={{ color: '#1890ff' }}>
-                                        Trang chủ
-                                    </Link>
-                                ),
-                            },
-                            {
-                                title: 'Sản phẩm',
-                            },
-                        ]}
-                    />
+                    <Breadcrumbs style={{ padding: '16px 20px', position: 'absolute' }}>{items}</Breadcrumbs>
                     <div className="row  pt-60 pb-60">
                         <div className="col-lg-3">
                             <SideBar />

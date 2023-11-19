@@ -5,6 +5,7 @@ import { Input, CloseButton, Grid, Button, Select } from '@mantine/core';
 import { getBrands, getModels } from '@/utils/branch';
 import { IBrand } from '@/interfaces/brand';
 import { YearPickerInput } from '@mantine/dates';
+import Link from 'next/link';
 
 function SearchForm() {
     const [loading, setLoading] = useState(false);
@@ -58,7 +59,7 @@ function SearchForm() {
     return (
         <div style={{ width: '100%' }}>
             <Grid>
-                <Grid.Col span={6}>
+                <Grid.Col span={5}>
                     <form onSubmit={(event) => handleSubmit(event, value)}>
                         <Grid style={{ position: 'relative' }}>
                             <Grid.Col span={12}>
@@ -105,7 +106,7 @@ function SearchForm() {
                         </Grid>
                     </form>
                 </Grid.Col>
-                <Grid.Col span={6} style={{ display: 'flex', alignItems: 'end' }}>
+                <Grid.Col span={5.5} style={{ display: 'flex', alignItems: 'end' }}>
                     <form onSubmit={(event) => handleSubmit(event, value)}>
                         <Grid gutter={5}>
                             <Grid.Col span={3.5}>
@@ -152,6 +153,19 @@ function SearchForm() {
                             </Grid.Col>
                         </Grid>
                     </form>
+                </Grid.Col>
+                <Grid.Col span={1.5} style={{ display: 'flex', alignItems: 'end' }}>
+                    <Link href="/dat-lich">
+                        <Button
+                            loading={loading}
+                            variant="filled"
+                            style={{
+                                background: 'var(--theme-color)',
+                            }}
+                        >
+                            Đặt lịch
+                        </Button>
+                    </Link>
                 </Grid.Col>
             </Grid>
         </div>

@@ -2,7 +2,7 @@ export interface IEventCalendar {
     _id: string;
     id?: string;
     title: string;
-    end: string;
+    // end: string;
     start: string;
     user: string;
 }
