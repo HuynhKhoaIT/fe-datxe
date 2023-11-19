@@ -107,11 +107,13 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
     }, [carDefault, customerCreate, eventInfos?.start]);
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const selectedCar = await getCar(token ?? '', form.values.car_id);
-                setCarSelect(selectedCar);
-            } catch (error) {
-                console.error('Error selecting car:', error);
+            if (form?.values?.car_id) {
+                try {
+                    const selectedCar = await getCar(token ?? '', form.values.car_id);
+                    setCarSelect(selectedCar);
+                } catch (error) {
+                    console.error('Error selecting car:', error);
+                }
             }
         };
         fetchData();

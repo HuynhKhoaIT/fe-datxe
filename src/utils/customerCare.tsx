@@ -32,14 +32,15 @@ export const getCustomerCares = async (token: string) => {
     }
 };
 
-export const getCustomerCare = async (token: string, customerCareId: string) => {
+export const getCustomerCare = async (token: string) => {
     try {
         if (token) {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
-            const res = await axios.get(`${CUSTOMER_CARE_ENDPOINT}/${customerCareId}`, config);
-            return res.data.data as Promise<ICustomerCare[]>;
+            const res = await axios.get(`${CUSTOMER_CARE_ENDPOINT}`, config);
+            console.log(res);
+            return res.data as Promise<ICustomerCare[]>;
         }
     } catch (error) {
         console.error(error);
@@ -54,7 +55,7 @@ export const addCustomerCare = async (newCustomerCare: Object, token: String) =>
                 headers: { Authorization: `Bearer ${token}` },
             };
             const res = await axios.post(`${CUSTOMER_CARE_ENDPOINT}`, newCustomerCare, config);
-            return res.data.data as ICustomerCare;
+            return res.data as ICustomerCare;
         }
     } catch (error) {
         console.error(error);
@@ -69,7 +70,7 @@ export const deleteCustomerCare = async (customerCareId: string, token: string) 
                 headers: { Authorization: `Bearer ${token}` },
             };
             const res = await axios.delete(`${CUSTOMER_CARE_ENDPOINT}/${customerCareId}`, config);
-            return res.data.data as ICustomerCare;
+            return res.data as ICustomerCare;
         }
     } catch (error) {
         console.error(error);
@@ -85,7 +86,7 @@ export const updateCustomerCare = async (customerCareId: string, updatedCustomer
             };
             const res = await axios.put(`${CUSTOMER_CARE_ENDPOINT}/${customerCareId}`, updatedCustomerCare, config);
             console.log(res);
-            return res.data.data as ICustomerCare;
+            return res.data as ICustomerCare;
         }
     } catch (error) {
         console.error(error);
