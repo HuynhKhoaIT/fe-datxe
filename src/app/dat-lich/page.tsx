@@ -3,6 +3,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { mapArrayEventCalendar } from '../domain/EventCalendar';
 
 import { ModalInfosEventCalendar } from '../components/ModalInfosEventCalendar/index';
 import { useDisclosure } from '../hooks/useDisclosure';
@@ -11,13 +12,15 @@ import { useEffect, useState } from 'react';
 // import { toast } from 'react-toastify';
 import { IEventCalendar } from '../domain/EventCalendar';
 import { useSession } from 'next-auth/react';
+import { getCustomerCare } from '@/utils/customerCare';
+import { ICustomerCare } from '@/interfaces/customerCare';
 
-const sampleEvents: IEventCalendar[] = [
+const sampleEvents: any = [
     {
         _id: '1',
         title: 'Event 1',
         start: '2023-11-13T10:00:00',
-        // end: '2023-11-13T12:00:00',
+        end: '2023-11-13T12:00:00',
         user: 'user1',
     },
     {
@@ -31,6 +34,8 @@ const sampleEvents: IEventCalendar[] = [
 ];
 
 export default function CalendarScheduler() {
+    const { data: session } = useSession();
+    const token = session?.user?.token;
     const [eventInfos, setEventInfos] = useState();
     const [isEditCard, setIsEditCard] = useState<boolean>(false);
     // const [opened, { open, close }] = useDisclosure(false);
@@ -44,6 +49,27 @@ export default function CalendarScheduler() {
             setCarDefault(parsedCarData);
         }
     }, []);
+
+    const [data, setData] = useState<ICustomerCare[]>([]);
+    console.log(data);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (token) {
+                try {
+                    const result: any = await getCustomerCare(token, '12');
+                    if (result) {
+                        const listAllEventsCalendar: ICustomerCare[] = mapArrayEventCalendar(result);
+                        setData(listAllEventsCalendar ?? []);
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+        };
+
+        fetchData();
+    }, [token]);
+    console.log(data);
     const weekends = {
         weekendsVisible: true,
         currentEvents: [],
@@ -61,6 +87,7 @@ export default function CalendarScheduler() {
 
     const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
         console.log('123');
+        // setIsModalOpen(true);
         // setIsEditCard(true);
         // setEventInfos(clickInfo);
         // modalInfosEvent.handleOpen();
@@ -89,7 +116,6 @@ export default function CalendarScheduler() {
     //     alert(`Clicked on: ${arg.date}`);
     //     console.log('123');
     // };
-    const { data: session } = useSession();
 
     return (
         <div className="modal-datlich">
