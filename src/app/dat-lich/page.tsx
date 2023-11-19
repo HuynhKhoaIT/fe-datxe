@@ -56,7 +56,7 @@ export default function CalendarScheduler() {
         const fetchData = async () => {
             if (token) {
                 try {
-                    const result: any = await getCustomerCare(token, '12');
+                    const result: any = await getCustomerCare(token);
                     if (result) {
                         const listAllEventsCalendar: ICustomerCare[] = mapArrayEventCalendar(result);
                         setData(listAllEventsCalendar ?? []);
