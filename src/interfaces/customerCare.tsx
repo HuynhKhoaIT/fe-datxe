@@ -9,4 +9,5 @@ export interface ICustomerCare {
     car_id?: number;
     garageId?: BigInteger;
     garages?: any;
+    serviceAdvisor?: any;
 }
