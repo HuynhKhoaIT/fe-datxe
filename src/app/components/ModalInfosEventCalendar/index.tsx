@@ -12,11 +12,14 @@ import { useSearchParams } from 'next/navigation';
 import { addCustomerCare, getCustomerCareCreate, getCustomerCares } from '@/utils/customerCare';
 import { useSession } from 'next-auth/react';
 import { getCar, getCars } from '@/utils/car';
-
+import { useRef } from 'react';
+import { ActionIcon, rem } from '@mantine/core';
+import { IconClock } from '@tabler/icons-react';
 export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefault, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const searchParams = useSearchParams();
+    const [loading, setLoading] = useState<boolean>(false);
     const garageId: string = searchParams.get('garage') || '';
     const [customerCreate, setCustomerCreate] = useState<any>();
     const [garageOptions, setGarageOptions] = useState<any>([]);
@@ -121,6 +124,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
         console.log(form.values);
         const { customer_request, description, priority_level, arrival_time, car_id, garageId } = form.values;
         const newCustomerCare = {
@@ -140,14 +144,23 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                 message: 'Đặt lịch thành công',
             });
             handleClose();
+            setLoading(false);
         } catch (error) {
             console.error('Error creating customer care:', error);
             notifications.show({
                 title: 'Thất bại',
                 message: 'Đặt lịch thất bại',
             });
+            setLoading(false);
         }
     };
+    const ref = useRef<HTMLInputElement>(null);
+
+    const pickerControl = (
+        <ActionIcon variant="subtle" color="gray" onClick={() => ref.current?.showPicker()}>
+            <IconClock style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+        </ActionIcon>
+    );
     return (
         <Modal
             size={500}
@@ -187,12 +200,13 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                         </Grid.Col>
                     </Grid>
                     <Grid mt="md" justify="center">
-                        <Grid.Col span={6}>
+                        <Grid.Col span={6} className="input-plate">
                             <Select
                                 checkIconPosition="right"
                                 placeholder="Biển số"
                                 defaultValue={carDefault?.id}
                                 data={carOptions}
+                                size="lg"
                                 {...form.getInputProps('car_id')}
                                 // onChange={(value) => {
                                 //     selectCar(value);
@@ -236,12 +250,13 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                                 {...form.getInputProps('category')}
                             />
                         </Grid.Col>
-                        <Grid.Col span={6}>
+                        <Grid.Col span={6} className="input-date">
                             <DateTimePicker
                                 valueFormat="DD MM YYYY hh:mm A"
                                 placeholder="Thời gian đặt lịch"
                                 defaultValue={eventInfos?.start}
                                 leftSection={<IconPlus size={22} color="blue" />}
+                                rightSection={pickerControl}
                                 {...form.getInputProps('arrival_time')}
                             />
                         </Grid.Col>
@@ -280,7 +295,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                         <div>
                             Đăng ký <a href="/">DatXe</a> để quản lý lịch sử xe, hoặc <a href="/">đăng nhập</a>
                         </div>
-                        <Button w={100} bg={'var(--theme-color)'} type="submit" key="submit">
+                        <Button w={100} loading={loading} bg={'var(--theme-color)'} type="submit" key="submit">
                             Đặt lịch
                         </Button>
                     </Group>
