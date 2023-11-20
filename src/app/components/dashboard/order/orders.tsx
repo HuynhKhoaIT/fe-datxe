@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { getCar } from '@/utils/car';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 export default function Orders() {
     const { data: session } = useSession();
@@ -73,8 +74,13 @@ export default function Orders() {
                 <Table.Td>{record.code}</Table.Td>
                 <Table.Td>
                     <div>
-                        <span>{dayjs(record?.date).format('DD-MM-YYYY')} </span>
-                        <span>{record?.time}</span>
+                        <span>
+                            {dayjs
+                                .utc(record?.arrivalTime)
+                                .local()
+                                .format('DD/MM/YYYY hh:mm')}{' '}
+                        </span>
+                        {/* <span>{record?.time}</span> */}
                     </div>
                 </Table.Td>
                 <Table.Td>{record.status}</Table.Td>
