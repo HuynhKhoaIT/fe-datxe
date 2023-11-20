@@ -27,7 +27,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
     const [carOptions, setCaroptions] = useState<any>();
     const [cars, setCars] = useState<any>([]);
     const [carSelect, setCarSelect] = useState<any>();
-
+    console.log(eventInfos);
     const fetchCars = async () => {
         try {
             if (token) {
@@ -127,11 +127,13 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
         setLoading(true);
         console.log(form.values);
         const { customer_request, description, priority_level, arrival_time, car_id, garageId } = form.values;
+        console.log(arrival_time);
+
         const newCustomerCare = {
             customer_request: customer_request,
             description: description,
             priority_level: priority_level,
-            arrival_time: dayjs(arrival_time).format('YYYY/MM/DD HH:mm:ss'),
+            arrival_time: arrival_time,
             car_id: car_id,
             garageId: garageId,
         };
