@@ -21,14 +21,11 @@ function ProductGarage({ garage }: { garage: any }) {
                             />
                         </Grid.Col>
                         <Grid.Col span={8} className={cx('info-right')}>
-                            <Link
-                                href={`/chuyen-gia/${garage?.code}?garageId=${garage?.id}`}
-                                className={cx('garage-name')}
-                            >
+                            <Link href={`/chuyen-gia/${garage?.code}`} className={cx('garage-name')}>
                                 {garage?.name}
                             </Link>
                             <Group grow gap={10}>
-                                <Link href={`/chuyen-gia/${garage?.code}?garageId=${garage?.id}`}>
+                                <Link href={`/chuyen-gia/${garage?.code}`}>
                                     <Button
                                         style={{ borderRadius: '0' }}
                                         color="red"
@@ -38,7 +35,7 @@ function ProductGarage({ garage }: { garage: any }) {
                                         Chat ngay
                                     </Button>
                                 </Link>
-                                <Link href={`/chuyen-gia/${garage?.code}?garageId=${garage?.id}`}>
+                                <Link href={`/chuyen-gia/${garage?.code}`}>
                                     <Button
                                         style={{ borderRadius: '0' }}
                                         variant="outline"
