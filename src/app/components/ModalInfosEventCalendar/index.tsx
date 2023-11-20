@@ -198,11 +198,12 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
 
                     <Grid gutter={10} mt="md">
                         <Grid.Col span={6}>
-                            <TextInput placeholder="Name" withAsterisk {...form.getInputProps('name')} />
+                            <TextInput placeholder="Name" readOnly withAsterisk {...form.getInputProps('name')} />
                         </Grid.Col>
                         <Grid.Col span={6}>
                             <TextInput
                                 placeholder="Phone"
+                                readOnly
                                 defaultValue={customerCreate?.user?.phone}
                                 withAsterisk
                                 {...form.getInputProps('phone')}
@@ -228,6 +229,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                         <Grid.Col span={4}>
                             <TextInput
                                 placeholder="Hãng xe"
+                                readOnly
                                 leftSection={<IconPlus size={22} color="blue" />}
                                 withAsterisk
                                 value={carSelect?.brandCarName?.name || carDefault?.brandCarName?.name}
@@ -236,6 +238,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                         <Grid.Col span={4}>
                             <TextInput
                                 placeholder="Dòng xe"
+                                readOnly
                                 leftSection={<IconPlus size={22} color="blue" />}
                                 value={carSelect?.modelCarName?.name || carDefault?.modelCarName?.name}
                                 withAsterisk
