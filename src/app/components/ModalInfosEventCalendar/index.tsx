@@ -237,7 +237,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                             <TextInput
                                 placeholder="Dòng xe"
                                 leftSection={<IconPlus size={22} color="blue" />}
-                                value={carSelect?.modelCarName?.name || carDefault?.brandCarName?.name}
+                                value={carSelect?.modelCarName?.name || carDefault?.modelCarName?.name}
                                 withAsterisk
                             />
                         </Grid.Col>
