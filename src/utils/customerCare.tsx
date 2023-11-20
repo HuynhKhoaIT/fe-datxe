@@ -97,10 +97,11 @@ export const updateCustomerCare = async (customerCareId: string, updatedCustomer
 export const getCustomerCareCreate = async (token: string, garageId: string) => {
     try {
         if (token) {
+            console.log(garageId);
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
-            const res = await axios.get(`${CUSTOMER_CARE_ENDPOINT}/create?garage_id=${garageId}}`, config);
+            const res = await axios.get(`${CUSTOMER_CARE_ENDPOINT}/create?garage_id=${garageId}`, config);
 
             console.log('res', res.data);
             return res.data as Promise<ICustomerCare[]>;

@@ -25,9 +25,10 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
     const [garageOptions, setGarageOptions] = useState<any>([]);
     const [categoryOptions, setCategoryOptions] = useState<any>([]);
     const [carOptions, setCaroptions] = useState<any>();
+    const [advisorOptions, setAdvisoroptions] = useState<any>();
     const [cars, setCars] = useState<any>([]);
     const [carSelect, setCarSelect] = useState<any>();
-    console.log(eventInfos);
+    console.log(customerCreate);
     const fetchCars = async () => {
         try {
             if (token) {
@@ -60,8 +61,13 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                         value: category.id?.toString(),
                         label: category.name,
                     }));
+                    const advisors: any = customerCare?.serviceAdvisor?.map((advisor: { id: any; name: any }) => ({
+                        value: advisor.id?.toString(),
+                        label: advisor.name,
+                    }));
                     setCategoryOptions(categories);
                     setGarageOptions(garages);
+                    setAdvisoroptions(advisors);
                     setCustomerCreate(customerCare);
                 } catch (error) {
                     console.log('API Response:', error);
@@ -84,6 +90,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
             priority_level: '1',
             arrival_time: '',
             car_id: carDefault?.id,
+            service_advisor: '',
         },
 
         validate: {
@@ -104,6 +111,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                 garageId: customerCreate?.garages[0]?.id,
                 priority_level: '1',
                 arrival_time: eventInfos?.start || '',
+                service_advisor: customerCreate?.serviceAdvisor[0]?.id,
                 // car_id: '',
             });
         }
@@ -266,11 +274,12 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                     {garageId.length > 0 && (
                         <Grid gutter={10} mt="md">
                             <Grid.Col span={6}>
-                                <TextInput
+                                <Select
                                     placeholder="Chọn CVDV"
                                     leftSection={<IconPlus size={22} color="blue" />}
                                     withAsterisk
-                                    {...form.getInputProps('garaName')}
+                                    data={advisorOptions}
+                                    {...form.getInputProps('service_advisor')}
                                 />
                             </Grid.Col>
                             <Grid.Col span={6}>
