@@ -262,7 +262,7 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
                         </Grid.Col>
                         <Grid.Col span={6} className="input-date">
                             <DateTimePicker
-                                valueFormat="DD MM YYYY hh:mm A"
+                                valueFormat="DD/MM/YYYY hh:mm A"
                                 placeholder="Thời gian đặt lịch"
                                 defaultValue={eventInfos?.start}
                                 leftSection={<IconPlus size={22} color="blue" />}
