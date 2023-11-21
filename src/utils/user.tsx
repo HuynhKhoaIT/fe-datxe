@@ -126,7 +126,7 @@ export const CheckOtp = async (phone: string, otp: string, action: string) => {
         const res = await axios.post(
             `${CHECK_OTP}`,
             {
-                phone: phone,
+                phone_number: phone,
                 otp: otp,
                 action: action,
             },
