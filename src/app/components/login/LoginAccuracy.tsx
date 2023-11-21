@@ -5,15 +5,29 @@ import { IconChevronLeft, IconBrandGoogle } from '@tabler/icons-react';
 import IconGoogle from '../../assets/images/google.svg';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+import { CheckOtp, CheckPhone, login } from '@/utils/user';
+import { notifications } from '@mantine/notifications';
+import { signIn } from 'next-auth/react';
 
 export function LoginFormAccuracy() {
     const [countdown, setCountdown] = useState<number>(59);
     const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl');
 
     const phone = searchParams.get('phone');
+    const form = useForm({
+        initialValues: {
+            phone: phone || '',
+            pin: '',
+        },
+
+        validate: {
+            pin: hasLength({ min: 6, max: 6 }, 'Mã xác thực phải đủ 6 ký tự'),
+        },
+    });
     useEffect(() => {
         let timer: NodeJS.Timeout;
-
         if (countdown > 0) {
             timer = setInterval(() => {
                 setCountdown((prevCountdown) => prevCountdown - 1);
@@ -24,6 +38,35 @@ export function LoginFormAccuracy() {
             clearInterval(timer);
         };
     }, [countdown]);
+    const onSubmit = async () => {
+        const { phone, pin } = form.values;
+        let password = phone + '@@' + phone.slice(-3);
+        try {
+            await CheckOtp(phone, pin, 'login');
+            try {
+                signIn('credentials', {
+                    phone: phone,
+                    password: password,
+                    callbackUrl: callbackUrl || '/dashboard',
+                });
+                notifications.show({
+                    title: 'Thành công',
+                    message: 'Đăng nhập thành công',
+                });
+            } catch (error) {
+                notifications.show({
+                    title: 'Thất bại',
+                    message: 'Đăng nhập thất bại',
+                });
+            }
+        } catch (error) {
+            notifications.show({
+                title: 'Error',
+                message: 'Xác thực thất bại',
+            });
+            form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
+        }
+    };
     return (
         <div className="login-form">
             <Link href={'/dang-nhap'}>
@@ -46,7 +89,7 @@ export function LoginFormAccuracy() {
                 </p>
             </div>
 
-            <form className="login-accuracy-input">
+            <form className="login-accuracy-input" onSubmit={form.onSubmit(onSubmit)}>
                 <PinInput variant="unstyled" placeholder="0" length={6} size="md" />
                 <Button
                     className="login-btn"

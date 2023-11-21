@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Avatar, Grid, Input, Button, TextInput } from '@mantine/core';
 import { IconBrandFacebook, IconBrandGoogle } from '@tabler/icons-react';
 import IconGoogle from '../../assets/images/google.svg';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
 import { CheckPhone } from '@/utils/user';
@@ -11,6 +11,8 @@ import { notifications } from '@mantine/notifications';
 
 export default function LoginFormInput() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl');
     const form = useForm({
         initialValues: {
             phone: '',
@@ -28,7 +30,7 @@ export default function LoginFormInput() {
         const res = await CheckPhone(phone);
         if (res) {
             console.log('true');
-            router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
+            router.push(`./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`);
         } else {
             notifications.show({
                 title: 'Error',
