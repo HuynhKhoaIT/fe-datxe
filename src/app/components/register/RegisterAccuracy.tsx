@@ -46,7 +46,7 @@ export function RegisterFormAccuracy() {
         let passwordConfirmation = password;
         console.log(password);
         try {
-            await CheckOtp(phone, pin);
+            await CheckOtp(phone, pin, 'register');
             notifications.show({
                 title: 'Thành công',
                 message: 'Xác thực thành công',

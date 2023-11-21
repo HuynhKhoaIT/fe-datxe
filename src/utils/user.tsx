@@ -121,14 +121,14 @@ export const CheckPhone = async (phone: string) => {
         throw new Error('Đăng nhập thất bại');
     }
 };
-export const CheckOtp = async (phone: string, otp: string) => {
+export const CheckOtp = async (phone: string, otp: string, action: string) => {
     try {
-        console.log('otp', otp);
         const res = await axios.post(
             `${CHECK_OTP}`,
             {
                 phone: phone,
                 otp: otp,
+                action: action,
             },
             {
                 headers: {
