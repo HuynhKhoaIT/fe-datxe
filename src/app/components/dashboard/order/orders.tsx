@@ -96,8 +96,8 @@ export default function Orders() {
                 <div className="col-lg-12">
                     <div className="user-profile-card">
                         <h4 className="user-profile-card-title">Danh sách đơn hàng</h4>
-                        <div className="table-responsive">
-                            <Table style={{ overflow: 'hidden' }}>
+                        <div className="table-responsive" style={{ overflowY: 'hidden' }}>
+                            <Table>
                                 <Table.Thead>
                                     <Table.Tr style={{ background: '#ddd' }}>
                                         <Table.Th>Tên chuyên gia</Table.Th>
