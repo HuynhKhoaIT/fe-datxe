@@ -24,8 +24,8 @@ export default function Cart() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const token = session?.user?.token;
-    const [time, setTime] = useState(dayjs().format('HH:mm'));
-    const [date, setDate] = useState(dayjs().format('DD-MM-YYYY'));
+    const [time, setTime] = useState(dayjs().format('HH:mm:ss'));
+    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [cars, setCars] = useState<any>([]);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [deleteRow, setDeleteRow] = useState<any>();
@@ -75,11 +75,12 @@ export default function Cart() {
     });
 
     function handleDateChange(date: any) {
-        const dateString = dayjs(date).format('DD-MM-YYYY');
+        console.log(date);
+        const dateString = dayjs(date).format('YYYY-MM-DD');
         setDate(dateString);
     }
     function handleTimeChange(date: any) {
-        const time = dayjs(date).format('hh:mm');
+        const time = dayjs(date).format('HH:mm:ss');
         setTime(time);
     }
 
@@ -147,11 +148,12 @@ export default function Cart() {
         }
     }, []);
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        // e.preventDefault();
+        e.preventDefault();
+
         try {
-            const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
+            const arrivalTime = date + ' ' + time;
+            const checkOut = await checkOutCart(arrivalTime, transformedProducts, token ?? '');
             localStorage.setItem('carData', JSON.stringify([]));
-            // openNotification();
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');
             if (existingCartData) {
