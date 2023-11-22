@@ -3,40 +3,41 @@ import React, { useState } from 'react';
 import { Box, Avatar, Grid, Input, Button, TextInput } from '@mantine/core';
 import { IconBrandFacebook, IconBrandGoogle } from '@tabler/icons-react';
 import IconGoogle from '../../assets/images/google.svg';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
-import { CheckPhone } from '@/utils/user';
+import { Checkbox } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-export default function LoginFormInput() {
+import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+import { CheckPhone } from '@/utils/user';
+interface FormInputs {
+    name: string;
+    phone: string;
+}
+export function RegisterFormInput() {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get('callbackUrl');
     const form = useForm({
         initialValues: {
+            name: '',
             phone: '',
         },
 
         validate: {
+            name: hasLength({ min: 2, max: 30 }, 'Name must be 2-30 characters long'),
             phone: hasLength({ min: 2, max: 11 }, 'phone must be 2-10 characters long'),
         },
     });
     const onSubmit = async () => {
-        // e.preventDefault();
-        console.log(form.values);
-        const { phone } = form.values;
-        console.log('phone', form?.values?.phone);
+        const { name, phone } = form.values;
         const res = await CheckPhone(phone);
-        if (res) {
-            console.log('true');
-            router.push(`./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`);
+        if (!res) {
+            router.push(`./dang-ky/xac-thuc?name=${name}&phone=${phone}`);
         } else {
             notifications.show({
                 title: 'Error',
-                message: 'Số điện thoại chưa được đăng ký vui lòng đăng ký!',
+                message: 'Số điện thoại đã được đăng ký!',
             });
-            form.setErrors({ phone: 'Số điện thoại chưa được đăng ký!' });
+            form.setErrors({ phone: 'Số điện thoại đã được đăng ký!' });
         }
     };
     return (
@@ -52,10 +53,19 @@ export default function LoginFormInput() {
             </div>
             <div className="login-title-2">
                 <h2>Xin chào,</h2>
-                <p>Đăng nhập hoặc tạo tài khoản</p>
+                <p>Đăng ký tài khoản</p>
             </div>
 
             <form className="login-form-input" onSubmit={form.onSubmit(onSubmit)}>
+                <TextInput
+                    withAsterisk
+                    style={{ borderBottom: '1px solid #ddd' }}
+                    variant="unstyled"
+                    placeholder="Họ và tên"
+                    // onChange={(e) => setfullName(e.target.value)}
+                    {...form.getInputProps('name')}
+                />
+                <br></br>
                 <TextInput
                     withAsterisk
                     style={{ borderBottom: '1px solid #ddd' }}
@@ -121,14 +131,19 @@ export default function LoginFormInput() {
                         </svg>
                     </Button>
                 </div>
-                <div className="login-footer">
+                {/* <div className="login-footer">
                     <p>
                         Bạn không có tài khoản? <Link href="dang-ky">Đăng Ký</Link>
                     </p>
+                </div> */}
+                <div className="other-login__rules d-flex">
+                    Bằng việc tiếp tục, bạn hãy chấp nhận{' '}
+                    <a href="/" style={{ margin: '0 4px' }}>
+                        {' '}
+                        Điều khoản sử dụng{' '}
+                    </a>
+                    <Checkbox defaultChecked labelPosition="left" color="var(--theme-color)" />
                 </div>
-                <p className="other-login__rules">
-                    Bằng việc tiếp tục, bạn hãy chấp nhận <a href="/"> Điều khoản sử dụng</a>
-                </p>
             </div>
         </div>
     );

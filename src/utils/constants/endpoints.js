@@ -11,4 +11,5 @@ export const GET_BRAND_ENDPOINT = `${process.env.apiGuest}/car-brands`;
 export const GET_PRODUCT_DETAIL = `${process.env.apiGuest}/products`;
 export const GET_CAR_ENDPOINT = `${process.env.apiUser}/cars`;
 export const CUSTOMER_CARE_ENDPOINT = `${process.env.apiUser}/customer-care`;
-
+export const CHECK_PHONE_NUMBER = `${process.env.apiGuest}/check-phone-number`;
+export const CHECK_OTP= `${process.env.apiGuest}/check-otp`;

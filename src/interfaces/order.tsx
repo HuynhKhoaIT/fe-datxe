@@ -11,4 +11,6 @@ export interface IOrder {
     garageName?: string;
     status?: string;
     carId?: string;
+    arrivalTime?: string;
+    garage?: any;
 }
