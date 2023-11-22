@@ -56,15 +56,6 @@ export default function LoginFormInput() {
             </div>
 
             <form className="login-form-input" onSubmit={form.onSubmit(onSubmit)}>
-                {/* <TextInput
-                    withAsterisk
-                    style={{ borderBottom: '1px solid #ddd' }}
-                    variant="unstyled"
-                    placeholder="Họ và tên"
-                    // onChange={(e) => setfullName(e.target.value)}
-                    {...form.getInputProps('name')}
-                />
-                <br></br> */}
                 <TextInput
                     withAsterisk
                     style={{ borderBottom: '1px solid #ddd' }}

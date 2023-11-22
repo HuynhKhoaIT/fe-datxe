@@ -28,7 +28,7 @@ export function RegisterFormInput() {
         },
     });
     const onSubmit = async () => {
-        const { phone } = form.values;
+        const { name, phone } = form.values;
         const res = await CheckPhone(phone);
         if (!res) {
             router.push(`./dang-ky/xac-thuc?name=${name}&phone=${phone}`);

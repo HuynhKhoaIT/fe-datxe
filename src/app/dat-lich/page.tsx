@@ -14,21 +14,31 @@ import { IEventCalendar } from '../domain/EventCalendar';
 import { useSession } from 'next-auth/react';
 import { getCustomerCare } from '@/utils/customerCare';
 import { ICustomerCare } from '@/interfaces/customerCare';
+import { getOrders } from '@/utils/order';
+import { IOrder } from '@/interfaces/order';
+// export async function getServerSideProps() {
+//     // Fetch data from external API
+//     const res = await fetch(`https://.../data`)
+//     const data = await res.json()
+
+//     // Pass data to the page via props
+//     return { props: { data } }
+//   }
 
 const sampleEvents: any = [
     {
-        _id: '1',
+        id: '1',
         title: 'Event 1',
-        start: '2023-11-13T10:00:00',
-        end: '2023-11-13T12:00:00',
-        user: 'user1',
+        start: '2023-11-13 10:00:00',
+        // end: '2023-11-13T12:00:00',
+        // user: 'user1',
     },
     {
-        _id: '2',
+        id: '2',
         title: 'Event 2',
         start: '2023-11-15T14:00:00',
         // end: '2023-11-15T16:00:00',
-        user: 'user2',
+        // user: 'user2',
     },
     // Add more events as needed
 ];
@@ -50,16 +60,18 @@ export default function CalendarScheduler() {
         }
     }, []);
 
-    const [data, setData] = useState<ICustomerCare[]>([]);
-    console.log(data);
+    const [dataOrder, setDataOrder] = useState<any>([]);
+    console.log(dataOrder);
+    console.log(sampleEvents);
     useEffect(() => {
         const fetchData = async () => {
             if (token) {
                 try {
-                    const result: any = await getCustomerCare(token);
+                    const result: any = await getOrders(token);
+                    console.log('result', result);
                     if (result) {
-                        const listAllEventsCalendar: ICustomerCare[] = mapArrayEventCalendar(result);
-                        setData(listAllEventsCalendar ?? []);
+                        const listAllEventsCalendar: IOrder[] = mapArrayEventCalendar(result);
+                        setDataOrder(sampleEvents ?? []);
                     }
                 } catch (error) {
                     console.error('Error fetching data:', error);
@@ -69,7 +81,6 @@ export default function CalendarScheduler() {
 
         fetchData();
     }, [token]);
-    console.log(data);
     const weekends = {
         weekendsVisible: true,
         currentEvents: [],
@@ -153,7 +164,7 @@ export default function CalendarScheduler() {
                 eventClick={handleEditEventSelectAndOpenModal}
                 // dateClick={handleDateClick}
                 eventChange={handleUpdateEventSelect}
-                initialEvents={sampleEvents}
+                initialEvents={dataOrder ?? sampleEvents}
                 longPressDelay={1000}
                 eventLongPressDelay={1000}
                 selectLongPressDelay={1000}
