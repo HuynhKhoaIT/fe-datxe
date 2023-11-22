@@ -9,12 +9,13 @@ import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@ma
 import { CheckOtp, CheckPhone, login } from '@/utils/user';
 import { notifications } from '@mantine/notifications';
 import { signIn } from 'next-auth/react';
+import { preventDefault } from '@fullcalendar/core/internal';
 
 export function LoginFormAccuracy() {
     const [countdown, setCountdown] = useState<number>(59);
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl');
-
+    const [loading, setLoading] = useState(false);
     const phone = searchParams.get('phone');
     const form = useForm({
         initialValues: {
@@ -38,7 +39,8 @@ export function LoginFormAccuracy() {
             clearInterval(timer);
         };
     }, [countdown]);
-    const onSubmit = async () => {
+    const onLogin = async () => {
+        setLoading(true);
         const { phone, pin } = form.values;
         let password = phone + '@@' + phone.slice(-3);
         try {
@@ -53,17 +55,20 @@ export function LoginFormAccuracy() {
                     title: 'Thành công',
                     message: 'Đăng nhập thành công',
                 });
+                setLoading(false);
             } catch (error) {
                 notifications.show({
                     title: 'Thất bại',
                     message: 'Đăng nhập thất bại',
                 });
+                setLoading(false);
             }
         } catch (error) {
             notifications.show({
                 title: 'Error',
                 message: 'Xác thực thất bại',
             });
+            setLoading(false);
             form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
         }
     };
@@ -89,17 +94,19 @@ export function LoginFormAccuracy() {
                 </p>
             </div>
 
-            <form className="login-accuracy-input" onSubmit={form.onSubmit(onSubmit)}>
-                <PinInput variant="unstyled" placeholder="0" length={6} size="md" />
+            <form className="login-accuracy-input" onSubmit={form.onSubmit(onLogin)}>
+                <PinInput variant="unstyled" placeholder="○" length={6} size="md" {...form.getInputProps('pin')} />
                 <Button
+                    loading={loading}
                     className="login-btn"
+                    type="submit"
                     variant="filled"
                     color="var(--theme-color)"
                     size="md"
                     radius="md"
                     fullWidth
                 >
-                    Tiếp tục
+                    Đăng nhập
                 </Button>
             </form>
             <div className="other-accuracy">

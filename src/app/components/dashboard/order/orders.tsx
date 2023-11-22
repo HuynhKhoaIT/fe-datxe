@@ -17,6 +17,7 @@ export default function Orders() {
     const token = session?.user?.token;
     const [ordersData, setOrdersData] = useState<IOrder[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    console.log(session);
     useEffect(() => {
         const fetchData = async () => {
             try {
