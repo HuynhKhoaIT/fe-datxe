@@ -14,7 +14,7 @@ import { getCar, getCars } from '@/utils/car';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faChevronRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-
+import { notifications } from '@mantine/notifications';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import CartItemRow from './CartItemRow';
 
@@ -153,17 +153,25 @@ export default function Cart() {
         try {
             const arrivalTime = date + ' ' + time;
             const checkOut = await checkOutCart(arrivalTime, transformedProducts, token ?? '');
-            localStorage.setItem('carData', JSON.stringify([]));
+            // localStorage.setItem('carData', JSON.stringify([]));
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');
             if (existingCartData) {
                 const parsedCartData = JSON.parse(existingCartData);
                 setCartData(parsedCartData);
             }
+            notifications.show({
+                title: 'Thành công',
+                message: 'Đặt hàng thành công',
+            });
             router.push('/dashboard/order/' + checkOut.id);
         } catch (error: any) {
             console.log('Order fail');
             console.error('Order error:', error.message);
+            notifications.show({
+                title: 'Thất bại',
+                message: 'Đặt hàng thất bại! Vui lòng thử lại.',
+            });
         }
     };
 
