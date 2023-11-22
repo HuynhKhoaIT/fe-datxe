@@ -14,6 +14,8 @@ export function RegisterFormAccuracy() {
     const searchParams = useSearchParams();
     const name = searchParams.get('name');
     const phone = searchParams.get('phone');
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         let timer: NodeJS.Timeout;
 
@@ -39,8 +41,8 @@ export function RegisterFormAccuracy() {
         },
     });
     const onSubmit = async () => {
-        console.log('123');
-        console.log(form.values);
+        setLoading(true);
+
         const { name, phone, pin } = form.values;
         let password = phone + '@@' + phone.slice(-3);
         let passwordConfirmation = password;
@@ -57,17 +59,21 @@ export function RegisterFormAccuracy() {
                     title: 'Thành công',
                     message: 'Đăng ký thành công',
                 });
+                setLoading(false);
             } catch (error) {
                 notifications.show({
                     title: 'Thất bại',
                     message: 'Đăng ký thất bại',
                 });
+                setLoading(false);
             }
         } catch (error) {
             notifications.show({
                 title: 'Error',
                 message: 'Xác thực thất bại',
             });
+            setLoading(false);
+
             form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
         }
 
@@ -105,6 +111,7 @@ export function RegisterFormAccuracy() {
                     {...form.getInputProps('pin')}
                 />
                 <Button
+                    loading={loading}
                     className="login-btn"
                     variant="filled"
                     color="var(--theme-color)"
@@ -113,7 +120,7 @@ export function RegisterFormAccuracy() {
                     type="submit"
                     fullWidth
                 >
-                    Tiếp tục
+                    Đăng ký
                 </Button>
             </form>
             <div className="other-accuracy">
