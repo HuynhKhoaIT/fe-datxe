@@ -36,6 +36,7 @@ export default function Cart() {
     const [carOptions, setCaroptions] = useState<any>();
 
     const [carDefault, setCarDefault] = useState<any>({});
+    console.log(carDefault);
     const [carSelect, setCarSelect] = useState<any>();
     const selectCar = async (value: any) => {
         try {
@@ -166,6 +167,8 @@ export default function Cart() {
                     title: 'Error',
                     message: 'Vui lòng thêm sản phẩm vào giỏ hàng',
                 });
+                setLoading(false);
+
                 return;
             }
             const arrivalTime = date + ' ' + time;
