@@ -83,7 +83,7 @@ export const checkOutCart = async (arrivalTime: string, cartData: object, token:
                 headers: { Authorization: `Bearer ${token}` },
             };
             const data = {
-                arrival_Time: arrivalTime,
+                arrival_time: arrivalTime,
                 items: cartData,
             };
             const res = await axios.post(`${GET_ORDER_ENDPOINT}`, data, config);
