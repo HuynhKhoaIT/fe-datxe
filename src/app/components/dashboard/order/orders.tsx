@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 // import { Table, Spin, Modal } from 'antd';
-import { Table, Checkbox, Radio, Loader, Center, Pagination, Modal, Group } from '@mantine/core';
+import { Table, Checkbox, Radio, Loader, Center, Pagination, Modal, Badge } from '@mantine/core';
 import { getGarage } from '@/utils/garage';
 import { getOrders, showStatus } from '@/utils/order';
 import { IOrder } from '@/interfaces/order';
@@ -84,7 +84,23 @@ export default function Orders() {
                         {/* <span>{record?.time}</span> */}
                     </div>
                 </Table.Td>
-                <Table.Td>{record.status}</Table.Td>
+                <Table.Td>
+                    {record?.status == 1 && (
+                        <Badge variant="light" color="yellow">
+                            Tiếp nhận
+                        </Badge>
+                    )}
+                    {record?.status == 2 && (
+                        <Badge variant="light" color="blue">
+                            Báo giá
+                        </Badge>
+                    )}
+                    {record?.status == 7 && (
+                        <Badge variant="light" color="green">
+                            Hoàn thành
+                        </Badge>
+                    )}
+                </Table.Td>
                 <Table.Td>{record.total}</Table.Td>
             </Table.Tr>
         ));

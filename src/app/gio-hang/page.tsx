@@ -24,6 +24,7 @@ export default function Cart() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const token = session?.user?.token;
+    const [loading, setLoading] = useState(false);
     const [time, setTime] = useState(dayjs().format('HH:mm:ss'));
     const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [cars, setCars] = useState<any>([]);
@@ -57,7 +58,7 @@ export default function Cart() {
 
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
-        deleteItem(deleteRow);
+        deleteItem(deleteRow?.product?.id);
     };
     const handleDeleteCancel = () => {
         setIsModalDeleteOpen(false);
@@ -115,10 +116,15 @@ export default function Cart() {
     };
     // giảm số lượng sản phẩm
     const decrementQuantity = (productId: number) => {
+        console.log(cartData);
         const updateCartData = cartData.map((item) => {
-            if (item.product.id === productId && item.quantity > 1) {
+            if (item.quantity === 1) {
+                console.log('delete');
+                deleteItem(productId);
+            } else if (item.product.id === productId && item.quantity > 1) {
                 item.quantity -= 1;
             }
+
             return item;
         });
         localStorage.setItem('cartData', JSON.stringify(updateCartData));
@@ -135,7 +141,10 @@ export default function Cart() {
     };
     // Xóa sản phẩm ra khỏi giỏ hàng
     const deleteItem = (productId: number) => {
-        const updatedCartData = cartData.filter((item) => item.product.id !== productId);
+        console.log('ele', productId);
+        console.log('cartData', cartData[0].product?.id !== productId);
+
+        const updatedCartData = cartData.filter((item) => item?.product?.id !== productId);
         localStorage.setItem('cartData', JSON.stringify(updatedCartData));
         setCartData(updatedCartData);
     };
@@ -150,10 +159,17 @@ export default function Cart() {
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setLoading(true);
         try {
+            if (cartData.length == 0) {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Vui lòng thêm sản phẩm vào giỏ hàng',
+                });
+                return;
+            }
             const arrivalTime = date + ' ' + time;
-            const checkOut = await checkOutCart(arrivalTime, transformedProducts, token ?? '');
-            // localStorage.setItem('carData', JSON.stringify([]));
+            await checkOutCart(arrivalTime, transformedProducts, token ?? '');
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');
             if (existingCartData) {
@@ -164,7 +180,8 @@ export default function Cart() {
                 title: 'Thành công',
                 message: 'Đặt hàng thành công',
             });
-            router.push('/dashboard/order/' + checkOut.id);
+            setLoading(false);
+            // router.push('/dashboard/order/' + checkOut.id);
         } catch (error: any) {
             console.log('Order fail');
             console.error('Order error:', error.message);
@@ -172,6 +189,7 @@ export default function Cart() {
                 title: 'Thất bại',
                 message: 'Đặt hàng thất bại! Vui lòng thử lại.',
             });
+            setLoading(false);
         }
     };
 
@@ -359,7 +377,8 @@ export default function Cart() {
                                                 className="theme-btn"
                                                 variant="filled"
                                                 type="submit"
-                                                // style={{ background: 'var(--theme-color)' }}
+                                                loading={loading}
+                                                style={{ background: 'var(--theme-color)' }}
                                             >
                                                 Đặt lịch
                                             </Button>
@@ -371,7 +390,7 @@ export default function Cart() {
                     </div>
                 </div>
             </form>
-            <Modal title="Delete" opened={isModalDeleteOpen} onClose={handleDeleteCancel}>
+            <Modal title="Delete" opened={isModalDeleteOpen} onClose={handleDeleteCancel} lockScroll={false}>
                 <div>Bạn có muốn xoá không?</div>
                 <Group justify="end" style={{ marginTop: 10 }}>
                     <Button
