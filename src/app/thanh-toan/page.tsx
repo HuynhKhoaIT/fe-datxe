@@ -25,7 +25,7 @@ export default function Checkout() {
                     price: 11111,
                 },
             ];
-            const checkOut = await checkOutCart(date, time, cartData, token ?? '');
+            // const checkOut = await checkOutCart(date, time, cartData, token ?? '');
             console.log('Login successful'); // Handle success (e.g., redirect to a different page)
         } catch (error: any) {
             console.log('Login fail');

@@ -23,14 +23,14 @@ export default function LoginFormInput() {
         },
     });
     const onSubmit = async () => {
-        // e.preventDefault();
-        console.log(form.values);
         const { phone } = form.values;
-        console.log('phone', form?.values?.phone);
         const res = await CheckPhone(phone);
         if (res) {
-            console.log('true');
-            router.push(`./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`);
+            if (callbackUrl) {
+                router.push(`./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`);
+            } else {
+                router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
+            }
         } else {
             notifications.show({
                 title: 'Error',

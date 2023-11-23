@@ -14,7 +14,7 @@ import { getCar, getCars } from '@/utils/car';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faChevronRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-
+import { notifications } from '@mantine/notifications';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import CartItemRow from './CartItemRow';
 
@@ -24,8 +24,9 @@ export default function Cart() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const token = session?.user?.token;
-    const [time, setTime] = useState(dayjs().format('HH:mm'));
-    const [date, setDate] = useState(dayjs().format('DD-MM-YYYY'));
+    const [loading, setLoading] = useState(false);
+    const [time, setTime] = useState(dayjs().format('HH:mm:ss'));
+    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [cars, setCars] = useState<any>([]);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [deleteRow, setDeleteRow] = useState<any>();
@@ -57,7 +58,7 @@ export default function Cart() {
 
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
-        deleteItem(deleteRow);
+        deleteItem(deleteRow?.product?.id);
     };
     const handleDeleteCancel = () => {
         setIsModalDeleteOpen(false);
@@ -75,11 +76,12 @@ export default function Cart() {
     });
 
     function handleDateChange(date: any) {
-        const dateString = dayjs(date).format('DD-MM-YYYY');
+        console.log(date);
+        const dateString = dayjs(date).format('YYYY-MM-DD');
         setDate(dateString);
     }
     function handleTimeChange(date: any) {
-        const time = dayjs(date).format('hh:mm');
+        const time = dayjs(date).format('HH:mm:ss');
         setTime(time);
     }
 
@@ -114,10 +116,15 @@ export default function Cart() {
     };
     // giảm số lượng sản phẩm
     const decrementQuantity = (productId: number) => {
+        console.log(cartData);
         const updateCartData = cartData.map((item) => {
-            if (item.product.id === productId && item.quantity > 1) {
+            if (item.quantity === 1) {
+                console.log('delete');
+                deleteItem(productId);
+            } else if (item.product.id === productId && item.quantity > 1) {
                 item.quantity -= 1;
             }
+
             return item;
         });
         localStorage.setItem('cartData', JSON.stringify(updateCartData));
@@ -134,7 +141,10 @@ export default function Cart() {
     };
     // Xóa sản phẩm ra khỏi giỏ hàng
     const deleteItem = (productId: number) => {
-        const updatedCartData = cartData.filter((item) => item.product.id !== productId);
+        console.log('ele', productId);
+        console.log('cartData', cartData[0].product?.id !== productId);
+
+        const updatedCartData = cartData.filter((item) => item?.product?.id !== productId);
         localStorage.setItem('cartData', JSON.stringify(updatedCartData));
         setCartData(updatedCartData);
     };
@@ -147,21 +157,39 @@ export default function Cart() {
         }
     }, []);
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        // e.preventDefault();
+        e.preventDefault();
+
+        setLoading(true);
         try {
-            const checkOut = await checkOutCart(date, time, transformedProducts, token ?? '');
-            localStorage.setItem('carData', JSON.stringify([]));
-            // openNotification();
+            if (cartData.length == 0) {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Vui lòng thêm sản phẩm vào giỏ hàng',
+                });
+                return;
+            }
+            const arrivalTime = date + ' ' + time;
+            await checkOutCart(arrivalTime, transformedProducts, token ?? '');
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');
             if (existingCartData) {
                 const parsedCartData = JSON.parse(existingCartData);
                 setCartData(parsedCartData);
             }
-            router.push('/dashboard/order/' + checkOut.id);
+            notifications.show({
+                title: 'Thành công',
+                message: 'Đặt hàng thành công',
+            });
+            setLoading(false);
+            // router.push('/dashboard/order/' + checkOut.id);
         } catch (error: any) {
             console.log('Order fail');
             console.error('Order error:', error.message);
+            notifications.show({
+                title: 'Thất bại',
+                message: 'Đặt hàng thất bại! Vui lòng thử lại.',
+            });
+            setLoading(false);
         }
     };
 
@@ -349,7 +377,8 @@ export default function Cart() {
                                                 className="theme-btn"
                                                 variant="filled"
                                                 type="submit"
-                                                // style={{ background: 'var(--theme-color)' }}
+                                                loading={loading}
+                                                style={{ background: 'var(--theme-color)' }}
                                             >
                                                 Đặt lịch
                                             </Button>
@@ -361,7 +390,7 @@ export default function Cart() {
                     </div>
                 </div>
             </form>
-            <Modal title="Delete" opened={isModalDeleteOpen} onClose={handleDeleteCancel}>
+            <Modal title="Delete" opened={isModalDeleteOpen} onClose={handleDeleteCancel} lockScroll={false}>
                 <div>Bạn có muốn xoá không?</div>
                 <Group justify="end" style={{ marginTop: 10 }}>
                     <Button

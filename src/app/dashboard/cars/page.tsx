@@ -200,7 +200,7 @@ export default function CarsPage() {
                     </div>
                 </div>
                 <div className="col-lg-12">
-                    <div className="table-responsive">
+                    <div className="table-responsive" style={{ overflowY: 'hidden' }}>
                         <Table>
                             <Table.Thead>
                                 <Table.Tr>
