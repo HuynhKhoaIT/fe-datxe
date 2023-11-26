@@ -1,7 +1,6 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchData from '../components/search/SearchData';
-import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
+import { IconBulb } from '@tabler/icons-react';
 import { useSearchParams } from 'next/navigation';
 
 export default function Search() {
@@ -12,7 +11,7 @@ export default function Search() {
         <div>
             <p style={{ marginBottom: 24 }}>
                 <i style={{ marginRight: 5 }}>
-                    <FontAwesomeIcon icon={faLightbulb} />
+                    <IconBulb size={20} />
                 </i>
                 Kết quả tìm kiếm cho từ khoá
                 <span style={{ color: 'var(--theme-color)', fontWeight: 600, marginLeft: 5 }}>{search}</span>

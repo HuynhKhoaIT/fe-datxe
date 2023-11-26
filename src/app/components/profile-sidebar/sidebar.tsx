@@ -6,8 +6,7 @@ import { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import { IUser } from '@/interfaces/user';
 import { usePathname } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { IconLogout } from '@tabler/icons-react';
 const ProfileSidebar = () => {
     const pathname = usePathname();
     const parts = pathname.split('/');
@@ -69,7 +68,7 @@ const ProfileSidebar = () => {
                 </li>
                 <li>
                     <Link style={{ display: 'flex', alignItems: 'center' }} href={'/'} onClick={() => signOut()}>
-                        <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                        <IconLogout size={20} />
                         <p style={{ marginLeft: '8px' }}>Đăng Xuất</p>
                     </Link>
                 </li>
