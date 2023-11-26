@@ -10,7 +10,7 @@ export interface IGarage {
     latitude?: BigInteger;
     longitude?: BigInteger;
     distance?: BigInteger;
-    rating?: BigInteger;
+    rating?: number;
     description?: string;
     createdAt?: string;
 }

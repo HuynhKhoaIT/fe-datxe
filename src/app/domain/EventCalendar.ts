@@ -20,7 +20,7 @@ export const mapArrayEventCalendar = (listEventsCalendar: any) => {
     const listEventsCalendarFormated = listEventsCalendar?.map((eventCalendar: IOrder, index: number) =>
         mapEventCalendar(eventCalendar, index),
     );
-    const firstFiveEvents = listEventsCalendarFormated?.slice(0, 5);
+    const firstFiveEvents = listEventsCalendarFormated;
 
     return firstFiveEvents;
 };

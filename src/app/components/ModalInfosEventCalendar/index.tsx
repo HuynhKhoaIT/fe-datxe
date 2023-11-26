@@ -15,7 +15,7 @@ import { getCar, getCars } from '@/utils/car';
 import { useRef } from 'react';
 import { ActionIcon, rem } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
-export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefault, ...props }: any) => {
+export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefault }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const searchParams = useSearchParams();
@@ -179,142 +179,131 @@ export const ModalInfosEventCalendar = ({ handleClose, open, eventInfos, carDefa
             onClose={handleClose}
             trapFocus={false}
             lockScroll={false}
-            {...props}
         >
-            <Box maw={500} mx="auto">
-                <form onSubmit={handleSubmit}>
-                    <Textarea
-                        placeholder="Yêu cầu khách hàng"
-                        withAsterisk
-                        {...form.getInputProps('customer_request')}
-                    />
-                    <Radio.Group withAsterisk defaultValue="1" {...form.getInputProps('priority_level')}>
-                        <Group mt="xs">
-                            <Radio value="1" label="Cao" />
-                            <Radio value="2" label="Trung bình" />
-                            <Radio value="3" label="Thấp" />
-                        </Group>
-                    </Radio.Group>
-
-                    <Grid gutter={10} mt="md">
-                        <Grid.Col span={6}>
-                            <TextInput placeholder="Name" readOnly withAsterisk {...form.getInputProps('name')} />
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                            <TextInput
-                                placeholder="Phone"
-                                readOnly
-                                defaultValue={customerCreate?.user?.phone}
-                                withAsterisk
-                                {...form.getInputProps('phone')}
-                            />
-                        </Grid.Col>
-                    </Grid>
-                    <Grid mt="md" justify="center">
-                        <Grid.Col span={6} className="input-plate">
-                            <Select
-                                checkIconPosition="right"
-                                placeholder="Biển số"
-                                defaultValue={carDefault?.id}
-                                data={carOptions}
-                                size="lg"
-                                {...form.getInputProps('car_id')}
-                                // onChange={(value) => {
-                                //     selectCar(value);
-                                // }}
-                            ></Select>
-                        </Grid.Col>
-                    </Grid>
-                    <Grid gutter={10} mt="md">
-                        <Grid.Col span={4}>
-                            <TextInput
-                                placeholder="Hãng xe"
-                                readOnly
-                                leftSection={<IconPlus size={22} color="blue" />}
-                                withAsterisk
-                                value={carSelect?.brandCarName?.name || carDefault?.brandCarName?.name}
-                            />
-                        </Grid.Col>
-                        <Grid.Col span={4}>
-                            <TextInput
-                                placeholder="Dòng xe"
-                                readOnly
-                                leftSection={<IconPlus size={22} color="blue" />}
-                                value={carSelect?.modelCarName?.name || carDefault?.modelCarName?.name}
-                                withAsterisk
-                            />
-                        </Grid.Col>
-                        <Grid.Col span={4}>
-                            <TextInput
-                                placeholder="Năm sản xuất"
-                                leftSection={<IconPlus size={22} color="blue" />}
-                                withAsterisk
-                                {...form.getInputProps('nsx')}
-                            />
-                        </Grid.Col>
-                    </Grid>
-                    <Grid gutter={10} mt="md">
-                        <Grid.Col span={6}>
-                            <Select
-                                placeholder="Danh mục đặt lịch"
-                                withAsterisk
-                                data={categoryOptions}
-                                leftSection={<IconPlus size={22} color="blue" />}
-                                {...form.getInputProps('category')}
-                            />
-                        </Grid.Col>
-                        <Grid.Col span={6} className="input-date">
-                            <DateTimePicker
-                                valueFormat="DD/MM/YYYY hh:mm A"
-                                placeholder="Thời gian đặt lịch"
-                                defaultValue={eventInfos?.start}
-                                leftSection={<IconPlus size={22} color="blue" />}
-                                rightSection={pickerControl}
-                                {...form.getInputProps('arrival_time')}
-                            />
-                        </Grid.Col>
-                    </Grid>
-                    {garageId.length > 0 && (
-                        <Grid gutter={10} mt="md">
-                            <Grid.Col span={6}>
-                                <Select
-                                    placeholder="Chọn CVDV"
-                                    leftSection={<IconPlus size={22} color="blue" />}
-                                    withAsterisk
-                                    data={advisorOptions}
-                                    {...form.getInputProps('service_advisor')}
-                                />
-                            </Grid.Col>
-                            <Grid.Col span={6}>
-                                <Select
-                                    placeholder="Chuyên gia"
-                                    data={garageOptions}
-                                    withAsterisk
-                                    {...form.getInputProps('garageId')}
-                                />
-                            </Grid.Col>
-                        </Grid>
-                    )}
-
-                    <Grid mt="md">
-                        <Grid.Col span={12}>
-                            <Textarea
-                                placeholder="Ghi chú cho CVDV"
-                                withAsterisk
-                                {...form.getInputProps('description')}
-                            />
-                        </Grid.Col>
-                    </Grid>
-                    <Group grow preventGrowOverflow={false} wrap="nowrap" mt="md" className="footer-modal-schedule">
-                        <div>
-                            Đăng ký <a href="/">DatXe</a> để quản lý lịch sử xe, hoặc <a href="/">đăng nhập</a>
-                        </div>
-                        <Button w={100} loading={loading} bg={'var(--theme-color)'} type="submit" key="submit">
-                            Đặt lịch
-                        </Button>
+            <form onSubmit={handleSubmit}>
+                <Textarea placeholder="Yêu cầu khách hàng" withAsterisk {...form.getInputProps('customer_request')} />
+                <Radio.Group withAsterisk defaultValue="1" {...form.getInputProps('priority_level')}>
+                    <Group mt="xs">
+                        <Radio value="1" label="Cao" />
+                        <Radio value="2" label="Trung bình" />
+                        <Radio value="3" label="Thấp" />
                     </Group>
-                </form>
-            </Box>
+                </Radio.Group>
+
+                <Grid gutter={10} mt="md">
+                    <Grid.Col span={6}>
+                        <TextInput placeholder="Name" readOnly withAsterisk {...form.getInputProps('name')} />
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <TextInput
+                            placeholder="Phone"
+                            readOnly
+                            defaultValue={customerCreate?.user?.phone}
+                            withAsterisk
+                            {...form.getInputProps('phone')}
+                        />
+                    </Grid.Col>
+                </Grid>
+                <Grid mt="md" justify="center">
+                    <Grid.Col span={6} className="input-plate">
+                        <Select
+                            checkIconPosition="right"
+                            placeholder="Biển số"
+                            defaultValue={carDefault?.id}
+                            data={carOptions}
+                            size="lg"
+                            {...form.getInputProps('car_id')}
+                            // onChange={(value) => {
+                            //     selectCar(value);
+                            // }}
+                        ></Select>
+                    </Grid.Col>
+                </Grid>
+                <Grid gutter={10} mt="md">
+                    <Grid.Col span={4}>
+                        <TextInput
+                            placeholder="Hãng xe"
+                            readOnly
+                            leftSection={<IconPlus size={22} color="blue" />}
+                            withAsterisk
+                            value={carSelect?.brandCarName?.name || carDefault?.brandCarName?.name}
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <TextInput
+                            placeholder="Dòng xe"
+                            readOnly
+                            leftSection={<IconPlus size={22} color="blue" />}
+                            value={carSelect?.modelCarName?.name || carDefault?.modelCarName?.name}
+                            withAsterisk
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <TextInput
+                            placeholder="Năm sản xuất"
+                            leftSection={<IconPlus size={22} color="blue" />}
+                            withAsterisk
+                            {...form.getInputProps('nsx')}
+                        />
+                    </Grid.Col>
+                </Grid>
+                <Grid gutter={10} mt="md">
+                    <Grid.Col span={6}>
+                        <Select
+                            placeholder="Danh mục đặt lịch"
+                            withAsterisk
+                            data={categoryOptions}
+                            leftSection={<IconPlus size={22} color="blue" />}
+                            {...form.getInputProps('category')}
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={6} className="input-date">
+                        <DateTimePicker
+                            valueFormat="DD/MM/YYYY hh:mm A"
+                            placeholder="Thời gian đặt lịch"
+                            defaultValue={eventInfos?.start}
+                            leftSection={<IconPlus size={22} color="blue" />}
+                            rightSection={pickerControl}
+                            {...form.getInputProps('arrival_time')}
+                        />
+                    </Grid.Col>
+                </Grid>
+                {garageId.length > 0 && (
+                    <Grid gutter={10} mt="md">
+                        <Grid.Col span={6}>
+                            <Select
+                                placeholder="Chọn CVDV"
+                                leftSection={<IconPlus size={22} color="blue" />}
+                                withAsterisk
+                                data={advisorOptions}
+                                {...form.getInputProps('service_advisor')}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                            <Select
+                                placeholder="Chuyên gia"
+                                data={garageOptions}
+                                withAsterisk
+                                {...form.getInputProps('garageId')}
+                            />
+                        </Grid.Col>
+                    </Grid>
+                )}
+
+                <Grid mt="md">
+                    <Grid.Col span={12}>
+                        <Textarea placeholder="Ghi chú cho CVDV" withAsterisk {...form.getInputProps('description')} />
+                    </Grid.Col>
+                </Grid>
+                <Group grow preventGrowOverflow={false} wrap="nowrap" mt="md" className="footer-modal-schedule">
+                    <div>
+                        Đăng ký <a href="/">DatXe</a> để quản lý lịch sử xe, hoặc <a href="/">đăng nhập</a>
+                    </div>
+                    <Button w={100} loading={loading} bg={'var(--theme-color)'} type="submit" key="submit">
+                        Đặt lịch
+                    </Button>
+                </Group>
+            </form>
         </Modal>
     );
 };

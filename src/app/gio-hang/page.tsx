@@ -119,8 +119,9 @@ export default function Cart() {
     const decrementQuantity = (productId: number) => {
         console.log(cartData);
         const updateCartData = cartData.map((item) => {
+            console.log(item.quantity);
             if (item.quantity === 1) {
-                console.log('delete');
+                console.log('xoá sản phẩm');
                 deleteItem(productId);
             } else if (item.product.id === productId && item.quantity > 1) {
                 item.quantity -= 1;

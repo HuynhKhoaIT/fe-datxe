@@ -31,14 +31,14 @@ export default function RootLayout({ children }: IProps) {
     return (
         <html lang="vi">
             <body className={inter.className}>
-                <Provider>
-                    <MantineProvider>
+                <MantineProvider>
+                    <Provider>
                         <Notifications position="top-right" />
                         <Header />
                         <Suspense fallback={<LoadingPage />}>{children}</Suspense>
                         <MyFooter />
-                    </MantineProvider>
-                </Provider>
+                    </Provider>
+                </MantineProvider>
             </body>
         </html>
     );
