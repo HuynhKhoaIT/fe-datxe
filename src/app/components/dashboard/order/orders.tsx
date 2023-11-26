@@ -70,8 +70,8 @@ export default function Orders() {
 
         return paginatedData.map((record: any) => (
             <Table.Tr key={record.id} className="row-table" onClick={() => handleRowClick(record)}>
-                <Table.Td>{record.garage.name}</Table.Td>
-                <Table.Td>{record.car.licensePlates}</Table.Td>
+                <Table.Td>{record?.garage?.name}</Table.Td>
+                <Table.Td>{record.car?.licensePlates}</Table.Td>
                 <Table.Td>{record.code}</Table.Td>
                 <Table.Td>
                     <div>

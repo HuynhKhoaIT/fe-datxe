@@ -40,36 +40,54 @@ export function LoginFormAccuracy() {
         };
     }, [countdown]);
     const onLogin = async () => {
-        setLoading(true);
         const { phone, pin } = form.values;
         let password = phone + '@@' + phone.slice(-3);
+        // try {
+        //     setLoading(true);
+        //     await CheckOtp(phone, pin, 'login');
+        //     try {
+        //         signIn('credentials', {
+        //             phone: phone,
+        //             password: password,
+        //             callbackUrl: callbackUrl || '/dashboard',
+        //         });
+        //         notifications.show({
+        //             title: 'Thành công',
+        //             message: 'Đăng nhập thành công',
+        //         });
+        //         setLoading(false);
+        //     } catch (error) {
+        //         notifications.show({
+        //             title: 'Thất bại',
+        //             message: 'Đăng nhập thất bại',
+        //         });
+        //         setLoading(false);
+        //     }
+        // } catch (error) {
+        //     notifications.show({
+        //         title: 'Error',
+        //         message: 'Xác thực thất bại',
+        //     });
+        //     setLoading(false);
+        //     form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
+        // }
         try {
-            await CheckOtp(phone, pin, 'login');
-            try {
-                signIn('credentials', {
-                    phone: phone,
-                    password: password,
-                    callbackUrl: callbackUrl || '/dashboard',
-                });
-                notifications.show({
-                    title: 'Thành công',
-                    message: 'Đăng nhập thành công',
-                });
-                setLoading(false);
-            } catch (error) {
-                notifications.show({
-                    title: 'Thất bại',
-                    message: 'Đăng nhập thất bại',
-                });
-                setLoading(false);
-            }
-        } catch (error) {
+            signIn('credentials', {
+                phone: phone,
+                password: password,
+                callbackUrl: callbackUrl || '/dashboard',
+            });
             notifications.show({
-                title: 'Error',
-                message: 'Xác thực thất bại',
+                title: 'Thành công',
+                message: 'Đăng nhập thành công',
             });
             setLoading(false);
-            form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
+        } catch (error) {
+            notifications.show({
+                title: 'Thất bại',
+                message: 'Đăng nhập thất bại',
+            });
+            setLoading(false);
         }
     };
     return (

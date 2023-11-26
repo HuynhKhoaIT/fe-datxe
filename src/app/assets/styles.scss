@@ -5650,7 +5650,7 @@ body.rtl-mode .price-wrapper {
 
 .user-profile-card {
     background: var(--color-white);
-    padding: 15px 20px;
+
     border-radius: 10px;
     margin-bottom: 25px;
     box-shadow: var(--box-shadow);
@@ -5672,8 +5672,9 @@ body.rtl-mode .price-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    padding: 15px 0;
+    background-color: var(--theme-color);
+    border-radius: 12px 12px 0 0;
     border-bottom: 1px solid var(--border-info-color);
 }
 
@@ -5681,6 +5682,7 @@ body.rtl-mode .price-wrapper {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+    margin: 0 20px;
 }
 
 .user-profile-card-header-right {
@@ -7140,4 +7142,17 @@ body.rtl-mode .price-wrapper {
 .input-plate input,
 .input-date button {
     background-color: var(--theme-color);
+}
+
+// profile
+.card-body {
+    padding: 15px 20px;
+}
+.card-info {
+    padding: 8px 16px;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 12px;
+    color: var(--color-white);
+    background-color: #555;
 }

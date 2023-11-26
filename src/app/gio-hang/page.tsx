@@ -36,6 +36,7 @@ export default function Cart() {
     const [carOptions, setCaroptions] = useState<any>();
 
     const [carDefault, setCarDefault] = useState<any>({});
+    console.log(carDefault);
     const [carSelect, setCarSelect] = useState<any>();
     const selectCar = async (value: any) => {
         try {
@@ -118,8 +119,9 @@ export default function Cart() {
     const decrementQuantity = (productId: number) => {
         console.log(cartData);
         const updateCartData = cartData.map((item) => {
+            console.log(item.quantity);
             if (item.quantity === 1) {
-                console.log('delete');
+                console.log('xoá sản phẩm');
                 deleteItem(productId);
             } else if (item.product.id === productId && item.quantity > 1) {
                 item.quantity -= 1;
@@ -166,6 +168,8 @@ export default function Cart() {
                     title: 'Error',
                     message: 'Vui lòng thêm sản phẩm vào giỏ hàng',
                 });
+                setLoading(false);
+
                 return;
             }
             const arrivalTime = date + ' ' + time;

@@ -74,16 +74,20 @@ export function showStatus(status: any) {
 }
 
 export const checkOutCart = async (arrivalTime: string, cartData: object, token: string) => {
+    console.log(arrivalTime);
+    console.log(cartData);
+    console.log('token', token);
     try {
         if (token) {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const data = {
-                arrivalTime: arrivalTime,
+                arrival_time: arrivalTime,
                 items: cartData,
             };
             const res = await axios.post(`${GET_ORDER_ENDPOINT}`, data, config);
+            console.log(res);
             return res.data.data;
         }
     } catch (error) {
