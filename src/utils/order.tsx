@@ -40,6 +40,16 @@ export const getOrder = async (orderId = 0) => {
         return res.data.data as Promise<IOrder>;
     }
 };
+export const getSchedule = async () => {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.token) {
+        const config = {
+            headers: { Authorization: `Bearer ${session?.user?.token}` },
+        };
+        const res = await axios.get(`${GET_ORDER_ENDPOINT}`, config);
+        return res.data.data as Promise<IOrder>;
+    }
+};
 
 export const getOrderDetail = async (orderId = 0) => {
     const session = await getServerSession(authOptions);
