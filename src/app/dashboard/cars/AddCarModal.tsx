@@ -10,9 +10,7 @@ import { DateInput } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
 import { IBrand } from '@/interfaces/brand';
 import { useRouter } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faPlus } from '@fortawesome/free-solid-svg-icons';
-
+import { IconPlus, IconBan } from '@tabler/icons-react';
 const AddCarModal = ({ open, onCancel, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
@@ -253,7 +251,7 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
                             key="cancel"
                             onClick={handleCancel}
                             color="red"
-                            leftSection={<FontAwesomeIcon icon={faBan} />}
+                            leftSection={<IconBan size={16} />}
                         >
                             Huỷ bỏ
                         </Button>
@@ -262,7 +260,7 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
                             key="submit"
                             type="submit"
                             variant="filled"
-                            leftSection={<FontAwesomeIcon icon={faPlus} />}
+                            leftSection={<IconPlus size={16} />}
                         >
                             Thêm xe
                         </Button>

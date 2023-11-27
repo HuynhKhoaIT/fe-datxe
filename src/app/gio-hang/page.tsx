@@ -1,6 +1,5 @@
 'use client';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
-import CartItem from '../components/cart/cartItem';
 import { checkOutCart } from '@/utils/order';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
@@ -11,11 +10,8 @@ import { DateInput, TimeInput } from '@mantine/dates';
 import { ActionIcon, rem } from '@mantine/core';
 import { ICar } from '@/interfaces/car';
 import { getCar, getCars } from '@/utils/car';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faChevronRight, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { notifications } from '@mantine/notifications';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { IconClock12, IconTrash, IconBan, IconChevronRight, IconMinus, IconPlus } from '@tabler/icons-react';
 import CartItemRow from './CartItemRow';
 
 export default function Cart() {
@@ -199,7 +195,7 @@ export default function Cart() {
 
     const pickerControl = (
         <ActionIcon variant="subtle" color="gray" onClick={() => ref.current?.showPicker()}>
-            <FontAwesomeIcon icon={faClock} />
+            <IconClock12 size={16} />
         </ActionIcon>
     );
 
@@ -402,7 +398,7 @@ export default function Cart() {
                         key="cancel"
                         onClick={handleDeleteCancel}
                         color="red"
-                        leftSection={<FontAwesomeIcon icon={faBan} />}
+                        leftSection={<IconBan size={16} />}
                     >
                         Huỷ bỏ
                     </Button>
@@ -410,7 +406,7 @@ export default function Cart() {
                         style={{ marginLeft: '12px' }}
                         onClick={handleDeleteOk}
                         variant="filled"
-                        leftSection={<FontAwesomeIcon icon={faChevronRight} />}
+                        leftSection={<IconChevronRight size={16} />}
                     >
                         Tiếp tục
                     </Button>

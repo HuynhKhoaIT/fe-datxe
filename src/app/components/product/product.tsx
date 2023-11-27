@@ -3,8 +3,6 @@ import { IProduct } from '@/interfaces/product';
 import { getProductsHot } from '@/utils/product';
 import { useEffect, useState } from 'react';
 import { ProductItem } from './productItem';
-import { Button } from 'antd';
-
 export default function Product({ initialProductData }: { initialProductData: IProduct[] }) {
     const [productData, setProductData] = useState<IProduct[]>([]);
     const [limit, setLimit] = useState<number>(8);

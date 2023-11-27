@@ -1,8 +1,13 @@
 'use client';
-import { faCartShopping, faPhoneVolume } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import {
+    IconBrandFacebook,
+    IconBrandInstagram,
+    IconBrandLinkedin,
+    IconBrandTwitter,
+    IconPhoneCall,
+    IconShoppingCart,
+} from '@tabler/icons-react';
 import React, { useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import SigninButton from './login-button';
 import SearchForm from '../search/Search';
@@ -34,7 +39,7 @@ const Header = () => {
                                     </li>
                                     <li>
                                         <Link href="tel:+21236547898">
-                                            <FontAwesomeIcon icon={faPhoneVolume} /> +2 123 654 7898
+                                            <IconPhoneCall size={18} /> +2 123 654 7898
                                         </Link>
                                     </li>
                                 </ul>
@@ -44,16 +49,16 @@ const Header = () => {
                             <SigninButton />
                             <div className="header-top-social">
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faFacebook} />
+                                    <IconBrandFacebook size={18} />
                                 </Link>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faXTwitter} />
+                                    <IconBrandTwitter size={18} />
                                 </Link>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faInstagram} />
+                                    <IconBrandInstagram size={18} />
                                 </Link>
                                 <Link href="#">
-                                    <FontAwesomeIcon icon={faLinkedin} />
+                                    <IconBrandLinkedin size={18} />
                                 </Link>
                             </div>
                         </div>
@@ -76,7 +81,7 @@ const Header = () => {
                             <div className="nav-right">
                                 <div className="cart-btn">
                                     <Link href="/gio-hang" className="nav-right-link">
-                                        <FontAwesomeIcon icon={faCartShopping} />
+                                        <IconShoppingCart />
                                         <span>0</span>
                                     </Link>
                                 </div>
