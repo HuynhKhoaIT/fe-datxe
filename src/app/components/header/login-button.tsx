@@ -47,7 +47,7 @@ const SigninButton = () => {
                                 <Menu.Divider />
                                 <Menu.Item
                                     component="a"
-                                    href={'/'}
+                                    // href={'/'}
                                     onClick={() => signOut()}
                                     color="red"
                                     leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
