@@ -1,8 +1,14 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { ICategory } from '@/interfaces/category';
 import { CategoryItem } from './categoryItem';
 import { GetStaticPathsResult, GetStaticPropsResult } from 'next';
 import { getCategories } from '@/utils/category';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 interface CategoryProps {
     categoies: ICategory[];
@@ -18,10 +24,22 @@ export default function Categories({
     console.log('initialCategoryData', initialCategoryData);
     return (
         <div className="row d-flex flex-row flex-nowrap">
-            {/* <CategoryItem category={category} key={index} /> */}
-            {initialCategoryData?.map((category: ICategory, index) => (
-                <CategoryItem category={category} key={index} garageId={garageId} />
-            ))}
+            <Swiper
+                slidesPerView={6}
+                spaceBetween={10}
+                pagination={{
+                    clickable: true,
+                }}
+                navigation={true}
+                modules={[Pagination, Navigation]}
+                className="mySwiper"
+            >
+                {initialCategoryData?.map((category: ICategory, index) => (
+                    <SwiperSlide>
+                        <CategoryItem category={category} key={index} garageId={garageId} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
         </div>
     );
 }

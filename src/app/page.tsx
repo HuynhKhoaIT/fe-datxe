@@ -36,7 +36,7 @@ export default async function Home() {
                             </div>
                         </div>
                     </div>
-                    <Categories initialCategoryData={initialCategoryData} />
+                    <Categories initialCategoryData={initialCategoryData} garageId={0} />
                 </div>
             </div>
 

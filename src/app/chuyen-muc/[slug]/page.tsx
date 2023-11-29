@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { getCategories } from '@/utils/category';
 import { LoadingComponent } from '@/app/components/loading';
 import LayoutListProduct from '@/app/components/layout/LayoutListProduct';
+import { SideBar } from '@/app/components/shop-sidebar/sideBar';
+import { Breadcrumbs, Anchor } from '@mantine/core';
+
 const CategoryItem = async ({
     params,
     searchParams,
@@ -28,11 +31,23 @@ const CategoryItem = async ({
             return;
         }
     });
+    const handleClick = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+    };
 
+    const items = [
+        { title: 'Trang chủ', href: '/', color: 'blue' },
+        { title: 'Chuyên mục', href: './', color: 'blue' },
+        { title: `${nameCate}`, href: '', color: 'black' },
+    ].map((item, index) => (
+        <Link href={item.href} key={index}>
+            <span style={{ color: item.color }}>{item.title}</span>
+        </Link>
+    ));
     return (
         <LayoutListProduct>
             <div>
-                <Breadcrumb
+                {/* <Breadcrumb
                     separator=">"
                     style={{ padding: '16px 0', position: 'absolute', top: '0', left: 12 }}
                     items={[
@@ -54,8 +69,21 @@ const CategoryItem = async ({
                             title: nameCate,
                         },
                     ]}
-                />
-                <Pagination data={productData} />
+                /> */}
+                <Breadcrumbs style={{ padding: '16px 20px', position: 'absolute' }}>{items}</Breadcrumbs>
+
+                <div className="row  pt-60 pb-60 ">
+                    <div className="col-lg-3">
+                        <SideBar />
+                    </div>
+                    <div className="col-lg-9">
+                        <Suspense fallback={<LoadingComponent />}>
+                            <Pagination data={productData} />
+
+                            {/* <ProductsListPage /> */}
+                        </Suspense>
+                    </div>
+                </div>
             </div>
         </LayoutListProduct>
     );

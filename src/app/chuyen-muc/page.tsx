@@ -7,31 +7,29 @@ import { Sort } from '../components/shop-sort/sort';
 import Link from 'next/link';
 import { Breadcrumb } from 'antd';
 import LayoutListProduct from '../components/layout/LayoutListProduct';
+import { Breadcrumbs, Anchor } from '@mantine/core';
+
 export default async function Category() {
     const category_list = await getCategories();
+    const items = [
+        { title: 'Trang chủ', href: '/', color: 'blue' },
+        { title: 'Chuyên mục', href: '', color: 'black' },
+    ].map((item, index) => (
+        <Link href={item.href} key={index}>
+            <span style={{ color: item.color }}>{item.title}</span>
+        </Link>
+    ));
     return (
         <LayoutListProduct>
             <div>
-                <Breadcrumb
-                    separator=">"
-                    style={{ padding: '16px 0', position: 'absolute', top: '0', left: 12 }}
-                    items={[
-                        {
-                            title: (
-                                <Link href="/" style={{ color: '#1890ff' }}>
-                                    Trang chủ
-                                </Link>
-                            ),
-                        },
-                        {
-                            title: 'Chuyên mục',
-                        },
-                    ]}
-                />
-                <div className="shop-item-wrapper">
+                <Breadcrumbs style={{ padding: '16px 20px', position: 'absolute' }}>{items}</Breadcrumbs>
+
+                <div className="shop-item-wrapper pt-60 pb-60">
                     <div className="row">
                         {category_list?.map((category: ICategory, index) => (
-                            <CategoryItem key={index} category={category} />
+                            <div className="col-md-2">
+                                <CategoryItem key={index} category={category} garageId={0} />
+                            </div>
                         ))}
                     </div>
                 </div>

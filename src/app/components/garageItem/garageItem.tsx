@@ -11,7 +11,7 @@ const GarageItem = ({ garage }: { garage: IGarage }) => {
                 </div>
                 <div className="dealer-content">
                     <h4>
-                        <Link href={`/chuyen-gia/${garage.code}?garageId=${garage.id}`}>
+                        <Link href={`/chuyen-gia/${garage.code}`}>
                             <h4 className="shop-item-title">{garage.name}</h4>
                         </Link>
                     </h4>
