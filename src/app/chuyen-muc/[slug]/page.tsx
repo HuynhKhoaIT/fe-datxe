@@ -18,6 +18,7 @@ const CategoryItem = async ({
     if (garageId) {
         urlProducts += `&garage_id=${garageId}`;
     }
+    console.log('urlProducts', urlProducts);
     const productData = await getProductsSearch(urlProducts);
     const categories = await getCategories();
     let nameCate;

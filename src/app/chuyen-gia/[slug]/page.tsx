@@ -25,6 +25,7 @@ import dayjs from 'dayjs';
 export default function Home({ params }: { params: { slug: string } }) {
     const searchParams = useSearchParams();
     const garageId: string = searchParams.get('garageId') || '';
+    console.log(params);
     const [initialCategoryData, setInitialCategoryData] = useState<ICategory[]>([]);
     const [garageData, setGarageData] = useState<IGarage>();
     const [initialProductData, setInitialProductData] = useState<IProduct[]>([]);
@@ -178,7 +179,7 @@ export default function Home({ params }: { params: { slug: string } }) {
                         </div>
                     </div>
                     <div className="list-category ">
-                        <Categories initialCategoryData={initialCategoryData} />
+                        <Categories initialCategoryData={initialCategoryData} garageId={garageData?.id} />
                     </div>
                 </div>
             </div>
