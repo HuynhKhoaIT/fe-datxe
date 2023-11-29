@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 // import './styles.css';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import {
     IconBuildingStore,
     IconStar,
@@ -181,7 +181,9 @@ export default function Home({ params }: { params: { slug: string } }) {
                         </div>
                     </div>
                     <div className="list-category ">
-                        <Categories initialCategoryData={initialCategoryData} garageId={garageData?.id} />
+                        <Suspense fallback="loading...">
+                            <Categories initialCategoryData={initialCategoryData} garageId={garageData?.id} />
+                        </Suspense>
                     </div>
                 </div>
             </div>
