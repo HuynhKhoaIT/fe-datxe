@@ -24,7 +24,7 @@ export const getCategories = async () => {
 
 export const getCategoriesByGar = async (garageId: string) => {
     try {
-        const res = await axios.get(`${GET_CATEGORY_ENDPOINT}?Garage_id=${garageId}`);
+        const res = await axios.get(`${GET_CATEGORY_ENDPOINT}?garage_id=${garageId}`);
         return res.data.data as Promise<ICategory[]>;
     } catch (error) {
         console.error(error);

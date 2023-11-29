@@ -6,12 +6,24 @@ import Link from 'next/link';
 import { getCategories } from '@/utils/category';
 import { LoadingComponent } from '@/app/components/loading';
 import LayoutListProduct from '@/app/components/layout/LayoutListProduct';
-const CategoryItem = async ({ params }: { params: { slug: number } }) => {
-    const productData = await getProductsSearch(`cat_id=${params.slug}`);
+const CategoryItem = async ({
+    params,
+    searchParams,
+}: {
+    params: { slug: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+}) => {
+    const garageId = searchParams['garage_id'] ?? '0'; // default value is "0"
+    let urlProducts = `cat_id=${params.slug}`;
+    if (garageId) {
+        urlProducts += `&garage_id=${garageId}`;
+    }
+    console.log('urlProducts', urlProducts);
+    const productData = await getProductsSearch(urlProducts);
     const categories = await getCategories();
     let nameCate;
     categories.forEach((cat) => {
-        if (cat.id == params.slug) {
+        if (cat.id == parseInt(params.slug)) {
             nameCate = cat?.name;
             return;
         }

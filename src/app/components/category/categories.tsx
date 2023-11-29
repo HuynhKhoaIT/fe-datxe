@@ -8,10 +8,20 @@ interface CategoryProps {
     categoies: ICategory[];
 }
 
-export default function Categories({ initialCategoryData }: { initialCategoryData: ICategory[] }) {
+export default function Categories({
+    initialCategoryData,
+    garageId,
+}: {
+    initialCategoryData: ICategory[];
+    garageId: any;
+}) {
+    console.log('initialCategoryData', initialCategoryData);
     return (
         <div className="row d-flex flex-row flex-nowrap">
-            {initialCategoryData?.map((category: ICategory, index) => <CategoryItem category={category} key={index} />)}
+            {/* <CategoryItem category={category} key={index} /> */}
+            {initialCategoryData?.map((category: ICategory, index) => (
+                <CategoryItem category={category} key={index} garageId={garageId} />
+            ))}
         </div>
     );
 }

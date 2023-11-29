@@ -1,5 +1,6 @@
 export const GET_ORDER_ENDPOINT = `${process.env.apiUser}/orders`;
 export const GET_ORDER_DETAIL_ENDPOINT = `${process.env.apiUser}/order-detail`;
+export const GET_PRODUCTS_ENDPOINT = `${process.env.apiGuest}/products`;
 export const GET_PRODUCT_ENDPOINT = `${process.env.apiGuest}/products?is_product=1`;
 export const GET_SERVICE_ENDPOINT = `${process.env.apiGuest}/products?is_product=0`;
 export const GET_MY_ACCOUNT_ENDPOINT = `${process.env.apiUser}/my-account`;
@@ -12,4 +13,4 @@ export const GET_PRODUCT_DETAIL = `${process.env.apiGuest}/products`;
 export const GET_CAR_ENDPOINT = `${process.env.apiUser}/cars`;
 export const CUSTOMER_CARE_ENDPOINT = `${process.env.apiUser}/customer-care`;
 export const CHECK_PHONE_NUMBER = `${process.env.apiGuest}/check-phone-number`;
-export const CHECK_OTP= `${process.env.apiGuest}/check-otp`;
+export const CHECK_OTP = `${process.env.apiGuest}/check-otp`;

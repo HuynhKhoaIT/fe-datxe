@@ -92,7 +92,7 @@ const ProductItemMini = ({ key, product }: { key: number; product: IProduct }) =
                             <IconHeart />
                         </Link>
                         {isCategory ? (
-                            <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
+                            <Link href={`/san-pham/${pathParm?.slug}/${product.id}`}>
                                 <IconEye />
                             </Link>
                         ) : (
@@ -114,7 +114,7 @@ const ProductItemMini = ({ key, product }: { key: number; product: IProduct }) =
                         <IconStarFilled color="var(--theme-color)" size={18} />
                     </div>
                     {isCategory ? (
-                        <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
+                        <Link href={`/san-pham/${pathParm?.slug}/${product.id}`}>
                             <h4 className="shop-item-title">{product.name}</h4>
                         </Link>
                     ) : (
