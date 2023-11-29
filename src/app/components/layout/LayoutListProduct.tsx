@@ -12,10 +12,10 @@ export default function LayoutListProduct({ children }: IProps) {
             <div className="shop-area bg ">
                 <div className="container">
                     <div className="row pt-60 pb-60 position-relative">
-                        <div className="col-lg-3">
+                        {/* <div className="col-lg-3">
                             <SideBarCategory />
-                        </div>
-                        <div className="col-lg-9">{children}</div>
+                        </div> */}
+                        <div className="col-lg-12">{children}</div>
                     </div>
                 </div>
             </div>

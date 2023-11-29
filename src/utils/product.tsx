@@ -5,7 +5,12 @@ import axios from 'axios';
 /**
  * Internal Dependencies.
  */
-import { GET_PRODUCT_ENDPOINT, GET_SERVICE_ENDPOINT, GET_PRODUCT_DETAIL } from './constants/endpoints';
+import {
+    GET_PRODUCT_ENDPOINT,
+    GET_PRODUCTS_ENDPOINT,
+    GET_SERVICE_ENDPOINT,
+    GET_PRODUCT_DETAIL,
+} from './constants/endpoints';
 import { IProduct } from '@/interfaces/product';
 /**
  * Get getOrders.
@@ -56,8 +61,11 @@ export const getProductsRelated = async (categoryId: string = '', garageId: stri
 };
 
 export const getProductByGar = async (garageId: string, limit = 8) => {
+    console.log('getProductByGar');
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?Garage_id=${garageId}&limit=${limit}`);
+        let url = `${GET_PRODUCTS_ENDPOINT}?garage_id=${garageId}&limit=${limit}`;
+        console.log(url);
+        const res = await axios.get(url);
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
