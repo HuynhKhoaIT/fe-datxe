@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import styles from './SearchItem.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import Image from '../Images';
 

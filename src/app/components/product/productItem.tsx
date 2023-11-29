@@ -1,12 +1,10 @@
 // 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faEye, faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
+import { IconShoppingCart, IconEye, IconHeart, IconStarFilled, IconCheck } from '@tabler/icons-react';
 import Link from 'next/link';
 import { IProduct } from '@/interfaces/product';
 import { useParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
-import { CheckOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { Modal, notification } from 'antd';
 
@@ -22,7 +20,7 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
         api.info({
             message: `Thành công`,
             description: 'Sản phẩm đã được thêm vào giỏ hàng',
-            icon: <CheckOutlined style={{ color: 'green' }} />,
+            icon: <IconCheck color="green" />,
         });
     };
 
@@ -90,29 +88,29 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
                     )}
                     <div className="shop-item-meta">
                         <Link href="#">
-                            <FontAwesomeIcon icon={faHeart} />
+                            <IconHeart />
                         </Link>
                         {isCategory ? (
                             <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
-                                <FontAwesomeIcon icon={faEye} />
+                                <IconEye />
                             </Link>
                         ) : (
                             <Link href={`/san-pham/${product.id}`}>
-                                <FontAwesomeIcon icon={faEye} />
+                                <IconEye />
                             </Link>
                         )}
                         <p onClick={addProductToLocalStorage}>
-                            <FontAwesomeIcon icon={faCartShopping} />
+                            <IconShoppingCart />
                         </p>
                     </div>
                 </div>
                 <div className="shop-item-info">
                     <div className="shop-item-rate">
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
+                        <IconStarFilled color="var(--theme-color)" size={18} />
+                        <IconStarFilled color="var(--theme-color)" size={18} />
+                        <IconStarFilled color="var(--theme-color)" size={18} />
+                        <IconStarFilled color="var(--theme-color)" size={18} />
+                        <IconStarFilled color="var(--theme-color)" size={18} />
                     </div>
                     {isCategory ? (
                         <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>

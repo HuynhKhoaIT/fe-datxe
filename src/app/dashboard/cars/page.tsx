@@ -4,9 +4,6 @@ import { getCars, deleteCar } from '@/utils/car';
 import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import CarItem from './CarItem';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faBan, faChevronRight, faEye, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { IconChevronRight, IconEye, IconPencil, IconTrash, IconBan } from '@tabler/icons-react';
 import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
@@ -187,20 +184,20 @@ export default function CarsPage() {
 
     return (
         <div className="user-profile-wrapper">
-            <div className="user-profile-card profile-ad" style={{ padding: '40px' }}>
+            <div className="user-profile-card profile-ad">
                 <div className="user-profile-card-header">
                     <h4 className="user-profile-card-title">Xe của tôi</h4>
                     <div className="user-profile-card-header-right">
                         <div className="user-profile-search">
                             <div className="form-group"></div>
                         </div>
-                        <Button className="theme-btn" onClick={() => showAddModal()}>
+                        <Button className="theme-btn btn-add-car" onClick={() => showAddModal()}>
                             Thêm xe
                         </Button>
                     </div>
                 </div>
                 <div className="col-lg-12">
-                    <div className="table-responsive">
+                    <div className="table-responsive" style={{ overflowY: 'hidden' }}>
                         <Table>
                             <Table.Thead>
                                 <Table.Tr>

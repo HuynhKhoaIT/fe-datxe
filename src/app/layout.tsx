@@ -9,16 +9,10 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 import { Notifications } from '@mantine/notifications';
-
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
 import Provider from './Provider';
 import { ReactNode, Suspense } from 'react';
 import { LoadingPage } from './components/loading';
 import { MantineProvider } from '@mantine/core';
-
-config.autoAddCss = false;
-
 const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
     title: 'Datxe',
@@ -31,14 +25,14 @@ export default function RootLayout({ children }: IProps) {
     return (
         <html lang="vi">
             <body className={inter.className}>
-                <Provider>
-                    <MantineProvider>
+                <MantineProvider>
+                    <Provider>
                         <Notifications position="top-right" />
                         <Header />
                         <Suspense fallback={<LoadingPage />}>{children}</Suspense>
                         <MyFooter />
-                    </MantineProvider>
-                </Provider>
+                    </Provider>
+                </MantineProvider>
             </body>
         </html>
     );

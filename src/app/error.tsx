@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import { Button, Result } from 'antd';
 import Link from 'next/link';
 import error from './assets/images/404.png';
 export default function ErrorPage() {

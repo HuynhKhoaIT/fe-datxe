@@ -1,6 +1,4 @@
 // 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { IGarage } from '@/interfaces/garage';
 const GarageItem = ({ garage }: { garage: IGarage }) => {

@@ -40,6 +40,16 @@ export const getOrder = async (orderId = 0) => {
         return res.data.data as Promise<IOrder>;
     }
 };
+export const getSchedule = async () => {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.token) {
+        const config = {
+            headers: { Authorization: `Bearer ${session?.user?.token}` },
+        };
+        const res = await axios.get(`${GET_ORDER_ENDPOINT}`, config);
+        return res.data.data as Promise<IOrder>;
+    }
+};
 
 export const getOrderDetail = async (orderId = 0) => {
     const session = await getServerSession(authOptions);
@@ -73,18 +83,21 @@ export function showStatus(status: any) {
     return s;
 }
 
-export const checkOutCart = async (date: string, time: string, cartData: object, token: string) => {
+export const checkOutCart = async (arrivalTime: string, cartData: object, token: string) => {
+    console.log(arrivalTime);
+    console.log(cartData);
+    console.log('token', token);
     try {
         if (token) {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const data = {
-                time: time,
-                date: date,
+                arrival_time: arrivalTime,
                 items: cartData,
             };
             const res = await axios.post(`${GET_ORDER_ENDPOINT}`, data, config);
+            console.log(res);
             return res.data.data;
         }
     } catch (error) {

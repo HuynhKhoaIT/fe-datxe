@@ -1,10 +1,10 @@
 'use client';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { ProfileSidebar } from '@/app/components/profile-sidebar/sidebar';
-// import { Button, Col, Form, Input, Row, Select } from 'antd';
-import { Button, Grid, TextInput, Select, PasswordInput, Group } from '@mantine/core';
+import { Button, Grid, TextInput, Select, PasswordInput, Group, Radio } from '@mantine/core';
 import { getServerSession } from 'next-auth/next';
 import { useSession } from 'next-auth/react';
+import { DateInput } from '@mantine/dates';
 
 import React, { useState } from 'react';
 export default function ProfilePage() {
@@ -23,9 +23,30 @@ export default function ProfilePage() {
     };
     return (
         <div className="user-profile-wrapper">
-            <div className="user-profile-card profile-ad" style={{ padding: '40px' }}>
+            <div className="user-profile-card profile-ad">
                 <div className="user-profile-card-header">
                     <h4 className="user-profile-card-title">Thông tin hồ sơ</h4>
+                </div>
+                <div className="card-body">
+                    <div className="card-info">
+                        <div className="card-info__code">
+                            <span>Mã khách hàng:</span> <span>1232322</span>
+                        </div>
+                        <div className="card-info__point">
+                            <span>Điểm hiện có:</span> <span>140000</span>
+                        </div>
+                        <div className="card-info__customer">
+                            <span>Thành viên:</span> <span>bạc</span>
+                        </div>
+                        <div className="card-code">
+                            <span>Mã thẻ:</span> <span>Xe747484848848</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="user-profile-card profile-ad">
+                <div className="user-profile-card-header">
+                    <h4 className="user-profile-card-title">Cập nhật thông tin</h4>
                 </div>
                 <div className="card-body">
                     <form name="userProfileForm" onSubmit={onFinish}>
@@ -38,6 +59,20 @@ export default function ProfilePage() {
                                     onChange={() => setDisabledBtn(false)}
                                 />
                             </Grid.Col>
+                            <Grid.Col span={{ base: 3, md: 3, lg: 3 }}>
+                                <DateInput label="Ngày sinh" valueFormat="DD/MM/YYYY" placeholder="Ngày sinh" />
+                            </Grid.Col>
+                            <Grid.Col span={{ base: 3, md: 3, lg: 3 }}>
+                                <Select
+                                    label="Giới tính"
+                                    placeholder="Giới tính"
+                                    data={['Name', 'Nữ', 'Khác']}
+                                    defaultValue="Nam"
+                                    allowDeselect={false}
+                                />
+                            </Grid.Col>
+                        </Grid>
+                        <Grid gutter={16}>
                             <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
                                 <TextInput
                                     label="Email"
@@ -57,18 +92,18 @@ export default function ProfilePage() {
                         </Grid>
                         <Grid gutter={16}>
                             <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
-                                <Select
-                                    label="Tỉnh thành"
-                                    placeholder="Choose..."
-                                    onChange={() => setDisabledBtn(false)}
-                                ></Select>
-                            </Grid.Col>
-                            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
                                 <TextInput
                                     label="Địa chỉ"
                                     placeholder="1234 Main St"
                                     onChange={() => setDisabledBtn(false)}
                                 />
+                            </Grid.Col>
+                            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+                                <Select
+                                    label="Tỉnh thành"
+                                    placeholder="Choose..."
+                                    onChange={() => setDisabledBtn(false)}
+                                ></Select>
                             </Grid.Col>
                         </Grid>
                         <Grid gutter={16}>

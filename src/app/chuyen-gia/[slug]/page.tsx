@@ -10,7 +10,16 @@ import { getProductByGar } from '@/utils/product';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { IconBuildingStore, IconStar, IconCar, IconUsers, IconUserCheck, IconPhoneCall } from '@tabler/icons-react';
+import {
+    IconBuildingStore,
+    IconStar,
+    IconCar,
+    IconUsers,
+    IconUserCheck,
+    IconPhoneCall,
+    IconEye,
+    IconPhoneCheck,
+} from '@tabler/icons-react';
 import dayjs from 'dayjs';
 
 export default function Home({ params }: { params: { slug: string } }) {
@@ -103,7 +112,15 @@ export default function Home({ params }: { params: { slug: string } }) {
                                             <IconStar size={16} />{' '}
                                         </span>
                                         Đánh giá:{' '}
-                                        <span style={{ color: 'var(--theme-color)' }}>{garageData?.rating}/5</span>
+                                        <span style={{ color: 'var(--theme-color)' }}>
+                                            {garageData?.rating && <span>{garageData?.rating.toFixed(1)}/5</span>}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            <IconEye size={16} />{' '}
+                                        </span>
+                                        Đã xem: <span style={{ color: 'var(--theme-color)' }}>1k</span>
                                     </li>
                                 </ul>
                             </div>
@@ -130,6 +147,12 @@ export default function Home({ params }: { params: { slug: string } }) {
                                             <IconUsers size={16} />{' '}
                                         </span>
                                         Đang theo dõi: <span style={{ color: 'var(--theme-color)' }}>1k</span>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            <IconPhoneCheck size={16} />{' '}
+                                        </span>
+                                        Đã liên hệ: <span style={{ color: 'var(--theme-color)' }}>1k</span>
                                     </li>
                                 </ul>
                             </div>

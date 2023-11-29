@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import { Table, Avatar, Button } from '@mantine/core'; // Replace with the actual import statements for your UI library
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Make sure to import the necessary icons
 import { IconPlus, IconMinus, IconTrash } from '@tabler/icons-react';
+
 const CartItemRow = ({ record, decrementQuantity, incrementQuantity, handleOpenModalDelete }: any) => {
     return (
         <Table.Tr key={record.product.id}>
