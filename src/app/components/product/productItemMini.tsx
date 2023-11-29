@@ -78,7 +78,7 @@ const ProductItemMini = ({ key, product }: { key: number; product: IProduct }) =
             <div className="shop-item">
                 <div className="shop-item-img-200">
                     <span className="shop-item-sale">Sale</span>
-                    {isCategory ? (
+                    {/* {isCategory ? (
                         <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
                             <img src={product.thumbnail} alt="" />
                         </Link>
@@ -86,12 +86,15 @@ const ProductItemMini = ({ key, product }: { key: number; product: IProduct }) =
                         <Link href={`/san-pham/${product.id}`}>
                             <img src={product.thumbnail} alt="" />
                         </Link>
-                    )}
+                    )} */}
+                    <Link href={`/san-pham/${product.id}`}>
+                        <img src={product.thumbnail} alt="" />
+                    </Link>
                     <div className="shop-item-meta">
                         <Link href="#">
                             <IconHeart />
                         </Link>
-                        {isCategory ? (
+                        {/* {isCategory ? (
                             <Link href={`/san-pham/${pathParm?.slug}/${product.id}`}>
                                 <IconEye />
                             </Link>
@@ -99,7 +102,10 @@ const ProductItemMini = ({ key, product }: { key: number; product: IProduct }) =
                             <Link href={`/san-pham/${product.id}`}>
                                 <IconEye />
                             </Link>
-                        )}
+                        )} */}
+                        <Link href={`/san-pham/${product.id}`}>
+                            <IconEye />
+                        </Link>
                         <p onClick={addProductToLocalStorage}>
                             <IconShoppingCart />
                         </p>
@@ -113,7 +119,7 @@ const ProductItemMini = ({ key, product }: { key: number; product: IProduct }) =
                         <IconStarFilled color="var(--theme-color)" size={18} />
                         <IconStarFilled color="var(--theme-color)" size={18} />
                     </div>
-                    {isCategory ? (
+                    {/* {isCategory ? (
                         <Link href={`/san-pham/${pathParm?.slug}/${product.id}`}>
                             <h4 className="shop-item-title">{product.name}</h4>
                         </Link>
@@ -121,7 +127,10 @@ const ProductItemMini = ({ key, product }: { key: number; product: IProduct }) =
                         <Link href={`/san-pham/${product.id}`}>
                             <h4 className="shop-item-title">{product.name}</h4>
                         </Link>
-                    )}
+                    )} */}
+                    <Link href={`/san-pham/${product.id}`}>
+                        <h4 className="shop-item-title">{product.name}</h4>
+                    </Link>
                     <div className="shop-item-price">
                         <del>{product.price?.toLocaleString()}đ</del> {product.price?.toLocaleString()}đ
                     </div>
