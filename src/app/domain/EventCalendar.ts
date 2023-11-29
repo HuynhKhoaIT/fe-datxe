@@ -1,6 +1,7 @@
 import { ICustomerCare } from '@/interfaces/customerCare';
 import { IOrder } from '@/interfaces/order';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 export interface IEventCalendar {
     _id: string;
@@ -13,7 +14,7 @@ export interface IEventCalendar {
 export const mapEventCalendar = (eventCalendar: IOrder, index: number) => ({
     _id: index + 1,
     title: eventCalendar?.garage?.name,
-    start: dayjs(eventCalendar?.arrivalTime).format('YYYY-MM-DD HH:mm:ss'),
+    start: dayjs.utc(eventCalendar?.arrivalTime).format('YYYY-MM-DD HH:mm:ss'),
 });
 
 export const mapArrayEventCalendar = (listEventsCalendar: any) => {

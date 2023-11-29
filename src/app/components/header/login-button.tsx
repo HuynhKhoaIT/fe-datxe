@@ -10,6 +10,9 @@ const cx = classNames.bind(styles);
 
 const SigninButton = () => {
     const { data: session } = useSession();
+    const handleItemClick = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+    };
     return (
         <>
             <div className={cx('account', 'd-flex align-items-center')}>
