@@ -31,7 +31,7 @@ export default async function Category() {
                 <div className="shop-item-wrapper">
                     <div className="row">
                         {category_list?.map((category: ICategory, index) => (
-                            <CategoryItem key={index} category={category} />
+                            <CategoryItem key={index} category={category} garageId={0} />
                         ))}
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { ICategory } from '@/interfaces/category';
 const CategoryItem = ({ key, category, garageId }: { key: number; category: ICategory; garageId: any }) => {
     return (
         <div className="col-6 col-md-4 col-lg-2" key={key}>
-            {garageId ? (
+            {garageId > 0 ? (
                 <Link
                     href={`/chuyen-muc/${category.id}?garage_id=${garageId}`}
                     className="category-item wow fadeInUp"
