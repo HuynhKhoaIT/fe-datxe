@@ -9,6 +9,8 @@ import { getGarage } from '@/utils/garage';
 import { getProductByGar } from '@/utils/product';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+
+// import './styles.css';
 import { useEffect, useState } from 'react';
 import {
     IconBuildingStore,

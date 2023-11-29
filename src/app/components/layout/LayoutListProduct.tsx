@@ -11,7 +11,7 @@ export default function LayoutListProduct({ children }: IProps) {
         <main className="main">
             <div className="shop-area bg ">
                 <div className="container">
-                    <div className="row pt-60 pb-60 position-relative">
+                    <div className="row  position-relative">
                         {/* <div className="col-lg-3">
                             <SideBarCategory />
                         </div> */}
