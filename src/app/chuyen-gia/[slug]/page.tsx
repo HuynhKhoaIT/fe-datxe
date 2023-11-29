@@ -28,22 +28,17 @@ export default function Home({ params }: { params: { slug: string } }) {
     const [initialCategoryData, setInitialCategoryData] = useState<ICategory[]>([]);
     const [garageData, setGarageData] = useState<IGarage>();
     const [initialProductData, setInitialProductData] = useState<IProduct[]>([]);
-    console.log(garageData);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (garageId?.length > 0) {
-                    const categoryData = await getCategoriesByGar(garageId);
+                const garage = await getGarage(params.slug).then(async (data) => {
+                    const productData = await getProductByGar(data.data.id?.toString(), 8);
+                    setInitialProductData(productData);
+                    const categoryData = await getCategoriesByGar(data.data.id?.toString());
                     setInitialCategoryData(categoryData);
-                } else {
-                    const categoryData = await getCategoriesByGar(params.slug);
-                    setInitialCategoryData(categoryData);
-                }
-
-                const garage = await getGarage(params.slug);
-                setGarageData(garage?.data);
-                const productData = await getProductByGar(garageId, 8);
-                setInitialProductData(productData);
+                    return data.data;
+                });
+                setGarageData(garage);
             } catch (error) {
                 // Xử lý lỗi khi có lỗi trong quá trình gọi API
                 console.error('Error fetching data:', error);
