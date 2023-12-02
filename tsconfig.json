@@ -30,7 +30,8 @@
         "src/app/about/index.js",
         "src/app/api/orders/get-my-orders.js",
         "src/app/api/orders/get-my-orders.js",
-        "src/app/api/order.js"
+        "src/app/api/order.js",
+        "src/app/api/sms/a.js"
     ],
     "exclude": ["node_modules"]
 }
