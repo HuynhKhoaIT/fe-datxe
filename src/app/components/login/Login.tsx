@@ -6,7 +6,7 @@ import IconGoogle from '../../assets/images/google.svg';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
-import { CheckPhone } from '@/utils/user';
+import { CheckPhone, GenOTP } from '@/utils/user';
 import { notifications } from '@mantine/notifications';
 
 export default function LoginFormInput() {
@@ -19,17 +19,25 @@ export default function LoginFormInput() {
         },
 
         validate: {
-            phone: hasLength({ min: 2, max: 11 }, 'phone must be 2-10 characters long'),
+            phone: hasLength({ min: 10, max: 11 }, 'Vui lòng nhập đúng số điện thoại'),
         },
     });
     const onSubmit = async () => {
         const { phone } = form.values;
         const res = await CheckPhone(phone);
         if (res) {
-            if (callbackUrl) {
-                router.push(`./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`);
+            const genRs = await GenOTP(phone);
+            if (genRs.CodeResult == 100) {
+                if (callbackUrl) {
+                    router.push(`./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`);
+                } else {
+                    router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
+                }
             } else {
-                router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
+                notifications.show({
+                    title: 'Error',
+                    message: 'Lỗi tạo OTP, Vui lòng thử lại sau!',
+                });
             }
         } else {
             notifications.show({

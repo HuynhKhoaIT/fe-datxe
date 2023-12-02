@@ -102,6 +102,26 @@ export const register = async (
     }
 };
 
+export const GenOTP = async (phone: string) => {
+    try {
+        const res = await axios.post(
+            `/api/sms/send-otp`,
+            {
+                phone: phone,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
+        return res.data;
+    } catch (error) {
+        console.error(error);
+        throw new Error('GEN OTP thất bại');
+    }
+};
+
 export const CheckPhone = async (phone: string) => {
     try {
         console.log('phone', phone);
@@ -124,10 +144,10 @@ export const CheckPhone = async (phone: string) => {
 export const CheckOtp = async (phone: string, otp: string, action: string) => {
     try {
         const res = await axios.post(
-            `${CHECK_OTP}`,
+            `/api/sms/check-otp`,
             {
-                phone_number: phone,
-                otp: otp,
+                phone: phone,
+                code: otp,
                 action: action,
             },
             {
@@ -140,10 +160,10 @@ export const CheckOtp = async (phone: string, otp: string, action: string) => {
             // const data = res;
             return res.data;
         } else {
-            console.log('Login failed');
+            console.log('Check OTP failed');
         }
     } catch (error) {
         console.error(error);
-        throw new Error('Đăng nhập thất bại');
+        throw new Error('Check OTP thất bại');
     }
 };
