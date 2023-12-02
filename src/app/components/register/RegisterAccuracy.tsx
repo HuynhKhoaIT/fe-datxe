@@ -44,26 +44,35 @@ export function RegisterFormAccuracy() {
         setLoading(true);
 
         const { name, phone, pin } = form.values;
-        let password = phone + '@@' + phone.slice(-3);
+        let password = phone + '@@Datxe.com@@';
         let passwordConfirmation = password;
         console.log(password);
         try {
-            await CheckOtp(phone, pin, 'register');
-            notifications.show({
-                title: 'Thành công',
-                message: 'Xác thực thành công',
-            });
-            try {
-                await register(name, phone, password, passwordConfirmation);
+            const checkRs = await CheckOtp(phone, pin, 'register');
+            if (checkRs.CodeResult == 100) {
                 notifications.show({
                     title: 'Thành công',
-                    message: 'Đăng ký thành công',
+                    message: 'Xác thực thành công',
                 });
-                setLoading(false);
-            } catch (error) {
+                try {
+                    await register(name, phone, password, passwordConfirmation);
+
+                    notifications.show({
+                        title: 'Thành công',
+                        message: 'Đăng ký thành công',
+                    });
+                    setLoading(false);
+                } catch (error) {
+                    notifications.show({
+                        title: 'Thất bại',
+                        message: 'Đăng ký thất bại',
+                    });
+                    setLoading(false);
+                }
+            } else {
                 notifications.show({
-                    title: 'Thất bại',
-                    message: 'Đăng ký thất bại',
+                    title: 'Error',
+                    message: 'Xác thực thất bại',
                 });
                 setLoading(false);
             }

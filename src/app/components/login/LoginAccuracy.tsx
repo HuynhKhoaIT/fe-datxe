@@ -41,7 +41,7 @@ export function LoginFormAccuracy() {
     }, [countdown]);
     const onLogin = async () => {
         const { phone, pin } = form.values;
-        let password = phone + '@@' + phone.slice(-3);
+        let password = phone + '@@Datxe.com@@';
         // try {
         //     setLoading(true);
         //     await CheckOtp(phone, pin, 'login');
@@ -72,15 +72,24 @@ export function LoginFormAccuracy() {
         //     form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
         // }
         try {
-            signIn('credentials', {
-                phone: phone,
-                password: password,
-                callbackUrl: callbackUrl || '/dashboard',
-            });
-            notifications.show({
-                title: 'Thành công',
-                message: 'Đăng nhập thành công',
-            });
+            setLoading(true);
+            const checkRs = await CheckOtp(phone, pin, 'login');
+            if (checkRs.CodeResult == 100) {
+                signIn('credentials', {
+                    phone: phone,
+                    password: password,
+                    callbackUrl: callbackUrl || '/dashboard',
+                });
+                notifications.show({
+                    title: 'Thành công',
+                    message: 'Đăng nhập thành công',
+                });
+            } else {
+                notifications.show({
+                    title: 'Thất bại',
+                    message: 'Đăng nhập thất bại',
+                });
+            }
             setLoading(false);
         } catch (error) {
             notifications.show({

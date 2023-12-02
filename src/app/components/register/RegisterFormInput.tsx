@@ -9,7 +9,7 @@ import { Checkbox } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
-import { CheckPhone } from '@/utils/user';
+import { CheckPhone, GenOTP } from '@/utils/user';
 interface FormInputs {
     name: string;
     phone: string;
@@ -31,7 +31,15 @@ export function RegisterFormInput() {
         const { name, phone } = form.values;
         const res = await CheckPhone(phone);
         if (!res) {
-            router.push(`./dang-ky/xac-thuc?name=${name}&phone=${phone}`);
+            const genRs = await GenOTP(phone);
+            if (genRs.CodeResult == 100) {
+                router.push(`./dang-ky/xac-thuc?name=${name}&phone=${phone}`);
+            } else {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
+                });
+            }
         } else {
             notifications.show({
                 title: 'Error',
