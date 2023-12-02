@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 function ProductGarage({ garage }: { garage: any }) {
     return (
         <div className={cx('garageItem')}>
-            <Grid>
+            <Grid classNames={{ root: cx('garageRow') }}>
                 <Grid.Col span={4}>
                     <Grid className={cx('garage-info')}>
                         <Grid.Col span={4} className={cx('info-left')}>
