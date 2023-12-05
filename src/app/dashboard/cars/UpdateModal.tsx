@@ -10,7 +10,7 @@ import { updateCar } from '@/utils/car';
 import { DateInput } from '@mantine/dates';
 import { IconBan } from '@tabler/icons-react';
 import BasicModal from '@/app/components/basicModal/BasicModal';
-const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
+const UpdateModal = ({ fetchCars, data, opened, onCancel }: any) => {
     const [disabled, setDisabled] = useState(true);
     const { data: session } = useSession();
     const token = session?.user?.token;
@@ -93,7 +93,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
             }
         };
         fetchData();
-    }, [open]);
+    }, [opened]);
     const handleUpdateCar = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         try {
@@ -129,12 +129,10 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
         <BasicModal
             size={800}
             title="Chỉnh sửa thông tin xe của bạn"
-            isOpen={open}
+            isOpen={opened}
             closeButtonProps
             onCloseModal={onCancel}
             lockScroll={false}
-            forceRender={!open}
-            {...props}
         >
             <Box maw={800} mx="auto">
                 <form onSubmit={handleUpdateCar}>

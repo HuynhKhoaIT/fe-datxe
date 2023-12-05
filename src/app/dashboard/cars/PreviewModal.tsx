@@ -4,12 +4,12 @@ import { Grid, Modal, Textarea, TextInput, Box } from '@mantine/core';
 import dayjs from 'dayjs';
 import BasicModal from '@/app/components/basicModal/BasicModal';
 
-const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
+const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
     return (
         <BasicModal
             size={800}
             title="Thông tin chi tiết"
-            isOpen={open}
+            isOpen={opened}
             closeButtonProps
             onCloseModal={onCancel}
             lockScroll={false}

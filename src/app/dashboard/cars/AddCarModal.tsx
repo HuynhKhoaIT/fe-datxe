@@ -12,46 +12,16 @@ import { IBrand } from '@/interfaces/brand';
 import { useRouter } from 'next/navigation';
 import { IconPlus, IconBan } from '@tabler/icons-react';
 import BasicModal from '@/app/components/basicModal/BasicModal';
+import { useForm, hasLength } from '@mantine/form';
+
 const AddCarModal = ({ opened, close, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const router = useRouter();
-
     const [brandsData, setBrandsData] = useState<any>([]);
     const [models, setModels] = useState<any>([]);
-    const [licensePlates, setLicensePlates] = useState('');
-    const [colorCar, setColorCar] = useState('');
-    const [vinNumber, setVinNumber] = useState<string | number>();
-    const [kmRepairt, setKmRepairt] = useState<any>();
-    const [brandId, setBrandId] = useState<Number>();
-    const [machineNumber, setMachineNumber] = useState<string | number>();
-    const [description, setDescription] = useState<any>();
-    const [dateRepairt, setDateRepairt] = useState('');
-    const [registrationDeadline, setRegistrationDeadline] = useState('');
-    const [civilDeadline, setCivilDeadline] = useState('');
-    const [materialDeadline, setMaterialDeadline] = useState('');
-    function handleDateRepairtChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
-        setDateRepairt(dateString);
-    }
-    function handleRegistrationChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
-        setRegistrationDeadline(dateString);
-    }
-    function handleCivilChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
-        setCivilDeadline(dateString);
-    }
-    function handleMaterialChange(date: any) {
-        const dateString = dayjs(date).format('YYYY-MM-DD');
-        setMaterialDeadline(dateString);
-    }
-    const [automakerId, setAutomakerId] = useState('');
-    const [carNameId, setCarNameId] = useState<string | null>();
     const selectBrand = async (value: number) => {
         try {
-            setAutomakerId(value.toString());
-            setBrandId(value);
             const dong_xe: IBrand[] = await getModels(value);
             const newModels = dong_xe?.map((model) => ({
                 value: model.id?.toString() || '',
@@ -60,6 +30,7 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
             setModels(newModels);
         } catch (error) {}
     };
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -75,31 +46,23 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
         }
         fetchData();
     }, []);
-    const handleCancel = async () => {
-        router.push('/dashboard');
-    };
-    const handleCreateCar = async (event: { preventDefault: () => void }) => {
-        event.preventDefault();
+
+    const form = useForm({
+        initialValues: {},
+        validate: {},
+    });
+    const handleCreateCar = async (values: any) => {
         try {
             const newCar = {
+                ...values,
                 customer_id: session?.user?.id,
-                number_plates: licensePlates,
-                color: colorCar,
-                car_name_id: carNameId,
-                brand_id: brandId,
-                vin_number: vinNumber,
-                machine_number: machineNumber,
-                km_repairt: kmRepairt,
-                date_repairt: dateRepairt,
-                registration_deadline: registrationDeadline,
-                civil_insurance_deadline: civilDeadline,
-                material_insurance_deadline: materialDeadline,
-                automaker_id: automakerId,
-                description: description,
+                date_repairt: dayjs(values?.date_repairt).format('YYYY-MM-DD'),
+                civil_insurance_deadline: dayjs(values?.civil_insurance_deadline).format('YYYY-MM-DD'),
+                material_insurance_deadline: dayjs(values?.material_insurance_deadline).format('YYYY-MM-DD'),
+                registration_deadline: dayjs(values?.registration_deadline).format('YYYY-MM-DD'),
             };
             const createdCar = await addCar(newCar, token ?? '');
             const cars: any = await getCars(token ?? '');
-            console.log(cars);
             if (cars?.length < 2) {
                 try {
                     const carDefault = await setCarDefault(cars[0]?.id, token ?? '');
@@ -111,12 +74,15 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
             }
             close();
             notifications.show({
-                title: 'Default notification',
-                message: 'Hey there, your code is awesome! 🤥',
+                title: 'Thành công',
+                message: 'Thêm xe thành công',
             });
         } catch (error) {
             close();
-
+            notifications.show({
+                title: 'Thất bại',
+                message: `${error}`,
+            });
             console.error('Error creating car:', error);
         }
     };
@@ -129,23 +95,22 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
             closeButtonProps
             onCloseModal={close}
             lockScroll={false}
-            forceRender={!open}
             {...props}
         >
             <Box maw={800} mx="auto">
-                <form onSubmit={handleCreateCar}>
+                <form onSubmit={form.onSubmit((values) => handleCreateCar(values))}>
                     <Grid gutter={10}>
                         <Grid.Col span={4}>
                             <TextInput
                                 label="Biển số xe"
                                 type="text"
-                                name="licensePlates"
                                 placeholder="Biển số xe"
-                                onChange={(e) => setLicensePlates(e.target.value)}
+                                {...form.getInputProps('number_plates')}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <Select
+                                {...form.getInputProps('brand_id')}
                                 label="Hãng xe"
                                 checkIconPosition="right"
                                 placeholder="Chọn hãng xe"
@@ -161,9 +126,7 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                                 checkIconPosition="right"
                                 placeholder="Chọn dòng xe"
                                 data={models}
-                                onChange={(e) => {
-                                    setCarNameId(e);
-                                }}
+                                {...form.getInputProps('car_name_id')}
                             ></Select>
                         </Grid.Col>
                     </Grid>
@@ -172,27 +135,22 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                             <TextInput
                                 label="Color"
                                 type="text"
-                                name="color"
                                 placeholder="Màu xe"
-                                onChange={(e) => {
-                                    setColorCar(e.target.value);
-                                }}
+                                {...form.getInputProps('color')}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <NumberInput
                                 label="Vin number"
-                                name="vin_number"
                                 placeholder="Vin Number"
-                                onChange={setVinNumber}
+                                {...form.getInputProps('vin_number')}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <NumberInput
                                 label="Machine Number"
-                                name="machine_number"
                                 placeholder="Machine Number"
-                                onChange={setMachineNumber}
+                                {...form.getInputProps('machine_number')}
                             />
                         </Grid.Col>
                     </Grid>
@@ -200,19 +158,16 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                         <Grid.Col span={4}>
                             <NumberInput
                                 label="Km repairt"
-                                name="km_repairt"
                                 placeholder="Km repairt"
-                                onChange={setKmRepairt}
+                                {...form.getInputProps('km_repairt')}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <DateInput
                                 label="Date Repairt"
                                 valueFormat={'DD/MM/YYYY'}
-                                onChange={(date) => {
-                                    handleDateRepairtChange(date?.toString());
-                                }}
                                 placeholder="Date Repairt"
+                                {...form.getInputProps('date_repairt')}
                             />
                         </Grid.Col>
                     </Grid>
@@ -221,30 +176,24 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                             <DateInput
                                 label="Registration Deadline"
                                 valueFormat={'DD/MM/YYYY'}
-                                onChange={(date) => {
-                                    handleRegistrationChange(date?.toString());
-                                }}
                                 placeholder="Registration Deadline"
+                                {...form.getInputProps('registration_deadline')}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <DateInput
                                 label="Civil deadline"
                                 valueFormat={'DD/MM/YYYY'}
-                                onChange={(date) => {
-                                    handleCivilChange(date?.toString());
-                                }}
                                 placeholder="Civil deadline"
+                                {...form.getInputProps('civil_insurance_deadline')}
                             />
                         </Grid.Col>
                         <Grid.Col span={4}>
                             <DateInput
                                 label="Material deadline"
                                 valueFormat={'DD/MM/YYYY'}
-                                onChange={(date) => {
-                                    handleMaterialChange(date?.toString());
-                                }}
                                 placeholder="Material deadline"
+                                {...form.getInputProps('material_insurance_deadline')}
                             />
                         </Grid.Col>
                     </Grid>
@@ -252,9 +201,8 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                         <Grid.Col span={12}>
                             <Textarea
                                 label="Mô tả chi tiết"
-                                name="description"
                                 maxLength={100}
-                                onChange={(e) => setDescription(e.target.value)}
+                                {...form.getInputProps('description')}
                                 placeholder="Mô tả chi tiết"
                             />
                         </Grid.Col>
@@ -263,7 +211,7 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                         <Button
                             variant="outline"
                             key="cancel"
-                            onClick={handleCancel}
+                            onClick={close}
                             color="red"
                             leftSection={<IconBan size={16} />}
                         >

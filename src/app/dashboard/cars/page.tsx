@@ -15,29 +15,21 @@ export default function CarsPage() {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const [openedAddCar, { open: openAddCar, close: closeAddCar }] = useDisclosure(false);
-    const [openedDeleteCar, { open: openDeleteCar, close: closeDeleteCar }] = useDisclosure(false);
+    // const [openedDeleteCar, { open: openDeleteCar, close: closeDeleteCar }] = useDisclosure(false);
     const [openedUpdateCar, { open: openUpdateCar, close: closeUpdateCar }] = useDisclosure(false);
     const [openedPreviewCar, { open: openPreviewCar, close: closePreviewCar }] = useDisclosure(false);
 
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [detail, setDetail] = useState({});
+    const [detail, setDetail] = useState<any>({});
     const [deleteRow, setDeleteRow] = useState('');
     const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
     const [myAccount, setMyAccount] = useState<any>([]);
-
-    console.log('myAccount', myAccount);
     // Mở modal xem chi tiết
     const showDetails = (e: React.MouseEvent<HTMLElement, MouseEvent>, record: object) => {
         e.stopPropagation();
         setDetail(record);
         openPreviewCar();
-    };
-
-    // mở modal edit
-    const showUpdateModal = (record: object) => {
-        setDetail(record);
-        openUpdateCar();
     };
 
     const handleDeleteOk = () => {
@@ -165,7 +157,10 @@ export default function CarsPage() {
                         variant="transparent"
                         color="gray"
                         p={5}
-                        onClick={() => showUpdateModal(record)}
+                        onClick={() => {
+                            setDetail(record);
+                            openUpdateCar();
+                        }}
                     >
                         <IconPencil size={16} />
                     </Button>
@@ -243,13 +238,7 @@ export default function CarsPage() {
                     </Button>
                 </Group>
             </Modal>
-            <UpdateModal
-                open={openedUpdateCar}
-                fetchCars={() => fetchCars()}
-                onCancel={closeUpdateCar}
-                width={800}
-                data={detail ? detail : {}}
-            />
+
             <Modal
                 size={400}
                 opened={openModalCarDefault}
@@ -275,11 +264,17 @@ export default function CarsPage() {
             </Modal>
             <AddCarModal width={800} opened={openedAddCar} close={closeAddCar} />
             <PreviewModal
-                open={openedPreviewCar}
+                opened={openedPreviewCar}
                 onOk={closePreviewCar}
                 onCancel={closePreviewCar}
                 width={800}
                 data={detail}
+            />
+            <UpdateModal
+                opened={openedUpdateCar}
+                fetchCars={() => fetchCars()}
+                onCancel={closeUpdateCar}
+                data={detail ? detail : {}}
             />
         </div>
     );
