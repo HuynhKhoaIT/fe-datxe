@@ -1,9 +1,9 @@
 'use client';
 import { IProduct } from '@/interfaces/product';
-import { getProductsHot } from '@/utils/product';
+import { getProductByGar, getProductsHot } from '@/utils/product';
 import { useEffect, useState } from 'react';
 import { ProductItem } from './productItem';
-export default function Product({ initialProductData }: { initialProductData: IProduct[] }) {
+export default function Product({ initialProductData, garageId }: { initialProductData: IProduct[]; garageId: any }) {
     const [productData, setProductData] = useState<IProduct[]>([]);
     const [limit, setLimit] = useState<number>(8);
     console.log(productData);
@@ -13,7 +13,7 @@ export default function Product({ initialProductData }: { initialProductData: IP
         setLimit(newLimit);
 
         // Fetch thêm dữ liệu
-        const newProductData = await getProductsHot({ limit: newLimit });
+        const newProductData = await getProductByGar(garageId.toString(), newLimit);
 
         // Cập nhật dữ liệu sản phẩm
         setProductData(newProductData);

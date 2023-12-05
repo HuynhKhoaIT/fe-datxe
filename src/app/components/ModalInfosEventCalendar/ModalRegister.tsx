@@ -11,8 +11,7 @@ import { CheckOtp, CheckPhone, login, register } from '@/utils/user';
 import { notifications } from '@mantine/notifications';
 import { signIn } from 'next-auth/react';
 import { preventDefault } from '@fullcalendar/core/internal';
-import { addCustomerCare } from '@/utils/customerCare';
-export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
+export function ModalRegister({ opened, close, phone, name, dataDetail }: any) {
     const [countdown, setCountdown] = useState<number>(59);
     const [loading, setLoading] = useState(false);
     const form = useForm({
@@ -41,51 +40,51 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
         let password = phone + '@@Datxe.com@@';
         let passwordConfirmation = password;
         try {
-            setLoading(true);
-            const checkRs = await CheckOtp(phone, pin, 'login');
+            const checkRs = await CheckOtp(phone, pin, 'register');
             if (checkRs.CodeResult == 100) {
-                signIn('credentials', {
-                    phone: phone,
-                    password: password,
-                    callbackUrl: '/dashboard',
-                });
-                // try {
-                //     const createdCar = await addCustomerCare(dataDetail, token ?? '');
-                //     setLoading(false);
-                // } catch (error) {
-                //     console.error('Error creating customer care:', error);
-                //     notifications.show({
-                //         title: 'Thất bại',
-                //         message: 'Đặt lịch thất bại',
-                //     });
-                //     setLoading(false);
-                // }
                 notifications.show({
                     title: 'Thành công',
-                    message: 'Đặt lịch thành công',
+                    message: 'Xác thực thành công',
                 });
+                try {
+                    await register(name, phone, password, passwordConfirmation);
+
+                    notifications.show({
+                        title: 'Thành công',
+                        message: 'Đăng ký thành công',
+                    });
+                    setLoading(false);
+                } catch (error) {
+                    notifications.show({
+                        title: 'Thất bại',
+                        message: 'Đăng ký thất bại',
+                    });
+                    setLoading(false);
+                }
             } else {
                 notifications.show({
-                    title: 'Thất bại',
-                    message: 'Đặt lịch thất bại',
+                    title: 'Error',
+                    message: 'Xác thực thất bại',
                 });
+                setLoading(false);
             }
-            setLoading(false);
         } catch (error) {
             notifications.show({
-                title: 'Thất bại',
-                message: 'Đăng nhập thất bại',
+                title: 'Error',
+                message: 'Xác thực thất bại',
             });
             setLoading(false);
+
+            form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
         }
     };
     return (
         <BasicModal
+            title="Đăng ký tài khoản"
             size={500}
             isOpen={opened}
             onCloseModal={close}
             footer={false}
-            title="Đăng nhập"
             trapFocus={false}
             style={{ position: 'relative' }}
         >

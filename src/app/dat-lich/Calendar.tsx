@@ -3,9 +3,9 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { ModalInfosEventCalendar } from '../components/ModalInfosEventCalendar/index';
 import { useEffect, useState } from 'react';
-import { ModalEventCalendar } from '../components/ModalInfosEventCalendar/ModalEventCalendar';
+import { useDisclosure } from '@mantine/hooks';
+import ModalCalendar from '../components/ModalInfosEventCalendar';
 const sampleEvents: any = [
     {
         id: '1',
@@ -29,6 +29,7 @@ export default function CalendarScheduler({ ordersData }: any) {
     const [isEditCard, setIsEditCard] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [carDefault, setCarDefault] = useState<any>({});
+    const [openedCalendar, { open: openCalendar, close: closeCalendar }] = useDisclosure(false);
 
     useEffect(() => {
         const existingCarData = localStorage.getItem('carDefault');
@@ -50,7 +51,8 @@ export default function CalendarScheduler({ ordersData }: any) {
         setEventInfos(selectInfo);
         console.log(selectInfo);
         // modalInfosEvent.handleOpen();
-        setIsModalOpen(true);
+        // setIsModalOpen(true);
+        openCalendar();
     };
 
     const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
@@ -85,14 +87,14 @@ export default function CalendarScheduler({ ordersData }: any) {
     console.log(ordersData);
     return (
         <div className="modal-datlich">
-            <ModalInfosEventCalendar
+            {/* <ModalInfosEventCalendar
                 open={isModalOpen}
                 handleClose={() => setIsModalOpen(false)}
                 eventInfos={eventInfos}
                 isEditCard={isEditCard}
                 carDefault={carDefault || {}}
-            />
-
+            /> */}
+            <ModalCalendar opened={openedCalendar} onClose={closeCalendar} eventInfos={eventInfos} />
             <FullCalendar
                 plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"
