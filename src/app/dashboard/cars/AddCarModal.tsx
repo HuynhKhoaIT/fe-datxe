@@ -12,7 +12,7 @@ import { IBrand } from '@/interfaces/brand';
 import { useRouter } from 'next/navigation';
 import { IconPlus, IconBan } from '@tabler/icons-react';
 import BasicModal from '@/app/components/basicModal/BasicModal';
-const AddCarModal = ({ open, onCancel, ...props }: any) => {
+const AddCarModal = ({ opened, close, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const router = useRouter();
@@ -109,13 +109,13 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
                     console.log('fail');
                 }
             }
-            onCancel();
+            close();
             notifications.show({
                 title: 'Default notification',
                 message: 'Hey there, your code is awesome! 🤥',
             });
         } catch (error) {
-            onCancel();
+            close();
 
             console.error('Error creating car:', error);
         }
@@ -125,9 +125,9 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
         <BasicModal
             size={800}
             title="Thêm xe"
-            opened={open}
+            isOpen={opened}
             closeButtonProps
-            onClose={onCancel}
+            onCloseModal={close}
             lockScroll={false}
             forceRender={!open}
             {...props}

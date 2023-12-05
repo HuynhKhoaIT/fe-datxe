@@ -9,45 +9,35 @@ import UpdateModal from './UpdateModal';
 import AddCarModal from './AddCarModal';
 import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
 import { getMyAccount } from '@/utils/user';
+import { useDisclosure } from '@mantine/hooks';
 
 export default function CarsPage() {
     const { data: session } = useSession();
     const token = session?.user?.token;
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [openedAddCar, { open: openAddCar, close: closeAddCar }] = useDisclosure(false);
+    const [openedDeleteCar, { open: openDeleteCar, close: closeDeleteCar }] = useDisclosure(false);
+    const [openedUpdateCar, { open: openUpdateCar, close: closeUpdateCar }] = useDisclosure(false);
+    const [openedPreviewCar, { open: openPreviewCar, close: closePreviewCar }] = useDisclosure(false);
+
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [detail, setDetail] = useState({});
     const [deleteRow, setDeleteRow] = useState('');
     const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
     const [myAccount, setMyAccount] = useState<any>([]);
 
     console.log('myAccount', myAccount);
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
     // Mở modal xem chi tiết
     const showDetails = (e: React.MouseEvent<HTMLElement, MouseEvent>, record: object) => {
         e.stopPropagation();
         setDetail(record);
-        setIsModalOpen(true);
+        openPreviewCar();
     };
 
     // mở modal edit
     const showUpdateModal = (record: object) => {
         setDetail(record);
-        setIsUpdateModalOpen(true);
-    };
-    // Mở modal thêm car
-    const showAddModal = () => {
-        setIsAddModalOpen(true);
-    };
-    // Đóng modal
-    const handleCancel = () => {
-        setIsModalOpen(false);
-        setIsUpdateModalOpen(false);
-        setIsAddModalOpen(false);
+        openUpdateCar();
     };
 
     const handleDeleteOk = () => {
@@ -202,7 +192,7 @@ export default function CarsPage() {
                         <div className="user-profile-search">
                             <div className="form-group"></div>
                         </div>
-                        <Button className="theme-btn btn-add-car" onClick={() => showAddModal()}>
+                        <Button className="theme-btn btn-add-car" onClick={openAddCar}>
                             Thêm xe
                         </Button>
                     </div>
@@ -254,9 +244,9 @@ export default function CarsPage() {
                 </Group>
             </Modal>
             <UpdateModal
-                open={isUpdateModalOpen}
+                open={openedUpdateCar}
                 fetchCars={() => fetchCars()}
-                onCancel={handleCancel}
+                onCancel={closeUpdateCar}
                 width={800}
                 data={detail ? detail : {}}
             />
@@ -283,8 +273,14 @@ export default function CarsPage() {
                     </Button>
                 </Group>
             </Modal>
-            <AddCarModal width={800} open={isAddModalOpen} onCancel={handleCancel} />
-            <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={detail} />
+            <AddCarModal width={800} opened={openedAddCar} close={closeAddCar} />
+            <PreviewModal
+                open={openedPreviewCar}
+                onOk={closePreviewCar}
+                onCancel={closePreviewCar}
+                width={800}
+                data={detail}
+            />
         </div>
     );
 }

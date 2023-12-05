@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { updateCar } from '@/utils/car';
 import { DateInput } from '@mantine/dates';
 import { IconBan } from '@tabler/icons-react';
+import BasicModal from '@/app/components/basicModal/BasicModal';
 const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) => {
     const [disabled, setDisabled] = useState(true);
     const { data: session } = useSession();
@@ -125,12 +126,12 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
         label: brand.name || '',
     }));
     return (
-        <Modal
+        <BasicModal
             size={800}
             title="Chỉnh sửa thông tin xe của bạn"
-            opened={open}
+            isOpen={open}
             closeButtonProps
-            onClose={onCancel}
+            onCloseModal={onCancel}
             lockScroll={false}
             forceRender={!open}
             {...props}
@@ -259,7 +260,7 @@ const UpdateModal = ({ fetchCars, data, onOk, open, onCancel, ...props }: any) =
                     </Group>
                 </form>
             </Box>
-        </Modal>
+        </BasicModal>
     );
 };
 export default UpdateModal;
