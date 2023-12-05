@@ -94,28 +94,31 @@ export const ModalEventCalendar = ({
             const res = await CheckPhone(phone);
             if (!res) {
                 setLoading(false);
+                openRegister();
                 // Số điện thoại chưa đăng ký chuyển qua trang đăng ký
-                const genRs = await GenOTP(phone);
-                if (genRs.CodeResult == 100) {
-                    openRegister();
-                } else {
-                    notifications.show({
-                        title: 'Error',
-                        message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
-                    });
-                }
+                // const genRs = await GenOTP(phone);
+                // if (genRs.CodeResult == 100) {
+                //     openRegister();
+                // } else {
+                //     notifications.show({
+                //         title: 'Error',
+                //         message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
+                //     });
+                // }
             } else {
                 setLoading(false);
+                openLogin();
+
                 // Số điện thoại đã đăng ký mở login
-                const genRs = await GenOTP(phone);
-                if (genRs.CodeResult == 100) {
-                    openLogin();
-                } else {
-                    notifications.show({
-                        title: 'Error',
-                        message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
-                    });
-                }
+                // const genRs = await GenOTP(phone);
+                // if (genRs.CodeResult == 100) {
+                //     openLogin();
+                // } else {
+                //     notifications.show({
+                //         title: 'Error',
+                //         message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
+                //     });
+                // }
             }
         } else {
             try {

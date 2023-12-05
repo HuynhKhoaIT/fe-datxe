@@ -42,34 +42,40 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
         let passwordConfirmation = password;
         try {
             setLoading(true);
-            const checkRs = await CheckOtp(phone, pin, 'login');
-            if (checkRs.CodeResult == 100) {
-                signIn('credentials', {
-                    phone: phone,
-                    password: password,
-                    callbackUrl: '/dashboard',
-                });
-                // try {
-                //     const createdCar = await addCustomerCare(dataDetail, token ?? '');
-                //     setLoading(false);
-                // } catch (error) {
-                //     console.error('Error creating customer care:', error);
-                //     notifications.show({
-                //         title: 'Thất bại',
-                //         message: 'Đặt lịch thất bại',
-                //     });
-                //     setLoading(false);
-                // }
-                notifications.show({
-                    title: 'Thành công',
-                    message: 'Đặt lịch thành công',
-                });
-            } else {
-                notifications.show({
-                    title: 'Thất bại',
-                    message: 'Đặt lịch thất bại',
-                });
-            }
+            const login = signIn('credentials', {
+                phone: phone,
+                password: password,
+                callbackUrl: '/dashboard',
+            });
+            console.log(login);
+            // const checkRs = await CheckOtp(phone, pin, 'login');
+            // if (checkRs.CodeResult == 100) {
+            //     signIn('credentials', {
+            //         phone: phone,
+            //         password: password,
+            //         callbackUrl: '/dashboard',
+            //     });
+            //     // try {
+            //     //     const createdCar = await addCustomerCare(dataDetail, token ?? '');
+            //     //     setLoading(false);
+            //     // } catch (error) {
+            //     //     console.error('Error creating customer care:', error);
+            //     //     notifications.show({
+            //     //         title: 'Thất bại',
+            //     //         message: 'Đặt lịch thất bại',
+            //     //     });
+            //     //     setLoading(false);
+            //     // }
+            //     notifications.show({
+            //         title: 'Thành công',
+            //         message: 'Đặt lịch thành công',
+            //     });
+            // } else {
+            //     notifications.show({
+            //         title: 'Thất bại',
+            //         message: 'Đặt lịch thất bại',
+            //     });
+            // }
             setLoading(false);
         } catch (error) {
             notifications.show({
