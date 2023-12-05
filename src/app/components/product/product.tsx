@@ -13,10 +13,15 @@ export default function Product({ initialProductData, garageId }: { initialProdu
         setLimit(newLimit);
 
         // Fetch thêm dữ liệu
-        const newProductData = await getProductByGar(garageId.toString(), newLimit);
+        if (garageId != 0) {
+            let newProductData = await getProductByGar(garageId.toString(), newLimit);
+            setProductData(newProductData);
+        } else {
+            let newProductData = await getProductsHot({ limit: newLimit });
+            setProductData(newProductData);
+        }
 
         // Cập nhật dữ liệu sản phẩm
-        setProductData(newProductData);
     };
     console.log(initialProductData);
     useEffect(() => {

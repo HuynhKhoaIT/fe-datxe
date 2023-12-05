@@ -37,7 +37,7 @@ export default async function SingleShop({ params }: { params: { slug: number } 
                         </div>
                         <div className="shop-item-wrapper">
                             <div className="row">
-                                <Product initialProductData={related} />
+                                <Product initialProductData={related} garageId={data.garageId} />
                             </div>
                         </div>
                     </div>
