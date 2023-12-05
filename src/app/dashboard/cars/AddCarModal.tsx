@@ -11,6 +11,7 @@ import { notifications } from '@mantine/notifications';
 import { IBrand } from '@/interfaces/brand';
 import { useRouter } from 'next/navigation';
 import { IconPlus, IconBan } from '@tabler/icons-react';
+import BasicModal from '@/app/components/basicModal/BasicModal';
 const AddCarModal = ({ open, onCancel, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
@@ -114,12 +115,14 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
                 message: 'Hey there, your code is awesome! 🤥',
             });
         } catch (error) {
+            onCancel();
+
             console.error('Error creating car:', error);
         }
     };
 
     return (
-        <Modal
+        <BasicModal
             size={800}
             title="Thêm xe"
             opened={open}
@@ -278,7 +281,7 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
                     </Group>
                 </form>
             </Box>
-        </Modal>
+        </BasicModal>
     );
 };
 export default AddCarModal;

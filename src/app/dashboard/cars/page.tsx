@@ -3,14 +3,12 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { getCars, deleteCar, setCarDefault } from '@/utils/car';
 import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { IconChevronRight, IconEye, IconPencil, IconTrash, IconBan } from '@tabler/icons-react';
 import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
 import AddCarModal from './AddCarModal';
 import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
 import { getMyAccount } from '@/utils/user';
-import { IUser } from '@/types/next-auth';
 
 export default function CarsPage() {
     const { data: session } = useSession();
@@ -24,6 +22,8 @@ export default function CarsPage() {
     const [deleteRow, setDeleteRow] = useState('');
     const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
     const [myAccount, setMyAccount] = useState<any>([]);
+
+    console.log('myAccount', myAccount);
     const handleOk = () => {
         setIsModalOpen(false);
     };
