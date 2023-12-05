@@ -103,7 +103,7 @@ export default async function SingleShop({
                         </div>
                         <div className="shop-item-wrapper">
                             <div className="row">
-                                <Product initialProductData={relatedProducts} />
+                                <Product initialProductData={relatedProducts} garageId={0} />
                             </div>
                         </div>
                     </div>
