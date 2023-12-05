@@ -1,6 +1,6 @@
 'use client';
 import React, { Suspense, useEffect, useState } from 'react';
-import { getCars, deleteCar } from '@/utils/car';
+import { getCars, deleteCar, setCarDefault } from '@/utils/car';
 import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -62,10 +62,7 @@ export default function CarsPage() {
         setIsModalDeleteOpen(false);
     };
     const [cars, setCars] = useState<ICar[]>([]);
-
-    console.log(cars);
     const fetchCars = async () => {
-        console.log('update or delete');
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
@@ -91,6 +88,15 @@ export default function CarsPage() {
             console.error('Error deleting car:', error);
         }
     };
+    const handleSetCarDefault = async (CarId: string) => {
+        try {
+            const carDefault = await setCarDefault(CarId, token ?? '');
+            console.log(carDefault);
+        } catch (error) {
+            console.error('Error set car:', error);
+            console.log('fail');
+        }
+    };
 
     // xe mặc định lưu trên localStorage
     const [selectedRow, setSelectedRow] = useState<any>();
@@ -108,6 +114,7 @@ export default function CarsPage() {
     const handleCarDefault = () => {
         localStorage.setItem('carDefault', JSON.stringify(dataCarDefault));
         setSelectedRow(dataCarDefault);
+        handleSetCarDefault(dataCarDefault?.id);
         setOpenModalCarDefault(false);
     };
 
