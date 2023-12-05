@@ -1,7 +1,7 @@
 'use client';
 import { ICar } from '@/interfaces/car';
 import { getBrands, getModels } from '@/utils/branch';
-import { addCar } from '@/utils/car';
+import { addCar, getCars, setCarDefault } from '@/utils/car';
 import { useSession } from 'next-auth/react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
@@ -97,6 +97,17 @@ const AddCarModal = ({ open, onCancel, ...props }: any) => {
                 description: description,
             };
             const createdCar = await addCar(newCar, token ?? '');
+            const cars: any = await getCars(token ?? '');
+            console.log(cars);
+            if (cars?.length < 2) {
+                try {
+                    const carDefault = await setCarDefault(cars[0]?.id, token ?? '');
+                    console.log(carDefault);
+                } catch (error) {
+                    console.error('Error set car:', error);
+                    console.log('fail');
+                }
+            }
             onCancel();
             notifications.show({
                 title: 'Default notification',
