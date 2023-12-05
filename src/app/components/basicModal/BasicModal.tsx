@@ -24,6 +24,7 @@ const BasicModal = ({
             onClose={onCloseModal}
             title={title}
             classNames={classNames}
+            lockScroll={false}
         >
             <div className={styles.modalContent}>{children}</div>
             {footer && (
