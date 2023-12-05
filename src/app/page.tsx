@@ -55,7 +55,7 @@ export default async function Home() {
                             </div>
                         </div>
                     </div>
-                    <Product initialProductData={initialProductData} />
+                    <Product initialProductData={initialProductData} garageId={0} />
                 </div>
             </div>
 
@@ -74,7 +74,7 @@ export default async function Home() {
                             </div>
                         </div>
                     </div>
-                    <Product initialProductData={initialServiceData} />
+                    <Product initialProductData={initialServiceData} garageId={0} />
                 </div>
             </div>
         </main>
