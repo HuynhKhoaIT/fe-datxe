@@ -98,7 +98,7 @@ export const setCarDefault = async (carId: string, token: String) => {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
-            const res = await axios.post(`${SET_CAR_DEFAULT}`, carId, config);
+            const res = await axios.post(`${SET_CAR_DEFAULT}/${carId}`, config);
             return res.data.data as ICar;
         }
     } catch (error) {
