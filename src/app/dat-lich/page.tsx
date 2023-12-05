@@ -6,6 +6,7 @@ import { mapArrayEventCalendar } from '../domain/EventCalendar';
 export default async function Shop() {
     const orders = await getSchedule();
     const ordersData = mapArrayEventCalendar(orders);
+
     return (
         <main className="main">
             <CalendarScheduler ordersData={ordersData || {}} />

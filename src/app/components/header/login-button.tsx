@@ -7,9 +7,22 @@ import classNames from 'classnames/bind';
 import { Menu, Button, rem } from '@mantine/core';
 import { IconExternalLink, IconLogout, IconEye, IconCaretDownFilled, IconUserCircle } from '@tabler/icons-react';
 const cx = classNames.bind(styles);
+import { useRouter } from 'next/navigation';
 
 const SigninButton = () => {
+    const router = useRouter();
     const { data: session } = useSession();
+    const handleItemClick = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+    };
+    const handleCar = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+        router.push('/gio-hang');
+    };
+    const handleDashboard = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+        router.push('/dashboard');
+    };
     return (
         <>
             <div className={cx('account', 'd-flex align-items-center')}>
@@ -31,7 +44,7 @@ const SigninButton = () => {
                             <Menu.Dropdown>
                                 <Menu.Item
                                     component="a"
-                                    href="/dashboard"
+                                    onClick={handleDashboard}
                                     leftSection={<IconEye style={{ width: rem(14), height: rem(14) }} />}
                                 >
                                     Xem hồ sơ
@@ -39,15 +52,13 @@ const SigninButton = () => {
                                 <Menu.Item
                                     leftSection={<IconExternalLink style={{ width: rem(14), height: rem(14) }} />}
                                     component="a"
-                                    href={'/gio-hang'}
-                                    // target="_blank"
+                                    onClick={handleCar}
                                 >
                                     Đơn mua
                                 </Menu.Item>
                                 <Menu.Divider />
                                 <Menu.Item
                                     component="a"
-                                    // href={'/'}
                                     onClick={() => signOut()}
                                     color="red"
                                     leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}

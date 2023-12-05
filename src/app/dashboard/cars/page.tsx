@@ -9,6 +9,8 @@ import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
 import AddCarModal from './AddCarModal';
 import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
+import { getMyAccount } from '@/utils/user';
+import { IUser } from '@/types/next-auth';
 
 export default function CarsPage() {
     const { data: session } = useSession();
@@ -21,6 +23,7 @@ export default function CarsPage() {
     const [detail, setDetail] = useState({});
     const [deleteRow, setDeleteRow] = useState('');
     const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
+    const [myAccount, setMyAccount] = useState<any>([]);
     const handleOk = () => {
         setIsModalOpen(false);
     };
@@ -66,7 +69,8 @@ export default function CarsPage() {
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
-                console.log(fetchedCars);
+                const account = await getMyAccount(token);
+                setMyAccount(account ?? []);
                 setCars(fetchedCars ?? []);
                 setLoading(false);
             }

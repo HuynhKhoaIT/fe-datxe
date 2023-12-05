@@ -3,7 +3,6 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { checkOutCart } from '@/utils/order';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { CarInfoCart } from '../components/cart/carInfo';
 import { useSession } from 'next-auth/react';
 import { Grid, Modal, TextInput, Box, Select, Button, Group, Table, LoadingOverlay, Card, Avatar } from '@mantine/core';
 import { DateInput, TimeInput } from '@mantine/dates';
@@ -42,16 +41,6 @@ export default function Cart() {
             console.error('Error selecting car:', error);
         }
     };
-    useEffect(() => {
-        // Lấy dữ liệu từ Local Storage
-        const existingCarData = localStorage.getItem('carDefault');
-        if (existingCarData) {
-            // Chuyển đổi chuỗi JSON thành mảng JavaScript
-            const parsedCarData = JSON.parse(existingCarData);
-            console.log(parsedCarData);
-            setCarDefault(parsedCarData);
-        }
-    }, []);
 
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
@@ -73,7 +62,6 @@ export default function Cart() {
     });
 
     function handleDateChange(date: any) {
-        console.log(date);
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setDate(dateString);
     }
@@ -148,6 +136,12 @@ export default function Cart() {
     };
 
     useEffect(() => {
+        const existingCarData = localStorage.getItem('carDefault');
+        if (existingCarData) {
+            // Chuyển đổi chuỗi JSON thành mảng JavaScript
+            const parsedCarData = JSON.parse(existingCarData);
+            setCarDefault(parsedCarData);
+        }
         const existingCartData = localStorage.getItem('cartData');
         if (existingCartData) {
             const parsedCartData = JSON.parse(existingCartData);
@@ -210,7 +204,7 @@ export default function Cart() {
             />
         ));
     };
-
+    console.log('gio hang', carSelect);
     return (
         <main className="main">
             <form onSubmit={onSubmit}>
@@ -262,8 +256,8 @@ export default function Cart() {
                                                     label="Biển số"
                                                     checkIconPosition="right"
                                                     placeholder="Biển số"
-                                                    value={carSelect?.modelCarName?.id || carDefault?.id?.toString()}
                                                     data={carOptions}
+                                                    value={carSelect?.id ?? carDefault?.id?.toString()}
                                                     allowDeselect={false}
                                                     onChange={(value) => {
                                                         selectCar(value);
@@ -275,22 +269,20 @@ export default function Cart() {
                                             <Grid.Col span={6}>
                                                 <TextInput
                                                     label="Hãng Xe"
-                                                    defaultValue={carDefault?.brandCarName?.name}
                                                     placeholder="Hãng Xe"
                                                     readOnly
                                                     value={
-                                                        carSelect?.brandCarName?.name || carDefault?.brandCarName?.name
+                                                        carSelect?.brandCarName?.name ?? carDefault?.brandCarName?.name
                                                     }
                                                 />
                                             </Grid.Col>
                                             <Grid.Col span={6}>
                                                 <TextInput
                                                     label="Dòng xe"
-                                                    defaultValue={carDefault?.modelCarName?.name}
                                                     placeholder="Dòng xe"
                                                     readOnly
-                                                    value={
-                                                        carSelect?.modelCarName?.name || carDefault?.brandCarName?.name
+                                                    defaultValue={
+                                                        carSelect?.modelCarName?.name ?? carDefault?.modelCarName?.name
                                                     }
                                                 />
                                             </Grid.Col>

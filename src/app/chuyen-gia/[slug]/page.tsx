@@ -203,7 +203,7 @@ export default function Home({ params }: { params: { slug: string } }) {
                             </div>
                         </div>
                     </div>
-                    <Product initialProductData={initialProductData} />
+                    <Product initialProductData={initialProductData} garageId={garageData?.id} />
                 </div>
             </div>
 
