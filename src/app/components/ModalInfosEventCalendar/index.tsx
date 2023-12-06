@@ -102,7 +102,10 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                 setCarOptions(newCars);
                 setCars(fetchedCars);
                 const account: any = await getMyAccount(token);
-                const carDefault = newCars?.filter((car) => car.value === account?.carIdDefault);
+                console.log(newCars);
+                console.log(newCars);
+
+                const carDefault = newCars?.filter((car) => car.value == account?.carIdDefault);
                 console.log('carDefault', carDefault);
                 setdataCartDefault(carDefault);
             }
@@ -166,7 +169,7 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                 carOptions={carOptions}
                 cars={cars}
                 garageOptions={garageOptions}
-                dataCarDefault={dataCarDefault}
+                dataCarDefault={dataCarDefault?.[0]?.otherData}
             />
         </BasicModal>
     );

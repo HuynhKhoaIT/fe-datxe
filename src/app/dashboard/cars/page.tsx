@@ -48,8 +48,9 @@ export default function CarsPage() {
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
-                const account = await getMyAccount(token);
+                const account: any = await getMyAccount(token);
                 setMyAccount(account ?? []);
+                setSelectedRow(account?.carIdDefault);
                 setCars(fetchedCars ?? []);
                 setLoading(false);
             }
@@ -87,15 +88,10 @@ export default function CarsPage() {
     const handleRadioChange = (selectedRecord: any) => {
         setOpenModalCarDefault(true);
         setdataCartDefault(selectedRecord);
-        // if (typeof window !== 'undefined' && window.localStorage) {
-        //     localStorage.setItem('carDefault', JSON.stringify(selectedRecord));
-        // } else {
-        //     console.error('localStorage is not available');
-        // }
     };
     const handleCarDefault = () => {
         localStorage.setItem('carDefault', JSON.stringify(dataCarDefault));
-        setSelectedRow(dataCarDefault);
+        setSelectedRow(dataCarDefault?.id);
         handleSetCarDefault(dataCarDefault?.id);
         setOpenModalCarDefault(false);
     };
@@ -109,17 +105,6 @@ export default function CarsPage() {
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
     };
-
-    useEffect(() => {
-        // Lấy dữ liệu từ Local Storage
-        const existingCarData = localStorage.getItem('carDefault');
-        if (existingCarData) {
-            // Chuyển đổi chuỗi JSON thành mảng JavaScript
-            const parsedCarData = JSON.parse(existingCarData);
-            console.log(parsedCarData);
-            setSelectedRow(parsedCarData);
-        }
-    }, []);
     const renderRows = () => {
         if (loading) {
             return (
@@ -138,7 +123,7 @@ export default function CarsPage() {
                 <Table.Td>
                     <Radio
                         style={{ display: 'flex', justifyContent: 'center' }}
-                        checked={myAccount?.carIdDefault === record.id}
+                        checked={selectedRow === record.id}
                         onChange={() => handleRadioChange(record)}
                     />
                 </Table.Td>

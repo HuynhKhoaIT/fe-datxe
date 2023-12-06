@@ -29,8 +29,8 @@ export const ModalEventCalendar = ({
     garageOptions,
     dataCarDefault,
 }: any) => {
+    console.log(dataCarDefault);
     const [loading, setLoading] = useState<boolean>(false);
-    console.log('dataCarDefault', dataCarDefault);
     const [openedLogin, { open: openLogin, close: closeLogin }] = useDisclosure(false);
     const [openedRegister, { open: openRegister, close: closeRegister }] = useDisclosure(false);
     const [newCustomerCare, setNewCustomerCare] = useState({
@@ -53,10 +53,10 @@ export const ModalEventCalendar = ({
             garageId: garageOptions[0]?.value || '',
             priority_level: '2',
             arrival_time: eventInfos?.start,
-            car_id: dataCarDefault?.otherData?.carId || '',
+            car_id: dataCarDefault?.carId || '',
             service_advisor: '',
-            brand_name: dataCarDefault?.otherData?.brandName || '',
-            model_name: dataCarDefault?.otherData?.modelName || null,
+            brand_name: dataCarDefault?.brandName || '',
+            model_name: dataCarDefault?.modelName || null,
         },
 
         validate: {
