@@ -40,7 +40,7 @@ export default function InfoCar({ setCartData }: any) {
                 const account: any = await getMyAccount(token);
 
                 const carDefault: any = newModels?.filter((car) => car.value == account?.carIdDefault);
-                setCartData(carDefault?.value);
+                // setCartData(carDefault?.value);
                 setdataCartDefault(carDefault?.[0]?.otherData);
                 setCaroptions(newModels);
             }
@@ -51,6 +51,8 @@ export default function InfoCar({ setCartData }: any) {
     useEffect(() => {
         fetchCars();
     }, [token]);
+
+    // console.log(carSelect);
 
     return (
         <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>

@@ -87,6 +87,13 @@ export default function Cart() {
         localStorage.setItem('cartData', JSON.stringify(updatedCartData));
         setCartData(updatedCartData);
     };
+    useEffect(() => {
+        const existingCartData = localStorage.getItem('cartData');
+        if (existingCartData) {
+            const parsedCartData = JSON.parse(existingCartData);
+            setCartData(parsedCartData);
+        }
+    }, []);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

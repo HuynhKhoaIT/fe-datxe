@@ -75,13 +75,7 @@ export default function Orders() {
                 <Table.Td>{record.code}</Table.Td>
                 <Table.Td>
                     <div>
-                        <span>
-                            {dayjs
-                                .utc(record?.arrivalTime)
-                                .local()
-                                .format('DD/MM/YYYY hh:mm')}{' '}
-                        </span>
-                        {/* <span>{record?.time}</span> */}
+                        <span>{dayjs.utc(record?.arrivalTime).format('DD/MM/YYYY HH:mm')}</span>
                     </div>
                 </Table.Td>
                 <Table.Td>

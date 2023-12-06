@@ -14,10 +14,7 @@ export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCa
     return {
         _id: (index + 1).toString(),
         title: eventCalendar?.garage?.name || '',
-        start: dayjs
-            .utc(eventCalendar?.arrivalTime)
-            .local()
-            .format('YYYY-MM-DD HH:mm:ss'),
+        start: dayjs.utc(eventCalendar?.arrivalTime).format('YYYY-MM-DD HH:mm:ss'),
         user: '',
     };
 };

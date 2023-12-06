@@ -13,6 +13,7 @@ import { CheckPhone, GenOTP } from '@/utils/user';
 import { notifications } from '@mantine/notifications';
 import { ModalRegister } from './ModalRegister';
 import { addCustomerCare } from '@/utils/customerCare';
+import dayjs from 'dayjs';
 
 export const ModalEventCalendar = ({
     user,
@@ -80,11 +81,11 @@ export const ModalEventCalendar = ({
             brand_name,
             model_name,
         } = values;
-        const customerCare = {
+        const customerCare: any = {
             customer_request: customer_request,
             description: description,
             priority_level: priority_level,
-            arrival_time: arrival_time,
+            arrival_time: dayjs.utc(arrival_time).add(7, 'hour'),
             car_id: car_id,
             garageId: garageId,
         };
@@ -153,8 +154,6 @@ export const ModalEventCalendar = ({
             }
         });
     };
-
-    console.log('new', newCustomerCare);
 
     return (
         <Box>
