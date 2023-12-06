@@ -1,8 +1,7 @@
 import { ICustomerCare } from '@/interfaces/customerCare';
 import { IOrder } from '@/interfaces/order';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
+var utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 export interface IEventCalendar {
     _id: string;
@@ -13,15 +12,13 @@ export interface IEventCalendar {
     user: string;
 }
 export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCalendar => {
-    const formattedStart = dayjs
-        .utc(eventCalendar?.arrivalTime)
-        .local()
-        .format('YYYY-MM-DD HH:mm:ss');
-
     return {
         _id: (index + 1).toString(), // Assuming _id should be a string
         title: eventCalendar?.garage?.name || '', // Providing a default value if garage.name is undefined
-        start: formattedStart,
+        start: dayjs
+            .utc(eventCalendar?.arrivalTime)
+            .local()
+            .format('YYYY-MM-DD HH:mm:ss'),
         user: '', // You need to populate this property with the appropriate value
     };
 };
