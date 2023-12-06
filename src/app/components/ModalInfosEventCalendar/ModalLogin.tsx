@@ -42,41 +42,38 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
         let passwordConfirmation = password;
         try {
             setLoading(true);
-            // const login2 = signIn('credentials', {
-            //     phone: phone,
-            //     password: password,
-            //     // callbackUrl: '/dashboard',
-            // });
-            const loginData = await login(phone, password);
-            console.log(loginData);
-            // const checkRs = await CheckOtp(phone, pin, 'login');
-            // if (checkRs.CodeResult == 100) {
-            //     signIn('credentials', {
-            //         phone: phone,
-            //         password: password,
-            //         callbackUrl: '/dashboard',
-            //     });
-            //     // try {
-            //     //     const createdCar = await addCustomerCare(dataDetail, token ?? '');
-            //     //     setLoading(false);
-            //     // } catch (error) {
-            //     //     console.error('Error creating customer care:', error);
-            //     //     notifications.show({
-            //     //         title: 'Thất bại',
-            //     //         message: 'Đặt lịch thất bại',
-            //     //     });
-            //     //     setLoading(false);
-            //     // }
-            //     notifications.show({
-            //         title: 'Thành công',
-            //         message: 'Đặt lịch thành công',
-            //     });
-            // } else {
-            //     notifications.show({
-            //         title: 'Thất bại',
-            //         message: 'Đặt lịch thất bại',
-            //     });
-            // }
+            const checkRs = await CheckOtp(phone, pin, 'login');
+            if (checkRs.CodeResult == 100) {
+                // signIn('credentials', {
+                //     phone: phone,
+                //     password: password,
+                //     callbackUrl: '/dashboard',
+                // });
+                const loginData: any = await login(phone, password);
+
+                if (loginData?.success == true) {
+                    try {
+                        const createdCar = await addCustomerCare(dataDetail, loginData?.token ?? '');
+                        setLoading(false);
+                    } catch (error) {
+                        console.error('Error creating customer care:', error);
+                        notifications.show({
+                            title: 'Thất bại',
+                            message: 'Đặt lịch thất bại',
+                        });
+                        setLoading(false);
+                    }
+                }
+                notifications.show({
+                    title: 'Thành công',
+                    message: 'Đặt lịch thành công',
+                });
+            } else {
+                notifications.show({
+                    title: 'Thất bại',
+                    message: 'Đặt lịch thất bại',
+                });
+            }
             setLoading(false);
         } catch (error) {
             notifications.show({
