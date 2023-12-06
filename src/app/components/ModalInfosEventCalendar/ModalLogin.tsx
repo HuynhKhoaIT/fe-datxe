@@ -42,12 +42,13 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
         let passwordConfirmation = password;
         try {
             setLoading(true);
-            const login = signIn('credentials', {
-                phone: phone,
-                password: password,
-                callbackUrl: '/dashboard',
-            });
-            console.log(login);
+            // const login2 = signIn('credentials', {
+            //     phone: phone,
+            //     password: password,
+            //     // callbackUrl: '/dashboard',
+            // });
+            const loginData = await login(phone, password);
+            console.log(loginData);
             // const checkRs = await CheckOtp(phone, pin, 'login');
             // if (checkRs.CodeResult == 100) {
             //     signIn('credentials', {
