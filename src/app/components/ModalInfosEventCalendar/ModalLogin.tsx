@@ -50,10 +50,15 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
                 //     callbackUrl: '/dashboard',
                 // });
                 const loginData: any = await login(phone, password);
-
+                console.log('loginData?.success == true', loginData?.success == true);
                 if (loginData?.success == true) {
                     try {
+                        console.log('dataDetail', dataDetail);
                         const createdCar = await addCustomerCare(dataDetail, loginData?.token ?? '');
+                        notifications.show({
+                            title: 'Thành công',
+                            message: 'Đặt lịch thành công',
+                        });
                         setLoading(false);
                     } catch (error) {
                         console.error('Error creating customer care:', error);
