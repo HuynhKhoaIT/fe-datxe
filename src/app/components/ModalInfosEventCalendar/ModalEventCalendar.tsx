@@ -41,7 +41,6 @@ export const ModalEventCalendar = ({
         car_id: '',
         garageId: '',
     });
-    console.log('dataCarDefault?.id', garageOptions);
     const form = useForm({
         initialValues: {
             customer_request: '',
