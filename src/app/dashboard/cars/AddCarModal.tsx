@@ -14,7 +14,7 @@ import { IconPlus, IconBan } from '@tabler/icons-react';
 import BasicModal from '@/app/components/basicModal/BasicModal';
 import { useForm, hasLength } from '@mantine/form';
 
-const AddCarModal = ({ opened, close, ...props }: any) => {
+const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const router = useRouter();
@@ -61,6 +61,7 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                 material_insurance_deadline: dayjs(values?.material_insurance_deadline).format('YYYY-MM-DD'),
                 registration_deadline: dayjs(values?.registration_deadline).format('YYYY-MM-DD'),
             };
+            console.log('newCar', newCar);
             const createdCar = await addCar(newCar, token ?? '');
             const cars: any = await getCars(token ?? '');
             if (cars?.length < 2) {
@@ -73,6 +74,7 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                 }
             }
             close();
+            fetchCars();
             notifications.show({
                 title: 'Thành công',
                 message: 'Thêm xe thành công',
@@ -116,6 +118,7 @@ const AddCarModal = ({ opened, close, ...props }: any) => {
                                 placeholder="Chọn hãng xe"
                                 data={brandsData}
                                 onChange={(value) => {
+                                    form.setFieldValue('brand_id', value);
                                     selectBrand(Number(value));
                                 }}
                             />

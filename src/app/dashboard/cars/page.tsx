@@ -87,11 +87,11 @@ export default function CarsPage() {
     const handleRadioChange = (selectedRecord: any) => {
         setOpenModalCarDefault(true);
         setdataCartDefault(selectedRecord);
-        if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem('carDefault', JSON.stringify(selectedRecord));
-        } else {
-            console.error('localStorage is not available');
-        }
+        // if (typeof window !== 'undefined' && window.localStorage) {
+        //     localStorage.setItem('carDefault', JSON.stringify(selectedRecord));
+        // } else {
+        //     console.error('localStorage is not available');
+        // }
     };
     const handleCarDefault = () => {
         localStorage.setItem('carDefault', JSON.stringify(dataCarDefault));
@@ -138,7 +138,7 @@ export default function CarsPage() {
                 <Table.Td>
                     <Radio
                         style={{ display: 'flex', justifyContent: 'center' }}
-                        checked={selectedRow?.id === record.id}
+                        checked={myAccount?.carIdDefault === record.id}
                         onChange={() => handleRadioChange(record)}
                     />
                 </Table.Td>
@@ -262,7 +262,7 @@ export default function CarsPage() {
                     </Button>
                 </Group>
             </Modal>
-            <AddCarModal width={800} opened={openedAddCar} close={closeAddCar} />
+            <AddCarModal width={800} opened={openedAddCar} close={closeAddCar} fetchCars={() => fetchCars()} />
             <PreviewModal
                 opened={openedPreviewCar}
                 onOk={closePreviewCar}
