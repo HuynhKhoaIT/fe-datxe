@@ -56,7 +56,7 @@ export const ModalEventCalendar = ({
             car_id: dataCarDefault?.otherData?.carId || '',
             service_advisor: '',
             brand_name: dataCarDefault?.otherData?.brandName || '',
-            model_name: dataCarDefault?.otherData.modelName || null,
+            model_name: dataCarDefault?.otherData?.modelName || null,
         },
 
         validate: {

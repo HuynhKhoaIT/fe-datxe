@@ -103,7 +103,7 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                 setCars(fetchedCars);
                 const account: any = await getMyAccount(token);
                 const carDefault = newCars?.filter((car) => car.value === account?.carIdDefault);
-
+                console.log('carDefault', carDefault);
                 setdataCartDefault(carDefault);
             }
         } catch (error) {
