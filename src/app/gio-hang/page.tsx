@@ -58,7 +58,6 @@ export default function Cart() {
     };
     // giảm số lượng sản phẩm
     const decrementQuantity = (productId: number) => {
-        console.log(cartData);
         const updateCartData = cartData.map((item) => {
             console.log(item.quantity);
             if (item.quantity === 1) {
@@ -77,16 +76,13 @@ export default function Cart() {
     // Tính tổng tiền
     const calculateSubTotal = () => {
         let subTotal = 0;
-        cartData.forEach((item) => {
+        cartData?.forEach((item) => {
             subTotal += item.product.price * item.quantity;
         });
         return subTotal;
     };
     // Xóa sản phẩm ra khỏi giỏ hàng
     const deleteItem = (productId: number) => {
-        console.log('ele', productId);
-        console.log('cartData', cartData[0].product?.id !== productId);
-
         const updatedCartData = cartData.filter((item) => item?.product?.id !== productId);
         localStorage.setItem('cartData', JSON.stringify(updatedCartData));
         setCartData(updatedCartData);
@@ -103,7 +99,6 @@ export default function Cart() {
                     message: 'Vui lòng thêm sản phẩm vào giỏ hàng',
                 });
                 setLoading(false);
-
                 return;
             }
             const arrivalTime = date + ' ' + time;
@@ -130,13 +125,6 @@ export default function Cart() {
             setLoading(false);
         }
     };
-
-    const pickerControl = (
-        <ActionIcon variant="subtle" color="gray" onClick={() => ref.current?.showPicker()}>
-            <IconClock12 size={16} />
-        </ActionIcon>
-    );
-
     const renderRows = () => {
         return cartData?.map((record) => (
             <CartItemRow
@@ -166,6 +154,7 @@ export default function Cart() {
                     <InfoCart loading={loading} renderRows={renderRows} calculateSubTotal={calculateSubTotal} />
                 </div>
             </form>
+
             <Modal title="Delete" opened={isModalDeleteOpen} onClose={handleDeleteCancel} lockScroll={false}>
                 <div>Bạn có muốn xoá không?</div>
                 <Group justify="end" style={{ marginTop: 10 }}>

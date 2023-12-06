@@ -3,12 +3,13 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { Grid, Modal, TextInput, Card, Avatar, Select } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import { getCar, getCars } from '@/utils/car';
+import { getMyAccount } from '@/utils/user';
 
 export default function InfoCar({ setCartData }: any) {
     const { data: session, status } = useSession();
     const token = session?.user?.token;
     const [carOptions, setCaroptions] = useState<any>();
-    const [carDefault, setCarDefault] = useState<any>({});
+    const [dataCarDefault, setdataCartDefault] = useState<any>();
 
     const selectCar = async (value: any) => {
         try {
@@ -28,7 +29,19 @@ export default function InfoCar({ setCartData }: any) {
                 const newModels = fetchedCars?.map((car) => ({
                     value: car.id?.toString() || '',
                     label: car.licensePlates || '',
+                    otherData: {
+                        carId: car.id?.toString() || '',
+                        brandId: car.brandCarName.id,
+                        brandName: car.brandCarName.name,
+                        modelId: car.modelCarName.id,
+                        modelName: car.modelCarName.name,
+                    },
                 }));
+                const account: any = await getMyAccount(token);
+
+                const carDefault: any = newModels?.filter((car) => car.value == account?.carIdDefault);
+                setCartData(carDefault?.value);
+                setdataCartDefault(carDefault?.[0]?.otherData);
                 setCaroptions(newModels);
             }
         } catch (error) {
@@ -38,19 +51,9 @@ export default function InfoCar({ setCartData }: any) {
     useEffect(() => {
         fetchCars();
     }, [token]);
-    useEffect(() => {
-        const existingCarData = localStorage.getItem('carDefault');
-        if (existingCarData) {
-            // Chuyển đổi chuỗi JSON thành mảng JavaScript
-            const parsedCarData = JSON.parse(existingCarData);
-            setCarDefault(parsedCarData);
-        }
-        const existingCartData = localStorage.getItem('cartData');
-        if (existingCartData) {
-            const parsedCartData = JSON.parse(existingCartData);
-            setCartData(parsedCartData);
-        }
-    }, []);
+    console.log(dataCarDefault);
+    console.log(carSelect);
+
     return (
         <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
             <div className="checkout-widget">
@@ -63,7 +66,7 @@ export default function InfoCar({ setCartData }: any) {
                                 checkIconPosition="right"
                                 placeholder="Biển số"
                                 data={carOptions}
-                                value={carSelect?.id ?? carDefault?.id?.toString()}
+                                value={carSelect?.id ?? dataCarDefault?.carId?.toString()}
                                 allowDeselect={false}
                                 onChange={(value) => {
                                     selectCar(value);
@@ -77,7 +80,7 @@ export default function InfoCar({ setCartData }: any) {
                                 label="Hãng Xe"
                                 placeholder="Hãng Xe"
                                 readOnly
-                                value={carSelect?.brandCarName?.name ?? carDefault?.brandCarName?.name}
+                                value={carSelect?.brandCarName?.name ?? dataCarDefault?.brandName}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
@@ -85,7 +88,7 @@ export default function InfoCar({ setCartData }: any) {
                                 label="Dòng xe"
                                 placeholder="Dòng xe"
                                 readOnly
-                                defaultValue={carSelect?.modelCarName?.name ?? carDefault?.modelCarName?.name}
+                                defaultValue={carSelect?.modelCarName?.name ?? dataCarDefault?.modelName}
                             />
                         </Grid.Col>
                     </Grid>
