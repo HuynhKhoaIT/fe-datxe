@@ -135,6 +135,8 @@ export default function CalendarScheduler({ ordersData }: any) {
                     day: 'Ngày',
                     list: 'Danh sách',
                 }}
+                slotMinTime="06:00:00"
+                slotMaxTime="22:00:00"
             />
         </div>
     );

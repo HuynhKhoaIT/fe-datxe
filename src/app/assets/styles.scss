@@ -7140,6 +7140,9 @@ body.rtl-mode .price-wrapper {
 .input-date button {
     background-color: var(--theme-color);
 }
+.fc .fc-timegrid-slot {
+    height: 4rem !important;
+}
 
 // profile
 .card-body {
