@@ -51,8 +51,6 @@ export default function InfoCar({ setCartData }: any) {
     useEffect(() => {
         fetchCars();
     }, [token]);
-    console.log(dataCarDefault);
-    console.log(carSelect);
 
     return (
         <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>

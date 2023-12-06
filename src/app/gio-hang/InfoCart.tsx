@@ -3,7 +3,6 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { Grid, Modal, TextInput, Card, Avatar, Select, Table, Group, Button } from '@mantine/core';
 
 export default function InfoCart({ loading, renderRows, calculateSubTotal }: any) {
-    console.log(renderRows);
     return (
         <div className="container">
             <Card className="shop-cart-wrapper">
