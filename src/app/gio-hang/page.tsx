@@ -26,7 +26,8 @@ export default function Cart() {
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
-
+    const [carId, setCarId] = useState<any>();
+    console.log(carId);
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
         deleteItem(deleteRow?.product?.id);
@@ -109,7 +110,7 @@ export default function Cart() {
                 return;
             }
             const arrivalTime = date + ' ' + time;
-            await checkOutCart(arrivalTime, transformedProducts, token ?? '');
+            await checkOutCart(carId, arrivalTime, transformedProducts, token ?? '');
             localStorage.setItem('cartData', JSON.stringify([]));
             const existingCartData = localStorage.getItem('cartData');
             if (existingCartData) {
@@ -153,7 +154,7 @@ export default function Cart() {
                                 <InfoCustomer dataDetail={session?.user} />
                             </Suspense>
                             <Suspense fallback={<p>loading...</p>}>
-                                <InfoCar setCartData={setCartData} />
+                                <InfoCar setCarId={setCarId} />
                             </Suspense>
                         </Grid>
                         <InfoDate setDate={setDate} setTime={setTime} />

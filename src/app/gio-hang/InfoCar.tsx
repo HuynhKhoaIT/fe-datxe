@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { getCar, getCars } from '@/utils/car';
 import { getMyAccount } from '@/utils/user';
 
-export default function InfoCar({ setCartData }: any) {
+export default function InfoCar({ setCarId }: any) {
     const { data: session, status } = useSession();
     const token = session?.user?.token;
     const [carOptions, setCaroptions] = useState<any>();
@@ -40,7 +40,7 @@ export default function InfoCar({ setCartData }: any) {
                 const account: any = await getMyAccount(token);
 
                 const carDefault: any = newModels?.filter((car) => car.value == account?.carIdDefault);
-                // setCartData(carDefault?.value);
+                setCarId(carDefault?.value);
                 setdataCartDefault(carDefault?.[0]?.otherData);
                 setCaroptions(newModels);
             }
@@ -70,6 +70,7 @@ export default function InfoCar({ setCartData }: any) {
                                 allowDeselect={false}
                                 onChange={(value) => {
                                     selectCar(value);
+                                    setCarId(value);
                                 }}
                             />
                         </Grid.Col>

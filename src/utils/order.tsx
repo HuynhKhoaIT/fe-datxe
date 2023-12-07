@@ -83,7 +83,7 @@ export function showStatus(status: any) {
     return s;
 }
 
-export const checkOutCart = async (arrivalTime: string, cartData: object, token: string) => {
+export const checkOutCart = async (carId: any, arrivalTime: string, cartData: object, token: string) => {
     console.log(arrivalTime);
     console.log(cartData);
     console.log('token', token);
@@ -93,6 +93,7 @@ export const checkOutCart = async (arrivalTime: string, cartData: object, token:
                 headers: { Authorization: `Bearer ${token}` },
             };
             const data = {
+                car_id: carId,
                 arrival_time: arrivalTime,
                 items: cartData,
             };
