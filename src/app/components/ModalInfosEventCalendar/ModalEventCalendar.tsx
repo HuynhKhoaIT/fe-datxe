@@ -54,10 +54,10 @@ export const ModalEventCalendar = ({
             full_name: user?.name || '',
             phone_number: user?.phone || '',
             category: '',
-            garaName: '',
+            garaName: garage?.data?.name,
             garaAddress: '',
             description: '',
-            garageId: garageOptions[0]?.value || '',
+            garageId: garage?.data?.id || '',
             priority_level: '2',
             arrival_time: eventInfos?.start,
             car_id: dataCarDefault?.carId || '',
@@ -280,7 +280,7 @@ export const ModalEventCalendar = ({
                         />
                     </Grid.Col>
                 </Grid>
-                {garage && (
+                {garage && token && (
                     <Grid gutter={10} mt="md">
                         <Grid.Col span={6}>
                             <Select
@@ -300,6 +300,13 @@ export const ModalEventCalendar = ({
                                 withAsterisk
                                 {...form.getInputProps('garageId')}
                             />
+                        </Grid.Col>
+                    </Grid>
+                )}
+                {garage && !token && (
+                    <Grid mt="md">
+                        <Grid.Col span={12}>
+                            <TextInput placeholder="Chuyên gia" {...form.getInputProps('garaName')} />
                         </Grid.Col>
                     </Grid>
                 )}
