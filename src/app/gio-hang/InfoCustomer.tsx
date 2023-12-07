@@ -10,28 +10,17 @@ export default function InfoCustomer({ dataDetail }: any) {
                 <Card>
                     <Grid gutter={16}>
                         <Grid.Col span={12}>
-                            <TextInput
-                                label="Họ Tên"
-                                placeholder="Họ Tên"
-                                readOnly
-                                defaultValue={dataDetail?.name || ''}
-                            />
+                            <TextInput label="Họ Tên" placeholder="Họ Tên" defaultValue={dataDetail?.name || ''} />
                         </Grid.Col>
                     </Grid>
                     <Grid gutter={16}>
                         <Grid.Col span={6}>
-                            <TextInput
-                                label="Email"
-                                placeholder="Email"
-                                readOnly
-                                defaultValue={dataDetail?.email ?? ''}
-                            />
+                            <TextInput label="Email" placeholder="Email" defaultValue={dataDetail?.email ?? ''} />
                         </Grid.Col>
                         <Grid.Col span={6}>
                             <TextInput
                                 label="Điện thoại"
                                 placeholder="Điện thoại"
-                                readOnly
                                 defaultValue={dataDetail?.phone ?? ''}
                             />
                         </Grid.Col>

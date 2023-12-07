@@ -4,17 +4,21 @@ import { Grid, Modal, TextInput, Card, Avatar, Select } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import { getCar, getCars } from '@/utils/car';
 import { getMyAccount } from '@/utils/user';
-
-export default function InfoCar({ setCartData }: any) {
+import { useDisclosure } from '@mantine/hooks';
+import { LoadingOverlay, Button, Group, Box } from '@mantine/core';
+export default function InfoCar({ setCarId }: any) {
     const { data: session, status } = useSession();
     const token = session?.user?.token;
     const [carOptions, setCaroptions] = useState<any>();
     const [dataCarDefault, setdataCartDefault] = useState<any>();
-
+    const [visible, handlers] = useDisclosure(false);
     const selectCar = async (value: any) => {
+        handlers.open();
+
         try {
             const selectedCar = await getCar(token ?? '', value);
             setCarSelect(selectedCar);
+            handlers.close();
         } catch (error) {
             console.error('Error selecting car:', error);
         }
@@ -40,7 +44,7 @@ export default function InfoCar({ setCartData }: any) {
                 const account: any = await getMyAccount(token);
 
                 const carDefault: any = newModels?.filter((car) => car.value == account?.carIdDefault);
-                // setCartData(carDefault?.value);
+                setCarId(carDefault?.value);
                 setdataCartDefault(carDefault?.[0]?.otherData);
                 setCaroptions(newModels);
             }
@@ -59,6 +63,8 @@ export default function InfoCar({ setCartData }: any) {
             <div className="checkout-widget">
                 <h4 className="checkout-widget-title">Thông tin Xe</h4>
                 <Card pos="relative">
+                    <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+
                     <Grid gutter={16}>
                         <Grid.Col span={12}>
                             <Select
@@ -70,6 +76,7 @@ export default function InfoCar({ setCartData }: any) {
                                 allowDeselect={false}
                                 onChange={(value) => {
                                     selectCar(value);
+                                    setCarId(value);
                                 }}
                             />
                         </Grid.Col>

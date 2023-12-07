@@ -13,6 +13,7 @@ import { notifications } from '@mantine/notifications';
 import { addCustomerCare } from '@/utils/customerCare';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { GenOTP } from '@/utils/user';
 
 export const ModalEventCalendar = ({
     user,
@@ -53,10 +54,10 @@ export const ModalEventCalendar = ({
             full_name: user?.name || '',
             phone_number: user?.phone || '',
             category: '',
-            garaName: '',
+            garaName: garage?.data?.name,
             garaAddress: '',
             description: '',
-            garageId: garageOptions[0]?.value || '',
+            garageId: garage?.data?.id || '',
             priority_level: '2',
             arrival_time: eventInfos?.start,
             car_id: dataCarDefault?.carId || '',
@@ -72,7 +73,7 @@ export const ModalEventCalendar = ({
         validate: {
             full_name: (value) => (value.length < 1 ? 'Vui lòng nhập tên' : null),
             phone_number: (value) => (value.length < 1 ? 'Vui lòng nhập số điện thoại' : null),
-            number_plates: (value) => (value.length < 1 ? 'Vui lòng nhập biển số xe' : null),
+            number_plates: (value) => (!token && value.length < 1 ? 'Vui lòng nhập biển số xe' : null),
         },
     });
     const handleSubmit = async (values: any) => {
@@ -108,6 +109,7 @@ export const ModalEventCalendar = ({
         };
         setNewCustomerCare(customerCare);
         if (!token) {
+            const genRs = await GenOTP(phone_number);
             setLoading(false);
             openLogin();
         } else {
@@ -278,7 +280,7 @@ export const ModalEventCalendar = ({
                         />
                     </Grid.Col>
                 </Grid>
-                {garage && (
+                {garage && token && (
                     <Grid gutter={10} mt="md">
                         <Grid.Col span={6}>
                             <Select
@@ -298,6 +300,13 @@ export const ModalEventCalendar = ({
                                 withAsterisk
                                 {...form.getInputProps('garageId')}
                             />
+                        </Grid.Col>
+                    </Grid>
+                )}
+                {garage && !token && (
+                    <Grid mt="md">
+                        <Grid.Col span={12}>
+                            <TextInput placeholder="Chuyên gia" {...form.getInputProps('garaName')} />
                         </Grid.Col>
                     </Grid>
                 )}
