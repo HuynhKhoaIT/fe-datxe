@@ -2,17 +2,12 @@
 import BasicModal from '../basicModal/BasicModal';
 import React, { useEffect, useState } from 'react';
 import { Box, Avatar, Grid, Input, Button, PinInput } from '@mantine/core';
-import { IconChevronLeft, IconBrandGoogle } from '@tabler/icons-react';
-import IconGoogle from '../../assets/images/google.svg';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+import { useForm, hasLength, matches } from '@mantine/form';
 import { CheckOtp, CheckPhone, login, register } from '@/utils/user';
 import { notifications } from '@mantine/notifications';
-import { signIn } from 'next-auth/react';
-import { preventDefault } from '@fullcalendar/core/internal';
-import { addCustomerCare } from '@/utils/customerCare';
-export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
+import { addCustomerCareGuest } from '@/utils/customerCare';
+export function ModalOrderGuest({ opened, close, phone, router, dataDetail, onClose }: any) {
     const [countdown, setCountdown] = useState<number>(59);
     const [loading, setLoading] = useState(false);
     const form = useForm({
@@ -38,54 +33,39 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
     }, [countdown]);
     const onLogin = async () => {
         const { pin } = form.values;
-        let password = phone + '@@Datxe.com@@';
-        let passwordConfirmation = password;
         try {
             setLoading(true);
             const checkRs = await CheckOtp(phone, pin, 'login');
             if (checkRs.CodeResult == 100) {
-                // signIn('credentials', {
-                //     phone: phone,
-                //     password: password,
-                //     callbackUrl: '/dashboard',
-                // });
-                const loginData: any = await login(phone, password);
-                console.log('loginData?.success == true', loginData?.success);
-                console.log('loginData?.success == true', loginData?.success === 'true');
+                try {
+                    const createdCar = await addCustomerCareGuest(dataDetail);
+                    notifications.show({
+                        title: 'Thành công',
+                        message: 'Đặt lịch thành công',
+                    });
+                    router.push('/dashboard');
+                    onClose();
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error creating customer care:', error);
+                    notifications.show({
+                        title: 'Thất bại',
+                        message: 'Đặt lịch thất bại',
+                    });
 
-                if (loginData?.success) {
-                    try {
-                        console.log('dataDetail', dataDetail);
-                        const createdCar = await addCustomerCare(dataDetail, loginData?.token ?? '');
-                        notifications.show({
-                            title: 'Thành công',
-                            message: 'Đặt lịch thành công',
-                        });
-                        setLoading(false);
-                    } catch (error) {
-                        console.error('Error creating customer care:', error);
-                        notifications.show({
-                            title: 'Thất bại',
-                            message: 'Đặt lịch thất bại',
-                        });
-                        setLoading(false);
-                    }
+                    setLoading(false);
                 }
-                notifications.show({
-                    title: 'Thành công',
-                    message: 'Đặt lịch thành công',
-                });
             } else {
                 notifications.show({
                     title: 'Thất bại',
-                    message: 'Đặt lịch thất bại',
+                    message: 'Xác thực thất bại',
                 });
             }
             setLoading(false);
         } catch (error) {
             notifications.show({
                 title: 'Thất bại',
-                message: 'Đăng nhập thất bại',
+                message: 'Xác thực thất bại',
             });
             setLoading(false);
         }

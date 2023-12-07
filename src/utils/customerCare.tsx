@@ -5,7 +5,7 @@ import axios from 'axios';
 /**
  * Internal Dependencies.
  */
-import { CUSTOMER_CARE_ENDPOINT } from './constants/endpoints';
+import { CUSTOMER_CARE_ENDPOINT, CUSTOMER_CARE_ENDPOINT_GUEST } from './constants/endpoints';
 import { ICustomerCare } from '@/interfaces/customerCare';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -57,6 +57,16 @@ export const addCustomerCare = async (newCustomerCare: Object, token: String) =>
             const res = await axios.post(`${CUSTOMER_CARE_ENDPOINT}`, newCustomerCare, config);
             return res.data as ICustomerCare;
         }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình tạo đặt lịch');
+    }
+};
+
+export const addCustomerCareGuest = async (newCustomerCare: Object) => {
+    try {
+        const res = await axios.post(`${CUSTOMER_CARE_ENDPOINT_GUEST}`, newCustomerCare);
+        return res.data as ICustomerCare;
     } catch (error) {
         console.error(error);
         throw new Error('Lỗi trong quá trình tạo đặt lịch');

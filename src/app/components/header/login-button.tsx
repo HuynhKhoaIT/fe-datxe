@@ -29,7 +29,7 @@ const SigninButton = () => {
                 <IconUserCircle />
                 <div className={cx('nav__text', 'd-none d-lg-block')}>
                     {!session?.user ? (
-                        <Link href="/dang-nhap" className={cx('nav__text-login')} onClick={() => signIn()}>
+                        <Link href="/dang-nhap" className={cx('nav__text-login')}>
                             Đăng nhập
                         </Link>
                     ) : (
