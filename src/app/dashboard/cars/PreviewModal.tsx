@@ -2,15 +2,16 @@
 import React from 'react';
 import { Grid, Modal, Textarea, TextInput, Box } from '@mantine/core';
 import dayjs from 'dayjs';
+import BasicModal from '@/app/components/basicModal/BasicModal';
 
-const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
+const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
     return (
-        <Modal
+        <BasicModal
             size={800}
             title="Thông tin chi tiết"
-            opened={open}
+            isOpen={opened}
             closeButtonProps
-            onClose={onCancel}
+            onCloseModal={onCancel}
             lockScroll={false}
             {...props}
         >
@@ -116,7 +117,7 @@ const PreviewModal = ({ data, onOk, open, onCancel, ...props }: any) => {
           </Grid.Col>
         </Grid> */}
             </Box>
-        </Modal>
+        </BasicModal>
     );
 };
 

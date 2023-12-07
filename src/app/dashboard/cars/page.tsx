@@ -1,53 +1,35 @@
 'use client';
 import React, { Suspense, useEffect, useState } from 'react';
-import { getCars, deleteCar } from '@/utils/car';
+import { getCars, deleteCar, setCarDefault } from '@/utils/car';
 import { ICar } from '../../../interfaces/car';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { IconChevronRight, IconEye, IconPencil, IconTrash, IconBan } from '@tabler/icons-react';
 import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
 import AddCarModal from './AddCarModal';
 import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
 import { getMyAccount } from '@/utils/user';
-import { IUser } from '@/types/next-auth';
+import { useDisclosure } from '@mantine/hooks';
 
 export default function CarsPage() {
     const { data: session } = useSession();
     const token = session?.user?.token;
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [openedAddCar, { open: openAddCar, close: closeAddCar }] = useDisclosure(false);
+    // const [openedDeleteCar, { open: openDeleteCar, close: closeDeleteCar }] = useDisclosure(false);
+    const [openedUpdateCar, { open: openUpdateCar, close: closeUpdateCar }] = useDisclosure(false);
+    const [openedPreviewCar, { open: openPreviewCar, close: closePreviewCar }] = useDisclosure(false);
+
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-    const [detail, setDetail] = useState({});
+    const [detail, setDetail] = useState<any>({});
     const [deleteRow, setDeleteRow] = useState('');
     const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
     const [myAccount, setMyAccount] = useState<any>([]);
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
     // Mở modal xem chi tiết
     const showDetails = (e: React.MouseEvent<HTMLElement, MouseEvent>, record: object) => {
         e.stopPropagation();
         setDetail(record);
-        setIsModalOpen(true);
-    };
-
-    // mở modal edit
-    const showUpdateModal = (record: object) => {
-        setDetail(record);
-        setIsUpdateModalOpen(true);
-    };
-    // Mở modal thêm car
-    const showAddModal = () => {
-        setIsAddModalOpen(true);
-    };
-    // Đóng modal
-    const handleCancel = () => {
-        setIsModalOpen(false);
-        setIsUpdateModalOpen(false);
-        setIsAddModalOpen(false);
+        openPreviewCar();
     };
 
     const handleDeleteOk = () => {
@@ -62,15 +44,13 @@ export default function CarsPage() {
         setIsModalDeleteOpen(false);
     };
     const [cars, setCars] = useState<ICar[]>([]);
-
-    console.log(cars);
     const fetchCars = async () => {
-        console.log('update or delete');
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
-                const account = await getMyAccount(token);
+                const account: any = await getMyAccount(token);
                 setMyAccount(account ?? []);
+                setSelectedRow(account?.carIdDefault);
                 setCars(fetchedCars ?? []);
                 setLoading(false);
             }
@@ -91,6 +71,15 @@ export default function CarsPage() {
             console.error('Error deleting car:', error);
         }
     };
+    const handleSetCarDefault = async (CarId: string) => {
+        try {
+            const carDefault = await setCarDefault(CarId, token ?? '');
+            console.log(carDefault);
+        } catch (error) {
+            console.error('Error set car:', error);
+            console.log('fail');
+        }
+    };
 
     // xe mặc định lưu trên localStorage
     const [selectedRow, setSelectedRow] = useState<any>();
@@ -99,15 +88,11 @@ export default function CarsPage() {
     const handleRadioChange = (selectedRecord: any) => {
         setOpenModalCarDefault(true);
         setdataCartDefault(selectedRecord);
-        if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem('carDefault', JSON.stringify(selectedRecord));
-        } else {
-            console.error('localStorage is not available');
-        }
     };
     const handleCarDefault = () => {
         localStorage.setItem('carDefault', JSON.stringify(dataCarDefault));
-        setSelectedRow(dataCarDefault);
+        setSelectedRow(dataCarDefault?.id);
+        handleSetCarDefault(dataCarDefault?.id);
         setOpenModalCarDefault(false);
     };
 
@@ -120,17 +105,6 @@ export default function CarsPage() {
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
     };
-
-    useEffect(() => {
-        // Lấy dữ liệu từ Local Storage
-        const existingCarData = localStorage.getItem('carDefault');
-        if (existingCarData) {
-            // Chuyển đổi chuỗi JSON thành mảng JavaScript
-            const parsedCarData = JSON.parse(existingCarData);
-            console.log(parsedCarData);
-            setSelectedRow(parsedCarData);
-        }
-    }, []);
     const renderRows = () => {
         if (loading) {
             return (
@@ -149,7 +123,7 @@ export default function CarsPage() {
                 <Table.Td>
                     <Radio
                         style={{ display: 'flex', justifyContent: 'center' }}
-                        checked={selectedRow?.id === record.id}
+                        checked={selectedRow === record.id}
                         onChange={() => handleRadioChange(record)}
                     />
                 </Table.Td>
@@ -168,7 +142,10 @@ export default function CarsPage() {
                         variant="transparent"
                         color="gray"
                         p={5}
-                        onClick={() => showUpdateModal(record)}
+                        onClick={() => {
+                            setDetail(record);
+                            openUpdateCar();
+                        }}
                     >
                         <IconPencil size={16} />
                     </Button>
@@ -195,7 +172,7 @@ export default function CarsPage() {
                         <div className="user-profile-search">
                             <div className="form-group"></div>
                         </div>
-                        <Button className="theme-btn btn-add-car" onClick={() => showAddModal()}>
+                        <Button className="theme-btn btn-add-car" onClick={openAddCar}>
                             Thêm xe
                         </Button>
                     </div>
@@ -246,13 +223,7 @@ export default function CarsPage() {
                     </Button>
                 </Group>
             </Modal>
-            <UpdateModal
-                open={isUpdateModalOpen}
-                fetchCars={() => fetchCars()}
-                onCancel={handleCancel}
-                width={800}
-                data={detail ? detail : {}}
-            />
+
             <Modal
                 size={400}
                 opened={openModalCarDefault}
@@ -276,8 +247,20 @@ export default function CarsPage() {
                     </Button>
                 </Group>
             </Modal>
-            <AddCarModal width={800} open={isAddModalOpen} onCancel={handleCancel} />
-            <PreviewModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} data={detail} />
+            <AddCarModal width={800} opened={openedAddCar} close={closeAddCar} fetchCars={() => fetchCars()} />
+            <PreviewModal
+                opened={openedPreviewCar}
+                onOk={closePreviewCar}
+                onCancel={closePreviewCar}
+                width={800}
+                data={detail}
+            />
+            <UpdateModal
+                opened={openedUpdateCar}
+                fetchCars={() => fetchCars()}
+                onCancel={closeUpdateCar}
+                data={detail ? detail : {}}
+            />
         </div>
     );
 }

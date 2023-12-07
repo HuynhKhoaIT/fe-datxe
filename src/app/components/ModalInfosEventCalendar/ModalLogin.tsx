@@ -44,22 +44,33 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
             setLoading(true);
             const checkRs = await CheckOtp(phone, pin, 'login');
             if (checkRs.CodeResult == 100) {
-                signIn('credentials', {
-                    phone: phone,
-                    password: password,
-                    callbackUrl: '/dashboard',
-                });
-                // try {
-                //     const createdCar = await addCustomerCare(dataDetail, token ?? '');
-                //     setLoading(false);
-                // } catch (error) {
-                //     console.error('Error creating customer care:', error);
-                //     notifications.show({
-                //         title: 'Thất bại',
-                //         message: 'Đặt lịch thất bại',
-                //     });
-                //     setLoading(false);
-                // }
+                // signIn('credentials', {
+                //     phone: phone,
+                //     password: password,
+                //     callbackUrl: '/dashboard',
+                // });
+                const loginData: any = await login(phone, password);
+                console.log('loginData?.success == true', loginData?.success);
+                console.log('loginData?.success == true', loginData?.success === 'true');
+
+                if (loginData?.success) {
+                    try {
+                        console.log('dataDetail', dataDetail);
+                        const createdCar = await addCustomerCare(dataDetail, loginData?.token ?? '');
+                        notifications.show({
+                            title: 'Thành công',
+                            message: 'Đặt lịch thành công',
+                        });
+                        setLoading(false);
+                    } catch (error) {
+                        console.error('Error creating customer care:', error);
+                        notifications.show({
+                            title: 'Thất bại',
+                            message: 'Đặt lịch thất bại',
+                        });
+                        setLoading(false);
+                    }
+                }
                 notifications.show({
                     title: 'Thành công',
                     message: 'Đặt lịch thành công',

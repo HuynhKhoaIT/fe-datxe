@@ -10,9 +10,11 @@ import { getCategories } from '@/utils/category';
 import Categories from '../category/categories';
 import { getCustomerCareCreate } from '@/utils/customerCare';
 import { getCars } from '@/utils/car';
+import { getMyAccount } from '@/utils/user';
 
 export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
     const searchParams = useSearchParams();
+
     const garageId = searchParams.get('garage');
     // Lấy thông tin khách hàng nếu có
     const { data: session } = useSession();
@@ -100,6 +102,9 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                 }));
                 setCarOptions(newCars);
                 setCars(fetchedCars);
+                const account: any = await getMyAccount(token);
+                const carDefault = newCars?.filter((car) => car.value == account?.carIdDefault);
+                setdataCartDefault(carDefault);
             }
         } catch (error) {
             console.error('Error fetching cars:', error);
@@ -139,16 +144,6 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
 
         fetchData();
     }, [token]);
-    useEffect(() => {
-        // Lấy dữ liệu từ Local Storage
-        const existingCarData = localStorage.getItem('carDefault');
-        if (existingCarData) {
-            // Chuyển đổi chuỗi JSON thành mảng JavaScript
-            const parsedCarData = JSON.parse(existingCarData);
-            console.log(parsedCarData);
-            setdataCartDefault(parsedCarData);
-        }
-    }, []);
     return (
         <BasicModal
             size={600}
@@ -171,7 +166,8 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                 carOptions={carOptions}
                 cars={cars}
                 garageOptions={garageOptions}
-                dataCarDefault={dataCarDefault}
+                dataCarDefault={dataCarDefault?.[0]?.otherData}
+                onClose={onClose}
             />
         </BasicModal>
     );

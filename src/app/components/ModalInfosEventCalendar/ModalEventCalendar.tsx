@@ -13,6 +13,8 @@ import { CheckPhone, GenOTP } from '@/utils/user';
 import { notifications } from '@mantine/notifications';
 import { ModalRegister } from './ModalRegister';
 import { addCustomerCare } from '@/utils/customerCare';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 export const ModalEventCalendar = ({
     user,
@@ -28,9 +30,11 @@ export const ModalEventCalendar = ({
     cars,
     garageOptions,
     dataCarDefault,
+    onClose,
 }: any) => {
-    const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
 
+    const [loading, setLoading] = useState<boolean>(false);
     const [openedLogin, { open: openLogin, close: closeLogin }] = useDisclosure(false);
     const [openedRegister, { open: openRegister, close: closeRegister }] = useDisclosure(false);
     const [newCustomerCare, setNewCustomerCare] = useState({
@@ -41,7 +45,6 @@ export const ModalEventCalendar = ({
         car_id: '',
         garageId: '',
     });
-    console.log('dataCarDefault?.id', garageOptions);
     const form = useForm({
         initialValues: {
             customer_request: '',
@@ -54,10 +57,10 @@ export const ModalEventCalendar = ({
             garageId: garageOptions[0]?.value || '',
             priority_level: '2',
             arrival_time: eventInfos?.start,
-            car_id: dataCarDefault?.id || '',
+            car_id: dataCarDefault?.carId || '',
             service_advisor: '',
-            brand_name: dataCarDefault?.brandCarName.name || '',
-            model_name: dataCarDefault?.modelCarName.name || null,
+            brand_name: dataCarDefault?.brandName || '',
+            model_name: dataCarDefault?.modelName || null,
         },
 
         validate: {
@@ -81,11 +84,11 @@ export const ModalEventCalendar = ({
             brand_name,
             model_name,
         } = values;
-        const customerCare = {
+        const customerCare: any = {
             customer_request: customer_request,
             description: description,
             priority_level: priority_level,
-            arrival_time: arrival_time,
+            arrival_time: dayjs.utc(arrival_time).add(7, 'hour'),
             car_id: car_id,
             garageId: garageId,
         };
@@ -94,28 +97,31 @@ export const ModalEventCalendar = ({
             const res = await CheckPhone(phone);
             if (!res) {
                 setLoading(false);
+                openRegister();
                 // Số điện thoại chưa đăng ký chuyển qua trang đăng ký
-                const genRs = await GenOTP(phone);
-                if (genRs.CodeResult == 100) {
-                    openRegister();
-                } else {
-                    notifications.show({
-                        title: 'Error',
-                        message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
-                    });
-                }
+                // const genRs = await GenOTP(phone);
+                // if (genRs.CodeResult == 100) {
+                //     openRegister();
+                // } else {
+                //     notifications.show({
+                //         title: 'Error',
+                //         message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
+                //     });
+                // }
             } else {
                 setLoading(false);
+                openLogin();
+
                 // Số điện thoại đã đăng ký mở login
-                const genRs = await GenOTP(phone);
-                if (genRs.CodeResult == 100) {
-                    openLogin();
-                } else {
-                    notifications.show({
-                        title: 'Error',
-                        message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
-                    });
-                }
+                // const genRs = await GenOTP(phone);
+                // if (genRs.CodeResult == 100) {
+                //     openLogin();
+                // } else {
+                //     notifications.show({
+                //         title: 'Error',
+                //         message: 'Hệ thống gửi OTP thất bại, vui lòng thử lại sau!',
+                //     });
+                // }
             }
         } else {
             try {
@@ -125,6 +131,8 @@ export const ModalEventCalendar = ({
                     title: 'Thành công',
                     message: 'Đặt lịch thành công',
                 });
+                onClose();
+                router.push('/dashboard');
             } catch (error) {
                 console.error('Error creating customer care:', error);
                 notifications.show({
@@ -132,6 +140,7 @@ export const ModalEventCalendar = ({
                     message: 'Đặt lịch thất bại',
                 });
                 setLoading(false);
+                onClose();
             }
         }
     };
@@ -151,8 +160,6 @@ export const ModalEventCalendar = ({
             }
         });
     };
-
-    console.log('new', newCustomerCare);
 
     return (
         <Box>

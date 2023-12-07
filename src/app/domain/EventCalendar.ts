@@ -1,28 +1,25 @@
 import { ICustomerCare } from '@/interfaces/customerCare';
 import { IOrder } from '@/interfaces/order';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
+var utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 export interface IEventCalendar {
     _id: string;
     id?: string;
     title: string;
-    // end: string;
     start: string;
     user: string;
+    garage: any;
+    car: any;
 }
 export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCalendar => {
-    const formattedStart = dayjs
-        .utc(eventCalendar?.arrivalTime)
-        .local()
-        .format('YYYY-MM-DD HH:mm:ss');
-
     return {
-        _id: (index + 1).toString(), // Assuming _id should be a string
-        title: eventCalendar?.garage?.name || '', // Providing a default value if garage.name is undefined
-        start: formattedStart,
-        user: '', // You need to populate this property with the appropriate value
+        _id: (index + 1).toString(),
+        title: eventCalendar?.garage?.name || '',
+        start: dayjs.utc(eventCalendar?.arrivalTime).format('YYYY-MM-DD HH:mm:ss'),
+        user: '',
+        garage: eventCalendar?.garage,
+        car: eventCalendar?.car,
     };
 };
 
@@ -31,7 +28,5 @@ export const mapArrayEventCalendar = (listEventsCalendar: any) => {
     const listEventsCalendarFormated = listEventsCalendar?.map((eventCalendar: IOrder, index: number) =>
         mapEventCalendar(eventCalendar, index),
     );
-    const firstFiveEvents = listEventsCalendarFormated;
-
-    return firstFiveEvents;
+    return listEventsCalendarFormated;
 };

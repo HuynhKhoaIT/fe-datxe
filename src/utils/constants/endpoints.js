@@ -14,3 +14,4 @@ export const GET_CAR_ENDPOINT = `${process.env.apiUser}/cars`;
 export const CUSTOMER_CARE_ENDPOINT = `${process.env.apiUser}/customer-care`;
 export const CHECK_PHONE_NUMBER = `${process.env.apiGuest}/check-phone-number`;
 export const CHECK_OTP = `${process.env.apiGuest}/check-otp`;
+export const SET_CAR_DEFAULT = `${process.env.apiUser}/user/set-car-default`

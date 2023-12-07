@@ -5,7 +5,7 @@ import axios from 'axios';
 /**
  * Internal Dependencies.
  */
-import { GET_CAR_ENDPOINT } from './constants/endpoints';
+import { GET_CAR_ENDPOINT, SET_CAR_DEFAULT } from './constants/endpoints';
 import { ICar } from '@/interfaces/car';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -89,5 +89,20 @@ export const updateCar = async (carId: string, updatedCarData: Object, token: st
     } catch (error) {
         console.error(error);
         throw new Error('Lỗi trong quá trình cập nhật thông tin xe');
+    }
+};
+
+export const setCarDefault = async (carId: string, token: String) => {
+    try {
+        if (token) {
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const res = await axios.post(`${SET_CAR_DEFAULT}`, { carId: carId }, config);
+            return res.data.data as ICar;
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình tạo xe mặc định');
     }
 };
