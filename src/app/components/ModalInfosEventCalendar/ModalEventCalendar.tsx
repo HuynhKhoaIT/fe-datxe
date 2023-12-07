@@ -13,6 +13,7 @@ import { notifications } from '@mantine/notifications';
 import { addCustomerCare } from '@/utils/customerCare';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { GenOTP } from '@/utils/user';
 
 export const ModalEventCalendar = ({
     user,
@@ -108,6 +109,7 @@ export const ModalEventCalendar = ({
         };
         setNewCustomerCare(customerCare);
         if (!token) {
+            const genRs = await GenOTP(phone_number);
             setLoading(false);
             openLogin();
         } else {
