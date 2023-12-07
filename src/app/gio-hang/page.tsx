@@ -159,7 +159,9 @@ export default function Cart() {
                         </Grid>
                         <InfoDate setDate={setDate} setTime={setTime} />
                     </div>
-                    <InfoCart loading={loading} renderRows={renderRows} calculateSubTotal={calculateSubTotal} />
+                    <Suspense fallback={<p>loading...</p>}>
+                        <InfoCart loading={loading} renderRows={renderRows} calculateSubTotal={calculateSubTotal} />
+                    </Suspense>
                 </div>
             </form>
 
