@@ -31,7 +31,6 @@ export const ModalEventCalendar = ({
     onClose,
 }: any) => {
     const router = useRouter();
-
     const [loading, setLoading] = useState<boolean>(false);
     const [openedLogin, { open: openLogin, close: closeLogin }] = useDisclosure(false);
     const [newCustomerCare, setNewCustomerCare] = useState({
@@ -73,11 +72,11 @@ export const ModalEventCalendar = ({
         validate: {
             full_name: (value) => (value.length < 1 ? 'Vui lòng nhập tên' : null),
             phone_number: (value) => (value.length < 1 ? 'Vui lòng nhập số điện thoại' : null),
-            car_id: (value) => (value.length < 1 ? 'Vui lòng nhập biển số xe' : null),
+            number_plates: (value) => (value.length < 1 ? 'Vui lòng nhập biển số xe' : null),
         },
     });
-
     const handleSubmit = async (values: any) => {
+        console.log('submit');
         setLoading(true);
         const {
             full_name,
