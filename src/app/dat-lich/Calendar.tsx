@@ -6,6 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import ModalCalendar from '../components/ModalInfosEventCalendar';
+import ModalPreviewDetailCalendar from '../components/ModalPreviewCalendar';
 const sampleEvents: any = [
     {
         id: '1',
@@ -26,10 +27,13 @@ const sampleEvents: any = [
 
 export default function CalendarScheduler({ ordersData }: any) {
     const [eventInfos, setEventInfos] = useState();
+    const [previewInfos, setPreviewInfos] = useState();
+
     const [isEditCard, setIsEditCard] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [carDefault, setCarDefault] = useState<any>({});
     const [openedCalendar, { open: openCalendar, close: closeCalendar }] = useDisclosure(false);
+    const [openedPreviewCalendar, { open: openPreviewCalendar, close: closePreviewCalendar }] = useDisclosure(false);
 
     useEffect(() => {
         const existingCarData = localStorage.getItem('carDefault');
@@ -57,6 +61,9 @@ export default function CalendarScheduler({ ordersData }: any) {
 
     const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
         setIsModalOpen(true);
+        setPreviewInfos(clickInfo);
+        console.log(clickInfo);
+        openPreviewCalendar();
         // setIsModalOpen(true);
         // setIsEditCard(true);
         // setEventInfos(clickInfo);
@@ -95,6 +102,12 @@ export default function CalendarScheduler({ ordersData }: any) {
                 carDefault={carDefault || {}}
             /> */}
             <ModalCalendar opened={openedCalendar} onClose={closeCalendar} eventInfos={eventInfos} />
+            <ModalPreviewDetailCalendar
+                opened={openedPreviewCalendar}
+                onClose={closePreviewCalendar}
+                previewInfos={previewInfos}
+            />
+
             <FullCalendar
                 plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"

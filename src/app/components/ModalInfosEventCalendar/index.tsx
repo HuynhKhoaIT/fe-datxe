@@ -14,6 +14,7 @@ import { getMyAccount } from '@/utils/user';
 
 export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
     const searchParams = useSearchParams();
+
     const garageId = searchParams.get('garage');
     // Lấy thông tin khách hàng nếu có
     const { data: session } = useSession();
@@ -166,6 +167,7 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                 cars={cars}
                 garageOptions={garageOptions}
                 dataCarDefault={dataCarDefault?.[0]?.otherData}
+                onClose={onClose}
             />
         </BasicModal>
     );

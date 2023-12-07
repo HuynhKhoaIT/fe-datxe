@@ -14,6 +14,7 @@ import { notifications } from '@mantine/notifications';
 import { ModalRegister } from './ModalRegister';
 import { addCustomerCare } from '@/utils/customerCare';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 export const ModalEventCalendar = ({
     user,
@@ -29,8 +30,10 @@ export const ModalEventCalendar = ({
     cars,
     garageOptions,
     dataCarDefault,
+    onClose,
 }: any) => {
-    console.log(dataCarDefault);
+    const router = useRouter();
+
     const [loading, setLoading] = useState<boolean>(false);
     const [openedLogin, { open: openLogin, close: closeLogin }] = useDisclosure(false);
     const [openedRegister, { open: openRegister, close: closeRegister }] = useDisclosure(false);
@@ -128,6 +131,8 @@ export const ModalEventCalendar = ({
                     title: 'Thành công',
                     message: 'Đặt lịch thành công',
                 });
+                onClose();
+                router.push('/dashboard');
             } catch (error) {
                 console.error('Error creating customer care:', error);
                 notifications.show({
@@ -135,6 +140,7 @@ export const ModalEventCalendar = ({
                     message: 'Đặt lịch thất bại',
                 });
                 setLoading(false);
+                onClose();
             }
         }
     };

@@ -50,8 +50,10 @@ export function ModalLogin({ opened, close, phone, name, dataDetail }: any) {
                 //     callbackUrl: '/dashboard',
                 // });
                 const loginData: any = await login(phone, password);
-                console.log('loginData?.success == true', loginData?.success == true);
-                if (loginData?.success == true) {
+                console.log('loginData?.success == true', loginData?.success);
+                console.log('loginData?.success == true', loginData?.success === 'true');
+
+                if (loginData?.success) {
                     try {
                         console.log('dataDetail', dataDetail);
                         const createdCar = await addCustomerCare(dataDetail, loginData?.token ?? '');

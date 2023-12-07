@@ -13,4 +13,5 @@ export interface IOrder {
     carId?: string;
     arrivalTime?: string;
     garage?: any;
+    car?: any;
 }
