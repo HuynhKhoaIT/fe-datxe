@@ -12,8 +12,7 @@ export default function InfoDate({ setDate, setTime }: any) {
         const dateString = dayjs(date).format('YYYY-MM-DD');
         setDate(dateString);
     }
-    function handleTimeChange(date: any) {
-        const time = dayjs(date).format('HH:mm:ss');
+    function handleTimeChange(time: any) {
         setTime(time);
     }
     const pickerControl = (
@@ -33,7 +32,10 @@ export default function InfoDate({ setDate, setTime }: any) {
                                 name="date"
                                 defaultValue={new Date()}
                                 style={{ width: '100%' }}
-                                onChange={(date) => handleDateChange(date?.toString())}
+                                onChange={(date) => {
+                                    console.log(date);
+                                    handleDateChange(date?.toString());
+                                }}
                             />
                         </Grid.Col>
 
@@ -43,7 +45,7 @@ export default function InfoDate({ setDate, setTime }: any) {
                                 defaultValue={new Date().toLocaleTimeString('en-US', { hour12: false })}
                                 label="Thời gian"
                                 ref={ref}
-                                onChange={(time) => handleTimeChange(time?.toString())}
+                                onChange={(e) => handleTimeChange(e.target.value)}
                                 rightSection={pickerControl}
                             />
                         </Grid.Col>
