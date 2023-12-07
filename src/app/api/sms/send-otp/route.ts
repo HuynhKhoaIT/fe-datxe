@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
         if (!res.ok) {
             throw new Error('Failed to fetch OTP');
         }
+
         return new NextResponse(JSON.stringify(data));
     } catch (error) {
         console.error(error);

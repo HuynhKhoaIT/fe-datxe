@@ -28,6 +28,7 @@ export default function LoginFormInput() {
         if (res) {
             const genRs = await GenOTP(phone);
             if (genRs.CodeResult == 100) {
+                console.log(genRs);
                 if (callbackUrl) {
                     router.push(`./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`);
                 } else {
