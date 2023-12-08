@@ -13,10 +13,13 @@ import { useRouter } from 'next/navigation';
 import { IconPlus, IconBan } from '@tabler/icons-react';
 import BasicModal from '@/app/components/basicModal/BasicModal';
 import { useForm, hasLength } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 
 const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
     const { data: session } = useSession();
     const token = session?.user?.token;
+    const [loading, handlers] = useDisclosure();
+
     const router = useRouter();
     const [brandsData, setBrandsData] = useState<any>([]);
     const [models, setModels] = useState<any>([]);
@@ -52,6 +55,7 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
         validate: {},
     });
     const handleCreateCar = async (values: any) => {
+        handlers.open();
         try {
             const newCar = {
                 ...values,
@@ -79,12 +83,14 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
                 title: 'Thành công',
                 message: 'Thêm xe thành công',
             });
+            handlers.close();
         } catch (error) {
             close();
             notifications.show({
                 title: 'Thất bại',
                 message: `${error}`,
             });
+            handlers.close();
             console.error('Error creating car:', error);
         }
     };
@@ -225,6 +231,7 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
                             key="submit"
                             type="submit"
                             variant="filled"
+                            loading={loading}
                             leftSection={<IconPlus size={16} />}
                         >
                             Thêm xe
