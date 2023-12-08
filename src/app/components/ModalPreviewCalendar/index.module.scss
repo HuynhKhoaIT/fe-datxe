@@ -1,0 +1,12 @@
+.requireCustomer,
+.durationOrder,
+.garage,
+.addressGarage {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    .requireContent {
+        font-size: 20px;
+        font-weight: 500;
+    }
+}

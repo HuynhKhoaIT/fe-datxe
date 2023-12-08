@@ -6,7 +6,7 @@ import { ModalPreviewCalendar } from './ModalPreviewCalendar';
 export default function ModalPreviewDetailCalendar({ opened, onClose, previewInfos }: any) {
     return (
         <BasicModal
-            size={600}
+            size={500}
             isOpen={opened}
             onCloseModal={onClose}
             footer={false}

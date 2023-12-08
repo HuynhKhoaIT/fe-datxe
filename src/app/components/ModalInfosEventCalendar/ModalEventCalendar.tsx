@@ -74,6 +74,7 @@ export const ModalEventCalendar = ({
             full_name: (value) => (value.length < 1 ? 'Vui lòng nhập tên' : null),
             phone_number: (value) => (value.length < 1 ? 'Vui lòng nhập số điện thoại' : null),
             number_plates: (value) => (!token && value.length < 1 ? 'Vui lòng nhập biển số xe' : null),
+            customer_request: (value) => (value.length < 1 ? 'Vui lòng nhập yêu cầu' : null),
         },
     });
     const handleSubmit = async (values: any) => {
