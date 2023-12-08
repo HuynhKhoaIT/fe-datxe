@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { getProductsSearch } from '@/utils/product';
 import { Pagination } from '@/app/components/pagination-area/pagination-area';
-import { Breadcrumb } from 'antd';
 import Link from 'next/link';
 import { getCategories } from '@/utils/category';
 import { LoadingComponent } from '@/app/components/loading';
