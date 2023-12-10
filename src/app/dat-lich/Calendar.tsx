@@ -70,6 +70,7 @@ export default function CalendarScheduler({ ordersData }: any) {
     const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
         setIsModalOpen(true);
         setPreviewInfos(clickInfo);
+        console.log('clickInfo', clickInfo);
         openPreviewCalendar();
         // setIsModalOpen(true);
         // setIsEditCard(true);

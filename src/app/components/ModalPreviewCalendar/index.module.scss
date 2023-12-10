@@ -1,3 +1,7 @@
+.contentDetail {
+    display: flex;
+    flex-direction: column;
+}
 .requireCustomer,
 .durationOrder,
 .garage,
@@ -5,8 +9,27 @@
     display: flex;
     align-items: center;
     gap: 18px;
+    svg {
+        flex-shrink: 0;
+    }
     .requireContent {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 500;
+    }
+    .address,
+    .name,
+    .date {
+        color: var(--color-dark);
+    }
+}
+
+.detailCalendarRoot {
+    .header {
+        height: 40px;
+        background-color: var(--theme-color);
+    }
+    .title {
+        font-size: 24px;
+        color: var(--color-dark);
     }
 }

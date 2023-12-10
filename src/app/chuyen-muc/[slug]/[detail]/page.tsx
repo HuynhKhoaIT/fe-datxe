@@ -53,7 +53,7 @@ export default async function SingleShop({
             return;
         }
     });
-    console.log(relatedProducts);
+    console.log('relatedProducts', relatedProducts);
 
     return (
         <main className="main">

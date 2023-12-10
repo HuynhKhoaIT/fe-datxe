@@ -71,7 +71,7 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
             if (cars?.length < 2) {
                 try {
                     const carDefault = await setCarDefault(cars[0]?.id, token ?? '');
-                    console.log(carDefault);
+                    console.log('carDefault', carDefault);
                 } catch (error) {
                     console.error('Error set car:', error);
                     console.log('fail');

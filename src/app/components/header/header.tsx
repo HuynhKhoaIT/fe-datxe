@@ -19,7 +19,7 @@ const Header = () => {
         if (existingCartData) {
             // Chuyển đổi chuỗi JSON thành mảng JavaScript
             const parsedCartData = JSON.parse(existingCartData);
-            console.log(parsedCartData);
+            console.log('parsedCartData', parsedCartData);
         }
     }, []);
     return (

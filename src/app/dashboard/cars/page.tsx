@@ -76,7 +76,7 @@ export default function CarsPage() {
     const handleSetCarDefault = async (CarId: string) => {
         try {
             const carDefault = await setCarDefault(CarId, token ?? '');
-            console.log(carDefault);
+            console.log('carDefault', carDefault);
         } catch (error) {
             console.error('Error set car:', error);
             console.log('fail');

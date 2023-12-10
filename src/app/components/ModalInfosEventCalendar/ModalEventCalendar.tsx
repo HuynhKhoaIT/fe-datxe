@@ -78,7 +78,6 @@ export const ModalEventCalendar = ({
         },
     });
     const handleSubmit = async (values: any) => {
-        console.log('submit');
         setLoading(true);
         const {
             full_name,

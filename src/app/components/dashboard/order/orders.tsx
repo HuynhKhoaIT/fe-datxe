@@ -22,7 +22,7 @@ export default function Orders() {
         const fetchData = async () => {
             try {
                 const orders = await getOrders(token ?? '', 1);
-                console.log(orders);
+                console.log('orders', orders);
                 setOrdersData(orders ?? []);
             } catch (error) {
                 console.error('Error fetching orders:', error);
