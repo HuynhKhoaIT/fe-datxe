@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     try {
         const { phone, code } = await request.json();
-        let url = `${process.env.SMS_CHECKOTP_URL}&Phone=${phone}&ApiKey=${process.env.SMS_APIKEY}&SecretKey=${process.env.SMS_SECRET}&Code=${code}`;
-        const res = await fetch(url, { cache: 'force-cache' });
+        let url = `${process.env.SMS_CHECKOTP_URL}?Phone=${phone}&ApiKey=${process.env.SMS_APIKEY}&SecretKey=${process.env.SMS_SECRET}&Code=${code}`;
+        const res = await fetch(url);
         const data = await res.json();
         if (!res.ok) {
             throw new Error('Failed to check OTP');
