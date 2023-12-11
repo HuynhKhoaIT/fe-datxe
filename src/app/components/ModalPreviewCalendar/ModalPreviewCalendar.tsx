@@ -16,7 +16,7 @@ export const ModalPreviewCalendar = ({ previewInfos }: any) => {
             <div className={styles.requireCustomer}>
                 <IconMessageDots size={18} color="#21A4DD" />
                 <p className={styles.requireContent}>
-                    {data?.orderDetail?.customerRequirest ? data?.orderDetail?.customerRequirest : 'Không có yêu cầu'}
+                    {data?.orderDetail?.customerRequest ? data?.orderDetail?.customerRequest : 'Không có yêu cầu'}
                 </p>
             </div>
             <div className={styles.durationOrder}>
