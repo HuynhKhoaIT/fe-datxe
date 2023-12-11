@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { Pagination as AntPagination } from 'antd';
 import { ICategory } from '@/interfaces/category';
 import { CategoryItem } from '../category/categoryItem';
 import { IProduct } from '@/interfaces/product';
@@ -26,7 +25,7 @@ const Pagination = ({ data }: { data: any }) => {
                     <ProductData product_data={currentItems} />
                 </div>
             </div>
-            {data && data.length > itemsPerPage && (
+            {/* {data && data.length > itemsPerPage && (
                 <div className="pagination-area mt-4 text-center">
                     <AntPagination
                         current={currentPage}
@@ -35,7 +34,7 @@ const Pagination = ({ data }: { data: any }) => {
                         onChange={handleChange}
                     />
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

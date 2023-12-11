@@ -15,6 +15,7 @@ const BasicModal = ({
     size = '600',
     footer,
     classNames,
+    centered = false,
 }: any) => {
     return (
         <Modal
@@ -25,6 +26,7 @@ const BasicModal = ({
             title={title}
             classNames={classNames}
             lockScroll={false}
+            centered={centered}
         >
             <div className={styles.modalContent}>{children}</div>
             {footer && (

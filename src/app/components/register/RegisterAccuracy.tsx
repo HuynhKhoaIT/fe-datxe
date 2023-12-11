@@ -46,7 +46,7 @@ export function RegisterFormAccuracy() {
         const { name, phone, pin } = form.values;
         let password = phone + '@@Datxe.com@@';
         let passwordConfirmation = password;
-        console.log(password);
+        console.log('password', password);
         try {
             const checkRs = await CheckOtp(phone, pin, 'register');
             if (checkRs.CodeResult == 100) {

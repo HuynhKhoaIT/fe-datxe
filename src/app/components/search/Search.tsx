@@ -1,4 +1,3 @@
-import { SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Input, CloseButton, Grid, Button, Select } from '@mantine/core';
@@ -6,7 +5,7 @@ import { getBrands, getModels } from '@/utils/branch';
 import { IBrand } from '@/interfaces/brand';
 import { YearPickerInput } from '@mantine/dates';
 import Link from 'next/link';
-
+import { IconSearch } from '@tabler/icons-react';
 function SearchForm() {
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState('');
@@ -97,7 +96,7 @@ function SearchForm() {
                                                     minWidth: 40,
                                                 }}
                                             >
-                                                <SearchOutlined />
+                                                <IconSearch size={18} />
                                             </Button>
                                         </Grid>
                                     }

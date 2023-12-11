@@ -7,6 +7,9 @@ import { useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import ModalCalendar from '../components/ModalInfosEventCalendar';
 import ModalPreviewDetailCalendar from '../components/ModalPreviewCalendar';
+import dayjs from 'dayjs';
+import BasicModal from '../components/basicModal/BasicModal';
+
 const sampleEvents: any = [
     {
         id: '1',
@@ -34,6 +37,7 @@ export default function CalendarScheduler({ ordersData }: any) {
     const [carDefault, setCarDefault] = useState<any>({});
     const [openedCalendar, { open: openCalendar, close: closeCalendar }] = useDisclosure(false);
     const [openedPreviewCalendar, { open: openPreviewCalendar, close: closePreviewCalendar }] = useDisclosure(false);
+    const [openedNotification, { open: openNotification, close: closeNotification }] = useDisclosure(false);
 
     useEffect(() => {
         const existingCarData = localStorage.getItem('carDefault');
@@ -48,21 +52,25 @@ export default function CalendarScheduler({ ordersData }: any) {
         currentEvents: [],
     };
 
-    // const modalInfosEvent = useDisclosure(false);
-
-    const handleAddEventSelectAndOpenModal = (selectInfo: any) => {
-        setIsEditCard(false);
-        setEventInfos(selectInfo);
-        console.log(selectInfo);
-        // modalInfosEvent.handleOpen();
-        // setIsModalOpen(true);
-        openCalendar();
+    // Hàm kiểm tra xem ngày đã qua hay chưa
+    const isDateInThePast = (value: any) => {
+        return dayjs().isBefore(value);
     };
 
+    // click mở modal đặt lịch
+    const handleAddEventSelectAndOpenModal = (selectInfo: any) => {
+        console.log('selectInfo', selectInfo);
+        setIsEditCard(false);
+        setEventInfos(selectInfo);
+        openCalendar();
+        isDateInThePast(selectInfo?.start);
+    };
+
+    // click mở modal xem chi tiết
     const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
         setIsModalOpen(true);
         setPreviewInfos(clickInfo);
-        console.log(clickInfo);
+        console.log('clickInfo', clickInfo);
         openPreviewCalendar();
         // setIsModalOpen(true);
         // setIsEditCard(true);
@@ -92,22 +100,16 @@ export default function CalendarScheduler({ ordersData }: any) {
         setIsModalOpen(true);
     };
     console.log(ordersData);
+    // Kiểm tra xem khung giờ đang được chọn có nằm trong quá khứ hay không
+    const handleSelectAllow = (selectInfo: any) => {
+        if (!dayjs().isBefore(selectInfo.start)) {
+            openNotification();
+        }
+        return dayjs().isBefore(selectInfo.start);
+    };
+
     return (
         <div className="modal-datlich">
-            {/* <ModalInfosEventCalendar
-                open={isModalOpen}
-                handleClose={() => setIsModalOpen(false)}
-                eventInfos={eventInfos}
-                isEditCard={isEditCard}
-                carDefault={carDefault || {}}
-            /> */}
-            <ModalCalendar opened={openedCalendar} onClose={closeCalendar} eventInfos={eventInfos} />
-            <ModalPreviewDetailCalendar
-                opened={openedPreviewCalendar}
-                onClose={closePreviewCalendar}
-                previewInfos={previewInfos}
-            />
-
             <FullCalendar
                 plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"
@@ -150,7 +152,33 @@ export default function CalendarScheduler({ ordersData }: any) {
                 }}
                 slotMinTime="06:00:00"
                 slotMaxTime="22:00:00"
+                views={{
+                    timeGridWeek: {
+                        type: 'timeGridWeek',
+                        duration: { weeks: 1 }, // Hiển thị một tuần tại một thời điểm
+                        buttonText: 'Tuần',
+                    },
+                }}
+                selectAllow={handleSelectAllow}
+                firstDay={new Date().getDay() - 3}
             />
+            <ModalCalendar opened={openedCalendar} onClose={closeCalendar} eventInfos={eventInfos} />
+            <ModalPreviewDetailCalendar
+                opened={openedPreviewCalendar}
+                onClose={closePreviewCalendar}
+                previewInfos={previewInfos}
+            />
+            <BasicModal
+                size={300}
+                isOpen={openedNotification}
+                onCloseModal={closeNotification}
+                footer={false}
+                title="Thông báo"
+                style={{ position: 'relative' }}
+                centered={true}
+            >
+                <div>Vui lòng chọn ngày giờ lớn hơn hiện tại.</div>
+            </BasicModal>
         </div>
     );
 }
