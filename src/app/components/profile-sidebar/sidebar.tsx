@@ -1,34 +1,14 @@
 'use client';
 import Link from 'next/link';
-import { getMyAccount } from '@/utils/user';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import { IUser } from '@/interfaces/user';
 import { usePathname } from 'next/navigation';
 import { IconLogout } from '@tabler/icons-react';
-const ProfileSidebar = () => {
+const ProfileSidebar = ({ myAccount }: any) => {
     const pathname = usePathname();
     const parts = pathname.split('/');
     let page = parts[parts.length - 1];
     const { data: session } = useSession();
     const token = session?.user?.token;
-
-    const [myAccount, setMyAccount] = useState<IUser>();
-
-    const fetchAccount = async () => {
-        try {
-            if (token) {
-                const myAccount = await getMyAccount(token);
-                setMyAccount(myAccount);
-            }
-        } catch (error) {
-            console.error('Error fetching cars:', error);
-        }
-    };
-    useEffect(() => {
-        fetchAccount();
-    }, [token]);
     return (
         <div className="user-profile-sidebar">
             <div className="user-profile-sidebar-top">

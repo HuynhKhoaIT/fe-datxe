@@ -1,14 +1,10 @@
 'use client';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { ProfileSidebar } from '@/app/components/profile-sidebar/sidebar';
 import { Button, Grid, TextInput, Select, PasswordInput, Group, Radio } from '@mantine/core';
-import { getServerSession } from 'next-auth/next';
 import { useSession } from 'next-auth/react';
 import { DateInput } from '@mantine/dates';
 
 import React, { useState } from 'react';
 export default function ProfilePage() {
-    // const session = await getServerSession(authOptions);
     const { data: session } = useSession();
     const [disabledBtn, setDisabledBtn] = useState(true);
     console.log(session);

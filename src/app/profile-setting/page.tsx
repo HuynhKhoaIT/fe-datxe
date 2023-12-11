@@ -1,5 +1,4 @@
-import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
-
+import Menu from '../components/profile-sidebar/Menu';
 export default function Setting() {
     return (
         <main className="main">
@@ -8,7 +7,7 @@ export default function Setting() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-3">
-                            <ProfileSidebar />
+                            <Menu />
                         </div>
                         <div className="col-lg-9">
                             <div className="user-profile-wrapper">

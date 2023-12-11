@@ -1,6 +1,5 @@
 import { ReactNode, Suspense } from 'react';
-import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
-import { LoadingComponent } from '../components/loading';
+import Menu from '../components/profile-sidebar/Menu';
 
 interface IProps {
     children: ReactNode;
@@ -12,7 +11,7 @@ export default function DashboardLayout({ children }: IProps) {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-3">
-                            <ProfileSidebar />
+                            <Menu />
                         </div>
                         <div className="col-md-9">{children}</div>
                     </div>
