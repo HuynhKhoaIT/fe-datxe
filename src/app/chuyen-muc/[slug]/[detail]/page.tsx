@@ -4,7 +4,6 @@ import ProductDetail from '../../../components/product/productDetail';
 import { IProduct } from '@/interfaces/product';
 import Product from '@/app/components/product/product';
 import { getProductDetail, getProductsRelated } from '@/utils/product';
-import { Breadcrumb } from 'antd';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { getCategories } from '@/utils/category';
@@ -54,13 +53,13 @@ export default async function SingleShop({
             return;
         }
     });
-    console.log(relatedProducts);
+    console.log('relatedProducts', relatedProducts);
 
     return (
         <main className="main">
             <div className="shop-item-single bg pd-50 position-relative">
                 <div className="container ">
-                    {nameCate && (
+                    {/* {nameCate && (
                         <Breadcrumb
                             separator=">"
                             style={{ padding: '16px 0', position: 'absolute', top: 0 }}
@@ -91,7 +90,7 @@ export default async function SingleShop({
                                 },
                             ]}
                         />
-                    )}
+                    )} */}
                     <ProductDetail ProductDetail={productData} />
                     <div className="related-item">
                         <div className="row">

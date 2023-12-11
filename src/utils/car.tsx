@@ -76,7 +76,7 @@ export const deleteCar = async (carId: string, token: string) => {
     }
 };
 
-export const updateCar = async (carId: string, updatedCarData: Object, token: string) => {
+export const updateCar = async (carId: string, updatedCarData: any, token: string) => {
     try {
         if (token) {
             const config = {

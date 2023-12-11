@@ -9,8 +9,7 @@ export interface IEventCalendar {
     title: string;
     start: string;
     user: string;
-    garage: any;
-    car: any;
+    orderDetail: any;
 }
 export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCalendar => {
     return {
@@ -18,8 +17,7 @@ export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCa
         title: eventCalendar?.garage?.name || '',
         start: dayjs.utc(eventCalendar?.arrivalTime).format('YYYY-MM-DD HH:mm:ss'),
         user: '',
-        garage: eventCalendar?.garage,
-        car: eventCalendar?.car,
+        orderDetail: eventCalendar,
     };
 };
 

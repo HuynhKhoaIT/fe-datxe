@@ -10,6 +10,7 @@ import AddCarModal from './AddCarModal';
 import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
 import { getMyAccount } from '@/utils/user';
 import { useDisclosure } from '@mantine/hooks';
+import { getModels } from '@/utils/branch';
 
 export default function CarsPage() {
     const { data: session } = useSession();
@@ -19,6 +20,7 @@ export default function CarsPage() {
     const [openedUpdateCar, { open: openUpdateCar, close: closeUpdateCar }] = useDisclosure(false);
     const [openedPreviewCar, { open: openPreviewCar, close: closePreviewCar }] = useDisclosure(false);
 
+    const [models, setModels] = useState<any>();
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [detail, setDetail] = useState<any>({});
@@ -74,13 +76,24 @@ export default function CarsPage() {
     const handleSetCarDefault = async (CarId: string) => {
         try {
             const carDefault = await setCarDefault(CarId, token ?? '');
-            console.log(carDefault);
+            console.log('carDefault', carDefault);
         } catch (error) {
             console.error('Error set car:', error);
             console.log('fail');
         }
     };
 
+    const selectBrand = async (value: number) => {
+        try {
+            const dong_xe: any = await getModels(value);
+            const newModels = dong_xe?.map((item: any) => ({
+                value: item.id?.toString() || '',
+                label: item.name || '',
+            }));
+            setModels(newModels);
+            openUpdateCar();
+        } catch (error) {}
+    };
     // xe mặc định lưu trên localStorage
     const [selectedRow, setSelectedRow] = useState<any>();
     const [dataCarDefault, setdataCartDefault] = useState<any>();
@@ -144,7 +157,7 @@ export default function CarsPage() {
                         p={5}
                         onClick={() => {
                             setDetail(record);
-                            openUpdateCar();
+                            selectBrand(record?.automakerId || 0);
                         }}
                     >
                         <IconPencil size={16} />
@@ -260,6 +273,8 @@ export default function CarsPage() {
                 fetchCars={() => fetchCars()}
                 onCancel={closeUpdateCar}
                 data={detail ? detail : {}}
+                models={models}
+                selectBrand={selectBrand}
             />
         </div>
     );

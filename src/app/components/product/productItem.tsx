@@ -6,29 +6,19 @@ import { useParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { Modal, notification } from 'antd';
+import { Button, Group, Modal } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useDisclosure } from '@mantine/hooks';
 
 const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
     const pathParm = useParams();
     const Parm = usePathname();
     let isCategory = Parm?.includes('chuyen-muc');
     const { data: session } = useSession();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [api, contextHolder] = notification.useNotification();
+    const [openedNotification, { open: openNotification, close: closeNotification }] = useDisclosure(false);
 
-    const openNotification = () => {
-        api.info({
-            message: `Thành công`,
-            description: 'Sản phẩm đã được thêm vào giỏ hàng',
-            icon: <IconCheck color="green" />,
-        });
-    };
-
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
     const handleOk = () => {
-        setIsModalOpen(false);
+        closeNotification();
         const existingCartItems = JSON.parse('[]');
         existingCartItems.push({
             garageId: product.garageId,
@@ -36,11 +26,10 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
             quantity: 1,
         });
         localStorage.setItem('cartData', JSON.stringify(existingCartItems));
-        openNotification();
-    };
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
+        notifications.show({
+            title: 'Thành công',
+            message: 'Sản phẩm đã được thêm vào giỏ hàng',
+        });
     };
     const addProductToLocalStorage = () => {
         if (product && session?.user) {
@@ -51,7 +40,7 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
             const idCar = existingCartItems.findIndex((item: any) => item.product.garageId === garageId);
 
             if (existingCartItems.length > 0 && idCar === -1) {
-                showModal();
+                openNotification();
             } else {
                 if (index !== -1) {
                     existingCartItems[index].quantity += 1;
@@ -64,7 +53,10 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
                 }
 
                 localStorage.setItem('cartData', JSON.stringify(existingCartItems));
-                openNotification();
+                notifications.show({
+                    title: 'Thành công',
+                    message: 'Sản phẩm đã được thêm vào giỏ hàng',
+                });
             }
         } else {
             signIn();
@@ -72,8 +64,6 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
     };
     return (
         <div key={key} className="col-md-6 col-lg-4 col-xl-3">
-            {contextHolder}
-
             <div className="shop-item">
                 <div className="shop-item-img">
                     <span className="shop-item-sale">Sale</span>
@@ -128,12 +118,15 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
             </div>
             <Modal
                 title="Thông báo"
-                open={isModalOpen}
-                onOk={handleOk}
-                onCancel={handleCancel}
+                opened={openedNotification}
+                onClose={closeNotification}
                 style={{ zIndex: '99999' }}
             >
                 <p>Bạn đang đặt hàng với 2 chuyên gia khác nhau? Bạn có muốn xóa giỏ hàng để thêm sản phẩm mới?</p>
+                <Group mt="xl" justify="flex-end">
+                    <Button onClick={closeNotification}>Huỷ</Button>
+                    <Button onClick={handleOk}>Thêm</Button>
+                </Group>
             </Modal>
         </div>
     );

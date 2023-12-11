@@ -6,7 +6,7 @@ import { ProductItem } from './productItem';
 export default function Product({ initialProductData, garageId }: { initialProductData: IProduct[]; garageId: any }) {
     const [productData, setProductData] = useState<IProduct[]>([]);
     const [limit, setLimit] = useState<number>(8);
-    console.log(productData);
+    console.log('productData', productData);
     const handleButtonClick = async () => {
         // Tăng limit
         const newLimit = limit + 4;
@@ -23,7 +23,7 @@ export default function Product({ initialProductData, garageId }: { initialProdu
 
         // Cập nhật dữ liệu sản phẩm
     };
-    console.log(initialProductData);
+    console.log('initialProductData', initialProductData);
     useEffect(() => {
         setProductData(initialProductData);
     }, [initialProductData]);

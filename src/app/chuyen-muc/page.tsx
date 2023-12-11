@@ -5,7 +5,6 @@ import { getCategories } from '@/utils/category';
 import { SideBar } from '../components/shop-sidebar/sideBar';
 import { Sort } from '../components/shop-sort/sort';
 import Link from 'next/link';
-import { Breadcrumb } from 'antd';
 import LayoutListProduct from '../components/layout/LayoutListProduct';
 import { Breadcrumbs, Anchor } from '@mantine/core';
 
