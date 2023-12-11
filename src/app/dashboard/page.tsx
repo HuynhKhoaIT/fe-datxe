@@ -1,10 +1,10 @@
-import { getOrdersSsr } from '@/utils/order';
+import { getOrders } from '@/utils/order';
 import Orders from '../components/dashboard/order/orders';
 import React from 'react';
 import { getCarsSsr } from '@/utils/car';
 import { getMyAccount } from '@/utils/user';
 export default async function Dashboard() {
-    const orders = await getOrdersSsr(1);
+    const orders = await getOrders(1);
     const fetchedCars = await getCarsSsr();
     const account: any = await getMyAccount();
     return (

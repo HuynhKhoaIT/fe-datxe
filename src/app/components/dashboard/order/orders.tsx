@@ -13,12 +13,12 @@ export default function Orders({ ordersData }: any) {
     // pagination
     const itemsPerPage: number = 10;
     const [currentPage, setCurrentPage] = useState(1);
-    const paginatedData = ordersData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-    const handlePageChange = (newPage: number) => {
+    const paginatedData = ordersData?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const handlePageChange = (newPage: any) => {
         setCurrentPage(newPage);
     };
     const renderRows = () => {
-        return paginatedData.map((record: any) => (
+        return paginatedData?.map((record: any) => (
             <Table.Tr key={record.id} className="row-table" onClick={() => handleRowClick(record)}>
                 <Table.Td>{record?.garage?.name}</Table.Td>
                 <Table.Td>{record.car?.licensePlates}</Table.Td>
@@ -74,7 +74,7 @@ export default function Orders({ ordersData }: any) {
                             </Table>
                             <Pagination
                                 style={{ marginTop: '16px', display: 'flex', justifyContent: 'end' }}
-                                total={Math.ceil(ordersData.length / itemsPerPage)}
+                                total={Math.ceil(ordersData?.length / itemsPerPage)}
                                 onChange={handlePageChange}
                             />
                         </div>
