@@ -13,7 +13,7 @@ import InfoCar from './InfoCar';
 import InfoCart from './InfoCart';
 import InfoDate from './InfoDate';
 
-export default function CartComponent() {
+export default function CartComponent({ carDefault, carOptions, carId: carIdDefault }: any) {
     // const [form] = Form.useForm();
     const ref = useRef<HTMLInputElement>(null);
     const { data: session } = useSession();
@@ -26,8 +26,7 @@ export default function CartComponent() {
     const [cartData, setCartData] = useState<
         { product: { id: number; name: string; price: number; thumbnail: string }; quantity: number }[]
     >([]);
-    const [carId, setCarId] = useState<any>();
-    console.log(carId);
+    const [carId, setCarId] = useState<any>(carIdDefault);
     const handleDeleteOk = () => {
         setIsModalDeleteOpen(false);
         deleteItem(deleteRow?.product?.id);
@@ -154,7 +153,7 @@ export default function CartComponent() {
                                 <InfoCustomer dataDetail={session?.user} />
                             </Suspense>
                             <Suspense fallback={<p>loading...</p>}>
-                                <InfoCar setCarId={setCarId} />
+                                <InfoCar setCarId={setCarId} carDefault={carDefault} carOptions={carOptions} />
                             </Suspense>
                         </Grid>
                         <InfoDate setDate={setDate} setTime={setTime} />

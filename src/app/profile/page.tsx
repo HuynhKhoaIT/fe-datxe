@@ -1,4 +1,3 @@
-import { getMyAccount } from '@/utils/user';
 import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
 import ProfileChangePassword from '../components/profile/ProfileChangePassword';
 import StoreInfo from '../components/profile/StoreInfo';

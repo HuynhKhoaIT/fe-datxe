@@ -30,6 +30,21 @@ export const getOrders = async (token: String, pageNo = 1) => {
     //
 };
 
+export const getOrdersSsr = async (pageNo = 1) => {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.token) {
+        try {
+            const config = {
+                headers: { Authorization: `Bearer ${session?.user?.token}` },
+            };
+            const res = await axios.get(`${GET_ORDER_ENDPOINT}?page=${pageNo}`, config);
+            return res.data.data as Promise<IOrder[]>;
+        } catch (error) {
+            throw new Error('Lỗi trong quá trình lấy danh sách đơn hàng');
+        }
+    }
+};
+
 export const getOrder = async (orderId = 0) => {
     const session = await getServerSession(authOptions);
     if (session?.user?.token && orderId != 0) {

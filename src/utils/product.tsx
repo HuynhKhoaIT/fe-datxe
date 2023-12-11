@@ -75,7 +75,7 @@ export const getProductByGar = async (garageId: string, limit = 8) => {
 
 export const getProductsSearch = async (search: string) => {
     try {
-        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}&${search}`);
+        const res = await axios.get(`${GET_PRODUCT_ENDPOINT}?${search}`);
         return res.data.data as Promise<IProduct[]>;
     } catch (error) {
         console.error(error);
