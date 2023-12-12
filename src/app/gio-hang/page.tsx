@@ -17,7 +17,6 @@ export default async function Cart() {
         },
     }));
     const account: any = await getMyAccount();
-
     const carDefault: any = carOptions?.filter((car) => car.value == account?.carIdDefault);
     return <CartComponent carDefault={carDefault?.[0]?.otherData} carOptions={carOptions} carId={carDefault?.value} />;
 }
