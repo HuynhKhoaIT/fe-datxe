@@ -80,7 +80,7 @@ export default function CarComponent({ carsData, myAccount }: any) {
     // pagination
     const itemsPerPage: number = 10;
     const [currentPage, setCurrentPage] = useState(1);
-    const paginatedData = carsData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const paginatedData = carsData?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
     };
@@ -173,7 +173,7 @@ export default function CarComponent({ carsData, myAccount }: any) {
                         </Table>
                         <Pagination
                             style={{ marginTop: '16px', display: 'flex', justifyContent: 'end' }}
-                            total={Math.ceil(carsData.length / itemsPerPage)}
+                            total={Math.ceil(carsData?.length / itemsPerPage)}
                             onChange={handlePageChange}
                         />
                     </div>
