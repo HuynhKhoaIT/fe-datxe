@@ -83,7 +83,7 @@ export default function CarComponent({ myAccount }: any) {
     // pagination
     const itemsPerPage: number = 10;
     const [currentPage, setCurrentPage] = useState(1);
-    const paginatedData = carsData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const paginatedData = carsData?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
     };
