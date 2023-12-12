@@ -35,7 +35,7 @@ export default function CarComponent({ myAccount }: any) {
     };
     useEffect(() => {
         fetchCars();
-    }, []);
+    }, [token]);
 
     const handleDeleteCar = async (carId: string) => {
         try {
