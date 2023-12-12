@@ -11,7 +11,7 @@ import SigninButton from './login-button';
 import SearchForm from '../search/Search';
 import { getBrands } from '@/utils/branch';
 
-const Header = async () => {
+export default async function Header() {
     const brandsData = await getBrands();
     return (
         <header className="header">
@@ -79,5 +79,4 @@ const Header = async () => {
             </div>
         </header>
     );
-};
-export { Header };
+}
