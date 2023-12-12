@@ -1,9 +1,6 @@
 import { GarageItem } from '../components/garageItem/garageItem';
 import React, { useEffect, useState } from 'react';
 import { getGarages } from '@/utils/garage';
-import { IGarage } from '@/interfaces/garage';
-import { Pagination } from '../components/pagination-area/pagination-area';
-import { Grid, List } from '@mantine/core';
 export default async function Expert() {
     const garageData = await getGarages();
     return (
@@ -18,18 +15,6 @@ export default async function Expert() {
                             </div>
                         ))}
                     </div>
-                    <Grid>
-                        <Grid.Col span={12}>
-                            {/* <div className="shop-item-wrapper">
-                                <Row>
-                                    {garage_data.map((garage: IGarage, index) => (
-                                        <GarageItem garage={garage} key={index} />
-                                    ))}
-                                </Row>
-                            </div> */}
-                            {/* <Pagination data={garageData} /> */}
-                        </Grid.Col>
-                    </Grid>
                 </div>
             </div>
         </main>
