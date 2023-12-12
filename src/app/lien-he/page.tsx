@@ -1,4 +1,4 @@
-export default function Contact() {
+export default async function Contact() {
     return (
         <main className="main">
             <div className="contact-area py-120">

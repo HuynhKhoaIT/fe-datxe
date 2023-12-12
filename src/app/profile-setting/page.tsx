@@ -1,5 +1,5 @@
 import Menu from '../components/profile-sidebar/Menu';
-export default function Setting() {
+export default async function Setting() {
     return (
         <main className="main">
             {/* <!-- user-profile --> */}
