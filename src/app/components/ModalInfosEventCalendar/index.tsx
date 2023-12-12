@@ -5,7 +5,7 @@ import { ModalEventCalendar } from './ModalEventCalendar';
 import { useSession } from 'next-auth/react';
 import { getBrands, getModels } from '@/utils/branch';
 import { useSearchParams } from 'next/navigation';
-import { getGarage } from '@/utils/garage';
+import { getEmployees, getGarage } from '@/utils/garage';
 import { getCategories } from '@/utils/category';
 import Categories from '../category/categories';
 import { getCustomerCareCreate } from '@/utils/customerCare';
@@ -53,6 +53,12 @@ export default function ModalCalendar({
     const fetchGarage = async (garageId: string) => {
         if (garageId.length > 0) {
             const garage = await getGarage(garageId || '');
+            const employees = await getEmployees(garageId || '');
+            const newEmployees = employees?.map((employee: any) => ({
+                value: employee.id?.toString() || '',
+                label: employee.name || '',
+            }));
+            setAdvisoroptions(newEmployees);
             setGarage(garage);
         }
     };
@@ -80,14 +86,13 @@ export default function ModalCalendar({
                     }));
                     categoryOptions = categories;
                     setGarageOptions(garages);
-                    setAdvisoroptions(advisors);
+                    // setAdvisoroptions(advisors);
                     setCustomerCreate(customerCare);
                 } catch (error) {
                     console.log('API Response:', error);
                 }
             }
         };
-
         fetchData();
     }, [token]);
     return (

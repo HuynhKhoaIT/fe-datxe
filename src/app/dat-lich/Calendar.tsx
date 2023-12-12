@@ -9,6 +9,7 @@ import ModalCalendar from '../components/ModalInfosEventCalendar';
 import ModalPreviewDetailCalendar from '../components/ModalPreviewCalendar';
 import dayjs from 'dayjs';
 import BasicModal from '../components/basicModal/BasicModal';
+import { useSearchParams } from 'next/navigation';
 
 const sampleEvents: any = [
     {
@@ -36,9 +37,12 @@ export default function CalendarScheduler({
     carOptions,
     carDefault,
 }: any) {
+    const searchParams = useSearchParams();
+
+    const search = searchParams.get('garage');
+
     const [eventInfos, setEventInfos] = useState();
     const [previewInfos, setPreviewInfos] = useState();
-
     const [openedCalendar, { open: openCalendar, close: closeCalendar }] = useDisclosure(false);
     const [openedPreviewCalendar, { open: openPreviewCalendar, close: closePreviewCalendar }] = useDisclosure(false);
     const [openedNotification, { open: openNotification, close: closeNotification }] = useDisclosure(false);
