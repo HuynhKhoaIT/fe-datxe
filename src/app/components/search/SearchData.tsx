@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { ProductItem } from '../product/productItem';
 import { Pagination } from '../pagination-area/pagination-area';
 
+import { IconBulb } from '@tabler/icons-react';
 const SearchData = () => {
     const searchParams = useSearchParams();
     const search = searchParams.get('s');
@@ -37,7 +38,18 @@ const SearchData = () => {
 
         fetchProducts();
     }, [search, catID, garageId, brand_id, car_name_id, year_id]);
-    return <Pagination data={productData} />;
+    return (
+        <>
+            <p style={{ marginBottom: 24 }}>
+                <i style={{ marginRight: 5 }}>
+                    <IconBulb size={20} />
+                </i>
+                Kết quả tìm kiếm cho từ khoá
+                <span style={{ color: 'var(--theme-color)', fontWeight: 600, marginLeft: 5 }}>{search}</span>
+            </p>
+            <Pagination data={productData} />
+        </>
+    );
 };
 
 export default SearchData;
