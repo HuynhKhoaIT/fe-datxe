@@ -1,5 +1,5 @@
 import { BlogItem } from '../components/blog/blogItem';
-export default function Blog() {
+export default async function Blog() {
     return (
         <main className="main">
             {/* <!-- blog area --> */}

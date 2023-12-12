@@ -1,4 +1,3 @@
-'use client';
 import { GarageItem } from '../components/garageItem/garageItem';
 import React, { useEffect, useState } from 'react';
 import { getGarages } from '@/utils/garage';
@@ -6,20 +5,7 @@ import { IGarage } from '@/interfaces/garage';
 import { Pagination } from '../components/pagination-area/pagination-area';
 import { Grid, List } from '@mantine/core';
 export default async function Expert() {
-    const [garageData, setGarageData] = useState<IGarage[]>([]);
-
-    useEffect(() => {
-        const fetchGarageData = async () => {
-            try {
-                const data = await getGarages(); // Gọi hàm getGarages từ nơi bạn đã định nghĩa
-                setGarageData(data); // Lưu trữ dữ liệu vào state
-            } catch (error) {
-                console.error('Error fetching garage data:', error);
-            }
-        };
-
-        fetchGarageData(); // Gọi hàm fetchGarageData khi component mount hoặc garages thay đổi
-    }, []);
+    const garageData = await getGarages();
     return (
         <main className="main">
             {/* <!-- shop-area --> */}
