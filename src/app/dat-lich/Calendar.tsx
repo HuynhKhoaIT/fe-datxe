@@ -28,25 +28,20 @@ const sampleEvents: any = [
     // Add more events as needed
 ];
 
-export default function CalendarScheduler({ ordersData }: any) {
+export default function CalendarScheduler({
+    ordersData,
+    brandOptions,
+    categoryOptions,
+    carsData,
+    carOptions,
+    carDefault,
+}: any) {
     const [eventInfos, setEventInfos] = useState();
     const [previewInfos, setPreviewInfos] = useState();
 
-    const [isEditCard, setIsEditCard] = useState<boolean>(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [carDefault, setCarDefault] = useState<any>({});
     const [openedCalendar, { open: openCalendar, close: closeCalendar }] = useDisclosure(false);
     const [openedPreviewCalendar, { open: openPreviewCalendar, close: closePreviewCalendar }] = useDisclosure(false);
     const [openedNotification, { open: openNotification, close: closeNotification }] = useDisclosure(false);
-
-    useEffect(() => {
-        const existingCarData = localStorage.getItem('carDefault');
-        if (existingCarData) {
-            const parsedCarData = JSON.parse(existingCarData);
-            setCarDefault(parsedCarData);
-        }
-    }, []);
-
     const weekends = {
         weekendsVisible: true,
         currentEvents: [],
@@ -59,8 +54,6 @@ export default function CalendarScheduler({ ordersData }: any) {
 
     // click mở modal đặt lịch
     const handleAddEventSelectAndOpenModal = (selectInfo: any) => {
-        console.log('selectInfo', selectInfo);
-        setIsEditCard(false);
         setEventInfos(selectInfo);
         openCalendar();
         isDateInThePast(selectInfo?.start);
@@ -68,7 +61,6 @@ export default function CalendarScheduler({ ordersData }: any) {
 
     // click mở modal xem chi tiết
     const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
-        setIsModalOpen(true);
         setPreviewInfos(clickInfo);
         console.log('clickInfo', clickInfo);
         openPreviewCalendar();
@@ -97,7 +89,7 @@ export default function CalendarScheduler({ ordersData }: any) {
         }
     };
     const handleDateClick = (arg: { date: any }) => {
-        setIsModalOpen(true);
+        // setIsModalOpen(true);
     };
     console.log(ordersData);
     // Kiểm tra xem khung giờ đang được chọn có nằm trong quá khứ hay không
@@ -162,7 +154,16 @@ export default function CalendarScheduler({ ordersData }: any) {
                 selectAllow={handleSelectAllow}
                 firstDay={new Date().getDay() - 3}
             />
-            <ModalCalendar opened={openedCalendar} onClose={closeCalendar} eventInfos={eventInfos} />
+            <ModalCalendar
+                opened={openedCalendar}
+                onClose={closeCalendar}
+                eventInfos={eventInfos}
+                brandOptions={brandOptions}
+                categoryOptions={categoryOptions}
+                carsData={carsData}
+                carOptions={carOptions}
+                carDefault={carDefault}
+            />
             <ModalPreviewDetailCalendar
                 opened={openedPreviewCalendar}
                 onClose={closePreviewCalendar}

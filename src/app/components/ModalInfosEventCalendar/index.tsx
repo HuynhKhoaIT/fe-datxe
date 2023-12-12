@@ -12,9 +12,17 @@ import { getCustomerCareCreate } from '@/utils/customerCare';
 import { getCars } from '@/utils/car';
 import { getMyAccount } from '@/utils/user';
 
-export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
+export default function ModalCalendar({
+    opened,
+    onClose,
+    eventInfos,
+    brandOptions,
+    categoryOptions,
+    carsData,
+    carOptions,
+    carDefault: dataCarDefault,
+}: any) {
     const searchParams = useSearchParams();
-
     const garageId = searchParams.get('garage');
     // Lấy thông tin khách hàng nếu có
     const { data: session } = useSession();
@@ -22,31 +30,11 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
     const user = session?.user;
     // state
     const [brand, setBrand] = useState<number>();
-    const [brandOptions, setBrandsOptions] = useState<any>();
     const [modelOptions, setModelsOptions] = useState<any>();
-    const [categoryOptions, setCategoriesOptions] = useState<any>();
     const [advisorOptions, setAdvisoroptions] = useState<any>();
-    const [carOptions, setCarOptions] = useState<any>();
-    const [cars, setCars] = useState<any>();
-
     const [garageOptions, setGarageOptions] = useState<any>([]);
     const [customerCreate, setCustomerCreate] = useState<any>();
     const [garage, setGarage] = useState<any>();
-    const [dataCarDefault, setdataCartDefault] = useState<any>();
-
-    //Lấy danh sách xe
-    const fetchBrands = async () => {
-        const brands = await getBrands();
-        const newBrands = brands?.map((brand) => ({
-            value: brand.id?.toString() || '',
-            label: brand.name || '',
-        }));
-        setBrandsOptions(newBrands);
-        // setCars(fetchedCars);
-    };
-    useEffect(() => {
-        fetchBrands();
-    }, []);
 
     // lấy danh sách model
     const fetchModel = async () => {
@@ -61,18 +49,6 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
         fetchModel();
     }, [brand]);
 
-    // lấy danh sách category
-    const fetchCategories = async () => {
-        const categories = await getCategories();
-        const newCategories = categories?.map((category) => ({
-            value: category.id?.toString() || '',
-            label: category.name || '',
-        }));
-        setCategoriesOptions(newCategories);
-    };
-    useEffect(() => {
-        fetchCategories();
-    }, []);
     //  lấy  Garage
     const fetchGarage = async (garageId: string) => {
         if (garageId.length > 0) {
@@ -83,36 +59,6 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
     useEffect(() => {
         fetchGarage(garageId || '');
     }, [garageId]);
-
-    // lấy thông tin xe khi đã login
-    const fetchCars = async () => {
-        try {
-            if (token) {
-                const fetchedCars = await getCars(token);
-                const newCars = fetchedCars?.map((car) => ({
-                    value: car.id?.toString() || '',
-                    label: car.licensePlates || '',
-                    otherData: {
-                        carId: car.id?.toString() || '',
-                        brandId: car.brandCarName.id,
-                        brandName: car.brandCarName.name,
-                        modelId: car.modelCarName.id,
-                        modelName: car.modelCarName.name,
-                    },
-                }));
-                setCarOptions(newCars);
-                setCars(fetchedCars);
-                const account: any = await getMyAccount(token);
-                const carDefault = newCars?.filter((car) => car.value == account?.carIdDefault);
-                setdataCartDefault(carDefault);
-            }
-        } catch (error) {
-            console.error('Error fetching cars:', error);
-        }
-    };
-    useEffect(() => {
-        fetchCars();
-    }, [token]);
 
     // Lay thong tin dat lich khi đã login
     useEffect(() => {
@@ -132,7 +78,7 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                         value: advisor.id?.toString(),
                         label: advisor.name,
                     }));
-                    setCategoriesOptions(categories);
+                    categoryOptions = categories;
                     setGarageOptions(garages);
                     setAdvisoroptions(advisors);
                     setCustomerCreate(customerCare);
@@ -164,7 +110,7 @@ export default function ModalCalendar({ opened, onClose, eventInfos }: any) {
                 categoryOptions={categoryOptions}
                 advisorOptions={advisorOptions}
                 carOptions={carOptions}
-                cars={cars}
+                cars={carsData}
                 garageOptions={garageOptions}
                 dataCarDefault={dataCarDefault?.[0]?.otherData}
                 onClose={onClose}

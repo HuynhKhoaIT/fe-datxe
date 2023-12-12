@@ -15,11 +15,12 @@ import { IOrderDetail } from '@/interfaces/orderDetail';
  *
  * @return {Promise<void>}
  */
-export const getOrders = async (token: String, pageNo = 1) => {
-    if (token) {
+export const getOrders = async (pageNo = 1) => {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.token) {
         try {
             const config = {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${session?.user?.token}` },
             };
             const res = await axios.get(`${GET_ORDER_ENDPOINT}?page=${pageNo}`, config);
             return res.data.data as Promise<IOrder[]>;
@@ -27,7 +28,6 @@ export const getOrders = async (token: String, pageNo = 1) => {
             throw new Error('Lỗi trong quá trình lấy danh sách đơn hàng');
         }
     }
-    //
 };
 
 export const getOrder = async (orderId = 0) => {

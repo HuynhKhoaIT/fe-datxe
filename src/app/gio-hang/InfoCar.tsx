@@ -6,15 +6,12 @@ import { getCar, getCars } from '@/utils/car';
 import { getMyAccount } from '@/utils/user';
 import { useDisclosure } from '@mantine/hooks';
 import { LoadingOverlay, Button, Group, Box } from '@mantine/core';
-export default function InfoCar({ setCarId }: any) {
+export default function InfoCar({ setCarId, carDefault: dataCarDefault, carOptions }: any) {
     const { data: session, status } = useSession();
     const token = session?.user?.token;
-    const [carOptions, setCaroptions] = useState<any>();
-    const [dataCarDefault, setdataCartDefault] = useState<any>();
     const [visible, handlers] = useDisclosure(false);
     const selectCar = async (value: any) => {
         handlers.open();
-
         try {
             const selectedCar = await getCar(token ?? '', value);
             setCarSelect(selectedCar);
@@ -24,39 +21,6 @@ export default function InfoCar({ setCarId }: any) {
         }
     };
     const [carSelect, setCarSelect] = useState<any>();
-
-    //Lấy danh sách xe
-    const fetchCars = async () => {
-        try {
-            if (token) {
-                const fetchedCars = await getCars(token);
-                const newModels = fetchedCars?.map((car) => ({
-                    value: car.id?.toString() || '',
-                    label: car.licensePlates || '',
-                    otherData: {
-                        carId: car.id?.toString() || '',
-                        brandId: car.brandCarName.id,
-                        brandName: car.brandCarName.name,
-                        modelId: car.modelCarName.id,
-                        modelName: car.modelCarName.name,
-                    },
-                }));
-                const account: any = await getMyAccount(token);
-
-                const carDefault: any = newModels?.filter((car) => car.value == account?.carIdDefault);
-                setCarId(carDefault?.value);
-                setdataCartDefault(carDefault?.[0]?.otherData);
-                setCaroptions(newModels);
-            }
-        } catch (error) {
-            console.error('Error fetching cars:', error);
-        }
-    };
-    useEffect(() => {
-        fetchCars();
-    }, [token]);
-
-    // console.log(carSelect);
 
     return (
         <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
