@@ -11,7 +11,7 @@ import { getMyAccount } from '@/utils/user';
 import { useDisclosure } from '@mantine/hooks';
 import { getModels } from '@/utils/branch';
 
-export default function CarComponent({ carsData, myAccount }: any) {
+export default function CarComponent({ myAccount }: any) {
     const { data: session } = useSession();
     const token = session?.user?.token;
     const [openedAddCar, { open: openAddCar, close: closeAddCar }] = useDisclosure(false);
@@ -21,22 +21,25 @@ export default function CarComponent({ carsData, myAccount }: any) {
     const [models, setModels] = useState<any>();
     const [detail, setDetail] = useState<any>({});
     const [deleteRow, setDeleteRow] = useState('');
+    const [carsData, setCarsData] = useState<any>();
     const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
     const fetchCars = async () => {
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
-                carsData = fetchedCars;
+                setCarsData(fetchedCars);
             }
         } catch (error) {
             console.error('Error fetching cars:', error);
         }
     };
+    useEffect(() => {
+        fetchCars();
+    }, []);
 
     const handleDeleteCar = async (carId: string) => {
         try {
             await deleteCar(carId, token ?? '');
-
             fetchCars();
         } catch (error) {
             console.error('Error deleting car:', error);
