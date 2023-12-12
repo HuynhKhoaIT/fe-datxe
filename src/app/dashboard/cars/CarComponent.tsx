@@ -88,7 +88,7 @@ export default function CarComponent({ myAccount }: any) {
         setCurrentPage(newPage);
     };
     const renderRows = () => {
-        return paginatedData.map((record: any) => (
+        return paginatedData?.map((record: any) => (
             <Table.Tr key={record.id}>
                 <Table.Td>
                     <Radio
