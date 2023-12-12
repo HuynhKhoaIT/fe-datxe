@@ -92,6 +92,7 @@ export const ModalEventCalendar = ({
             car_year_id,
             brand_id,
             car_name_id,
+            service_advisor,
         } = values;
         const customerCare: any = {
             full_name: full_name,
@@ -106,6 +107,7 @@ export const ModalEventCalendar = ({
             brand_id: brand_id,
             car_name_id: car_name_id,
             car_year_id: car_year_id,
+            service_advisor: service_advisor,
         };
         setNewCustomerCare(customerCare);
         if (!token) {
