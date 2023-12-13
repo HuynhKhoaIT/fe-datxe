@@ -69,6 +69,8 @@ export default function CalendarScheduler({
 
   // click mở modal đặt lịch
   const handleAddEventSelectAndOpenModal = (selectInfo: any) => {
+    console.log("handleAddEventSelectAndOpenModal");
+
     setEventInfos(selectInfo);
     openCalendar();
     isDateInThePast(selectInfo?.start);
@@ -78,6 +80,8 @@ export default function CalendarScheduler({
   const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
     setPreviewInfos(clickInfo);
     console.log("clickInfo", clickInfo);
+    console.log("handleEditEventSelectAndOpenModal");
+
     openPreviewCalendar();
     // setIsModalOpen(true);
     // setIsEditCard(true);
@@ -105,6 +109,7 @@ export default function CalendarScheduler({
   };
   const handleDateClick = (arg: { date: any }) => {
     // setIsModalOpen(true);
+    console.log("handleDateClick");
   };
   console.log(ordersData);
   // Kiểm tra xem khung giờ đang được chọn có nằm trong quá khứ hay không
@@ -139,12 +144,12 @@ export default function CalendarScheduler({
         weekends={weekends.weekendsVisible}
         select={handleAddEventSelectAndOpenModal}
         eventClick={handleEditEventSelectAndOpenModal}
-        // dateClick={handleDateClick}
+        dateClick={handleDateClick}
         eventChange={handleUpdateEventSelect}
         initialEvents={ordersData ?? sampleEvents}
-        longPressDelay={1000}
-        eventLongPressDelay={1000}
-        selectLongPressDelay={1000}
+        // longPressDelay={1000}
+        // eventLongPressDelay={1000}
+        // selectLongPressDelay={1000}
         selectable={true}
         dayMaxEvents={true}
         allDaySlot={false}
@@ -168,6 +173,7 @@ export default function CalendarScheduler({
         }}
         selectAllow={handleSelectAllow}
         firstDay={new Date().getDay() - 3}
+        longPressDelay={1}
       />
       <ModalCalendar
         opened={openedCalendar}
