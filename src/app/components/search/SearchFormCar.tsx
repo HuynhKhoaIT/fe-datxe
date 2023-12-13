@@ -19,11 +19,7 @@ export default function SearchFormCar({ brandsData }: any) {
     }));
 
     const form = useForm({
-        initialValues: {
-            brand_id: 0,
-            car_name_id: 0,
-            year_id: 0,
-        },
+        initialValues: {},
         validate: {},
     });
 
@@ -40,12 +36,11 @@ export default function SearchFormCar({ brandsData }: any) {
     const selectYear = async (value: number) => {
         try {
             const yearCar = await getYears(value);
-            console.log('yearCar', yearCar);
             const newYearCar = yearCar?.map((year) => ({
                 value: year.id?.toString() || '',
                 label: year.name || '',
             }));
-            setYearCar(newYearCar);
+            setYearCar(newYearCar.reverse());
         } catch (error) {}
     };
     const handleSubmit = async (values: any) => {
@@ -74,7 +69,9 @@ export default function SearchFormCar({ brandsData }: any) {
                         clearable
                         onChange={(value) => {
                             selectModel(Number(value));
+                            form.setFieldValue('car_name_id', null);
                             form.setFieldValue('brand_id', Number(value));
+                            form.setFieldValue('year_id', null);
                         }}
                     />
                 </Grid.Col>
@@ -88,6 +85,7 @@ export default function SearchFormCar({ brandsData }: any) {
                         onChange={(value) => {
                             selectYear(Number(value));
                             form.setFieldValue('car_name_id', Number(value));
+                            form.setFieldValue('year_id', null);
                         }}
                     />
                 </Grid.Col>

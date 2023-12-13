@@ -1,6 +1,4 @@
-import SearchData from '../components/search/SearchData';
-import { IconBulb } from '@tabler/icons-react';
-import { useSearchParams } from 'next/navigation';
+import SearchData from "../components/search/SearchData";
 export default async function Search() {
-    return <SearchData />;
+  return <SearchData />;
 }

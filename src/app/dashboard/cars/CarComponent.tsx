@@ -6,14 +6,26 @@ import { IconChevronRight, IconEye, IconPencil, IconTrash, IconBan } from '@tabl
 import PreviewModal from './PreviewModal';
 import UpdateModal from './UpdateModal';
 import AddCarModal from './AddCarModal';
-import { Table, Checkbox, Radio, Loader, Center, Button, Modal, Group, Pagination } from '@mantine/core';
+import {
+    Table,
+    Checkbox,
+    Radio,
+    Loader,
+    Center,
+    Button,
+    Modal,
+    Group,
+    Pagination,
+    LoadingOverlay,
+    Box,
+} from '@mantine/core';
 import { getMyAccount } from '@/utils/user';
-import { useDisclosure } from '@mantine/hooks';
 import { getModels } from '@/utils/branch';
-
-export default function CarComponent({ myAccount }: any) {
+import { useDisclosure } from '@mantine/hooks';
+export default function CarComponent({ carsData: cars, myAccount }: any) {
     const { data: session } = useSession();
     const token = session?.user?.token;
+    const [visible, handlers] = useDisclosure(true);
     const [openedAddCar, { open: openAddCar, close: closeAddCar }] = useDisclosure(false);
     const [openedUpdateCar, { open: openUpdateCar, close: closeUpdateCar }] = useDisclosure(false);
     const [openedPreviewCar, { open: openPreviewCar, close: closePreviewCar }] = useDisclosure(false);
@@ -21,16 +33,19 @@ export default function CarComponent({ myAccount }: any) {
     const [models, setModels] = useState<any>();
     const [detail, setDetail] = useState<any>({});
     const [deleteRow, setDeleteRow] = useState('');
-    const [carsData, setCarsData] = useState<any>();
+    const [carsData, setCarsData] = useState<any>(cars);
     const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
     const fetchCars = async () => {
+        handlers.open();
         try {
             if (token) {
                 const fetchedCars = await getCars(token);
                 setCarsData(fetchedCars);
+                handlers.close();
             }
         } catch (error) {
             console.error('Error fetching cars:', error);
+            handlers.close();
         }
     };
     useEffect(() => {
@@ -88,60 +103,68 @@ export default function CarComponent({ myAccount }: any) {
         setCurrentPage(newPage);
     };
     const renderRows = () => {
-        return paginatedData?.map((record: any) => (
-            <Table.Tr key={record.id}>
-                <Table.Td>
-                    <Radio
-                        style={{ display: 'flex', justifyContent: 'center' }}
-                        checked={selectedRow === record.id}
-                        onChange={() => handleRadioChange(record)}
-                    />
-                </Table.Td>
-                <Table.Td>{record.licensePlates}</Table.Td>
-                <Table.Td>{record.color}</Table.Td>
-                <Table.Td>{record.brandCarName?.name}</Table.Td>
-                <Table.Td>{record.modelCarName?.name}</Table.Td>
-                <Table.Td>{record.registrationDate}</Table.Td>
-                <Table.Td>
-                    <Button
-                        size="xs"
-                        p={5}
-                        variant="transparent"
-                        onClick={() => {
-                            setDetail(record);
-                            openPreviewCar();
-                        }}
-                    >
-                        <IconEye size={16} />
-                    </Button>
-                    <Button
-                        size="xs"
-                        style={{ margin: '0 5px' }}
-                        variant="transparent"
-                        color="gray"
-                        p={5}
-                        onClick={() => {
-                            setDetail(record);
-                            selectBrand(record?.automakerId || 0);
-                        }}
-                    >
-                        <IconPencil size={16} />
-                    </Button>
-                    <Button
-                        size="xs"
-                        p={5}
-                        variant="transparent"
-                        color="red"
-                        onClick={(e) => {
-                            openDeleteCar();
-                            setDeleteRow(record.id);
-                        }}
-                    >
-                        <IconTrash size={16} color="red" />
-                    </Button>
-                </Table.Td>
-            </Table.Tr>
-        ));
+        if (visible) {
+            return (
+                <Box w={'100%'} h={100}>
+                    <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+                </Box>
+            );
+        } else {
+            return paginatedData?.map((record: any) => (
+                <Table.Tr key={record.id}>
+                    <Table.Td>
+                        <Radio
+                            style={{ display: 'flex', justifyContent: 'center' }}
+                            checked={selectedRow === record.id}
+                            onChange={() => handleRadioChange(record)}
+                        />
+                    </Table.Td>
+                    <Table.Td>{record.licensePlates}</Table.Td>
+                    <Table.Td>{record.color}</Table.Td>
+                    <Table.Td>{record.brandCarName?.name}</Table.Td>
+                    <Table.Td>{record.modelCarName?.name}</Table.Td>
+                    <Table.Td>{record.registrationDate}</Table.Td>
+                    <Table.Td>
+                        <Button
+                            size="xs"
+                            p={5}
+                            variant="transparent"
+                            onClick={() => {
+                                setDetail(record);
+                                openPreviewCar();
+                            }}
+                        >
+                            <IconEye size={16} />
+                        </Button>
+                        <Button
+                            size="xs"
+                            style={{ margin: '0 5px' }}
+                            variant="transparent"
+                            color="gray"
+                            p={5}
+                            onClick={() => {
+                                setDetail(record);
+                                selectBrand(record?.automakerId || 0);
+                            }}
+                        >
+                            <IconPencil size={16} />
+                        </Button>
+                        <Button
+                            size="xs"
+                            p={5}
+                            variant="transparent"
+                            color="red"
+                            onClick={(e) => {
+                                openDeleteCar();
+                                setDeleteRow(record.id);
+                            }}
+                        >
+                            <IconTrash size={16} color="red" />
+                        </Button>
+                    </Table.Td>
+                </Table.Tr>
+            ));
+        }
     };
 
     return (
@@ -172,7 +195,7 @@ export default function CarComponent({ myAccount }: any) {
                                     <Table.Th>Hành động</Table.Th>
                                 </Table.Tr>
                             </Table.Thead>
-                            <Table.Tbody>{renderRows()}</Table.Tbody>
+                            <Table.Tbody style={{ position: 'relative' }}>{renderRows()}</Table.Tbody>
                         </Table>
                         <Pagination
                             style={{ marginTop: '16px', display: 'flex', justifyContent: 'end' }}
