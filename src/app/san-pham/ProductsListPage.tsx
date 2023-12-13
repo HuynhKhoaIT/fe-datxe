@@ -14,7 +14,11 @@ export default function ProductsListPage() {
     async function fetchFilterProducts() {
       if (catID) {
         let page = 1;
-        const newProductData = await getProductsSearch(`cat_id=${catID}`, page);
+        const newProductData = await getProductsSearch(
+          `cat_id=${catID}`,
+          page,
+          8
+        );
         setProductData(newProductData);
       }
     }
