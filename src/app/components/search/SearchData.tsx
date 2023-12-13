@@ -10,14 +10,14 @@ import { Box, Button, LoadingOverlay, Pagination } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 const SearchData = () => {
   const [visible, handlers] = useDisclosure(false);
-
+  const [loadMore, setLoadMore] = useState(false);
   const [activePage, setPage] = useState(1);
 
   const pathname = usePathname();
+  console.log("pathname", pathname);
   const searchParams = useSearchParams();
   let params = new URLSearchParams(searchParams);
   const [productData, setProductData] = useState<any>([]);
-  console.log("productData", params?.toString());
   const fetchProducts = async (activePage: any) => {
     try {
       let limit = 8;
@@ -26,6 +26,11 @@ const SearchData = () => {
         activePage,
         limit
       );
+      if (newProductData?.length < 8) {
+        setLoadMore(true);
+      } else {
+        setLoadMore(false);
+      }
       if (activePage !== 1) setProductData([...productData, ...newProductData]);
       else setProductData(newProductData);
     } catch (error) {
@@ -54,17 +59,19 @@ const SearchData = () => {
         </span>
       </p>
       <TableDataProduct data={productData} />
-      <div className="text-center mt-4">
-        <button
-          onClick={() => {
-            fetchProducts(activePage + 1);
-            setPage((prev) => prev + 1);
-          }}
-          className="theme-btn"
-        >
-          Xem Thêm
-        </button>
-      </div>
+      {!loadMore && (
+        <div className="text-center mt-4">
+          <button
+            onClick={() => {
+              fetchProducts(activePage + 1);
+              setPage((prev) => prev + 1);
+            }}
+            className="theme-btn"
+          >
+            Xem Thêm
+          </button>
+        </div>
+      )}
     </>
   );
 };
