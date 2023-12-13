@@ -21,7 +21,7 @@ const CategoryItem = async ({
     urlProducts += `&garage_id=${garageId}`;
   }
   let page = 1;
-  const productData = await getProductsSearch(urlProducts, page);
+  const productData = await getProductsSearch(urlProducts, page, 8);
   const categories = await getCategories();
   let nameCate;
   categories.forEach((cat) => {
