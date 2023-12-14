@@ -40,8 +40,6 @@ export default function CalendarScheduler({
   carOptions,
   carDefault,
 }: any) {
-  const calendarComponentRef: any = React.createRef<FullCalendar>();
-
   const searchParams = useSearchParams();
 
   const search = searchParams.get("garage");
@@ -75,6 +73,9 @@ export default function CalendarScheduler({
   };
 
   useEffect(() => {
+    if (window.innerWidth < 765) {
+      setLayoutMobile(true);
+    }
     fetchDataOrders();
   }, []);
   // Hàm kiểm tra xem ngày đã qua hay chưa
@@ -128,18 +129,11 @@ export default function CalendarScheduler({
     return dayjs().isBefore(selectInfo.start);
   };
 
-  const getHeaderProps = (): any => {
-    console.log("khoa");
-    return {
-      left: "",
-      center: "prev,title,next",
-      right: window.innerWidth < 765 ? "" : "dayGridMonth,listWeek",
-    };
-  };
-  const handleWindowResize = (view: any): void => {
-    const calendar = calendarComponentRef.current.getApi();
-    calendar.changeView(window.innerWidth < 765 ? "listWeek" : "dayGridMonth");
-    calendar.setOption("header", getHeaderProps());
+  const [layoutMobile, setLayoutMobile] = useState(false);
+  const handleWindowResize = () => {
+    if (window.innerWidth < 765) {
+      setLayoutMobile(true);
+    }
   };
   return (
     <div className="modal-datlich">
