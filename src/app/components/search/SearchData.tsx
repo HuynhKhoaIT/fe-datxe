@@ -1,15 +1,10 @@
 "use client";
-import { IProduct } from "@/interfaces/product";
 import { getProductsSearch } from "@/utils/product";
 import { useEffect, useState } from "react";
-import { ProductItem } from "../product/productItem";
 import { TableDataProduct } from "../pagination-area/pagination-area";
 import { IconBulb } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Box, Button, LoadingOverlay, Pagination } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 const SearchData = () => {
-  const [visible, handlers] = useDisclosure(false);
   const [loadMore, setLoadMore] = useState(false);
   const [activePage, setPage] = useState(1);
 
