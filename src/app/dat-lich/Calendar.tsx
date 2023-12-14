@@ -14,6 +14,7 @@ import BasicModal from "../components/basicModal/BasicModal";
 import { useSearchParams } from "next/navigation";
 import { getSchedule } from "@/utils/order";
 import { mapArrayEventCalendar } from "../domain/EventCalendar";
+import { useSession } from "next-auth/react";
 
 export default function CalendarScheduler({
   ordersData: dataDetail,
@@ -24,7 +25,8 @@ export default function CalendarScheduler({
   carDefault,
 }: any) {
   const searchParams = useSearchParams();
-
+  const { data: session, status } = useSession();
+  const token = session?.user?.token;
   const search = searchParams.get("garage");
   const [ordersData, setOrdersData] = useState(dataDetail);
   const [eventInfos, setEventInfos] = useState();
@@ -46,11 +48,12 @@ export default function CalendarScheduler({
     currentEvents: [],
   };
   const fetchDataOrders = async () => {
-    console.log("fetch order");
     try {
-      const orders = await getSchedule();
+      const orders = await getScheduleCsr(token || "");
       const mappedOrdersData = mapArrayEventCalendar(orders);
+      console.log("mappedOrdersData", mappedOrdersData);
       setOrdersData(mappedOrdersData);
+      console.log("fetch order");
     } catch (error) {
       console.error("Error fetching or processing data:", error);
     }
