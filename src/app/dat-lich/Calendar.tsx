@@ -12,7 +12,7 @@ import ModalPreviewDetailCalendar from "../components/ModalPreviewCalendar";
 import dayjs from "dayjs";
 import BasicModal from "../components/basicModal/BasicModal";
 import { useSearchParams } from "next/navigation";
-import { getSchedule } from "@/utils/order";
+import { getSchedule, getScheduleCsr } from "@/utils/order";
 import { mapArrayEventCalendar } from "../domain/EventCalendar";
 import { useSession } from "next-auth/react";
 
