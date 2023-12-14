@@ -7,9 +7,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const SearchData = () => {
   const [loadMore, setLoadMore] = useState(false);
   const [activePage, setPage] = useState(1);
-
-  const pathname = usePathname();
-  console.log("pathname", pathname);
   const searchParams = useSearchParams();
   let params = new URLSearchParams(searchParams);
   const [productData, setProductData] = useState<any>([]);
