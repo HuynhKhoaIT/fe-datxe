@@ -75,6 +75,8 @@ export default function CalendarScheduler({
   useEffect(() => {
     if (window.innerWidth < 765) {
       setLayoutMobile(true);
+    } else {
+      setLayoutMobile(false);
     }
     fetchDataOrders();
   }, []);
@@ -133,6 +135,8 @@ export default function CalendarScheduler({
   const handleWindowResize = () => {
     if (window.innerWidth < 765) {
       setLayoutMobile(true);
+    } else {
+      setLayoutMobile(false);
     }
   };
   return (
@@ -182,7 +186,7 @@ export default function CalendarScheduler({
         views={{
           timeGridWeek: {
             type: "timeGridWeek",
-            duration: { weeks: 1 }, // Hiển thị một tuần tại một thời điểm
+            duration: layoutMobile ? { days: 4 } : { days: 7 }, // Hiển thị một tuần tại một thời điểm
             buttonText: "Tuần",
           },
         }}
