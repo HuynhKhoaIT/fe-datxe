@@ -34,6 +34,7 @@ const sampleEvents: any = [
 ];
 
 export default function CalendarScheduler({
+  ordersData: dataDetail,
   brandOptions,
   categoryOptions,
   carsData,
@@ -43,7 +44,7 @@ export default function CalendarScheduler({
   const searchParams = useSearchParams();
 
   const search = searchParams.get("garage");
-  const [ordersData, setOrdersData] = useState([]);
+  const [ordersData, setOrdersData] = useState(dataDetail);
   const [eventInfos, setEventInfos] = useState();
   const [previewInfos, setPreviewInfos] = useState();
   const [

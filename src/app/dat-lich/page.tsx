@@ -7,6 +7,8 @@ import { getCategories } from "@/utils/category";
 import { getCarsSsr } from "@/utils/car";
 import { getMyAccount } from "@/utils/user";
 export default async function Shop() {
+  const orders = await getSchedule();
+  const mappedOrdersData = mapArrayEventCalendar(orders);
   // lấy danh sách brand
   const brands = await getBrands();
   const newBrands = brands?.map((brand) => ({
@@ -45,6 +47,7 @@ export default async function Shop() {
         carsData={carsData}
         carOptions={carOptions}
         carDefault={carDefault}
+        ordersData={mappedOrdersData}
       />
     </main>
   );
