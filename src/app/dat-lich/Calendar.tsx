@@ -122,6 +122,7 @@ export default function CalendarScheduler({
       setLayoutMobile(false);
     }
   };
+  console.log("ordersData", ordersData);
   return (
     <div className="modal-datlich">
       <FullCalendar
@@ -187,7 +188,7 @@ export default function CalendarScheduler({
         carsData={carsData}
         carOptions={carOptions}
         carDefault={carDefault}
-        fetchDataOrders={fetchDataOrders()}
+        fetchDataOrders={fetchDataOrders}
       />
       <ModalPreviewDetailCalendar
         opened={openedPreviewCalendar}

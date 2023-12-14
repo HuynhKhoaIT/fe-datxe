@@ -149,6 +149,7 @@ export const ModalEventCalendar = ({
         });
         setLoading(false);
         onClose();
+        fetchDataOrders();
       }
     }
   };

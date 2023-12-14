@@ -6,7 +6,7 @@ import { getBrands } from "@/utils/branch";
 import { getCategories } from "@/utils/category";
 import { getCarsSsr } from "@/utils/car";
 import { getMyAccount } from "@/utils/user";
-export default async function Shop() {
+export default async function DatLich() {
   const orders = await getSchedule();
   const mappedOrdersData = mapArrayEventCalendar(orders);
   // lấy danh sách brand
