@@ -42,3 +42,14 @@ export const getModels = async (id: number) => {
         throw new Error('Lỗi trong quá trình lấy thông tin dòng xe'); // Xử lý lỗi và thông báo lỗi cho phía front-end
     }
 };
+
+export const getYears = async (id: number) => {
+    try {
+        const res = await axios.get(`${GET_BRAND_ENDPOINT}/years/${id}`);
+        console.log('res', res);
+        return res.data.data as Promise<IBrand[]>;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Lỗi trong quá trình lấy thông tin năm sản xuất'); // Xử lý lỗi và thông báo lỗi cho phía front-end
+    }
+};

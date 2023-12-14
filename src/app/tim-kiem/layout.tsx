@@ -1,6 +1,4 @@
 import { ReactNode, Suspense } from 'react';
-import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
-import { LoadingComponent } from '../components/loading';
 import { SideBar } from '../components/shop-sidebar/sideBar';
 import Link from 'next/link';
 import { Breadcrumbs, Anchor } from '@mantine/core';

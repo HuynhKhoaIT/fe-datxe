@@ -1,4 +1,4 @@
-export default function BlogDetail() {
+export default async function BlogDetail() {
     return (
         <main className="main">
             {/* <!-- blog single area --> */}

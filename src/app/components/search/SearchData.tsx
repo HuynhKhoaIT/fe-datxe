@@ -1,35 +1,71 @@
-'use client';
-import { IProduct } from '@/interfaces/product';
-import { getProductsSearch } from '@/utils/product';
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { ProductItem } from '../product/productItem';
-import { Pagination } from '../pagination-area/pagination-area';
-
+"use client";
+import { getProductsSearch } from "@/utils/product";
+import { useEffect, useState } from "react";
+import { TableDataProduct } from "../pagination-area/pagination-area";
+import { IconBulb } from "@tabler/icons-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const SearchData = () => {
-    const searchParams = useSearchParams();
-    const search = searchParams.get('s');
-    const catID = searchParams.get('cat_id');
-    const garageId = searchParams.get('garage_id');
+  const [loadMore, setLoadMore] = useState(false);
+  const [activePage, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  let params = new URLSearchParams(searchParams);
+  const [productData, setProductData] = useState<any>([]);
+  const fetchProducts = async (activePage: any) => {
+    try {
+      let limit = 8;
+      const newProductData = await getProductsSearch(
+        params?.toString(),
+        activePage,
+        limit
+      );
+      if (newProductData?.length < 8) {
+        setLoadMore(true);
+      } else {
+        setLoadMore(false);
+      }
+      if (activePage !== 1) setProductData([...productData, ...newProductData]);
+      else setProductData(newProductData);
+    } catch (error) {
+      console.error("Lỗi khi tải dữ liệu sản phẩm:", error);
+    }
+  };
+  useEffect(() => {
+    fetchProducts(1);
+  }, [params?.toString()]);
 
-    const [productData, setProductData] = useState<IProduct[]>([]);
-    useEffect(() => {
-        async function fetchProducts() {
-            if (search !== null && catID === null && garageId === null) {
-                try {
-                    const newProductData = await getProductsSearch(`s=${search}`);
-                    setProductData(newProductData);
-                } catch (error) {
-                    console.error('Lỗi khi tải dữ liệu sản phẩm:', error);
-                }
-            } else {
-                const newProductData = await getProductsSearch(`s=${search}&cat_id=${catID}&garage_id=${garageId}`);
-                setProductData(newProductData);
-            }
-        }
-        fetchProducts();
-    }, [search, catID, garageId]);
-    return <Pagination data={productData} />;
+  return (
+    <>
+      <p style={{ marginBottom: 24 }}>
+        <i style={{ marginRight: 5 }}>
+          <IconBulb size={20} />
+        </i>
+        Kết quả tìm kiếm cho từ khoá
+        <span
+          style={{
+            color: "var(--theme-color)",
+            fontWeight: 600,
+            marginLeft: 5,
+          }}
+        >
+          {/* {search} */}
+        </span>
+      </p>
+      <TableDataProduct data={productData} />
+      {!loadMore && (
+        <div className="text-center mt-4">
+          <button
+            onClick={() => {
+              fetchProducts(activePage + 1);
+              setPage((prev) => prev + 1);
+            }}
+            className="theme-btn"
+          >
+            Xem Thêm
+          </button>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default SearchData;

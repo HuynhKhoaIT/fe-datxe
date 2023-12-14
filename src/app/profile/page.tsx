@@ -1,5 +1,4 @@
-import { getMyAccount } from '@/utils/user';
-import { ProfileSidebar } from '../components/profile-sidebar/sidebar';
+import Menu from '../components/profile-sidebar/Menu';
 import ProfileChangePassword from '../components/profile/ProfileChangePassword';
 import StoreInfo from '../components/profile/StoreInfo';
 import { Suspense } from 'react';
@@ -11,7 +10,7 @@ export default async function Profile() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-3">
-                            <ProfileSidebar />
+                            <Menu />
                         </div>
                         <div className="col-lg-9">
                             <div className="user-profile-wrapper">

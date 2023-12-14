@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
@@ -12,9 +12,6 @@ import { useRouter } from 'next/navigation';
 const SigninButton = () => {
     const router = useRouter();
     const { data: session } = useSession();
-    const handleItemClick = (event: { preventDefault: () => void }) => {
-        event.preventDefault();
-    };
     const handleCar = (event: { preventDefault: () => void }) => {
         event.preventDefault();
         router.push('/gio-hang');

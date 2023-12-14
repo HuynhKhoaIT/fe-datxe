@@ -24,19 +24,19 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
  * @return {Promise<void>}
  */
 
-export const getMyAccount = async (token: String) => {
-    // const session = await getServerSession(authOptions);
-    try {
-        if (token) {
+export const getMyAccount = async () => {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.token) {
+        try {
             const config = {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${session.user.token}` },
             };
             const res = await axios.get(`${GET_MY_ACCOUNT_ENDPOINT}`, config);
             return res.data.data as Promise<IUser>;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Lỗi lấy thông tin my-account');
         }
-    } catch (error) {
-        console.log(error);
-        throw new Error('Lỗi lấy thông tin my-account');
     }
 };
 

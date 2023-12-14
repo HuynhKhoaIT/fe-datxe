@@ -31,6 +31,22 @@ export const getCars = async (token: string) => {
     }
 };
 
+export const getCarsSsr = async () => {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.token) {
+        try {
+            const config = {
+                headers: { Authorization: `Bearer ${session?.user?.token}` },
+            };
+            const res = await axios.get(`${GET_CAR_ENDPOINT}`, config);
+            return res.data.data as Promise<ICar[]>;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Lỗi trong quá trình lấy thông tin xe');
+        }
+    }
+};
+
 export const getCar = async (token: string, carId: string) => {
     try {
         if (token) {

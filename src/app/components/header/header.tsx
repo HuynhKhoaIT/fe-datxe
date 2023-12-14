@@ -1,4 +1,3 @@
-'use client';
 import {
     IconBrandFacebook,
     IconBrandInstagram,
@@ -7,24 +6,15 @@ import {
     IconPhoneCall,
     IconShoppingCart,
 } from '@tabler/icons-react';
-import React, { useEffect } from 'react';
 import Link from 'next/link';
 import SigninButton from './login-button';
 import SearchForm from '../search/Search';
+import { getBrands } from '@/utils/branch';
 
-const Header = () => {
-    useEffect(() => {
-        // Lấy dữ liệu từ Local Storage
-        const existingCartData = localStorage.getItem('cartData');
-        if (existingCartData) {
-            // Chuyển đổi chuỗi JSON thành mảng JavaScript
-            const parsedCartData = JSON.parse(existingCartData);
-            console.log('parsedCartData', parsedCartData);
-        }
-    }, []);
+export default async function Header() {
+    const brandsData = await getBrands();
     return (
         <header className="header">
-            {/* <!-- top header --> */}
             <div className="header-top">
                 <div className="container">
                     <div className="header-top-wrapper">
@@ -32,10 +22,7 @@ const Header = () => {
                             <div className="header-top-contact">
                                 <ul>
                                     <li>
-                                        <Link href="mailto:info@example.com">
-                                            {/* <FontAwesomeIcon icon={faEnvelope} /> */}
-                                            info@example.com
-                                        </Link>
+                                        <Link href="mailto:info@example.com">info@example.com</Link>
                                     </li>
                                     <li>
                                         <Link href="tel:+21236547898">
@@ -77,7 +64,7 @@ const Header = () => {
                             />
                         </Link>
                         <div className="collapse navbar-collapse nav-search" id="main_nav">
-                            <SearchForm />
+                            <SearchForm brandsData={brandsData} />
                             <div className="nav-right">
                                 <div className="cart-btn">
                                     <Link href="/gio-hang" className="nav-right-link">
@@ -92,5 +79,4 @@ const Header = () => {
             </div>
         </header>
     );
-};
-export { Header };
+}
