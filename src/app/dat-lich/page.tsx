@@ -7,8 +7,6 @@ import { getCategories } from "@/utils/category";
 import { getCarsSsr } from "@/utils/car";
 import { getMyAccount } from "@/utils/user";
 export default async function Shop() {
-  const orders = await getSchedule();
-  const ordersData = mapArrayEventCalendar(orders);
   // lấy danh sách brand
   const brands = await getBrands();
   const newBrands = brands?.map((brand) => ({
@@ -42,7 +40,6 @@ export default async function Shop() {
   return (
     <main className="main">
       <CalendarScheduler
-        ordersData={ordersData || {}}
         brandOptions={newBrands}
         categoryOptions={categoryOptions}
         carsData={carsData}

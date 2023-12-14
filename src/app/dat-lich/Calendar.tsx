@@ -5,13 +5,15 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import ModalCalendar from "../components/ModalInfosEventCalendar";
 import ModalPreviewDetailCalendar from "../components/ModalPreviewCalendar";
 import dayjs from "dayjs";
 import BasicModal from "../components/basicModal/BasicModal";
 import { useSearchParams } from "next/navigation";
+import { getSchedule } from "@/utils/order";
+import { mapArrayEventCalendar } from "../domain/EventCalendar";
 
 const sampleEvents: any = [
   {
@@ -32,17 +34,18 @@ const sampleEvents: any = [
 ];
 
 export default function CalendarScheduler({
-  ordersData,
   brandOptions,
   categoryOptions,
   carsData,
   carOptions,
   carDefault,
 }: any) {
+  const calendarComponentRef: any = React.createRef<FullCalendar>();
+
   const searchParams = useSearchParams();
 
   const search = searchParams.get("garage");
-
+  const [ordersData, setOrdersData] = useState([]);
   const [eventInfos, setEventInfos] = useState();
   const [previewInfos, setPreviewInfos] = useState();
   const [
@@ -61,7 +64,19 @@ export default function CalendarScheduler({
     weekendsVisible: true,
     currentEvents: [],
   };
+  const fetchDataOrders = async () => {
+    try {
+      const orders = await getSchedule();
+      const mappedOrdersData = mapArrayEventCalendar(orders);
+      setOrdersData(mappedOrdersData);
+    } catch (error) {
+      console.error("Error fetching or processing data:", error);
+    }
+  };
 
+  useEffect(() => {
+    fetchDataOrders();
+  }, []);
   // Hàm kiểm tra xem ngày đã qua hay chưa
   const isDateInThePast = (value: any) => {
     return dayjs().isBefore(value);
@@ -79,14 +94,7 @@ export default function CalendarScheduler({
   // click mở modal xem chi tiết
   const handleEditEventSelectAndOpenModal = (clickInfo: any) => {
     setPreviewInfos(clickInfo);
-    console.log("clickInfo", clickInfo);
-    console.log("handleEditEventSelectAndOpenModal");
-
     openPreviewCalendar();
-    // setIsModalOpen(true);
-    // setIsEditCard(true);
-    // setEventInfos(clickInfo);
-    // modalInfosEvent.handleOpen();
   };
 
   const handleUpdateEventSelect = async (changeInfo: any) => {
@@ -120,6 +128,19 @@ export default function CalendarScheduler({
     return dayjs().isBefore(selectInfo.start);
   };
 
+  const getHeaderProps = (): any => {
+    console.log("khoa");
+    return {
+      left: "",
+      center: "prev,title,next",
+      right: window.innerWidth < 765 ? "" : "dayGridMonth,listWeek",
+    };
+  };
+  const handleWindowResize = (view: any): void => {
+    const calendar = calendarComponentRef.current.getApi();
+    calendar.changeView(window.innerWidth < 765 ? "listWeek" : "dayGridMonth");
+    calendar.setOption("header", getHeaderProps());
+  };
   return (
     <div className="modal-datlich">
       <FullCalendar
@@ -174,6 +195,7 @@ export default function CalendarScheduler({
         selectAllow={handleSelectAllow}
         firstDay={new Date().getDay() - 3}
         longPressDelay={1}
+        windowResize={handleWindowResize}
       />
       <ModalCalendar
         opened={openedCalendar}
@@ -184,6 +206,7 @@ export default function CalendarScheduler({
         carsData={carsData}
         carOptions={carOptions}
         carDefault={carDefault}
+        fetchDataOrders={fetchDataOrders}
       />
       <ModalPreviewDetailCalendar
         opened={openedPreviewCalendar}
