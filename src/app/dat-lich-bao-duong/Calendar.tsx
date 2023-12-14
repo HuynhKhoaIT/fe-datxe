@@ -15,6 +15,24 @@ import { useSearchParams } from "next/navigation";
 import { getSchedule } from "@/utils/order";
 import { mapArrayEventCalendar } from "../domain/EventCalendar";
 
+const sampleEvents: any = [
+  {
+    id: "1",
+    title: "Event 1",
+    start: "2023-11-13 10:00:00",
+    // end: '2023-11-13T12:00:00',
+    // user: 'user1',
+  },
+  {
+    id: "2",
+    title: "Event 2",
+    start: "2023-11-15T14:00:00",
+    // end: '2023-11-15T16:00:00',
+    // user: 'user2',
+  },
+  // Add more events as needed
+];
+
 export default function CalendarScheduler({
   ordersData: dataDetail,
   brandOptions,
@@ -106,6 +124,7 @@ export default function CalendarScheduler({
     // setIsModalOpen(true);
     console.log("handleDateClick");
   };
+  console.log(ordersData);
   // Kiểm tra xem khung giờ đang được chọn có nằm trong quá khứ hay không
   const handleSelectAllow = (selectInfo: any) => {
     if (!dayjs().isBefore(selectInfo.start)) {
@@ -146,9 +165,9 @@ export default function CalendarScheduler({
         weekends={weekends.weekendsVisible}
         select={handleAddEventSelectAndOpenModal}
         eventClick={handleEditEventSelectAndOpenModal}
-        // dateClick={handleDateClick}
+        dateClick={handleDateClick}
         eventChange={handleUpdateEventSelect}
-        initialEvents={ordersData}
+        initialEvents={ordersData ?? sampleEvents}
         // longPressDelay={1000}
         // eventLongPressDelay={1000}
         // selectLongPressDelay={1000}
@@ -187,7 +206,7 @@ export default function CalendarScheduler({
         carsData={carsData}
         carOptions={carOptions}
         carDefault={carDefault}
-        fetchDataOrders={fetchDataOrders()}
+        fetchDataOrders={fetchDataOrders}
       />
       <ModalPreviewDetailCalendar
         opened={openedPreviewCalendar}

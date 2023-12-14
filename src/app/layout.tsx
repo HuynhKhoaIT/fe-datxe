@@ -29,9 +29,9 @@ export default function RootLayout({ children, singlePage = false }: IProps) {
         <MantineProvider>
           <Provider>
             <Notifications position="top-right" />
-            {!singlePage && <Header />}
+            {/* {!singlePage && <Header />} */}
             <Suspense fallback={<LoadingPage />}>{children}</Suspense>
-            {!singlePage && <MyFooter />}
+            {/* {!singlePage && <MyFooter />} */}
           </Provider>
         </MantineProvider>
       </body>
