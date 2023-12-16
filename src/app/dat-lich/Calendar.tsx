@@ -262,7 +262,7 @@ export default function CalendarScheduler({
         // dateClick={handleDateClick}
         eventChange={handleUpdateEventSelect}
         initialEvents={ordersData}
-        longPressDelay={50}
+        longPressDelay={80}
         // eventLongPressDelay={1000}
         // selectLongPressDelay={1000}
         selectable={true}
