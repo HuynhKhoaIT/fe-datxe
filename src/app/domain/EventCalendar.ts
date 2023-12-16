@@ -22,7 +22,6 @@ export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCa
 };
 
 export const mapArrayEventCalendar = (listEventsCalendar: any) => {
-    console.log(listEventsCalendar);
     const listEventsCalendarFormated = listEventsCalendar?.map((eventCalendar: IOrder, index: number) =>
         mapEventCalendar(eventCalendar, index),
     );
