@@ -60,10 +60,10 @@ export default function CalendarScheduler({
 
   const fetchDataOrders = async () => {
     try {
-      // const orders = await getScheduleCsr(token || "");
-      // const mappedOrdersData = mapArrayEventCalendar(orders);
-      // setOrdersData(mappedOrdersData);
-      // console.log("refetch envent");
+      const orders = await getScheduleCsr(token || "");
+      const mappedOrdersData = mapArrayEventCalendar(orders);
+      setOrdersData(mappedOrdersData);
+      console.log("refetch envent");
       // fullCalendarRef.current?.getApi().addEventSource(mappedOrdersData);
       fullCalendarRef.current?.getApi().refetchEvents();
     } catch (error) {
