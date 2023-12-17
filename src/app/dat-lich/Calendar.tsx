@@ -243,6 +243,7 @@ export default function CalendarScheduler({
           return `${hour}H`;
         }}
         locale="vi"
+        eventContent={renderEventContent} // custom render function
         weekends={weekends.weekendsVisible}
         select={handleAddEventSelectAndOpenModal}
         eventClick={handleEditEventSelectAndOpenModal}
@@ -352,5 +353,13 @@ export default function CalendarScheduler({
         <div>Vui lòng chọn ngày giờ lớn hơn hiện tại.</div>
       </BasicModal>
     </div>
+  );
+}
+function renderEventContent(eventContent: any) {
+  return (
+    <>
+      <b>{eventContent.timeText}</b>
+      <i>{eventContent.event.title}</i>
+    </>
   );
 }

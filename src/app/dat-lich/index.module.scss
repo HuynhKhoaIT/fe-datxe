@@ -23,6 +23,13 @@
         padding: 0.4rem 0.5rem;
         color: var(--color-dark);
         border-bottom: 1px solid #ddd;
+        .hours {
+            width: 80px;
+        }
+        .licensePlates {
+            width: 200px;
+            text-align: center;
+        }
         .customerRequest {
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -35,4 +42,25 @@
     background-color: #ffffff !important;
     margin: 10px;
     min-height: 100vh;
+}
+/* Styles cho điện thoại */
+@media screen and (max-width: 576px) {
+    .itemEvent {
+        padding: 0.4rem 0.5rem;
+        color: var(--color-dark);
+        border-bottom: 1px solid #ddd;
+        .hours {
+            width: 4rem !important;
+        }
+        .licensePlates {
+            width: 5rem !important;
+            text-align: left !important;
+        }
+        .customerRequest {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    }
 }
