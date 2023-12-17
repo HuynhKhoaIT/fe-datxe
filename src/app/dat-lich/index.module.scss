@@ -25,18 +25,14 @@
         border-bottom: 1px solid #ddd;
         .hours {
             width: 80px;
-            display: flex;
             flex-shrink: 0;
         }
         .licensePlates {
             width: 200px;
             text-align: center;
-            display: flex;
             flex-shrink: 0;
         }
         .customerRequest {
-            display: flex;
-            flex-shrink: 0;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
