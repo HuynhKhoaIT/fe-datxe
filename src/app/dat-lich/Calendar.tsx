@@ -63,14 +63,15 @@ export default function CalendarScheduler({
       const orders = await getScheduleCsr(token || "");
       const mappedOrdersData = mapArrayEventCalendar(orders);
       setOrdersData(mappedOrdersData);
+      handleGetVisibleEvents();
       console.log("refetch envent");
       // fullCalendarRef.current?.getApi().addEventSource(mappedOrdersData);
-      fullCalendarRef.current?.getApi().refetchEvents();
     } catch (error) {
       console.error("Error fetching or processing data:", error);
     }
   };
 
+  console.log(fullCalendarRef.current?.getApi().getEventSources());
   useEffect(() => {
     if (window.innerWidth < 765) {
       setLayoutMobile(true);
@@ -78,8 +79,6 @@ export default function CalendarScheduler({
       setLayoutMobile(false);
     }
     fetchDataOrders();
-
-    handleGetVisibleEvents();
   }, []);
   // Hàm kiểm tra xem ngày đã qua hay chưa
   const isDateInThePast = (value: any) => {
