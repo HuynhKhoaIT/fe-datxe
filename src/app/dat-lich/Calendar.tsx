@@ -63,7 +63,7 @@ export default function CalendarScheduler({
       const orders = await getScheduleCsr(token || "");
       const mappedOrdersData = mapArrayEventCalendar(orders);
       setOrdersData(mappedOrdersData);
-      console.log("fetch lại data order");
+      // fullCalendarRef.current?.getApi().refetchEvents();
     } catch (error) {
       console.error("Error fetching or processing data:", error);
     }
@@ -76,6 +76,7 @@ export default function CalendarScheduler({
       setLayoutMobile(false);
     }
     fetchDataOrders();
+
     handleGetVisibleEvents();
   }, []);
   // Hàm kiểm tra xem ngày đã qua hay chưa
@@ -99,22 +100,7 @@ export default function CalendarScheduler({
   };
 
   const handleUpdateEventSelect = async (changeInfo: any) => {
-    try {
-      const eventCalendarUpdated = {
-        eventCalendar: {
-          _id: changeInfo.event.id,
-          title: changeInfo.event.title,
-          start: changeInfo.event.startStr,
-          end: changeInfo.event.endStr,
-          backgroundColor: changeInfo.event.backgroundColor,
-          textColor: changeInfo.event.textColor,
-        },
-      };
-      console.log(eventCalendarUpdated);
-      // await updateEventCalendar(eventCalendarUpdated);
-    } catch (err) {
-      // toast.error('Houve um erro ao atualizar o evento');
-    }
+    console.log("thay đổi event");
   };
   const handleDateClick = (arg: { date: any }) => {
     // setIsModalOpen(true);
@@ -143,11 +129,9 @@ export default function CalendarScheduler({
 
   const handleGetVisibleEvents = () => {
     const calendarApi = fullCalendarRef.current?.getApi();
-
     if (!calendarApi) {
       return;
     }
-
     const { currentStart, currentEnd } = calendarApi.view;
 
     const visibleEvents = calendarApi
@@ -262,7 +246,7 @@ export default function CalendarScheduler({
         select={handleAddEventSelectAndOpenModal}
         eventClick={handleEditEventSelectAndOpenModal}
         // dateClick={handleDateClick}
-        eventChange={handleUpdateEventSelect}
+        eventAdd={handleUpdateEventSelect}
         initialEvents={ordersData}
         longPressDelay={80}
         // eventLongPressDelay={1000}
