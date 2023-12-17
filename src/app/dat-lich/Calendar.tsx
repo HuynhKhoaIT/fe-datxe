@@ -63,7 +63,8 @@ export default function CalendarScheduler({
       const orders = await getScheduleCsr(token || "");
       const mappedOrdersData = mapArrayEventCalendar(orders);
       setOrdersData(mappedOrdersData);
-      // fullCalendarRef.current?.getApi().refetchEvents();
+      console.log("refetch envent");
+      fullCalendarRef.current?.getApi().refetchEvents();
     } catch (error) {
       console.error("Error fetching or processing data:", error);
     }
