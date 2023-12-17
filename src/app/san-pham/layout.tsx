@@ -1,7 +1,15 @@
-import { ReactNode, Suspense } from 'react';
+import { ReactNode, Suspense } from "react";
+import Header from "../components/header/header";
+import { MyFooter } from "../components/footer/footer";
 interface IProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 export default function Layout({ children }: IProps) {
-    return <main className="main">{children}</main>;
+  return (
+    <>
+      <Header />
+      <main className="main">{children}</main>
+      <MyFooter />
+    </>
+  );
 }

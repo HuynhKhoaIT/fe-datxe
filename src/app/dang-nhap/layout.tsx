@@ -1,16 +1,22 @@
-import { ReactNode, Suspense } from 'react';
+import { ReactNode, Suspense } from "react";
+import Header from "../components/header/header";
+import { MyFooter } from "../components/footer/footer";
 
 interface IProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 export default function LoginLayout({ children }: IProps) {
-    return (
-        <main className="main">
-            <div className="login-area py-120">
-                <div className="container">
-                    <div className="col-md-5 mx-auto">{children}</div>
-                </div>
-            </div>
-        </main>
-    );
+  return (
+    <>
+      <Header />
+      <main className="main">
+        <div className="login-area py-120">
+          <div className="container">
+            <div className="col-md-5 mx-auto">{children}</div>
+          </div>
+        </div>
+      </main>
+      <MyFooter />
+    </>
+  );
 }

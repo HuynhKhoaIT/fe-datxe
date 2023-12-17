@@ -4,48 +4,42 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-
-import React, { useEffect, useState } from "react";
+import { getHourAndMinute, getDayOfWeek } from "@/utils/util";
+import React, { useEffect, useRef, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import ModalCalendar from "../components/ModalInfosEventCalendar";
 import ModalPreviewDetailCalendar from "../components/ModalPreviewCalendar";
 import dayjs from "dayjs";
 import BasicModal from "../components/basicModal/BasicModal";
 import { useSearchParams } from "next/navigation";
-import { getSchedule } from "@/utils/order";
+import { getSchedule, getScheduleCsr } from "@/utils/order";
 import { mapArrayEventCalendar } from "../domain/EventCalendar";
-
-const sampleEvents: any = [
-  {
-    id: "1",
-    title: "Event 1",
-    start: "2023-11-13 10:00:00",
-    // end: '2023-11-13T12:00:00',
-    // user: 'user1',
-  },
-  {
-    id: "2",
-    title: "Event 2",
-    start: "2023-11-15T14:00:00",
-    // end: '2023-11-15T16:00:00',
-    // user: 'user2',
-  },
-  // Add more events as needed
-];
+import { useSession } from "next-auth/react";
+import { Box, Card, Flex, Grid, List, Select, Space } from "@mantine/core";
+import styles from "./index.module.scss";
+import "dayjs/locale/vi";
+dayjs.locale("vi");
 
 export default function CalendarScheduler({
+  ordersData: dataDetail,
   brandOptions,
   categoryOptions,
   carsData,
   carOptions,
   carDefault,
 }: any) {
-  const searchParams = useSearchParams();
+  const fullCalendarRef = useRef<FullCalendar | null>(null);
 
+  const searchParams = useSearchParams();
+  const { data: session, status } = useSession();
+  const token = session?.user?.token;
   const search = searchParams.get("garage");
-  const [ordersData, setOrdersData] = useState([]);
+  const [ordersData, setOrdersData] = useState(dataDetail);
   const [eventInfos, setEventInfos] = useState();
+  const [eventData, setEventData] = useState<any>();
+  const [layoutMobile, setLayoutMobile] = useState(false);
   const [previewInfos, setPreviewInfos] = useState();
+
   const [
     openedCalendar,
     { open: openCalendar, close: closeCalendar },
@@ -62,9 +56,10 @@ export default function CalendarScheduler({
     weekendsVisible: true,
     currentEvents: [],
   };
+
   const fetchDataOrders = async () => {
     try {
-      const orders = await getSchedule();
+      const orders = await getScheduleCsr(token || "");
       const mappedOrdersData = mapArrayEventCalendar(orders);
       setOrdersData(mappedOrdersData);
     } catch (error) {
@@ -79,6 +74,7 @@ export default function CalendarScheduler({
       setLayoutMobile(false);
     }
     fetchDataOrders();
+    handleGetVisibleEvents();
   }, []);
   // Hàm kiểm tra xem ngày đã qua hay chưa
   const isDateInThePast = (value: any) => {
@@ -122,7 +118,7 @@ export default function CalendarScheduler({
     // setIsModalOpen(true);
     console.log("handleDateClick");
   };
-  console.log(ordersData);
+
   // Kiểm tra xem khung giờ đang được chọn có nằm trong quá khứ hay không
   const handleSelectAllow = (selectInfo: any) => {
     if (!dayjs().isBefore(selectInfo.start)) {
@@ -131,24 +127,124 @@ export default function CalendarScheduler({
     return dayjs().isBefore(selectInfo.start);
   };
 
-  const [layoutMobile, setLayoutMobile] = useState(false);
   const handleWindowResize = () => {
     if (window.innerWidth < 765) {
       setLayoutMobile(true);
+      handleGetVisibleEvents();
     } else {
       setLayoutMobile(false);
+      handleGetVisibleEvents();
     }
   };
+
+  const [viewDefault, setViewDefault] = useState("Tuần");
+
+  const handleGetVisibleEvents = () => {
+    const calendarApi = fullCalendarRef.current?.getApi();
+
+    if (!calendarApi) {
+      return;
+    }
+
+    const { currentStart, currentEnd } = calendarApi.view;
+
+    const visibleEvents = calendarApi
+      .getEvents()
+      .filter((event) => event?.start)
+      .map(({ start, title, extendedProps }: any) => ({
+        start: new Date(start),
+        title,
+        extendedProps,
+      }))
+      .filter(({ start }) => start >= currentStart && start <= currentEnd)
+      .sort((a, b) => (a.start?.getTime() ?? 0) - (b.start?.getTime() ?? 0));
+
+    setEventData(groupEventsByDateWithDay(visibleEvents));
+  };
+
+  const groupEventsByDateWithDay = (events: any[]) => {
+    const groupedEvents: any = {};
+    events?.forEach((event) => {
+      const eventDate = dayjs(event.start);
+      const formattedDate = eventDate.format("DD/MM");
+      const dayOfWeek = eventDate.format("dddd"); // Lấy thông tin về thứ
+      if (!groupedEvents[formattedDate]) {
+        groupedEvents[formattedDate] = {
+          date: formattedDate,
+          dayOfWeek,
+          events: [],
+        };
+      }
+      groupedEvents[formattedDate].events.push(event);
+    });
+    const result = Object.values(groupedEvents);
+    return result;
+  };
+
+  const customButtons = {
+    prev: {
+      click: () => {
+        fullCalendarRef.current?.getApi().prev();
+        handleGetVisibleEvents();
+      },
+    },
+    next: {
+      click: () => {
+        fullCalendarRef.current?.getApi().next();
+        handleGetVisibleEvents();
+      },
+    },
+    today: { text: "Hôm nay", click: () => handleTodayButtonClick() },
+    dayGridMonth: {
+      text: "Tháng",
+      click: () => handleChangeView("dayGridMonth"),
+    },
+    timeGridWeek: {
+      text: "Tuần",
+      click: () => handleChangeView("timeGridWeek"),
+    },
+    timeGridDay: { text: "Ngày", click: () => handleChangeView("timeGridDay") },
+    listWeek: { text: "Danh sách", click: () => handleChangeView("listWeek") },
+  };
+
+  const handleTodayButtonClick = () => {
+    fullCalendarRef.current?.getApi().today();
+    handleGetVisibleEvents();
+  };
+  console.log(eventData);
+  const handleChangeView = (view: string) => {
+    switch (view) {
+      case "dayGridMonth":
+        setViewDefault("tháng");
+        break;
+      case "timeGridWeek":
+        setViewDefault("tuần");
+        break;
+      case "timeGridDay":
+        setViewDefault("ngày");
+        break;
+      case "listWeek":
+        setViewDefault("danh sách");
+        break;
+      default:
+    }
+
+    fullCalendarRef.current?.getApi().changeView(view);
+    handleGetVisibleEvents();
+  };
+
   return (
-    <div className="modal-datlich">
+    <div className={styles.calendar}>
       <FullCalendar
+        ref={fullCalendarRef}
         plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin, listPlugin]}
         initialView="timeGridWeek"
         headerToolbar={{
           left: "prev,next,today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+          right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
         }}
+        customButtons={customButtons}
         slotLabelFormat={{
           hour: "numeric",
           minute: "2-digit",
@@ -163,17 +259,17 @@ export default function CalendarScheduler({
         weekends={weekends.weekendsVisible}
         select={handleAddEventSelectAndOpenModal}
         eventClick={handleEditEventSelectAndOpenModal}
-        dateClick={handleDateClick}
+        // dateClick={handleDateClick}
         eventChange={handleUpdateEventSelect}
-        initialEvents={ordersData ?? sampleEvents}
-        // longPressDelay={1000}
+        initialEvents={ordersData}
+        longPressDelay={80}
         // eventLongPressDelay={1000}
         // selectLongPressDelay={1000}
         selectable={true}
         dayMaxEvents={true}
         allDaySlot={false}
         editable={false}
-        height="700px"
+        height={layoutMobile ? "500px" : "700px"}
         buttonText={{
           today: "Hôm nay",
           month: "Tháng",
@@ -188,13 +284,66 @@ export default function CalendarScheduler({
             type: "timeGridWeek",
             duration: layoutMobile ? { days: 4 } : { days: 7 }, // Hiển thị một tuần tại một thời điểm
             buttonText: "Tuần",
+            eventLimit: 1,
+            eventLimitText: 1,
           },
         }}
         selectAllow={handleSelectAllow}
         firstDay={new Date().getDay() - 3}
-        longPressDelay={1}
+        // longPressDelay={1}
         windowResize={handleWindowResize}
       />
+      {viewDefault !== "danh sách" && (
+        <Box w={"100%"} className={styles.eventGroup}>
+          <div className={styles.title}>Sự kiện trong {viewDefault}</div>
+          <Flex direction="column" className={styles.listEvent}>
+            {eventData?.length > 0 ? (
+              eventData?.map((events: any, index: number) => (
+                <div key={index}>
+                  <Grid
+                    gutter={10}
+                    className={styles.titleEvent}
+                    align="center"
+                  >
+                    <Grid.Col span={3}>
+                      <Flex direction={"column"}>
+                        <div>{events?.dayOfWeek}</div>
+                        <div>{events?.date}</div>
+                      </Flex>
+                    </Grid.Col>
+                    <Grid.Col span={3}>Biển số</Grid.Col>
+                    <Grid.Col span={6}>Khách hàng yêu cầu</Grid.Col>
+                  </Grid>
+
+                  {events?.events.map((event: any, innerIndex: number) => (
+                    <Grid
+                      gutter={10}
+                      className={styles.itemEvent}
+                      align="center"
+                      key={innerIndex}
+                    >
+                      <Grid.Col span={3}>
+                        {dayjs(event.start).format("HH:mm")}
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        {event?.extendedProps?.orderDetail?.car?.licensePlates}
+                      </Grid.Col>
+                      <Grid.Col span={6} className={styles.customerRequest}>
+                        {event?.extendedProps?.orderDetail?.customerRequest}
+                      </Grid.Col>
+                    </Grid>
+                  ))}
+                </div>
+              ))
+            ) : (
+              <Flex justify={"center"} align={"center"} h={50}>
+                Không có sự kiện nào
+              </Flex>
+            )}
+          </Flex>
+        </Box>
+      )}
+
       <ModalCalendar
         opened={openedCalendar}
         onClose={closeCalendar}
