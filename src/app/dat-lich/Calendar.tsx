@@ -17,6 +17,7 @@ import { mapArrayEventCalendar } from "../domain/EventCalendar";
 import { useSession } from "next-auth/react";
 import { Box, Card, Flex, Grid, List, Select, Space } from "@mantine/core";
 import styles from "./index.module.scss";
+import { IconDots } from "@tabler/icons-react";
 import "dayjs/locale/vi";
 dayjs.locale("vi");
 
@@ -62,6 +63,7 @@ export default function CalendarScheduler({
       const orders = await getScheduleCsr(token || "");
       const mappedOrdersData = mapArrayEventCalendar(orders);
       setOrdersData(mappedOrdersData);
+      console.log("fetch lại data order");
     } catch (error) {
       console.error("Error fetching or processing data:", error);
     }
@@ -166,7 +168,7 @@ export default function CalendarScheduler({
     const groupedEvents: any = {};
     events?.forEach((event) => {
       const eventDate = dayjs(event.start);
-      const formattedDate = eventDate.format("DD/MM");
+      const formattedDate = eventDate.format("DD/MM/YYYY");
       const dayOfWeek = eventDate.format("dddd"); // Lấy thông tin về thứ
       if (!groupedEvents[formattedDate]) {
         groupedEvents[formattedDate] = {
@@ -300,38 +302,31 @@ export default function CalendarScheduler({
             {eventData?.length > 0 ? (
               eventData?.map((events: any, index: number) => (
                 <div key={index}>
-                  <Grid
-                    gutter={10}
+                  <Flex
                     className={styles.titleEvent}
                     align="center"
+                    justify="space-between"
                   >
-                    <Grid.Col span={3}>
-                      <Flex direction={"column"}>
-                        <div>{events?.dayOfWeek}</div>
-                        <div>{events?.date}</div>
-                      </Flex>
-                    </Grid.Col>
-                    <Grid.Col span={3}>Biển số</Grid.Col>
-                    <Grid.Col span={6}>Khách hàng yêu cầu</Grid.Col>
-                  </Grid>
+                    <div>{events?.dayOfWeek}</div>
+                    <div>{events?.date}</div>
+                  </Flex>
 
                   {events?.events.map((event: any, innerIndex: number) => (
-                    <Grid
-                      gutter={10}
+                    <Flex
                       className={styles.itemEvent}
                       align="center"
                       key={innerIndex}
                     >
-                      <Grid.Col span={3}>
+                      <div className={styles.hours}>
                         {dayjs(event.start).format("HH:mm")}
-                      </Grid.Col>
-                      <Grid.Col span={3}>
+                      </div>
+                      <div className={styles.licensePlates}>
                         {event?.extendedProps?.orderDetail?.car?.licensePlates}
-                      </Grid.Col>
-                      <Grid.Col span={6} className={styles.customerRequest}>
+                      </div>
+                      <div className={styles.customerRequest}>
                         {event?.extendedProps?.orderDetail?.customerRequest}
-                      </Grid.Col>
-                    </Grid>
+                      </div>
+                    </Flex>
                   ))}
                 </div>
               ))

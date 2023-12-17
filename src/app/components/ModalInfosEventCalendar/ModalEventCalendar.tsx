@@ -24,7 +24,7 @@ import { addCustomerCare } from "@/utils/customerCare";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { GenOTP } from "@/utils/user";
-
+import styles from "./index.module.scss";
 export const ModalEventCalendar = ({
   user,
   brandOptions,
@@ -213,6 +213,10 @@ export const ModalEventCalendar = ({
                 {...form.getInputProps("car_id")}
                 checkIconPosition="right"
                 placeholder="Biển số xe"
+                classNames={{
+                  root: styles.rootPlates,
+                  input: styles.inputPlates,
+                }}
                 allowDeselect={false}
                 size="lg"
                 data={carOptions}
@@ -220,7 +224,11 @@ export const ModalEventCalendar = ({
               ></Select>
             ) : (
               <TextInput
-                placeholder="Biển số xe"
+                classNames={{
+                  root: styles.rootPlates,
+                  input: styles.inputPlates,
+                }}
+                placeholder="Nhập biển số xe"
                 size="lg"
                 {...form.getInputProps("number_plates")}
               ></TextInput>
