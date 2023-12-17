@@ -247,6 +247,7 @@ export default function CalendarScheduler({
         select={handleAddEventSelectAndOpenModal}
         eventClick={handleEditEventSelectAndOpenModal}
         // dateClick={handleDateClick}
+        initialEvents={ordersData}
         events={ordersData}
         longPressDelay={80}
         // eventLongPressDelay={1000}
