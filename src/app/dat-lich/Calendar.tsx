@@ -60,10 +60,11 @@ export default function CalendarScheduler({
 
   const fetchDataOrders = async () => {
     try {
-      const orders = await getScheduleCsr(token || "");
-      const mappedOrdersData = mapArrayEventCalendar(orders);
-      setOrdersData(mappedOrdersData);
-      console.log("refetch envent");
+      // const orders = await getScheduleCsr(token || "");
+      // const mappedOrdersData = mapArrayEventCalendar(orders);
+      // setOrdersData(mappedOrdersData);
+      // console.log("refetch envent");
+      // fullCalendarRef.current?.getApi().addEventSource(mappedOrdersData);
       fullCalendarRef.current?.getApi().refetchEvents();
     } catch (error) {
       console.error("Error fetching or processing data:", error);
@@ -243,13 +244,11 @@ export default function CalendarScheduler({
           return `${hour}H`;
         }}
         locale="vi"
-        eventContent={renderEventContent} // custom render function
         weekends={weekends.weekendsVisible}
         select={handleAddEventSelectAndOpenModal}
         eventClick={handleEditEventSelectAndOpenModal}
         // dateClick={handleDateClick}
-        eventAdd={handleUpdateEventSelect}
-        initialEvents={ordersData}
+        events={ordersData}
         longPressDelay={80}
         // eventLongPressDelay={1000}
         // selectLongPressDelay={1000}
@@ -353,13 +352,5 @@ export default function CalendarScheduler({
         <div>Vui lòng chọn ngày giờ lớn hơn hiện tại.</div>
       </BasicModal>
     </div>
-  );
-}
-function renderEventContent(eventContent: any) {
-  return (
-    <>
-      <b>{eventContent.timeText}</b>
-      <i>{eventContent.event.title}</i>
-    </>
   );
 }
