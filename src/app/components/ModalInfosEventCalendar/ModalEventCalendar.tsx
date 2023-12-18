@@ -25,6 +25,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { GenOTP } from "@/utils/user";
 import styles from "./index.module.scss";
+
 export const ModalEventCalendar = ({
   user,
   brandOptions,
@@ -47,6 +48,9 @@ export const ModalEventCalendar = ({
   const [openedLogin, { open: openLogin, close: closeLogin }] = useDisclosure(
     false
   );
+  const dayjs = require("dayjs");
+  const utc = require("dayjs/plugin/utc");
+  dayjs.extend(utc);
   const [newCustomerCare, setNewCustomerCare] = useState({
     full_name: "",
     phone_number: "",
