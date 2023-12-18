@@ -12,6 +12,9 @@ export interface IEventCalendar {
     orderDetail: any;
 }
 export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCalendar => {
+    const dayjs = require('dayjs');
+    const utc = require('dayjs/plugin/utc');
+    dayjs.extend(utc);
     return {
         _id: (index + 1).toString(),
         title: eventCalendar?.garage?.name || '',
