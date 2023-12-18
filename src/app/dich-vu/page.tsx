@@ -1,6 +1,6 @@
 import React from "react";
-import { SideBar } from "../components/shop-sidebar/sideBar";
-import { Sort } from "../components/shop-sort/sort";
+import { SideBar } from "../components/elements/shop-sidebar/sideBar";
+import { Sort } from "../components/elements/shop-sort/sort";
 import ServiceData from "../components/service/serviceData";
 import { getServices } from "@/utils/service";
 export default async function Shop() {

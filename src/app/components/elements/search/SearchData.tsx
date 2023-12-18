@@ -1,7 +1,7 @@
 "use client";
 import { getProductsSearch } from "@/utils/product";
 import { useEffect, useState } from "react";
-import { TableDataProduct } from "../pagination-area/pagination-area";
+import { TableDataProduct } from "../../pagination-area/pagination-area";
 import { IconBulb } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const SearchData = () => {
