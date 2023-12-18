@@ -59,38 +59,6 @@ export default async function SingleShop({
         <main className="main">
             <div className="shop-item-single bg pd-50 position-relative">
                 <div className="container ">
-                    {/* {nameCate && (
-                        <Breadcrumb
-                            separator=">"
-                            style={{ padding: '16px 0', position: 'absolute', top: 0 }}
-                            items={[
-                                {
-                                    title: (
-                                        <Link href="/" style={{ color: '#1890ff' }}>
-                                            Trang chủ
-                                        </Link>
-                                    ),
-                                },
-                                {
-                                    title: (
-                                        <Link href="/chuyen-muc" style={{ color: '#1890ff' }}>
-                                            Chuyên mục
-                                        </Link>
-                                    ),
-                                },
-                                {
-                                    title: (
-                                        <Link href="./" style={{ color: '#1890ff' }}>
-                                            {nameCate}
-                                        </Link>
-                                    ),
-                                },
-                                {
-                                    title: productData.name,
-                                },
-                            ]}
-                        />
-                    )} */}
                     <ProductDetail ProductDetail={productData} />
                     <div className="related-item">
                         <div className="row">
