@@ -1,9 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Table, Pagination, Badge } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 
 export default function Orders({ ordersData }: any) {
     const router = useRouter();

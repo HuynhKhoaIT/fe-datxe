@@ -21,7 +21,18 @@ import { IProduct } from "@/interfaces/product";
 export const getProducts = async () => {
   try {
     const res = await axios.get(`${GET_PRODUCT_ENDPOINT}`);
+    console.log(res)
     return res.data.data as Promise<IProduct[]>;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Lỗi trong quá trình lấy thông tin sản phẩm");
+  }
+};
+
+export const getProducts2 = async () => {
+  try {
+    const res = await axios.get(`${GET_PRODUCT_ENDPOINT}`);
+    return res.data;
   } catch (error) {
     console.error(error);
     throw new Error("Lỗi trong quá trình lấy thông tin sản phẩm");
@@ -84,7 +95,6 @@ export const getProductsSearch = async (
     const res = await axios.get(
       `${GET_PRODUCT_ENDPOINT}&page=${page}&limit=${limit}&${search}`
     );
-    console.log("res", res);
     return res.data.data as Promise<IProduct[]>;
   } catch (error) {
     console.error(error);
