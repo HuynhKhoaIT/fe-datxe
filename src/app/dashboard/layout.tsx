@@ -1,7 +1,7 @@
 import { ReactNode, Suspense } from "react";
 import Menu from "../components/profile-sidebar/Menu";
-import Header from "../components/header/header";
-import { MyFooter } from "../components/footer/footer";
+import Header from "../components/page/header/header";
+import { MyFooter } from "../components/page/footer/footer";
 interface IProps {
   children: ReactNode;
 }

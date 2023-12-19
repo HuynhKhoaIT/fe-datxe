@@ -1,5 +1,5 @@
-import ProductData from "../product/ProductData";
-import { Sort } from "../shop-sort/sort";
+import ProductData from "../elements/product/ProductData";
+import { Sort } from "../elements/shop-sort/sort";
 const TableDataProduct = ({ data }: { data: any }) => {
   return (
     <div>

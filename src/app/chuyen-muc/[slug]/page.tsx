@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getCategories } from "@/utils/category";
 import { LoadingComponent } from "@/app/components/loading";
 import LayoutListProduct from "@/app/components/layout/LayoutListProduct";
-import { SideBar } from "@/app/components/shop-sidebar/sideBar";
+import { SideBar } from "@/app/components/elements/shop-sidebar/sideBar";
 import { Breadcrumbs } from "@mantine/core";
 
 const CategoryItem = async ({
@@ -80,7 +80,7 @@ const CategoryItem = async ({
           <div className="col-lg-9">
             <Suspense fallback={<LoadingComponent />}>
               <TableDataProduct data={productData} />
-              
+
               {/* <ProductsListPage /> */}
             </Suspense>
           </div>

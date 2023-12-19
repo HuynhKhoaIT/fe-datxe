@@ -1,9 +1,9 @@
-import { CategoryItem } from "../components/category/categoryItem";
+import { CategoryItem } from "../components/elements/category/categoryItem";
 import { TableDataProduct } from "@/app/components/pagination-area/pagination-area";
 import { ICategory } from "@/interfaces/category";
 import { getCategories } from "@/utils/category";
-import { SideBar } from "../components/shop-sidebar/sideBar";
-import { Sort } from "../components/shop-sort/sort";
+import { SideBar } from "../components/elements/shop-sidebar/sideBar";
+import { Sort } from "../components/elements/shop-sort/sort";
 import Link from "next/link";
 import LayoutListProduct from "../components/layout/LayoutListProduct";
 import { Breadcrumbs, Anchor } from "@mantine/core";

@@ -1,9 +1,9 @@
 import { ReactNode, Suspense } from "react";
-import { SideBar } from "../components/shop-sidebar/sideBar";
+import { SideBar } from "../components/elements/shop-sidebar/sideBar";
 import Link from "next/link";
 import { Breadcrumbs, Anchor } from "@mantine/core";
-import Header from "../components/header/header";
-import { MyFooter } from "../components/footer/footer";
+import Header from "../components/page/header/header";
+import { MyFooter } from "../components/page/footer/footer";
 const items = [
   { title: "Trang chủ", href: "/" },
   { title: "Tìm kiếm", color: "black" },

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import BasicModal from "../basicModal/BasicModal";
+import BasicModal from "../../basicModal/BasicModal";
 import { ModalEventCalendar } from "./ModalEventCalendar";
 import { useSession } from "next-auth/react";
 import { getBrands, getModels } from "@/utils/branch";
