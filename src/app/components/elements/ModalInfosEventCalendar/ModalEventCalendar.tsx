@@ -43,6 +43,10 @@ export const ModalEventCalendar = ({
   onClose,
   fetchDataOrders,
 }: any) => {
+  const typeView = eventInfos?.view?.type;
+  const newDate = new Date(eventInfos?.start);
+  newDate.setHours(newDate.getHours() + 9);
+
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [openedLogin, { open: openLogin, close: closeLogin }] = useDisclosure(
@@ -76,7 +80,7 @@ export const ModalEventCalendar = ({
       description: "",
       garageId: garage?.data?.id || "",
       priority_level: "2",
-      arrival_time: eventInfos?.start,
+      arrival_time: typeView === "dayGridMonth" ? newDate : eventInfos?.start,
       car_id: dataCarDefault?.carId || "",
       service_advisor: "",
       brand_name: dataCarDefault?.brandName || "",
