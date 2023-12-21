@@ -1,4 +1,4 @@
-import { GarageItem } from "../components/garageItem/garageItem";
+import { GarageItem } from "../components/elements/garageItem/garageItem";
 import React, { useEffect, useState } from "react";
 import { getGarages } from "@/utils/garage";
 export default async function Expert() {

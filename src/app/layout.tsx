@@ -22,16 +22,14 @@ interface IProps {
   children: ReactNode;
   singlePage: boolean;
 }
-export default function RootLayout({ children, singlePage = false }: IProps) {
+export default function RootLayout({ children }: IProps) {
   return (
     <html lang="vi">
       <body className={inter.className}>
         <MantineProvider>
           <Provider>
             <Notifications position="top-right" />
-            {/* {!singlePage && <Header />} */}
             <Suspense fallback={<LoadingPage />}>{children}</Suspense>
-            {/* {!singlePage && <MyFooter />} */}
           </Provider>
         </MantineProvider>
       </body>
