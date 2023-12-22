@@ -2,9 +2,9 @@
 import { IProduct } from "@/interfaces/product";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ProductItem } from "../elements/product/productItem";
+import { ProductItem } from "../product/productItem";
 import { getServiceSearch } from "@/utils/service";
-import { ProductItemMini } from "../elements/product/productItemMini";
+import { ProductItemMini } from "../product/productItemMini";
 
 export default function ServiceData({
   product_data,

@@ -1,7 +1,7 @@
 import React from "react";
 import { SideBar } from "../components/elements/shop-sidebar/sideBar";
 import { Sort } from "../components/elements/shop-sort/sort";
-import ServiceData from "../components/service/serviceData";
+import ServiceData from "../components/elements/service/serviceData";
 import { getServices } from "@/utils/service";
 export default async function Shop() {
   const product_data = await getServices();
