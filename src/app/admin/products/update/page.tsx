@@ -27,6 +27,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { DateTimePicker } from "@mantine/dates";
 import { useState } from "react";
+import { BasicDropzone } from "@/app/components/form/DropZone";
 
 const formats = [
   "header",
@@ -213,6 +214,9 @@ export default function ProductSavePage() {
                     checkIconPosition="right"
                     placeholder="Loại hình sản phẩm"
                   />
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <BasicDropzone />
                 </Grid.Col>
                 <Grid.Col span={12}>
                   <Switch onLabel="ON" offLabel="OFF" label="Quản lý kho" />

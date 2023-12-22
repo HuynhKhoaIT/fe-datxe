@@ -17,5 +17,7 @@ export const CHECK_OTP = `${process.env.apiGuest}/check-otp`;
 export const SET_CAR_DEFAULT = `${process.env.apiUser}/user/set-car-default`
 export const CUSTOMER_CARE_ENDPOINT_GUEST = `${process.env.apiGuest}/customer-care`;
 export const GET_EMPLOYEES_ENDPOINT = `${process.env.apiGuest}/employees`;
+export const GET_CVDV_ENDPOINT = `${process.env.apiGuest}/cvdv`;
+
 
 
