@@ -33,15 +33,6 @@ export function Navbar({ data }: any) {
       </div>
 
       <div className={styles.footer}>
-        <a
-          href="#"
-          className={styles.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconSwitchHorizontal className={styles.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
-
         <Link href={"/"} className={styles.link} onClick={() => signOut()}>
           <IconLogout className={styles.linkIcon} stroke={1.5} />
           <span>Đăng xuất</span>

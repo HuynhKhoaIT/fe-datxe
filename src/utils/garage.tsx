@@ -51,7 +51,7 @@ export const getEmployees = async (id: string) => {
   try {
     const res = await axios.get(`${GET_CVDV_ENDPOINT}?garage_id=${id}`);
     console.log("res", res);
-    return res.data as Promise<any>;
+    return res.data.data as Promise<any>;
   } catch (error) {
     console.error(error);
     throw new Error("Lỗi trong quá trình lấy danh sách CVDV"); // Xử lý lỗi và thông báo lỗi cho phía front-end

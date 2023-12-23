@@ -5,16 +5,31 @@ import {
   Box,
   Button,
   Flex,
+  Group,
   LoadingOverlay,
+  Modal,
   Pagination,
   Radio,
   Table,
 } from "@mantine/core";
-import { IconEye, IconPencil, IconTrash } from "@tabler/icons-react";
+import {
+  IconBan,
+  IconChevronRight,
+  IconEye,
+  IconPencil,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
+import { deleteCar } from "@/utils/car";
 export default function ProductListPage({ categories }: any) {
   const [posts, setPosts] = useState([]);
+  const [
+    openedDeleteProduct,
+    { open: openDeleteProduct, close: closeDeleteProduct },
+  ] = useDisclosure(false);
+  const [deleteRow, setDeleteRow] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [meta, setMetas] = useState([]);
@@ -30,6 +45,15 @@ export default function ProductListPage({ categories }: any) {
         setTotalPage(res.data.meta.total);
       });
   }, []);
+
+  //   const handleDeleteProduct = async (carId: string) => {
+  //     try {
+  //         await deleteCar(carId, token ?? '');
+  //         fetchCars();
+  //     } catch (error) {
+  //         console.error('Error deleting car:', error);
+  //     }
+  // };
   const renderRows = () => {
     if (visible) {
       return (
@@ -44,18 +68,23 @@ export default function ProductListPage({ categories }: any) {
     } else {
       return posts?.map((record: any) => (
         <Table.Tr key={record.id}>
-          <Table.Td align="center">
+          <Table.Td w={120}>
             <img src={record.thumbnail} alt="" width={50} />
           </Table.Td>
           <Table.Td>{record.name}</Table.Td>
-          <Table.Td>{record.price}</Table.Td>
-          <Table.Td>{record.price}</Table.Td>
-          <Table.Td>
+          <Table.Td w={200} align="right">
+            {record.price}
+          </Table.Td>
+          <Table.Td w={200} align="right">
+            {record.price}
+          </Table.Td>
+          <Table.Td w={150} align="center">
+            <Link href={`/admin/products/${record.id}`}></Link>
             <Button size="xs" p={5} variant="transparent" onClick={() => {}}>
               <IconEye size={16} />
             </Button>
 
-            <Link href="/admin/products/update">
+            <Link href={`/admin/products/${record.id}`}>
               <Button
                 size="xs"
                 style={{ margin: "0 5px" }}
@@ -73,7 +102,10 @@ export default function ProductListPage({ categories }: any) {
               p={5}
               variant="transparent"
               color="red"
-              onClick={(e) => {}}
+              onClick={(e) => {
+                openDeleteProduct();
+                setDeleteRow(record.id);
+              }}
             >
               <IconTrash size={16} color="red" />
             </Button>
@@ -94,11 +126,15 @@ export default function ProductListPage({ categories }: any) {
           <Table>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th align="center">Hình ảnh</Table.Th>
+                <Table.Th>Hình ảnh</Table.Th>
                 <Table.Th>Tên</Table.Th>
-                <Table.Th>Giá bán thường</Table.Th>
-                <Table.Th>Giá khuyến mãi</Table.Th>
-                <Table.Th>Hành động</Table.Th>
+                <Table.Th style={{ textAlign: "right" }}>
+                  Giá bán thường
+                </Table.Th>
+                <Table.Th style={{ textAlign: "right" }}>
+                  Giá khuyến mãi
+                </Table.Th>
+                <Table.Th style={{ textAlign: "center" }}>Hành động</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody style={{ position: "relative" }}>
@@ -116,6 +152,36 @@ export default function ProductListPage({ categories }: any) {
           />
         </div>
       </div>
+      <Modal
+        title="Xoá sản phẩm"
+        opened={openedDeleteProduct}
+        onClose={closeDeleteProduct}
+        lockScroll={false}
+      >
+        <div>Bạn có muốn xoá không?</div>
+        <Group justify="end" style={{ marginTop: 10 }}>
+          <Button
+            variant="filled"
+            key="cancel"
+            onClick={closeDeleteProduct}
+            color="red"
+            leftSection={<IconBan />}
+          >
+            Huỷ bỏ
+          </Button>
+          <Button
+            style={{ marginLeft: "12px" }}
+            onClick={() => {
+              closeDeleteProduct();
+              // handleDeleteProduct(deleteRow);
+            }}
+            variant="filled"
+            leftSection={<IconChevronRight />}
+          >
+            Tiếp tục
+          </Button>
+        </Group>
+      </Modal>
     </div>
   );
 }
