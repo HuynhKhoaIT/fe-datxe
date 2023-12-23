@@ -22,6 +22,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { deleteCar } from "@/utils/car";
+import Typo from "@/app/components/elements/Typo";
 export default function ProductListPage({ categories }: any) {
   const [posts, setPosts] = useState([]);
   const [
@@ -116,11 +117,9 @@ export default function ProductListPage({ categories }: any) {
   };
   return (
     <div>
-      <Flex justify={"end"} mb={20}>
-        <Link href="/admin/products/create">
-          <Button>Thêm sản phẩm</Button>
-        </Link>
-      </Flex>
+      <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
+        Tất cả sản phẩm
+      </Typo>
       <div className="row">
         <div className="col-12">
           <Table>

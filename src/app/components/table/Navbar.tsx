@@ -18,7 +18,7 @@ export function Navbar({ data }: any) {
         setActive(item.label);
       }}
     >
-      <item.icon className={styles.linkIcon} stroke={1.5} />
+      <item.icon className={styles.linkIcon} stroke={1.5} color="#000" />
       <span>{item.label}</span>
     </Link>
   ));

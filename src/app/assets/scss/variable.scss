@@ -1,0 +1,73 @@
+/* ============== VARIALE CSS ============== */
+:root {
+    --header-height: 5.5rem;
+    --banner-cart-height: 13.125rem;
+
+    /* ======== Colors ======== */
+    /* Color mode HSL (hue, saturation, lightness) */
+    --primary-color: #00acc1;
+    --sub-color: #00858f;
+    --title-color: #00acc1;
+    --title-color-2: #919191;
+    --title-color-sub: #137755;
+    --background-color: rgb(255, 255, 255);
+    --background-color-gray: #D9D9D9;
+    --background-color-light: #e0f2f1;
+    --text-color: #404040;
+    --text-color-light: #ffffff;
+    --second-color: #54b5ae;
+    --body-color: white;
+    --content-color: #000000;
+    --container-color: white;
+    --input-color: #8d8d8d;
+    --star-color: #ead14c;
+    --border-radius: 10px;
+    --red-color: #ff0000;
+    --orange-color: #f37d3b;
+
+    /* ======== Font weight ======== */
+    --font-normal: 400;
+    --font-semi-bold: 500;
+    --font-bold: 600;
+
+    /* ======== Font and typography ======== */
+    --body-font: sans-serif;
+
+    /* ======== .5rem = 8px | 1rem = 16px ======== */
+    --big-font-size: 64px;
+    --h1-font-size: 64px;
+    --h2-font-size: 48px;
+    --h3-font-size: 34px;
+    --primary-font-size: 22px;
+    --sub-font-size: 18px;
+    --small-font-size: 15px;
+
+    /* ======= color for category ======== */
+    --gray-bg: #fdfdfd;
+    --category-name: #00acc1;
+    --product-container-bg: #f3f4f9;
+    --black-cate-name: #828282;
+    --product-name: #404040;
+    --product-price: #0097a7;
+
+    /* ======= font size mobile ======== */
+    --primary-font-size-mb: 10px;
+    --sub-font-size-mb: 8px;
+    --small-font-size-mb: 7px;
+
+    --box-shadow: 0px -2px 15px 0px rgba(0, 172, 193, 0.2);
+
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 4.4rem;
+        --big-font-size: 20px;
+        --h1-font-size: 28px; // 25px
+        --h2-font-size: 26px;
+        --h3-font-size: 24px;
+        --primary-font-size: 16px;
+        --sub-font-size: 14px;
+        --small-font-size: 10px;
+    }
+}

@@ -9,6 +9,7 @@ import {
   MultiSelect,
   NumberInput,
   Select,
+  Space,
   Switch,
   Text,
   TextInput,
@@ -28,6 +29,7 @@ import "react-quill/dist/quill.snow.css";
 import { DateTimePicker } from "@mantine/dates";
 import { useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
+import Typo from "@/app/components/elements/Typo";
 
 const formats = [
   "header",
@@ -71,6 +73,10 @@ export default function ProductSavePage() {
   };
   return (
     <Box maw={"100%"} mx="auto" mt={20}>
+      <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
+        Cập nhật sản phẩm
+      </Typo>
+      <Space h="md" />
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
         <Grid gutter={12}>
           <Grid.Col span={8}>
