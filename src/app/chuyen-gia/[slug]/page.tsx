@@ -27,7 +27,6 @@ import dayjs from "dayjs";
 export default function Home({ params }: { params: { slug: string } }) {
   const searchParams = useSearchParams();
   const garageId: string = searchParams.get("garageId") || "";
-  console.log(params);
   const [initialCategoryData, setInitialCategoryData] = useState<ICategory[]>(
     []
   );

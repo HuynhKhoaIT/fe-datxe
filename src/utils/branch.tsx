@@ -46,7 +46,6 @@ export const getModels = async (id: number) => {
 export const getYears = async (id: number) => {
   try {
     const res = await axios.get(`${GET_BRAND_ENDPOINT}/years/${id}`);
-    console.log("res", res);
     return res.data.data as Promise<IBrand[]>;
   } catch (error) {
     console.error(error);

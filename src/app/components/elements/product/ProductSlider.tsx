@@ -15,7 +15,6 @@ import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 export default function ProductSlider({ images }: any) {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-  console.log("images", images);
   return (
     <>
       <Swiper

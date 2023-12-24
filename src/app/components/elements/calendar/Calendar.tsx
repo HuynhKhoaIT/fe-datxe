@@ -29,7 +29,6 @@ export default function CalendarScheduler({
 }: any) {
   const fullCalendarRef = useRef<FullCalendar | null>(null);
 
-  console.log("dataDetail", dataDetail);
   const [opened, handlers] = useDisclosure(false);
   const { data: session, status } = useSession();
   const token = session?.user?.token;
@@ -68,7 +67,6 @@ export default function CalendarScheduler({
     }
   };
 
-  console.log(fullCalendarRef.current?.getApi().getEventSources());
   useEffect(() => {
     handlers.open();
     if (window.innerWidth < 765) {
@@ -85,8 +83,6 @@ export default function CalendarScheduler({
 
   // click mở modal đặt lịch
   const handleAddEventSelectAndOpenModal = (selectInfo: any) => {
-    console.log("handleAddEventSelectAndOpenModal");
-
     setEventInfos(selectInfo);
     openCalendar();
     isDateInThePast(selectInfo?.start);
@@ -98,12 +94,9 @@ export default function CalendarScheduler({
     openPreviewCalendar();
   };
 
-  const handleUpdateEventSelect = async (changeInfo: any) => {
-    console.log("thay đổi event");
-  };
+  const handleUpdateEventSelect = async (changeInfo: any) => {};
   const handleDateClick = (arg: { date: any }) => {
     // setIsModalOpen(true);
-    console.log("handleDateClick");
   };
 
   // Kiểm tra xem khung giờ đang được chọn có nằm trong quá khứ hay không
@@ -196,7 +189,6 @@ export default function CalendarScheduler({
     fullCalendarRef.current?.getApi().today();
     handleGetVisibleEvents();
   };
-  console.log(eventData);
   const handleChangeView = (view: string) => {
     switch (view) {
       case "dayGridMonth":

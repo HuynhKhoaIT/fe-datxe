@@ -21,7 +21,6 @@ import { IProduct } from "@/interfaces/product";
 export const getProducts = async () => {
   try {
     const res = await axios.get(`${GET_PRODUCT_ENDPOINT}`);
-    console.log(res)
     return res.data.data as Promise<IProduct[]>;
   } catch (error) {
     console.error(error);

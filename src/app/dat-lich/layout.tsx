@@ -7,9 +7,9 @@ interface IProps {
 export default function Layout({ children }: IProps) {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <main className="main">{children}</main>
-      <MyFooter />
+      {/* <MyFooter /> */}
     </>
   );
 }

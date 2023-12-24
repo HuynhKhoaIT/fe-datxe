@@ -40,7 +40,7 @@ export default async function DatLichBaoDuong() {
     (car) => car.value == account?.carIdDefault
   );
 
-  console.log("mappedOrdersData", mappedOrdersData);
+  console.log("mappedOrdersData", mappedOrdersData.length > 0);
   return (
     <main className="main">
       <CalendarScheduler

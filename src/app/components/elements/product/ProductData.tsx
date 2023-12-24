@@ -11,8 +11,6 @@ export default function ProductData({
 }: {
   product_data: IProduct[];
 }) {
-  console.log("----");
-  console.log(product_data);
   return (
     <div className="shop-item-wrapper">
       <div className="row align-items-center">

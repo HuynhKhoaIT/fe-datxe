@@ -50,7 +50,6 @@ export const getGaragesNear = async ({ limit = 8 }) => {
 export const getEmployees = async (id: string) => {
   try {
     const res = await axios.get(`${GET_CVDV_ENDPOINT}?garage_id=${id}`);
-    console.log("res", res);
     return res.data.data as Promise<any>;
   } catch (error) {
     console.error(error);

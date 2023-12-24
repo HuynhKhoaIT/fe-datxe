@@ -24,7 +24,6 @@ function RegisterForm({ brands_data }) {
         try {
             await register(name, phone, email, licensePlates, automakerId, carNameId, password, passwordConfirmation);
         } catch (error) {
-            console.log('Register fail');
             console.error('Register error:', error.message); // Handle Register errors
         }
     };

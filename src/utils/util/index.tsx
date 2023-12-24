@@ -22,7 +22,6 @@ export const getHourAndDay = (date: any) => {
   };
 };
 export const getHourAndMinute = (date: any) => {
-  console.log(date);
   const hours = date?.getHours();
   const minutes = date?.getMinutes();
 

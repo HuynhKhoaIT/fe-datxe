@@ -36,7 +36,6 @@ export default async function SingleShop({
             data.garageId.toString(),
             8
           );
-          console.log(related);
           setRelatedProducts(related);
         }
         const categories = await getCategories();
@@ -53,7 +52,6 @@ export default async function SingleShop({
       return;
     }
   });
-  console.log("relatedProducts", relatedProducts);
 
   return (
     <main className="main">
