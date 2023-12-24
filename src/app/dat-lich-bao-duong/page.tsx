@@ -39,6 +39,8 @@ export default async function DatLichBaoDuong() {
   const carDefault = carOptions?.filter(
     (car) => car.value == account?.carIdDefault
   );
+
+  console.log("mappedOrdersData", mappedOrdersData);
   return (
     <main className="main">
       <CalendarScheduler

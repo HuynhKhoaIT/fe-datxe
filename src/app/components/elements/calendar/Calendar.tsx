@@ -29,6 +29,7 @@ export default function CalendarScheduler({
 }: any) {
   const fullCalendarRef = useRef<FullCalendar | null>(null);
 
+  console.log("dataDetail", dataDetail);
   const [opened, handlers] = useDisclosure(false);
   const { data: session, status } = useSession();
   const token = session?.user?.token;
