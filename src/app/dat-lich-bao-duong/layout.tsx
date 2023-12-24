@@ -5,7 +5,7 @@ import { LoadingPage } from "../components/loading";
 interface IProps {
   children: ReactNode;
 }
-export default function Layout({ children }: IProps) {
+export default async function Layout({ children }: IProps) {
   return (
     <>
       {/* <Header /> */}
