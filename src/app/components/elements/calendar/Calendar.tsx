@@ -210,6 +210,8 @@ export default function CalendarScheduler({
     handleGetVisibleEvents();
   };
 
+  console.log("eventData", eventData);
+
   return (
     <div className={styles.calendar}>
       <Box pos="relative">
