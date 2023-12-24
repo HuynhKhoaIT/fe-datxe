@@ -24,8 +24,15 @@ export const LoadingPage = () => {
 };
 export const LoadingComponent = () => {
   return (
-    <div className={cx("loading-component")}>
-      <IconRotateClockwise2 size={32} />
-    </div>
+    <Box
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
+      <Loader size={30} />
+    </Box>
   );
 };

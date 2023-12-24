@@ -30,7 +30,7 @@ import { DateTimePicker } from "@mantine/dates";
 import { useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
 import Typo from "@/app/components/elements/Typo";
-
+import styles from "../index.module.scss";
 const formats = [
   "header",
   "font",
@@ -72,7 +72,7 @@ export default function ProductSavePage() {
     setCar(newCar);
   };
   return (
-    <Box maw={"100%"} mx="auto" mt={20}>
+    <Box maw={"100%"} mx="auto" className={styles.content}>
       <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
         Cập nhật sản phẩm
       </Typo>

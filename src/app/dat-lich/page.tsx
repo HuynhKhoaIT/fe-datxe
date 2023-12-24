@@ -1,6 +1,6 @@
 import React from "react";
 import { getSchedule } from "@/utils/order";
-import CalendarScheduler from "./Calendar";
+import CalendarScheduler from "../components/elements/calendar/Calendar";
 import { mapArrayEventCalendar } from "../domain/EventCalendar";
 import { getBrands } from "@/utils/branch";
 import { getCategories } from "@/utils/category";

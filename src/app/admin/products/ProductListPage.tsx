@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import styles from "./index.module.scss";
+
 import {
   Box,
   Button,
@@ -116,7 +118,7 @@ export default function ProductListPage({ categories }: any) {
     }
   };
   return (
-    <div>
+    <div className={styles.content}>
       <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
         Tất cả sản phẩm
       </Typo>
