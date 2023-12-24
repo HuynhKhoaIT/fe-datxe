@@ -29,8 +29,7 @@ export default function RootLayout({ children }: IProps) {
         <MantineProvider>
           <Provider>
             <Notifications position="top-right" />
-            {children}
-            {/* <Suspense fallback={<LoadingPage />}></Suspense> */}
+            <Suspense fallback={<LoadingPage />}>{children}</Suspense>
           </Provider>
         </MantineProvider>
       </body>
