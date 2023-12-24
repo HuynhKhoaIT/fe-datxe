@@ -62,10 +62,8 @@ export default function CalendarScheduler({
       const mappedOrdersData = mapArrayEventCalendar(orders);
       setOrdersData(mappedOrdersData);
       handleGetVisibleEvents();
-      console.log("refetch envent");
       handlers.close();
     } catch (error) {
-      console.error("Error fetching or processing data:", error);
       handlers.close();
     }
   };
