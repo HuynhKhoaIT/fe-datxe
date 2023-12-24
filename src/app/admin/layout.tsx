@@ -16,6 +16,7 @@ export default async function DashboardLayout({ children }: IProps) {
           <div className={styles.navBar}>
             <Menu />
           </div>
+
           <div className={styles.content}>{children}</div>
         </div>
       </main>

@@ -40,13 +40,15 @@ export default async function DatLichBaoDuong() {
     (car) => car.value == account?.carIdDefault
   );
   return (
-    <CalendarScheduler
-      brandOptions={newBrands}
-      categoryOptions={categoryOptions}
-      carsData={carsData}
-      carOptions={carOptions}
-      carDefault={carDefault}
-      ordersData={mappedOrdersData}
-    />
+    <main className="main">
+      <CalendarScheduler
+        brandOptions={newBrands}
+        categoryOptions={categoryOptions}
+        carsData={carsData}
+        carOptions={carOptions}
+        carDefault={carDefault}
+        ordersData={mappedOrdersData}
+      />
+    </main>
   );
 }

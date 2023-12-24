@@ -4,7 +4,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-import { getHourAndMinute, getDayOfWeek } from "@/utils/util";
 import React, { useEffect, useRef, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import ModalCalendar from "../components/elements/ModalInfosEventCalendar";
@@ -12,12 +11,11 @@ import ModalPreviewDetailCalendar from "../components/elements/ModalPreviewCalen
 import dayjs from "dayjs";
 import BasicModal from "../components/basicModal/BasicModal";
 import { useSearchParams } from "next/navigation";
-import { getSchedule, getScheduleCsr } from "@/utils/order";
+import { getScheduleCsr } from "@/utils/order";
 import { mapArrayEventCalendar } from "../domain/EventCalendar";
 import { useSession } from "next-auth/react";
-import { Box, Card, Flex, Grid, List, Select, Space } from "@mantine/core";
+import { Box, Flex, LoadingOverlay } from "@mantine/core";
 import styles from "./index.module.scss";
-import { IconDots } from "@tabler/icons-react";
 import "dayjs/locale/vi";
 dayjs.locale("vi");
 
@@ -31,10 +29,9 @@ export default function CalendarScheduler({
 }: any) {
   const fullCalendarRef = useRef<FullCalendar | null>(null);
 
-  const searchParams = useSearchParams();
+  const [opened, handlers] = useDisclosure(false);
   const { data: session, status } = useSession();
   const token = session?.user?.token;
-  const search = searchParams.get("garage");
   const [ordersData, setOrdersData] = useState(dataDetail);
   const [eventInfos, setEventInfos] = useState();
   const [eventData, setEventData] = useState<any>();
@@ -65,14 +62,16 @@ export default function CalendarScheduler({
       setOrdersData(mappedOrdersData);
       handleGetVisibleEvents();
       console.log("refetch envent");
-      // fullCalendarRef.current?.getApi().addEventSource(mappedOrdersData);
+      handlers.close();
     } catch (error) {
       console.error("Error fetching or processing data:", error);
+      handlers.close();
     }
   };
 
   console.log(fullCalendarRef.current?.getApi().getEventSources());
   useEffect(() => {
+    handlers.open();
     if (window.innerWidth < 765) {
       setLayoutMobile(true);
     } else {
@@ -222,64 +221,77 @@ export default function CalendarScheduler({
 
   return (
     <div className={styles.calendar}>
-      <FullCalendar
-        ref={fullCalendarRef}
-        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin, listPlugin]}
-        initialView="timeGridWeek"
-        headerToolbar={{
-          left: "prev,next,today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-        }}
-        customButtons={customButtons}
-        slotLabelFormat={{
-          hour: "numeric",
-          minute: "2-digit",
-          omitZeroMinute: false,
-          meridiem: "short",
-        }}
-        slotLabelContent={(arg) => {
-          const hour = arg.date.getHours();
-          return `${hour}H`;
-        }}
-        locale="vi"
-        weekends={weekends.weekendsVisible}
-        select={handleAddEventSelectAndOpenModal}
-        eventClick={handleEditEventSelectAndOpenModal}
-        // dateClick={handleDateClick}
-        // initialEvents={ordersData}
-        events={ordersData}
-        longPressDelay={80}
-        // eventLongPressDelay={1000}
-        // selectLongPressDelay={1000}
-        selectable={true}
-        dayMaxEvents={true}
-        allDaySlot={false}
-        editable={false}
-        height={layoutMobile ? "500px" : "700px"}
-        buttonText={{
-          today: "Hôm nay",
-          month: "Tháng",
-          week: "Tuần",
-          day: "Ngày",
-          list: "Danh sách",
-        }}
-        slotMinTime="06:00:00"
-        slotMaxTime="22:00:00"
-        views={{
-          timeGridWeek: {
-            type: "timeGridWeek",
-            duration: layoutMobile ? { days: 4 } : { days: 7 }, // Hiển thị một tuần tại một thời điểm
-            buttonText: "Tuần",
-            eventLimit: 1,
-            eventLimitText: 1,
-          },
-        }}
-        selectAllow={handleSelectAllow}
-        firstDay={new Date().getDay() - 3}
-        // longPressDelay={1}
-        windowResize={handleWindowResize}
-      />
+      <Box pos="relative">
+        <LoadingOverlay
+          visible={opened}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 2 }}
+        />
+        <FullCalendar
+          ref={fullCalendarRef}
+          plugins={[
+            timeGridPlugin,
+            dayGridPlugin,
+            interactionPlugin,
+            listPlugin,
+          ]}
+          initialView="timeGridWeek"
+          headerToolbar={{
+            left: "prev,next,today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+          }}
+          customButtons={customButtons}
+          slotLabelFormat={{
+            hour: "numeric",
+            minute: "2-digit",
+            omitZeroMinute: false,
+            meridiem: "short",
+          }}
+          slotLabelContent={(arg) => {
+            const hour = arg.date.getHours();
+            return `${hour}H`;
+          }}
+          locale="vi"
+          weekends={weekends.weekendsVisible}
+          select={handleAddEventSelectAndOpenModal}
+          eventClick={handleEditEventSelectAndOpenModal}
+          // dateClick={handleDateClick}
+          initialEvents={dataDetail}
+          events={ordersData}
+          longPressDelay={80}
+          // eventLongPressDelay={1000}
+          // selectLongPressDelay={1000}
+          selectable={true}
+          dayMaxEvents={true}
+          allDaySlot={false}
+          editable={false}
+          height={layoutMobile ? "500px" : "700px"}
+          buttonText={{
+            today: "Hôm nay",
+            month: "Tháng",
+            week: "Tuần",
+            day: "Ngày",
+            list: "Danh sách",
+          }}
+          slotMinTime="06:00:00"
+          slotMaxTime="22:00:00"
+          views={{
+            timeGridWeek: {
+              type: "timeGridWeek",
+              duration: layoutMobile ? { days: 4 } : { days: 7 }, // Hiển thị một tuần tại một thời điểm
+              buttonText: "Tuần",
+              eventLimit: 1,
+              eventLimitText: 1,
+            },
+          }}
+          selectAllow={handleSelectAllow}
+          firstDay={new Date().getDay() - 3}
+          // longPressDelay={1}
+          windowResize={handleWindowResize}
+        />
+      </Box>
+
       {viewDefault !== "danh sách" && (
         <Box w={"100%"} className={styles.eventGroup}>
           <div className={styles.title}>Sự kiện trong {viewDefault}</div>

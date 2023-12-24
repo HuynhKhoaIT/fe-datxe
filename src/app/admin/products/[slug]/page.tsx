@@ -255,7 +255,7 @@ export default function ProductSavePage() {
         </Grid>
 
         <Group justify="end" style={{ marginTop: 60 }}>
-          <Link href={"/admin/product"}>
+          <Link href={"/admin/products"}>
             <Button
               variant="outline"
               key="cancel"

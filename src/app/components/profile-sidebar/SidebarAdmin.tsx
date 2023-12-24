@@ -18,14 +18,14 @@ const SidebarAdmin = () => {
           <i className="far fa-gauge-high"></i> Tổng quan
         </Link>
       </li>
-      <li>
+      {/* <li>
         <Link
           href="/admin/profile"
           className={`list-group-item ${page == "profile" && "active"}`}
         >
           <i className="far fa-user"></i> Hồ sơ của tôi
         </Link>
-      </li>
+      </li> */}
 
       <li>
         <Link
