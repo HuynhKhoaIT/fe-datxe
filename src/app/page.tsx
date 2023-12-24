@@ -10,6 +10,8 @@ import { IGarage } from "@/interfaces/garage";
 import { getServiceHot } from "@/utils/service";
 import Header from "./components/page/header/header";
 import { MyFooter } from "./components/page/footer/footer";
+import { Suspense } from "react";
+import { LoadingPage } from "./components/loading";
 export default async function Home() {
   const initialCategoryData = await getCategories();
   const initialGarageData: IGarage[] = await getGaragesNear({ limit: 8 });
@@ -19,72 +21,75 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <main className="main  bg-white">
-        <div className="hero-section">
-          <div className="container">
-            <SlideBanners />
+      <Suspense fallback={<LoadingPage />}>
+        <main className="main  bg-white">
+          <div className="hero-section">
+            <div className="container">
+              <SlideBanners />
+            </div>
           </div>
-        </div>
-        <div className="car-category pt-40 pb-40 bg-white">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-6 mx-auto">
-                <div className="site-heading text-center">
-                  <span className="site-title-tagline">
-                    <i className="flaticon-drive"></i> Danh mục
-                  </span>
-                  <h2 className="site-title">
-                    Dịch vụ <span>Nổi bật</span>
-                  </h2>
-                  <div className="heading-divider"></div>
+          <div className="car-category pt-40 pb-40 bg-white">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-6 mx-auto">
+                  <div className="site-heading text-center">
+                    <span className="site-title-tagline">
+                      <i className="flaticon-drive"></i> Danh mục
+                    </span>
+                    <h2 className="site-title">
+                      Dịch vụ <span>Nổi bật</span>
+                    </h2>
+                    <div className="heading-divider"></div>
+                  </div>
                 </div>
               </div>
+              <Categories
+                initialCategoryData={initialCategoryData}
+                garageId={0}
+              />
             </div>
-            <Categories
-              initialCategoryData={initialCategoryData}
-              garageId={0}
-            />
           </div>
-        </div>
 
-        <div className="car-area bg pt-40 pb-40">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-6 mx-auto">
-                <div className="site-heading text-center">
-                  <span className="site-title-tagline">
-                    <i className="flaticon-drive"></i> Nổi bật
-                  </span>
-                  <h2 className="site-title">
-                    Sản phẩm <span>Hot</span>
-                  </h2>
-                  <div className="heading-divider"></div>
+          <div className="car-area bg pt-40 pb-40">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-6 mx-auto">
+                  <div className="site-heading text-center">
+                    <span className="site-title-tagline">
+                      <i className="flaticon-drive"></i> Nổi bật
+                    </span>
+                    <h2 className="site-title">
+                      Sản phẩm <span>Hot</span>
+                    </h2>
+                    <div className="heading-divider"></div>
+                  </div>
                 </div>
               </div>
+              <Product initialProductData={initialProductData} garageId={0} />
             </div>
-            <Product initialProductData={initialProductData} garageId={0} />
           </div>
-        </div>
 
-        <div className="car-area bg pt-40 pb-40">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-6 mx-auto">
-                <div className="site-heading text-center">
-                  <span className="site-title-tagline">
-                    <i className="flaticon-drive"></i> Nổi bật
-                  </span>
-                  <h2 className="site-title">
-                    Dịch vụ <span>Hot</span>
-                  </h2>
-                  <div className="heading-divider"></div>
+          <div className="car-area bg pt-40 pb-40">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-6 mx-auto">
+                  <div className="site-heading text-center">
+                    <span className="site-title-tagline">
+                      <i className="flaticon-drive"></i> Nổi bật
+                    </span>
+                    <h2 className="site-title">
+                      Dịch vụ <span>Hot</span>
+                    </h2>
+                    <div className="heading-divider"></div>
+                  </div>
                 </div>
               </div>
+              <Product initialProductData={initialServiceData} garageId={0} />
             </div>
-            <Product initialProductData={initialServiceData} garageId={0} />
           </div>
-        </div>
-      </main>
+        </main>
+      </Suspense>
+
       <MyFooter />
     </>
   );
