@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import ModalCalendar from "../ModalInfosEventCalendar";
 import ModalPreviewDetailCalendar from "../ModalPreviewCalendar";
@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { Box, Flex, LoadingOverlay } from "@mantine/core";
 import styles from "./index.module.scss";
 import "dayjs/locale/vi";
+import { LoadingPage } from "../../loading";
 dayjs.locale("vi");
 
 export default function CalendarScheduler({
