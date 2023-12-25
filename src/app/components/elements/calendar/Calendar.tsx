@@ -17,7 +17,6 @@ import { useSession } from "next-auth/react";
 import { Box, Flex, LoadingOverlay } from "@mantine/core";
 import styles from "./index.module.scss";
 import "dayjs/locale/vi";
-import { LoadingPage } from "../../loading";
 dayjs.locale("vi");
 
 export default function CalendarScheduler({
@@ -29,8 +28,6 @@ export default function CalendarScheduler({
   carDefault,
 }: any) {
   const fullCalendarRef = useRef<FullCalendar | null>(null);
-
-  const [opened, handlers] = useDisclosure(false);
   const { data: session, status } = useSession();
   const token = session?.user?.token;
   const [ordersData, setOrdersData] = useState(dataDetail);
@@ -61,21 +58,17 @@ export default function CalendarScheduler({
       const orders = await getScheduleCsr(token || "");
       const mappedOrdersData = mapArrayEventCalendar(orders);
       setOrdersData(mappedOrdersData);
-      handleGetVisibleEvents();
-      handlers.close();
-    } catch (error) {
-      handlers.close();
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
-    handlers.open();
     if (window.innerWidth < 765) {
       setLayoutMobile(true);
     } else {
       setLayoutMobile(false);
     }
-    fetchDataOrders();
+    handleGetVisibleEvents();
+    // fetchDataOrders();
   }, []);
   // Hàm kiểm tra xem ngày đã qua hay chưa
   const isDateInThePast = (value: any) => {
@@ -216,11 +209,6 @@ export default function CalendarScheduler({
   return (
     <div className={styles.calendar}>
       <Box pos="relative">
-        <LoadingOverlay
-          visible={opened}
-          zIndex={1000}
-          overlayProps={{ radius: "sm", blur: 2 }}
-        />
         <FullCalendar
           ref={fullCalendarRef}
           plugins={[
@@ -250,12 +238,8 @@ export default function CalendarScheduler({
           weekends={weekends.weekendsVisible}
           select={handleAddEventSelectAndOpenModal}
           eventClick={handleEditEventSelectAndOpenModal}
-          // dateClick={handleDateClick}
-          // initialEvents={dataDetail}
           events={ordersData}
           longPressDelay={80}
-          // eventLongPressDelay={1000}
-          // selectLongPressDelay={1000}
           selectable={true}
           dayMaxEvents={true}
           allDaySlot={false}
@@ -281,7 +265,6 @@ export default function CalendarScheduler({
           }}
           selectAllow={handleSelectAllow}
           firstDay={new Date().getDay() - 3}
-          // longPressDelay={1}
           windowResize={handleWindowResize}
         />
       </Box>
