@@ -48,7 +48,6 @@ export default function ProductListPage({ categories }: any) {
         setTotalPage(res.data.meta.total);
       });
   }, []);
-
   //   const handleDeleteProduct = async (carId: string) => {
   //     try {
   //         await deleteCar(carId, token ?? '');
@@ -87,7 +86,12 @@ export default function ProductListPage({ categories }: any) {
               <IconEye size={16} />
             </Button>
 
-            <Link href={`/admin/products/${record.id}`}>
+            <Link
+              href={{
+                pathname: `/admin/products/${record.id}`,
+                // query: { name: "test" },
+              }}
+            >
               <Button
                 size="xs"
                 style={{ margin: "0 5px" }}

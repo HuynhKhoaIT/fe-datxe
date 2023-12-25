@@ -19,5 +19,9 @@ export const CUSTOMER_CARE_ENDPOINT_GUEST = `${process.env.apiGuest}/customer-ca
 export const GET_EMPLOYEES_ENDPOINT = `${process.env.apiGuest}/employees`;
 export const GET_CVDV_ENDPOINT = `${process.env.apiGuest}/cvdv`;
 
+export const GET_PROVINCE_ENDPOINT = `${process.env.apiGuest}/provinces`;
+export const GET_DISTRICT_ENDPOINT = `${process.env.apiGuest}/get-districts`;
+export const GET_WARD_ENDPOINT = `${process.env.apiGuest}/get-wards`;
+export const GET_PROFILE_ENDPOINT = `${process.env.apiUserV3}/my-account`;
 
 

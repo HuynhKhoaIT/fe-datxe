@@ -1,9 +1,9 @@
 import React from "react";
-import InfoProfile from "../../components/elements/profile/Info";
-import UserProfile from "../../components/elements/profile/User";
 import { getMyAccount } from "@/utils/user";
 import { getDistricts, getProvinces, getWards } from "@/utils/notion";
-export default async function ProfilePage() {
+import UserProfile from "@/app/components/elements/profile/User";
+import { Box } from "@mantine/core";
+export default async function ProfilePageAdmin() {
   const myAccount: any = await getMyAccount();
   const province: any = await getProvinces();
   const provinceData = province.map((item: any) => ({
@@ -21,14 +21,13 @@ export default async function ProfilePage() {
     label: item.name,
   }));
   return (
-    <div className="user-profile-wrapper">
-      <InfoProfile />
+    <Box w={800}>
       <UserProfile
         myAccount={myAccount}
         provinceData={provinceData}
         districtData={districtData}
         wardData={wardData}
       />
-    </div>
+    </Box>
   );
 }

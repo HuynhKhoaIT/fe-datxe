@@ -11,6 +11,7 @@ import {
   POST_REGISTER_ENDPOINT,
   CHECK_PHONE_NUMBER,
   CHECK_OTP,
+  GET_PROFILE_ENDPOINT,
 } from "./constants/endpoints";
 
 import { IUser } from "@/interfaces/user";
@@ -31,7 +32,7 @@ export const getMyAccount = async () => {
       const config = {
         headers: { Authorization: `Bearer ${session.user.token}` },
       };
-      const res = await axios.get(`${GET_MY_ACCOUNT_ENDPOINT}`, config);
+      const res = await axios.get(`${GET_PROFILE_ENDPOINT}`, config);
       return res.data.data as Promise<IUser>;
     } catch (error) {
       console.log(error);
@@ -168,5 +169,23 @@ export const CheckOtp = async (phone: string, otp: string, action: string) => {
   } catch (error) {
     console.error(error);
     throw new Error("Check OTP thất bại");
+  }
+};
+export const updateAccount = async (profileData: any, token: string) => {
+  try {
+    if (token) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      const res = await axios.put(
+        `${GET_PROFILE_ENDPOINT}`,
+        profileData,
+        config
+      );
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("Lỗi trong quá trình cập nhật profiles");
   }
 };

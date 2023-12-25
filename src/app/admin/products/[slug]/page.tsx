@@ -48,7 +48,12 @@ const formats = [
   "indent",
   "image",
 ];
-export default function ProductSavePage() {
+export default function ProductSavePage({
+  params,
+}: {
+  params: { slug: number };
+}) {
+  console.log(params);
   const form = useForm({
     initialValues: {},
     validate: {},
