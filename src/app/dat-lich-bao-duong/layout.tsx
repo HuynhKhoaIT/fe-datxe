@@ -16,7 +16,7 @@
 //     </>
 //   );
 // }
-export default function maintenanceLayout({
+export default async function maintenanceLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
