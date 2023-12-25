@@ -8,7 +8,7 @@ import { getCarsSsr } from "@/utils/car";
 import { getMyAccount } from "@/utils/user";
 export default async function DatLichBaoDuong() {
   const orders = await getSchedule();
-  const mappedOrdersData = mapArrayEventCalendar(orders);
+  const mappedOrdersData = await mapArrayEventCalendar(orders);
   // lấy danh sách brand
   const brands = await getBrands();
   const newBrands = brands?.map((brand) => ({
@@ -39,18 +39,14 @@ export default async function DatLichBaoDuong() {
   const carDefault = carOptions?.filter(
     (car) => car.value == account?.carIdDefault
   );
-
-  console.log("mappedOrdersData", mappedOrdersData.length > 0);
   return (
-    <main className="main">
-      <CalendarScheduler
-        brandOptions={newBrands}
-        categoryOptions={categoryOptions}
-        carsData={carsData}
-        carOptions={carOptions}
-        carDefault={carDefault}
-        ordersData={mappedOrdersData}
-      />
-    </main>
+    <CalendarScheduler
+      brandOptions={newBrands}
+      categoryOptions={categoryOptions}
+      carsData={carsData}
+      carOptions={carOptions}
+      carDefault={carDefault}
+      ordersData={mappedOrdersData}
+    />
   );
 }
