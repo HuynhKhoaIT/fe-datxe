@@ -49,11 +49,39 @@ export function LoginFormAccuracy() {
   const onLogin = async () => {
     const { phone, pin } = form.values;
     let password = phone + "@@Datxe.com@@";
-
+    // try {
+    //     setLoading(true);
+    //     await CheckOtp(phone, pin, 'login');
+    //     try {
+    //         signIn('credentials', {
+    //             phone: phone,
+    //             password: password,
+    //             callbackUrl: callbackUrl || '/dashboard',
+    //         });
+    //         notifications.show({
+    //             title: 'Thành công',
+    //             message: 'Đăng nhập thành công',
+    //         });
+    //         setLoading(false);
+    //     } catch (error) {
+    //         notifications.show({
+    //             title: 'Thất bại',
+    //             message: 'Đăng nhập thất bại',
+    //         });
+    //         setLoading(false);
+    //     }
+    // } catch (error) {
+    //     notifications.show({
+    //         title: 'Error',
+    //         message: 'Xác thực thất bại',
+    //     });
+    //     setLoading(false);
+    //     form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
+    // }
     try {
       setLoading(true);
-      // const checkRs = await CheckOtp(phone, pin, 'login');
-      if (100 == 100) {
+      const checkRs = await CheckOtp(phone, pin, "login");
+      if (checkRs.CodeResult == 100) {
         signIn("credentials", {
           phone: phone,
           password: password,
