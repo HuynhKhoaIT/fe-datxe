@@ -28,6 +28,7 @@ import Typo from "@/app/components/elements/Typo";
 import { notifications } from "@mantine/notifications";
 export default function ProductListPage() {
   const [products, setProducts] = useState([]);
+  const [deleteRow, setDeleteRow] = useState();
   const getProducts = async () => {
     handlers.open();
 
@@ -77,10 +78,10 @@ export default function ProductListPage() {
           </Table.Td>
           <Table.Td>{record.name}</Table.Td>
           <Table.Td w={200} align="right">
-            {record.price}
+            {new Intl.NumberFormat().format(record.price)}đ
           </Table.Td>
           <Table.Td w={200} align="right">
-            {record.price}
+            {new Intl.NumberFormat().format(record.salePrice)}đ
           </Table.Td>
           <Table.Td w={150} align="center">
             {/* <Button size="xs" p={5} variant="transparent" onClick={() => {}}>
@@ -109,7 +110,8 @@ export default function ProductListPage() {
               variant="transparent"
               color="red"
               onClick={(e) => {
-                handleDeleteProduct(record.id);
+                openDeleteProduct();
+                setDeleteRow(record.id);
               }}
             >
               <IconTrash size={16} color="red" />
@@ -185,7 +187,7 @@ export default function ProductListPage() {
             style={{ marginLeft: "12px" }}
             onClick={() => {
               closeDeleteProduct();
-              // handleDeleteProduct(deleteRow);
+              handleDeleteProduct(deleteRow);
             }}
             variant="filled"
             leftSection={<IconChevronRight />}
