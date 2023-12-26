@@ -8,7 +8,7 @@ export async function GET(request: Request) {
         const session = await getServerSession(authOptions);
         if (session?.user?.token) {
             const products = await prisma.product.findMany({
-                take: 1,
+                take: 10,
             });
             return NextResponse.json(products);
         }
