@@ -63,8 +63,8 @@ const UpdateModal = ({
     console.log(data);
     if (opened == true) {
       form.setFieldValue("number_plates", data?.licensePlates);
-      form.setFieldValue("brand_id", data?.yearCarName);
-      form.setFieldValue("year_car_id", data?.automakerId);
+      form.setFieldValue("brand_id", data?.automakerId);
+      form.setFieldValue("year_car_name", data?.yearCarName);
       form.setFieldValue("car_name_id", data?.modelCarName?.id);
       form.setFieldValue("color", data?.color);
       form.setFieldValue("vin_number", data?.vinNumber);
