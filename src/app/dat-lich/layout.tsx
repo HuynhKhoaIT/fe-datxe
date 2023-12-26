@@ -9,9 +9,7 @@ export default function Layout({ children }: IProps) {
   return (
     <>
       <Header />
-      <main className="main">
-        <Suspense fallback={<LoadingPage />}>{children}</Suspense>
-      </main>
+      <main className="main">{children}</main>
       <MyFooter />
     </>
   );
