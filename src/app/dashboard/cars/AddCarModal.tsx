@@ -1,6 +1,6 @@
 "use client";
 import { ICar } from "@/interfaces/car";
-import { getBrands, getModels } from "@/utils/branch";
+import { getBrands, getModels, getYears } from "@/utils/branch";
 import { addCar, getCars, setCarDefault } from "@/utils/car";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
@@ -33,6 +33,8 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
   const router = useRouter();
   const [brandsData, setBrandsData] = useState<any>([]);
   const [models, setModels] = useState<any>([]);
+  const [yearCar, setYearCar] = useState<any>([]);
+
   const selectBrand = async (value: number) => {
     try {
       const dong_xe: IBrand[] = await getModels(value);
@@ -41,6 +43,16 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
         label: model.name || "",
       }));
       setModels(newModels);
+    } catch (error) {}
+  };
+  const selectYearCar = async (value: number) => {
+    try {
+      const yearCarData: IBrand[] = await getYears(value);
+      const newYearCar = yearCarData?.map((year) => ({
+        value: year.id?.toString() || "",
+        label: year.name || "",
+      }));
+      setYearCar(newYearCar);
     } catch (error) {}
   };
 
@@ -145,15 +157,28 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
             </Grid.Col>
             <Grid.Col span={4}>
               <Select
+                {...form.getInputProps("car_name_id")}
                 label="Dòng xe"
                 checkIconPosition="right"
                 placeholder="Chọn dòng xe"
                 data={models}
-                {...form.getInputProps("car_name_id")}
+                onChange={(value) => {
+                  form.setFieldValue("car_name_id", value);
+                  selectYearCar(Number(value));
+                }}
               ></Select>
             </Grid.Col>
           </Grid>
           <Grid gutter={10}>
+            <Grid.Col span={4}>
+              <Select
+                label="Năm sản xuất"
+                checkIconPosition="right"
+                placeholder="Năm sản xuất"
+                data={yearCar}
+                {...form.getInputProps("year_car_name")}
+              ></Select>
+            </Grid.Col>
             <Grid.Col span={4}>
               <TextInput
                 label="Color"
@@ -169,6 +194,8 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
                 {...form.getInputProps("vin_number")}
               />
             </Grid.Col>
+          </Grid>
+          <Grid gutter={10}>
             <Grid.Col span={4}>
               <NumberInput
                 label="Machine Number"
@@ -176,8 +203,6 @@ const AddCarModal = ({ opened, close, fetchCars, ...props }: any) => {
                 {...form.getInputProps("machine_number")}
               />
             </Grid.Col>
-          </Grid>
-          <Grid gutter={10}>
             <Grid.Col span={4}>
               <NumberInput
                 label="Km repairt"

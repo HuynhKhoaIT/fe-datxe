@@ -27,10 +27,13 @@ import Link from "next/link";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { DateTimePicker } from "@mantine/dates";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
+import InfoCar from "./InfoCar";
+import { getProductDetail } from "@/utils/product";
+import { IProduct } from "@/interfaces/product";
 const formats = [
   "header",
   "font",
@@ -53,23 +56,25 @@ export default function ProductSavePage({
 }: {
   params: { slug: number };
 }) {
-  console.log(params);
   const form = useForm({
     initialValues: {},
     validate: {},
   });
-  const [car, setCar] = useState([{ car: "" }]);
-  const addCar = () => {
-    if (car.length < 9) {
-      setCar([...car, { car: "" }]);
-    }
-  };
 
-  const removeCar = (index: number) => {
-    const newCar = [...car];
-    newCar.splice(index, 1);
-    setCar(newCar);
+  const [proDetail, setProDetail] = useState<IProduct>();
+  const fetchDataProduct = async () => {
+    try {
+      const productData = await getProductDetail(params.slug);
+      console.log("proDetail", params.slug);
+
+      setProDetail(productData);
+    } catch (error) {}
   };
+  useEffect(() => {
+    fetchDataProduct();
+  }, []);
+  console.log("proDetail", proDetail);
+  const [car, setCar] = useState([{ car: "" }]);
 
   const handleChange = (index: number, value: any) => {
     const newCar = [...car];
@@ -154,55 +159,7 @@ export default function ProductSavePage({
                   />
                 </Grid.Col>
               </Grid>
-              <Card
-                shadow="sm"
-                padding="lg"
-                withBorder
-                title="Áp dụng dòng xe"
-                mt={24}
-              >
-                {car.map((item, index) => (
-                  <Flex
-                    gap={12}
-                    w={"100%"}
-                    align={"end"}
-                    justify="space-between"
-                  >
-                    <Flex gap={12} w={"90%"}>
-                      <Select
-                        w={"33%"}
-                        label="Hãng xe"
-                        placeholder="Hãng xe"
-                        data={["React", "Angular", "Vue", "Svelte"]}
-                      />
-                      <Select
-                        w={"33%"}
-                        label="Dòng xe"
-                        placeholder="Dòng xe"
-                        data={["React", "Angular", "Vue", "Svelte"]}
-                      />
-                      <MultiSelect
-                        w={"33%"}
-                        label="Năm sản xuất"
-                        placeholder="Năm sản xuất"
-                        data={["2023", "2022", "2021", "2020"]}
-                      />
-                    </Flex>
-                    <Button
-                      onClick={() => removeCar(index)}
-                      variant="outline"
-                      color="red"
-                    >
-                      <IconTrash size={16} />
-                    </Button>
-                  </Flex>
-                ))}
-                <Flex justify="end" mt={12}>
-                  <Button onClick={addCar} size="md">
-                    <IconPlus size={16} />
-                  </Button>
-                </Flex>
-              </Card>
+              <InfoCar carData={car} setCar={setCar} />
             </Card>
           </Grid.Col>
           <Grid.Col span={4}>
