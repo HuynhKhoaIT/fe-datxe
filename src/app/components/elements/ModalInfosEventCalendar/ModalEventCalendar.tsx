@@ -30,9 +30,11 @@ export const ModalEventCalendar = ({
   user,
   brandOptions,
   modelOptions,
+  yearCarOptions,
   token,
   categoryOptions,
   setBrand,
+  setModel,
   eventInfos,
   garage,
   advisorOptions,
@@ -86,9 +88,9 @@ export const ModalEventCalendar = ({
       brand_name: dataCarDefault?.brandName || "",
       model_name: dataCarDefault?.modelName || null,
       number_plates: "",
-      car_year_id: "",
+      car_year_id: null,
       brand_id: "",
-      car_name_id: null,
+      car_name_id: dataCarDefault?.yearCarName,
     },
 
     validate: {
@@ -187,7 +189,7 @@ export const ModalEventCalendar = ({
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Textarea
           placeholder="Yêu cầu khách hàng"
-          withAsterisk
+          withAsterisk={true}
           {...form.getInputProps("customer_request")}
         />
         <Radio.Group withAsterisk {...form.getInputProps("priority_level")}>
@@ -218,6 +220,7 @@ export const ModalEventCalendar = ({
           <Grid.Col span={6} className="input-plate">
             {token ? (
               <Select
+                withAsterisk
                 {...form.getInputProps("car_id")}
                 checkIconPosition="right"
                 placeholder="Biển số xe"
@@ -232,6 +235,7 @@ export const ModalEventCalendar = ({
               ></Select>
             ) : (
               <TextInput
+                withAsterisk
                 classNames={{
                   root: styles.rootPlates,
                   input: styles.inputPlates,
@@ -292,20 +296,26 @@ export const ModalEventCalendar = ({
             </Grid.Col>
             <Grid.Col span={4}>
               <Select
-                name="car_name_id"
                 data={modelOptions}
                 placeholder="Dòng xe"
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
                 allowDeselect={false}
                 {...form.getInputProps("car_name_id")}
+                onChange={(value: any) => {
+                  form.setFieldValue("car_name_id", value);
+                  form.setFieldValue("car_year_id", null);
+                  setModel(value);
+                }}
               />
             </Grid.Col>
             <Grid.Col span={4}>
-              <TextInput
+              <Select
+                data={yearCarOptions}
                 placeholder="Năm sản xuất"
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
+                allowDeselect={false}
                 {...form.getInputProps("car_year_id")}
               />
             </Grid.Col>
@@ -332,7 +342,7 @@ export const ModalEventCalendar = ({
             />
           </Grid.Col>
         </Grid>
-        {garage && token && (
+        {garage && (
           <Grid gutter={10} mt="md">
             <Grid.Col span={6}>
               <Select
@@ -344,28 +354,27 @@ export const ModalEventCalendar = ({
                 {...form.getInputProps("service_advisor")}
               />
             </Grid.Col>
-            <Grid.Col span={6}>
-              <Select
-                allowDeselect={false}
-                data={garageOptions}
-                placeholder="Chọn chuyên gia"
-                withAsterisk
-                {...form.getInputProps("garageId")}
-              />
-            </Grid.Col>
+            {token ? (
+              <Grid.Col span={6}>
+                <Select
+                  allowDeselect={false}
+                  data={garageOptions}
+                  placeholder="Chọn chuyên gia"
+                  withAsterisk
+                  {...form.getInputProps("garageId")}
+                />
+              </Grid.Col>
+            ) : (
+              <Grid.Col span={6}>
+                <TextInput
+                  readOnly
+                  placeholder="Chuyên gia"
+                  {...form.getInputProps("garaName")}
+                />
+              </Grid.Col>
+            )}
           </Grid>
         )}
-        {garage && !token && (
-          <Grid mt="md">
-            <Grid.Col span={12}>
-              <TextInput
-                placeholder="Chuyên gia"
-                {...form.getInputProps("garaName")}
-              />
-            </Grid.Col>
-          </Grid>
-        )}
-
         <Grid mt="md">
           <Grid.Col span={12}>
             <Textarea

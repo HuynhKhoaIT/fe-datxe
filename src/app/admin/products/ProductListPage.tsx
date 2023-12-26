@@ -25,37 +25,40 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { deleteCar } from "@/utils/car";
 import Typo from "@/app/components/elements/Typo";
-export default function ProductListPage({ categories }: any) {
-  const [posts, setPosts] = useState([]);
+import { notifications } from "@mantine/notifications";
+export default function ProductListPage() {
+  const [products, setProducts] = useState([]);
+  const [deleteRow, setDeleteRow] = useState();
+  const getProducts = async () => {
+    handlers.open();
+
+    const response = await fetch("/api/products", {
+      method: "GET",
+    });
+    const data = await response.json();
+    setProducts(data);
+    handlers.close();
+    return data;
+  };
+  const handleDeleteProduct = async (id: any) => {
+    await fetch(`/api/products/${id}`, {
+      method: "DELETE",
+    });
+    notifications.show({
+      title: "Thành công",
+      message: "Xoá sản phẩm thành công",
+    });
+    getProducts();
+  };
   const [
     openedDeleteProduct,
     { open: openDeleteProduct, close: closeDeleteProduct },
   ] = useDisclosure(false);
-  const [deleteRow, setDeleteRow] = useState("");
-
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  const [meta, setMetas] = useState([]);
   const [visible, handlers] = useDisclosure(false);
   useEffect(() => {
-    const data = axios
-      .get(
-        "https://v2.dlbd.vn/api/v3/guest/products?is_product=1&page=1&limit=8&cat_id=1&garage_id=19"
-      )
-      .then((res) => {
-        setPosts(res.data.data);
-        setMetas(res.data.meta);
-        setTotalPage(res.data.meta.total);
-      });
+    getProducts();
   }, []);
-  //   const handleDeleteProduct = async (carId: string) => {
-  //     try {
-  //         await deleteCar(carId, token ?? '');
-  //         fetchCars();
-  //     } catch (error) {
-  //         console.error('Error deleting car:', error);
-  //     }
-  // };
   const renderRows = () => {
     if (visible) {
       return (
@@ -68,28 +71,25 @@ export default function ProductListPage({ categories }: any) {
         </Box>
       );
     } else {
-      return posts?.map((record: any) => (
+      return products?.map((record: any) => (
         <Table.Tr key={record.id}>
           <Table.Td w={120}>
             <img src={record.thumbnail} alt="" width={50} />
           </Table.Td>
           <Table.Td>{record.name}</Table.Td>
           <Table.Td w={200} align="right">
-            {record.price}
+            {new Intl.NumberFormat().format(record.price)}đ
           </Table.Td>
           <Table.Td w={200} align="right">
-            {record.price}
+            {new Intl.NumberFormat().format(record.salePrice)}đ
           </Table.Td>
           <Table.Td w={150} align="center">
-            <Link href={`/admin/products/${record.id}`}></Link>
-            <Button size="xs" p={5} variant="transparent" onClick={() => {}}>
+            {/* <Button size="xs" p={5} variant="transparent" onClick={() => {}}>
               <IconEye size={16} />
-            </Button>
-
+            </Button> */}
             <Link
               href={{
                 pathname: `/admin/products/${record.id}`,
-                // query: { name: "test" },
               }}
             >
               <Button
@@ -123,9 +123,18 @@ export default function ProductListPage({ categories }: any) {
   };
   return (
     <div className={styles.content}>
-      <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
-        Tất cả sản phẩm
-      </Typo>
+      <Flex justify={"space-between"} align={"center"}>
+        <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
+          Tất cả sản phẩm
+        </Typo>
+        <Link
+          href={{
+            pathname: `/admin/products/create`,
+          }}
+        >
+          <Button>Thêm sản phẩm</Button>
+        </Link>
+      </Flex>
       <div className="row">
         <div className="col-12">
           <Table>
@@ -178,7 +187,7 @@ export default function ProductListPage({ categories }: any) {
             style={{ marginLeft: "12px" }}
             onClick={() => {
               closeDeleteProduct();
-              // handleDeleteProduct(deleteRow);
+              handleDeleteProduct(deleteRow);
             }}
             variant="filled"
             leftSection={<IconChevronRight />}

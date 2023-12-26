@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import BasicModal from "../../basicModal/BasicModal";
 import { ModalEventCalendar } from "./ModalEventCalendar";
 import { useSession } from "next-auth/react";
-import { getBrands, getModels } from "@/utils/branch";
+import { getBrands, getModels, getYears } from "@/utils/branch";
 import { useSearchParams } from "next/navigation";
 import { getEmployees, getGarage } from "@/utils/garage";
 import { getCategories } from "@/utils/category";
@@ -31,7 +31,11 @@ export default function ModalCalendar({
   const user = session?.user;
   // state
   const [brand, setBrand] = useState<number>();
+  const [model, setModel] = useState<number>();
+
   const [modelOptions, setModelsOptions] = useState<any>();
+  const [yearCarOptions, setYearCarOptions] = useState<any>();
+
   const [advisorOptions, setAdvisoroptions] = useState<any>();
   const [garageOptions, setGarageOptions] = useState<any>([]);
   const [customerCreate, setCustomerCreate] = useState<any>();
@@ -49,6 +53,18 @@ export default function ModalCalendar({
   useEffect(() => {
     fetchModel();
   }, [brand]);
+  // lấy danh sách năm sản xuất
+  const fetchYearCar = async () => {
+    const yearCarData = await getYears(model || 0);
+    const newYears = yearCarData?.map((year) => ({
+      value: year.id?.toString() || "",
+      label: year.name || "",
+    }));
+    setYearCarOptions(newYears);
+  };
+  useEffect(() => {
+    fetchYearCar();
+  }, [model]);
 
   //  lấy  Garage
   const fetchGarage = async (garageId: string) => {
@@ -121,10 +137,12 @@ export default function ModalCalendar({
         token={token}
         eventInfos={eventInfos}
         setBrand={setBrand}
+        setModel={setModel}
         garage={garage}
         categoryOptions={categoryOptions}
         advisorOptions={advisorOptions}
         carOptions={carOptions}
+        yearCarOptions={yearCarOptions}
         cars={carsData}
         garageOptions={garageOptions}
         dataCarDefault={dataCarDefault?.[0]?.otherData}

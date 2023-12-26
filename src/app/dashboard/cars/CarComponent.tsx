@@ -26,12 +26,12 @@ import {
   Box,
 } from "@mantine/core";
 import { getMyAccount } from "@/utils/user";
-import { getModels } from "@/utils/branch";
+import { getModels, getYears } from "@/utils/branch";
 import { useDisclosure } from "@mantine/hooks";
 export default function CarComponent({ carsData: cars, myAccount }: any) {
   const { data: session } = useSession();
   const token = session?.user?.token;
-  const [visible, handlers] = useDisclosure(true);
+  const [visible, handlers] = useDisclosure(false);
   const [
     openedAddCar,
     { open: openAddCar, close: closeAddCar },
@@ -49,6 +49,8 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
     { open: openDeleteCar, close: closeDeleteCar },
   ] = useDisclosure(false);
   const [models, setModels] = useState<any>();
+  const [yearCar, setYearCar] = useState<any>();
+
   const [detail, setDetail] = useState<any>({});
   const [deleteRow, setDeleteRow] = useState("");
   const [carsData, setCarsData] = useState<any>(cars);
@@ -66,9 +68,9 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
       handlers.close();
     }
   };
-  useEffect(() => {
-    fetchCars();
-  }, [token]);
+  // useEffect(() => {
+  //   fetchCars();
+  // }, [token]);
 
   const handleDeleteCar = async (carId: string) => {
     try {
@@ -94,6 +96,17 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
         label: item.name || "",
       }));
       setModels(newModels);
+      openUpdateCar();
+    } catch (error) {}
+  };
+  const selectYearCar = async (value: number) => {
+    try {
+      const yearCarData: any = await getYears(value);
+      const newYearCar = yearCarData?.map((year: any) => ({
+        value: year.id?.toString() || "",
+        label: year.name || "",
+      }));
+      setYearCar(newYearCar);
       openUpdateCar();
     } catch (error) {}
   };
@@ -166,8 +179,10 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
               color="gray"
               p={5}
               onClick={() => {
+                console.log(record);
                 setDetail(record);
                 selectBrand(record?.automakerId || 0);
+                selectYearCar(record?.carNameId || 0);
               }}
             >
               <IconPencil size={16} />
@@ -302,7 +317,9 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
         onCancel={closeUpdateCar}
         data={detail ? detail : {}}
         models={models}
+        yearCar={yearCar}
         selectBrand={selectBrand}
+        selectYearCar={selectYearCar}
       />
     </div>
   );

@@ -32,6 +32,7 @@ export default async function DatLich() {
       brandName: car.brandCarName.name,
       modelId: car.modelCarName.id,
       modelName: car.modelCarName.name,
+      yearCarName: car.yearCarName,
     },
   }));
 
