@@ -33,7 +33,7 @@ import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
 import { getProductDetail } from "@/utils/product";
 import { IProduct } from "@/interfaces/product";
-import InfoCar from "./InfoCar";
+import InfoCar from "../[slug]/InfoCar";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 const formats = [
@@ -53,26 +53,12 @@ const formats = [
   "indent",
   "image",
 ];
-export default function ProductSavePage({
-  params,
-}: {
-  params: { slug: number };
-}) {
-  const router = useRouter();
-
+export default function ProductSavePage() {
   const form = useForm({
     initialValues: {},
     validate: {},
   });
-  useEffect(() => {
-    fetch(`/api/products/${params?.slug}`)
-      .then((res) => res.json())
-      .then((data) => {
-        form.setInitialValues(data);
-        form.setValues(data);
-      });
-  }, []);
-
+  const router = useRouter();
   const [car, setCar] = useState([{ car: "" }]);
 
   const handleChange = (index: number, value: any) => {
@@ -82,20 +68,19 @@ export default function ProductSavePage({
   };
   const handleSubmit = async (values: any) => {
     try {
-      await fetch(`/api/products/${params.slug}`, {
-        method: "PUT",
+      await fetch(`/api/products`, {
+        method: "POST",
         body: JSON.stringify(values),
       });
       router.push("/admin/products");
-
       notifications.show({
         title: "Thành công",
-        message: "Cập nhật sản phẩm thành công",
+        message: "Thêm sản phẩm thành công",
       });
     } catch (error) {
       notifications.show({
         title: "Thất bại",
-        message: "Cập nhật sản phẩm thất bại",
+        message: "Thêm sản phẩm thất bại",
       });
     }
   };
