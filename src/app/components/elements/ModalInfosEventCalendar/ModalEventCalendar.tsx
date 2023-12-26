@@ -332,7 +332,7 @@ export const ModalEventCalendar = ({
             />
           </Grid.Col>
         </Grid>
-        {garage && token && (
+        {garage && (
           <Grid gutter={10} mt="md">
             <Grid.Col span={6}>
               <Select
