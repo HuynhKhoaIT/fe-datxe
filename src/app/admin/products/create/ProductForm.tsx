@@ -16,12 +16,14 @@ import { IconPlus, IconBan } from "@tabler/icons-react";
 import Link from "next/link";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { DateTimePicker } from "@mantine/dates";
+import { DateInput } from "@mantine/dates";
 import { useEffect, useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
 import InfoCar from "../[slug]/InfoCar";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
+import { useDisclosure } from "@mantine/hooks";
 const formats = [
   "header",
   "font",
@@ -40,6 +42,8 @@ const formats = [
   "image",
 ];
 export default function ProductForm({ isEditing, dataDetail }: any) {
+  const [loading, handlers] = useDisclosure();
+
   const form = useForm({
     initialValues: {},
     validate: {},
@@ -47,6 +51,11 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
   useEffect(() => {
     form.setInitialValues(dataDetail);
     form.setValues(dataDetail);
+    form.setFieldValue("timeSaleEnd", dayjs(dataDetail?.timeSaleEnd).toDate());
+    form.setFieldValue(
+      "timeSaleStart",
+      dayjs(dataDetail?.timeSaleStart).toDate()
+    );
   }, [dataDetail]);
   const router = useRouter();
   const [car, setCar] = useState([{ car: "" }]);
@@ -57,6 +66,7 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
     setCar(newCar);
   };
   const handleSubmit = async (values: any) => {
+    handlers.open();
     try {
       if (!isEditing) {
         await fetch(`/api/products`, {
@@ -69,13 +79,14 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
           body: JSON.stringify(values),
         });
       }
-
+      handlers.close();
       router.push("/admin/products");
       notifications.show({
         title: "Thành công",
         message: "Thêm sản phẩm thành công",
       });
     } catch (error) {
+      handlers.close();
       notifications.show({
         title: "Thất bại",
         message: "Thêm sản phẩm thất bại",
@@ -118,13 +129,17 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
                 />
               </Grid.Col>
               <Grid.Col span={6}>
-                <DateTimePicker
+                <DateInput
+                  {...form.getInputProps("timeSaleStart")}
+                  valueFormat="DD/MM/YYYY"
                   label="Thời gian bắt đầu"
                   placeholder="Thời gian bắt đầu"
                 />
               </Grid.Col>
               <Grid.Col span={6}>
-                <DateTimePicker
+                <DateInput
+                  {...form.getInputProps("timeSaleEnd")}
+                  valueFormat="DD/MM/YYYY"
                   label="Thời gian kết thúc"
                   placeholder="Thời giankết thúc"
                 />
@@ -174,7 +189,7 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
             <Grid>
               <Grid.Col span={12}>
                 <Select
-                  {...form.getInputProps("category")}
+                  {...form.getInputProps("categoryId")}
                   label="Loại hình sản phẩm"
                   checkIconPosition="right"
                   placeholder="Loại hình sản phẩm"
@@ -190,6 +205,7 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
             <Grid gutter={10}>
               <Grid.Col span={6}>
                 <NumberInput
+                  {...form.getInputProps("quantity")}
                   label="Số lượng"
                   min={0}
                   placeholder="Số lượng"
@@ -225,6 +241,7 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
           </Button>
         </Link>
         <Button
+          loading={loading}
           style={{ marginLeft: "12px" }}
           key="submit"
           type="submit"
