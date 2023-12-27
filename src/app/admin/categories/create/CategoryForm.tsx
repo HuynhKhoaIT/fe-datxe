@@ -1,5 +1,13 @@
 "use client";
-import { Button, Card, Grid, Group, TextInput, Textarea } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Group,
+  TextInput,
+  Textarea,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
 import Link from "next/link";
@@ -54,57 +62,59 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Grid gutter={12}>
-        <Grid.Col span={8}>
-          <Card withBorder shadow="sm">
-            <Grid gutter={10}>
-              <Grid.Col span={12}>
-                <TextInput
-                  {...form.getInputProps("title")}
-                  label="Tên danh mucj"
-                  type="text"
-                  placeholder="Tên danh mục"
-                />
-              </Grid.Col>
-            </Grid>
-            <Grid mt={24}>
-              <Grid.Col span={12}>
-                <Textarea
-                  label="Mô tả"
-                  minRows={4}
-                  autosize={true}
-                  {...form.getInputProps("description")}
-                  placeholder="Mô tả"
-                />
-              </Grid.Col>
-            </Grid>
-          </Card>
-        </Grid.Col>
-      </Grid>
+    <Box w="800px">
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Grid gutter={12}>
+          <Grid.Col span={12}>
+            <Card withBorder shadow="sm">
+              <Grid gutter={10}>
+                <Grid.Col span={12}>
+                  <TextInput
+                    {...form.getInputProps("title")}
+                    label="Tên danh mục"
+                    type="text"
+                    placeholder="Tên danh mục"
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid mt={24}>
+                <Grid.Col span={12}>
+                  <Textarea
+                    label="Mô tả chi tiết"
+                    minRows={4}
+                    autosize={true}
+                    {...form.getInputProps("description")}
+                    placeholder="Mô tả"
+                  />
+                </Grid.Col>
+              </Grid>
+            </Card>
+          </Grid.Col>
+        </Grid>
 
-      <Group justify="end" style={{ marginTop: 60 }}>
-        <Link href={"/admin/products"}>
+        <Group justify="end" style={{ marginTop: 60 }}>
+          <Link href={"/admin/categories"}>
+            <Button
+              variant="outline"
+              key="cancel"
+              color="red"
+              leftSection={<IconBan size={16} />}
+            >
+              Huỷ bỏ
+            </Button>
+          </Link>
           <Button
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
+            loading={loading}
+            style={{ marginLeft: "12px" }}
+            key="submit"
+            type="submit"
+            variant="filled"
+            leftSection={<IconPlus size={16} />}
           >
-            Huỷ bỏ
+            Thêm
           </Button>
-        </Link>
-        <Button
-          loading={loading}
-          style={{ marginLeft: "12px" }}
-          key="submit"
-          type="submit"
-          variant="filled"
-          leftSection={<IconPlus size={16} />}
-        >
-          Thêm
-        </Button>
-      </Group>
-    </form>
+        </Group>
+      </form>
+    </Box>
   );
 }
