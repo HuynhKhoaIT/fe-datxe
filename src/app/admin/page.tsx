@@ -1,12 +1,9 @@
+"use client";
 import { getOrders } from "@/utils/order";
 import Orders from "../components/elements/dashboard/order/orders";
 import React from "react";
-import { getCarsSsr } from "@/utils/car";
-import { getMyAccount } from "@/utils/user";
-export default async function DashboardAdmin() {
-  const orders = await getOrders(1);
-  const fetchedCars = await getCarsSsr();
-  const account: any = await getMyAccount();
+export default function DashboardAdmin() {
+  // const orders = await getOrders(1);
   return (
     <div>
       <div className="row">
@@ -44,7 +41,7 @@ export default async function DashboardAdmin() {
           </div>
         </div>
       </div>
-      <Orders ordersData={orders} />
+      {/* <Orders ordersData={orders} /> */}
     </div>
   );
 }

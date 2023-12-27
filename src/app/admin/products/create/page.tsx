@@ -1,20 +1,22 @@
+"use client";
 import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
 import ProductForm from "./ProductForm";
-
-interface CategoryOption {
-  value: string;
-  label: string;
-}
-
-interface ProductSavePageProps {
-  categoryOptions: CategoryOption[];
-}
-
-export default function ProductSavePage({
-  categoryOptions,
-}: ProductSavePageProps) {
+import { useEffect, useState } from "react";
+export default function ProductSavePage() {
+  const [categoryOptions, setCategoryOptions] = useState<any>();
+  useEffect(() => {
+    fetch(`/api/product-category`)
+      .then((res) => res.json())
+      .then((data) => {
+        const dataOption = data?.map((item: any) => ({
+          value: item.id.toString(),
+          label: item.title,
+        }));
+        setCategoryOptions(dataOption);
+      });
+  }, []);
   return (
     <Box maw={"100%"} mx="auto" className={styles.content}>
       <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
@@ -24,24 +26,4 @@ export default function ProductSavePage({
       <ProductForm isEditing={false} categoryOptions={categoryOptions} />
     </Box>
   );
-}
-
-export async function getServerSideProps() {
-  // Fetch data on the server
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/product-category`
-  );
-  const data = await res.json();
-
-  const categoryOptions: CategoryOption[] =
-    data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    })) || [];
-
-  return {
-    props: {
-      categoryOptions,
-    },
-  };
 }
