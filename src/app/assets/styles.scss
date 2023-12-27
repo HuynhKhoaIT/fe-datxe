@@ -4545,12 +4545,6 @@ label {
     z-index: 2;
 }
 
-.shop-item:hover .shop-item-img::before {
-    transform: scale(1);
-    visibility: visible;
-    opacity: 0.5;
-}
-
 .shop-item-sale {
     position: absolute;
     padding: 2px 14px;
@@ -4595,12 +4589,6 @@ label {
     color: var(--color-white);
 }
 
-.shop-item:hover .shop-item-meta {
-    left: 20px;
-    visibility: visible;
-    opacity: 1;
-}
-
 .shop-cart-btn {
     position: absolute;
     bottom: 40px;
@@ -4629,12 +4617,6 @@ label {
 
 .shop-item-btn i {
     margin-right: 5px;
-}
-
-.shop-item:hover .shop-cart-btn {
-    bottom: 60px;
-    visibility: visible;
-    opacity: 1;
 }
 
 .shop-item-rate {
