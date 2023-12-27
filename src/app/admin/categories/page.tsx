@@ -29,9 +29,10 @@ import { notifications } from "@mantine/notifications";
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [deleteRow, setDeleteRow] = useState();
+  const [visible, handlers] = useDisclosure(false);
+
   const getCategories = async () => {
     handlers.open();
-
     const response = await fetch("/api/product-category", {
       method: "GET",
     });
@@ -55,7 +56,6 @@ export default function Categories() {
     { open: openDeleteProduct, close: closeDeleteProduct },
   ] = useDisclosure(false);
   const [totalPage, setTotalPage] = useState(0);
-  const [visible, handlers] = useDisclosure(false);
   useEffect(() => {
     getCategories();
   }, []);
