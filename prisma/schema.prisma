@@ -7,18 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model product {
-    id          Int      @id @default(autoincrement())
-    productId   Int @default(0)
-    name        String
-    description String?
-    price       Int @default(0)
-    salePrice   Int @default(0)
-    images      Json?
-    metaDescription String?
-    createdBy   Int @default(1)
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+model ProductCategory{
+    id              Int      @id @default(autoincrement())
+    title           String
+    description     String?
+    image           String
+    createdBy       Int @default(1)
+    garageId        Int @default(1)
+    status          STATUS @default(DRAFT)
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    products        CategoriesOnProducts[]
 }
+
+model Product {
+    id              Int      @id @default(autoincrement())
+    productId       Int @default(0)
+    name            String
+    description     String?
+    price           Int @default(0)
+    salePrice       Int @default(0)
+    timeSaleStart   DateTime? @default(now())
+    timeSaleEnd     DateTime? 
+    quantity        Int @default(1)
+    categories      CategoriesOnProducts[]
+    images          Json?
+    metaDescription String?
+    status          STATUS @default(DRAFT)
+    createdBy       Int @default(1)
+    garageId        Int @default(1)
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+}
+model CategoriesOnProducts {
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     Int // relation scalar field (used in the `@relation` attribute above)
+  category      ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId    Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt    DateTime @default(now())
+  assignedBy    String
+
+  @@id([productId, categoryId])
+}
+enum STATUS {
+  PUBLIC
+  DRAFT
+  PENDING
+  DELETE
+}
+
 
