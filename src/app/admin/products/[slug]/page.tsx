@@ -11,11 +11,21 @@ export default function ProductSavePage({
   params: { slug: number };
 }) {
   const [dataDetail, setDataDetail] = useState<IProduct>();
+  const [categoryOptions, setCategoryOptions] = useState<any>();
   useEffect(() => {
     fetch(`/api/products/${params?.slug}`)
       .then((res) => res.json())
       .then((data) => {
         setDataDetail(data);
+      });
+    fetch(`/api/product-category`)
+      .then((res) => res.json())
+      .then((data) => {
+        const dataOption = data?.map((item: any) => ({
+          value: item.id.toString(),
+          label: item.title,
+        }));
+        setCategoryOptions(dataOption);
       });
   }, []);
   return (
@@ -24,7 +34,11 @@ export default function ProductSavePage({
         Cập nhật sản phẩm
       </Typo>
       <Space h="md" />
-      <ProductForm isEditing={true} dataDetail={dataDetail} />
+      <ProductForm
+        isEditing={true}
+        dataDetail={dataDetail}
+        categoryOptions={categoryOptions}
+      />
     </Box>
   );
 }

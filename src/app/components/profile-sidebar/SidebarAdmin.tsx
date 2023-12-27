@@ -46,6 +46,16 @@ const SidebarAdmin = () => {
       </li>
       <li>
         <Link
+          href="/admin/categories"
+          className={`list-group-item ${
+            (page == "categories" || pageUpdate == "categories") && "active"
+          }`}
+        >
+          <i className="far fa-layer-group"></i>Danh mục sản phẩm
+        </Link>
+      </li>
+      <li>
+        <Link
           style={{ display: "flex", alignItems: "center" }}
           href={"/"}
           onClick={() => signOut()}
