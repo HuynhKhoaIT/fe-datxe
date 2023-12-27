@@ -41,8 +41,13 @@ const formats = [
   "indent",
   "image",
 ];
-export default function ProductForm({ isEditing, dataDetail }: any) {
+export default function ProductForm({
+  isEditing,
+  dataDetail,
+  categoryOptions,
+}: any) {
   const [loading, handlers] = useDisclosure();
+  const [categories, setCategories] = useState([]);
 
   const form = useForm({
     initialValues: {},
@@ -67,6 +72,7 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
   };
   const handleSubmit = async (values: any) => {
     handlers.open();
+    // values.categoryId = parseInt(values.categoryId);
     try {
       if (!isEditing) {
         await fetch(`/api/products`, {
@@ -74,7 +80,7 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
           body: JSON.stringify(values),
         });
       } else {
-        await fetch(`/api/products/${dataDetail?.productId}`, {
+        await fetch(`/api/products/${dataDetail?.id}`, {
           method: "PUT",
           body: JSON.stringify(values),
         });
@@ -179,10 +185,11 @@ export default function ProductForm({ isEditing, dataDetail }: any) {
             <Grid>
               <Grid.Col span={12}>
                 <Select
-                  {...form.getInputProps("category")}
+                  {...form.getInputProps("categoryId")}
                   label="Danh mục"
                   checkIconPosition="right"
                   placeholder="Danh mục"
+                  data={categoryOptions}
                 />
               </Grid.Col>
             </Grid>
