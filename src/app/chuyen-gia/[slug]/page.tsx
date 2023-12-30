@@ -1,6 +1,6 @@
 "use client";
 import Categories from "@/app/components/elements/category/categories";
-import Product from "@/app/components/elements/product/product";
+import Product from "@/app/components/elements/product/Product";
 import { ICategory } from "@/interfaces/category";
 import { IGarage } from "@/interfaces/garage";
 import { IProduct } from "@/interfaces/product";

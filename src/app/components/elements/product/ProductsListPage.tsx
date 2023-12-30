@@ -5,7 +5,6 @@ import { getProducts, getProductsSearch } from "@/utils/product";
 import { TableDataProduct } from "../../pagination-area/pagination-area";
 import { useSearchParams } from "next/navigation";
 import { IProduct } from "@/interfaces/product";
-
 export default function ProductsListPage() {
   const searchParams = useSearchParams();
   const catID = searchParams.get("cat_id");
@@ -31,5 +30,6 @@ export default function ProductsListPage() {
     }
     fetchProducts();
   }, []);
+
   return <TableDataProduct data={productData} />;
 }

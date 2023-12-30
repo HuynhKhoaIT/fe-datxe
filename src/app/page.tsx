@@ -4,7 +4,7 @@ import { getProductsHot } from "@/utils/product";
 import { getCategories } from "@/utils/category";
 import { IProduct } from "@/interfaces/product";
 import { getGaragesNear } from "@/utils/garage";
-import Product from "./components/elements/product/product";
+import Product from "./components/elements/product/Product";
 import Categories from "./components/elements/category/categories";
 import { IGarage } from "@/interfaces/garage";
 import { getServiceHot } from "@/utils/service";
@@ -13,7 +13,7 @@ import { MyFooter } from "./components/page/footer/footer";
 import { Suspense } from "react";
 import { LoadingPage } from "./components/loading";
 import Link from "next/link";
-import ProductItem from "./components/elements/product/productItem";
+import ProductItem from "./components/elements/product/ProductItem/ProductItem";
 import ButtonField from "./components/form/ButtonField";
 export default async function Home() {
   const initialCategoryData = await getCategories();

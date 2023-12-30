@@ -1,10 +1,8 @@
 import React, { Suspense } from "react";
 import ProductDetail from "../../components/elements/product/productDetail";
 import { IProduct } from "@/interfaces/product";
-import Product from "@/app/components/elements/product/product";
+import Product from "@/app/components/elements/product/Product";
 import { getProductDetail, getProductsRelated } from "@/utils/product";
-import { Breadcrumbs, Anchor, Grid } from "@mantine/core";
-import { LoadingComponent } from "@/app/components/loading";
 export default async function SingleShop({
   params,
 }: {
@@ -20,9 +18,7 @@ export default async function SingleShop({
     <main className="main">
       <div className="shop-item-single  ">
         <div className="container position-relative pd-50">
-          <Suspense fallback={<div>...loading</div>}>
-            <ProductDetail ProductDetail={data} />
-          </Suspense>
+          <ProductDetail ProductDetail={data} />
           <div className="related-item">
             <div className="row">
               <div className="col-12 mx-auto">
@@ -33,12 +29,10 @@ export default async function SingleShop({
             </div>
             <div className="shop-item-wrapper">
               <div className="row">
-                <Suspense fallback={<div>...loading</div>}>
-                  <Product
-                    initialProductData={related}
-                    garageId={data.garageId}
-                  />
-                </Suspense>
+                <Product
+                  initialProductData={related}
+                  garageId={data.garageId}
+                />
               </div>
             </div>
           </div>
