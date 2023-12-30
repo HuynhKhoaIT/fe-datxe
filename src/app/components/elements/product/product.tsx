@@ -2,8 +2,8 @@
 import { IProduct } from "@/interfaces/product";
 import { getProductByGar, getProductsHot } from "@/utils/product";
 import { useEffect, useState } from "react";
-import ProductItem from "./ProductItem/productItem";
 import { Box, Button, Flex, Grid } from "@mantine/core";
+import ProductItem from "./ProductItem/ProductItem";
 export default function Product({
   initialProductData,
   garageId = 0,
