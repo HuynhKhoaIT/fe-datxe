@@ -1,6 +1,6 @@
 "use client";
 import Categories from "@/app/components/elements/category/categories";
-import Product from "@/app/components/elements/product/Product";
+import Product from "@/app/components/elements/product/ListProductHot";
 import { ICategory } from "@/interfaces/category";
 import { IGarage } from "@/interfaces/garage";
 import { IProduct } from "@/interfaces/product";
@@ -234,115 +234,6 @@ export default function Home({ params }: { params: { slug: string } }) {
           />
         </div>
       </div>
-
-      {/* <!-- blog area --> */}
-      {/* <div className="blog-area pt-60 pb-60">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6 mx-auto">
-                            <div className="site-heading text-center">
-                                <span className="site-title-tagline">
-                                    <i className="flaticon-drive"></i> Our Blog
-                                </span>
-                                <h2 className="site-title">
-                                    Latest News & <span>Blog</span>
-                                </h2>
-                                <div className="heading-divider"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-6 col-lg-4">
-                            <div className="blog-item wow fadeInUp" data-wow-delay=".25s">
-                                <div className="blog-item-img">
-                                    <img src="/assets/img/blog/01.jpg" alt="Thumb" />
-                                </div>
-                                <div className="blog-item-info">
-                                    <div className="blog-item-meta">
-                                        <ul>
-                                            <li>
-                                                <a href="#">
-                                                    <i className="far fa-user-circle"></i> By Alicia Davis
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i className="far fa-calendar-alt"></i> January 29, 2023
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <h4 className="blog-title">
-                                        <a href="#">There are many variations of passage available.</a>
-                                    </h4>
-                                    <a className="theme-btn" href="#">
-                                        Read More<i className="fas fa-arrow-right-long"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-4">
-                            <div className="blog-item wow fadeInUp" data-wow-delay=".50s">
-                                <div className="blog-item-img">
-                                    <img src="/assets/img/blog/02.jpg" alt="Thumb" />
-                                </div>
-                                <div className="blog-item-info">
-                                    <div className="blog-item-meta">
-                                        <ul>
-                                            <li>
-                                                <a href="#">
-                                                    <i className="far fa-user-circle"></i> By Alicia Davis
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i className="far fa-calendar-alt"></i> January 29, 2023
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <h4 className="blog-title">
-                                        <a href="#">There are many variations of passage available.</a>
-                                    </h4>
-                                    <a className="theme-btn" href="#">
-                                        Read More<i className="fas fa-arrow-right-long"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-4">
-                            <div className="blog-item wow fadeInUp" data-wow-delay=".75s">
-                                <div className="blog-item-img">
-                                    <img src="/assets/img/blog/03.jpg" alt="Thumb" />
-                                </div>
-                                <div className="blog-item-info">
-                                    <div className="blog-item-meta">
-                                        <ul>
-                                            <li>
-                                                <a href="#">
-                                                    <i className="far fa-user-circle"></i> By Alicia Davis
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i className="far fa-calendar-alt"></i> January 29, 2023
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <h4 className="blog-title">
-                                        <a href="#">There are many variations of passage available.</a>
-                                    </h4>
-                                    <a className="theme-btn" href="#">
-                                        Read More<i className="fas fa-arrow-right-long"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-      {/* <!-- blog area end --> */}
     </main>
   );
 }

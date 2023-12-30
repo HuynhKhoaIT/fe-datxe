@@ -4,7 +4,7 @@ import { getProductsHot } from "@/utils/product";
 import { getCategories } from "@/utils/category";
 import { IProduct } from "@/interfaces/product";
 import { getGaragesNear } from "@/utils/garage";
-import Product from "./components/elements/product/Product";
+import Product from "./components/elements/product/ListProductHot";
 import Categories from "./components/elements/category/categories";
 import { IGarage } from "@/interfaces/garage";
 import { getServiceHot } from "@/utils/service";
