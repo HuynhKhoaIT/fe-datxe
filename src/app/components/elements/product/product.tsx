@@ -2,10 +2,11 @@
 import { IProduct } from "@/interfaces/product";
 import { getProductByGar, getProductsHot } from "@/utils/product";
 import { useEffect, useState } from "react";
-import { ProductItem } from "./productItem";
+import { Box, Button, Flex, Grid } from "@mantine/core";
+import ProductItem from "./ProductItem/ProductItem";
 export default function Product({
   initialProductData,
-  garageId,
+  garageId = 0,
 }: {
   initialProductData: IProduct[];
   garageId: any;
@@ -13,46 +14,37 @@ export default function Product({
   const [productData, setProductData] = useState<IProduct[]>([]);
   const [limit, setLimit] = useState<number>(8);
   const handleButtonClick = async () => {
-    // Tăng limit
-    const newLimit = limit + 4;
-    setLimit(newLimit);
-
-    // Fetch thêm dữ liệu
     if (garageId != 0) {
-      let newProductData = await getProductByGar(garageId.toString(), newLimit);
+      let newProductData = await getProductByGar(
+        garageId.toString(),
+        limit + 4
+      );
       setProductData(newProductData);
     } else {
-      let newProductData = await getProductsHot({ limit: newLimit });
+      let newProductData = await getProductsHot({ limit: limit + 4 });
       setProductData(newProductData);
     }
-
-    // Cập nhật dữ liệu sản phẩm
+    setLimit(limit + 4);
   };
+
   useEffect(() => {
     setProductData(initialProductData);
   }, [initialProductData]);
 
   return (
-    <>
-      <div className="row">
+    <Box w={"100%"}>
+      <Grid>
         {productData?.map((product: IProduct, index: number) => (
-          <ProductItem product={product} key={index} />
+          <Grid.Col span={{ base: 12, xs: 6, sm: 4, md: 4, lg: 3 }}>
+            <ProductItem product={product} key={index} />
+          </Grid.Col>
         ))}
-      </div>
-      <div className="text-center mt-4">
-        <button onClick={handleButtonClick} className="theme-btn">
+      </Grid>
+      <Flex justify="center" mt={36}>
+        <Button onClick={handleButtonClick} color={"var(--theme-color)"}>
           Xem Thêm
-        </button>
-      </div>
-    </>
+        </Button>
+      </Flex>
+    </Box>
   );
-}
-
-export async function getStaticProps() {
-  const initialProductData = await getProductsHot({ limit: 8 });
-  return {
-    props: {
-      initialProductData,
-    },
-  };
 }

@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "./components/page/header/header";
-import { MyFooter } from "./components/page/footer/footer";
 import "bootstrap/dist/css/bootstrap.css";
-import "./assets/styles.scss";
 import "./globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 import { Notifications } from "@mantine/notifications";
 import Provider from "./Provider";
-import { ReactNode, Suspense } from "react";
-import { LoadingPage } from "./components/loading";
+import { ReactNode } from "react";
 import { MantineProvider } from "@mantine/core";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {

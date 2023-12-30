@@ -31,6 +31,8 @@ import InfoCustomer from "./InfoCustomer";
 import InfoCar from "./InfoCar";
 import InfoCart from "./InfoCart";
 import InfoDate from "./InfoDate";
+import { useDisclosure } from "@mantine/hooks";
+import { getCar } from "@/utils/car";
 
 export default function CartComponent({
   carDefault,
@@ -168,20 +170,34 @@ export default function CartComponent({
       />
     ));
   };
+  const [visible, handlers] = useDisclosure(false);
+  const selectCar = async (value: any) => {
+    handlers.open();
+    try {
+      const selectedCar = await getCar(token ?? "", value);
+      setCarSelect(selectedCar);
+      handlers.close();
+    } catch (error) {
+      console.error("Error selecting car:", error);
+    }
+  };
+  const [carSelect, setCarSelect] = useState<any>();
   return (
     <>
       <form onSubmit={onSubmit}>
         <div className="shop-cart pt-60 pb-60">
           <div className="container">
             <Grid gutter={16}>
-              <Suspense fallback={<p>loading...</p>}>
-                <InfoCustomer dataDetail={session?.user} />
-              </Suspense>
+              <InfoCustomer dataDetail={session?.user} />
               <Suspense fallback={<p>loading...</p>}>
                 <InfoCar
                   setCarId={setCarId}
                   carDefault={carDefault}
                   carOptions={carOptions}
+                  session={session}
+                  visible={visible}
+                  carSelect={carSelect}
+                  selectCar={selectCar}
                 />
               </Suspense>
             </Grid>

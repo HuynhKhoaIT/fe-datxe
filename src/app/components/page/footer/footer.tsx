@@ -10,9 +10,9 @@ import {
   IconBrandTwitter,
   IconSend,
 } from "@tabler/icons-react";
-import download from "../../../assets/images/Keu_goi_tai_ap.png";
-import android from "../../../assets/images/Android.png";
-import ios from "../../../assets/images/IOS.png";
+import download from "../../../../../public/assets/images/Keu_goi_tai_ap.png";
+import android from "../../../../../public/assets/images/Android.png";
+import ios from "../../../../../public/assets/images/IOS.png";
 import Link from "next/link";
 
 const MyFooter = () => (

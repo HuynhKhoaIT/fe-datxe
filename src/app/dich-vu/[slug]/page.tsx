@@ -1,7 +1,7 @@
 import React from "react";
 import ProductDetail from "../../components/elements/product/productDetail";
 import { IProduct } from "@/interfaces/product";
-import Product from "@/app/components/elements/product/product";
+import Product from "@/app/components/elements/product/Product";
 import { getProductDetail, getProductsRelated } from "@/utils/product";
 
 export default async function SingleShop({
