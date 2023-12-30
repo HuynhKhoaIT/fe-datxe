@@ -1,6 +1,6 @@
 import { IProduct } from "@/interfaces/product";
 import { Grid } from "@mantine/core";
-import ProductItem from "./ProductItem/ProductItem";
+import ProductItem from "./ProductItem";
 export default function ProductData({
   product_data,
 }: {

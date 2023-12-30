@@ -2,7 +2,7 @@ import Link from "next/link";
 import { IProduct } from "@/interfaces/product";
 import { Card, Image, Badge, Group, Flex, Box } from "@mantine/core";
 import styles from "./ProductItem.module.scss";
-import Typo from "../../Typo";
+import Typo from "../Typo";
 export default function ProductItem({
   key,
   product,

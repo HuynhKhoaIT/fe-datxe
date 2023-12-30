@@ -13,7 +13,7 @@ import { MyFooter } from "./components/page/footer/footer";
 import { Suspense } from "react";
 import { LoadingPage } from "./components/loading";
 import Link from "next/link";
-import ProductItem from "./components/elements/product/ProductItem/ProductItem";
+import ProductItem from "./components/elements/product/ProductItem";
 import ButtonField from "./components/form/ButtonField";
 export default async function Home() {
   const initialCategoryData = await getCategories();

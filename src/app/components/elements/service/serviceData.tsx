@@ -2,7 +2,7 @@
 import { IProduct } from "@/interfaces/product";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ProductItem from "../product/ProductItem/ProductItem";
+import ProductItem from "../product/ProductItem";
 import { getServiceSearch } from "@/utils/service";
 
 export default function ServiceData({
