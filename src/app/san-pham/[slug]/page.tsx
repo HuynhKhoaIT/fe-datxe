@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import ProductDetail from "../../components/elements/product/productDetail";
 import { IProduct } from "@/interfaces/product";
-import Product from "@/app/components/elements/product/Product";
+import Product from "@/app/components/elements/product/ListProductHot";
 import { getProductDetail, getProductsRelated } from "@/utils/product";
 export default async function SingleShop({
   params,
