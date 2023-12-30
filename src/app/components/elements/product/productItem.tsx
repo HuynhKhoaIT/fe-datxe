@@ -1,26 +1,27 @@
-// 'use client';
-import {
-  IconShoppingCart,
-  IconEye,
-  IconHeart,
-  IconStarFilled,
-  IconCheck,
-} from "@tabler/icons-react";
+"use client";
 import Link from "next/link";
 import { IProduct } from "@/interfaces/product";
-import { useParams } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
-import { useState } from "react";
-import { Button, Group, Modal } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
-
-const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
-  const pathParm = useParams();
-  const Parm = usePathname();
-  let isCategory = Parm?.includes("chuyen-muc");
-  const { data: session } = useSession();
+import {
+  Card,
+  Image,
+  Badge,
+  Button,
+  Group,
+  Modal,
+  Flex,
+  Box,
+} from "@mantine/core";
+import styles from "./ProductItem.module.scss";
+import Typo from "../Typo";
+export default function ProductItem({
+  key,
+  product,
+}: {
+  key: number;
+  product: IProduct;
+}) {
   const [
     openedNotification,
     { open: openNotification, close: closeNotification },
@@ -40,98 +41,42 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
       message: "Sản phẩm đã được thêm vào giỏ hàng",
     });
   };
-  const addProductToLocalStorage = () => {
-    if (product && session?.user) {
-      const productId = product.id;
-      const garageId = product.garageId;
-      const existingCartItems = JSON.parse(
-        localStorage.getItem("cartData") || "[]"
-      );
-      const index = existingCartItems.findIndex(
-        (item: any) => item.product.id === productId
-      );
-      const idCar = existingCartItems.findIndex(
-        (item: any) => item.product.garageId === garageId
-      );
-
-      if (existingCartItems.length > 0 && idCar === -1) {
-        openNotification();
-      } else {
-        if (index !== -1) {
-          existingCartItems[index].quantity += 1;
-        } else {
-          existingCartItems.push({
-            garageId: garageId,
-            product: product,
-            quantity: 1,
-          });
-        }
-
-        localStorage.setItem("cartData", JSON.stringify(existingCartItems));
-        notifications.show({
-          title: "Thành công",
-          message: "Sản phẩm đã được thêm vào giỏ hàng",
-        });
-      }
-    } else {
-      signIn();
-    }
-  };
   return (
-    <div key={key} className="col-md-6 col-lg-4 col-xl-3">
-      <div className="shop-item">
-        <div className="shop-item-img">
-          <span className="shop-item-sale">Sale</span>
-          {isCategory ? (
-            <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
-              <img src={product.thumbnail} alt="" />
-            </Link>
-          ) : (
-            <Link href={`/san-pham/${product.id}`}>
-              <img src={product.thumbnail} alt="" />
-            </Link>
-          )}
-          {/* <div className="shop-item-meta">
-                        <Link href="#">
-                            <IconHeart />
-                        </Link>
-                        {isCategory ? (
-                            <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
-                                <IconEye />
-                            </Link>
-                        ) : (
-                            <Link href={`/san-pham/${product.id}`}>
-                                <IconEye />
-                            </Link>
-                        )}
-                        <p onClick={addProductToLocalStorage}>
-                            <IconShoppingCart />
-                        </p>
-                    </div> */}
-        </div>
-        <div className="shop-item-info">
-          <div className="shop-item-rate">
-            <IconStarFilled color="var(--theme-color)" size={18} />
-            <IconStarFilled color="var(--theme-color)" size={18} />
-            <IconStarFilled color="var(--theme-color)" size={18} />
-            <IconStarFilled color="var(--theme-color)" size={18} />
-            <IconStarFilled color="var(--theme-color)" size={18} />
-          </div>
-          {isCategory ? (
-            <Link href={`/chuyen-muc/${pathParm?.slug}/${product.id}`}>
-              <h4 className="shop-item-title">{product.name}</h4>
-            </Link>
-          ) : (
-            <Link href={`/san-pham/${product.id}`}>
-              <h4 className="shop-item-title">{product.name}</h4>
-            </Link>
-          )}
-          <div className="shop-item-price">
-            <del>{product.price?.toLocaleString()}đ</del>{" "}
-            {product.price?.toLocaleString()}đ
-          </div>
-        </div>
-      </div>
+    <Box key={key} w={"100%"}>
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card.Section>
+          <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>
+            <Image
+              classNames={{ root: styles.productImg }}
+              src={product.thumbnail}
+              height={"160px"}
+              alt="Norway"
+            />
+          </Link>
+        </Card.Section>
+
+        <Group justify="space-between" mt="md" mb="xs">
+          <Link href={`/san-pham/${product.id}`}>
+            <Typo size="sub" type="bold" className={styles.productName}>
+              {product.name}
+            </Typo>
+          </Link>
+          <Badge classNames={{ root: styles.productOnSale }}>On Sale</Badge>
+        </Group>
+
+        <Flex justify={"center"} gap={10}>
+          <Typo
+            size="sub"
+            type="bold"
+            style={{ color: "var(--color-text-del)" }}
+          >
+            <del>{product.price?.toLocaleString()}đ</del>
+          </Typo>
+          <Typo size="sub" type="bold" style={{ color: "var(--theme-color)" }}>
+            {product.price?.toLocaleString()}đ{" "}
+          </Typo>
+        </Flex>
+      </Card>
       <Modal
         title="Thông báo"
         opened={openedNotification}
@@ -147,7 +92,6 @@ const ProductItem = ({ key, product }: { key: number; product: IProduct }) => {
           <Button onClick={handleOk}>Thêm</Button>
         </Group>
       </Modal>
-    </div>
+    </Box>
   );
-};
-export { ProductItem };
+}

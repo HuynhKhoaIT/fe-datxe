@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getProducts, getProductsSearch } from "@/utils/product";
-import { TableDataProduct } from "../components/pagination-area/pagination-area";
+import { TableDataProduct } from "../../pagination-area/pagination-area";
 import { useSearchParams } from "next/navigation";
 import { IProduct } from "@/interfaces/product";
 

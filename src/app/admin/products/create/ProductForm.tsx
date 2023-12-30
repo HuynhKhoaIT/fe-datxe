@@ -54,13 +54,22 @@ export default function ProductForm({
     validate: {},
   });
   useEffect(() => {
-    form.setInitialValues(dataDetail);
-    form.setValues(dataDetail);
-    form.setFieldValue("timeSaleEnd", dayjs(dataDetail?.timeSaleEnd).toDate());
-    form.setFieldValue(
-      "timeSaleStart",
-      dayjs(dataDetail?.timeSaleStart).toDate()
-    );
+    if (isEditing) {
+      form.setInitialValues(dataDetail);
+      form.setValues(dataDetail);
+      if (dataDetail?.timeSaleEnd) {
+        form.setFieldValue(
+          "timeSaleEnd",
+          dayjs(dataDetail?.timeSaleEnd).toDate()
+        );
+      }
+      if (dataDetail?.timeSaleStart) {
+        form.setFieldValue(
+          "timeSaleStart",
+          dayjs(dataDetail?.timeSaleStart).toDate()
+        );
+      }
+    }
   }, [dataDetail]);
   const router = useRouter();
   const [car, setCar] = useState([{ car: "" }]);
@@ -196,10 +205,16 @@ export default function ProductForm({
             <Grid>
               <Grid.Col span={12}>
                 <Select
-                  {...form.getInputProps("categoryId")}
-                  label="Loại hình sản phẩm"
+                  {...form.getInputProps("status")}
+                  label="Trạng thái"
                   checkIconPosition="right"
-                  placeholder="Loại hình sản phẩm"
+                  placeholder="Trạng thái"
+                  data={[
+                    { value: "PUBLIC", label: "Public" },
+                    { value: "DRAFT", label: "Draft" },
+                    { value: "PENDING", label: "Pending" },
+                    { value: "DELETE", label: "Delete" },
+                  ]}
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -255,7 +270,7 @@ export default function ProductForm({
           variant="filled"
           leftSection={<IconPlus size={16} />}
         >
-          Thêm
+          {isEditing ? "Cập nhật" : "Thêm"}
         </Button>
       </Group>
     </form>

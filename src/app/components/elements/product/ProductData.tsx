@@ -1,23 +1,18 @@
-"use client";
 import { IProduct } from "@/interfaces/product";
-import { ProductItem } from "./productItem";
-import { getProductsSearch } from "@/utils/product";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ProductItemMini } from "./productItemMini";
-
+import ProductItem from "./productItem";
+import { Grid } from "@mantine/core";
 export default function ProductData({
   product_data,
 }: {
   product_data: IProduct[];
 }) {
   return (
-    <div className="shop-item-wrapper">
-      <div className="row align-items-center">
-        {product_data?.map((product: IProduct, index) => (
-          <ProductItemMini product={product} key={index} />
-        ))}
-      </div>
-    </div>
+    <Grid gutter={16}>
+      {product_data?.map((product: IProduct, index) => (
+        <Grid.Col span={{ base: 12, xs: 6, sm: 6, md: 4, lg: 3 }}>
+          <ProductItem product={product} key={index} />
+        </Grid.Col>
+      ))}
+    </Grid>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import error from "./assets/images/404.png";
+import error from "../../public/assets/images/404.png";
 export default function ErrorPage() {
   return (
     <div

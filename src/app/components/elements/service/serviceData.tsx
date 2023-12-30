@@ -2,9 +2,8 @@
 import { IProduct } from "@/interfaces/product";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ProductItem } from "../product/productItem";
+import ProductItem from "../product/productItem";
 import { getServiceSearch } from "@/utils/service";
-import { ProductItemMini } from "../product/productItemMini";
 
 export default function ServiceData({
   product_data,
@@ -34,7 +33,7 @@ export default function ServiceData({
     <div className="shop-item-wrapper">
       <div className="row align-items-center">
         {productData?.map((product: IProduct, index) => (
-          <ProductItemMini product={product} key={index} />
+          <ProductItem product={product} key={index} />
         ))}
       </div>
     </div>
