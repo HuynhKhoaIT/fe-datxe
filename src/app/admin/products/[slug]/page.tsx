@@ -1,33 +1,31 @@
-"use client";
 import { Box, Space } from "@mantine/core";
-import { useEffect, useState } from "react";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
 import ProductForm from "../create/ProductForm";
-import { IProduct } from "@/interfaces/product";
-export default function ProductSavePage({
+import React from "react";
+import prisma from "@/app/libs/prismadb";
+import { getProductById } from "@/app/libs/prisma";
+export const dynamic = "force-dynamic";
+
+async function getProduct(productId: number) {
+  const { product } = await getProductById(productId);
+  if (!product) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return product;
+}
+export default async function ProductSavePage({
   params,
 }: {
   params: { slug: number };
 }) {
-  const [dataDetail, setDataDetail] = useState<IProduct>();
-  const [categoryOptions, setCategoryOptions] = useState<any>();
-  useEffect(() => {
-    fetch(`/api/products/${params?.slug}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setDataDetail(data);
-      });
-    fetch(`/api/product-category`)
-      .then((res) => res.json())
-      .then((data) => {
-        const dataOption = data?.map((item: any) => ({
-          value: item.id.toString(),
-          label: item.title,
-        }));
-        setCategoryOptions(dataOption);
-      });
-  }, []);
+  const product = await getProduct(params?.slug);
+  const categories = await prisma.productCategory.findMany();
+  const dataOption = categories?.map((item: any) => ({
+    value: item.id.toString(),
+    label: item.title,
+  }));
   return (
     <Box maw={"100%"} mx="auto" className={styles.content}>
       <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
@@ -36,8 +34,8 @@ export default function ProductSavePage({
       <Space h="md" />
       <ProductForm
         isEditing={true}
-        dataDetail={dataDetail}
-        categoryOptions={categoryOptions}
+        dataDetail={product}
+        categoryOptions={dataOption}
       />
     </Box>
   );

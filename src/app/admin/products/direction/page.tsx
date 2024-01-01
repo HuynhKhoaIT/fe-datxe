@@ -1,17 +1,19 @@
 import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
-import ProductForm from "./ProductForm";
-import React, { Suspense } from "react";
-import ProductSave from "./ProductSave";
-export default function CreateProduct() {
+import React from "react";
+import prisma from "@/app/libs/prismadb";
+export const dynamic = "force-dynamic";
+import ProductSave from "../create/ProductSave";
+
+export default function ProductDirection() {
   return (
     <Box maw={"100%"} mx="auto" className={styles.content}>
       <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
-        Thêm sản phẩm
+        Điều hướng sản phẩm
       </Typo>
       <Space h="md" />
-      <ProductSave isDirection={false} />
+      <ProductSave isDirection={true} />
     </Box>
   );
 }

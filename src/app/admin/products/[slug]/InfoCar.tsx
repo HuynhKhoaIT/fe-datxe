@@ -18,7 +18,13 @@ export default function InfoCar({ carData, setCar }: any) {
   return (
     <Card shadow="sm" padding="lg" withBorder title="Áp dụng dòng xe" mt={24}>
       {carData.map((item: any, index: number) => (
-        <Flex gap={12} w={"100%"} align={"end"} justify="space-between">
+        <Flex
+          key={index}
+          gap={12}
+          w={"100%"}
+          align={"end"}
+          justify="space-between"
+        >
           <Flex gap={12} w={"90%"}>
             <Select
               w={"33%"}

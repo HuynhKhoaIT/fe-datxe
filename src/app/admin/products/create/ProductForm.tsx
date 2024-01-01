@@ -42,13 +42,12 @@ const formats = [
   "image",
 ];
 export default function ProductForm({
-  isEditing,
-  dataDetail,
-  categoryOptions,
+  isEditing = false,
+  dataDetail = [],
+  categoryOptions = [],
+  isDirection = false,
 }: any) {
   const [loading, handlers] = useDisclosure();
-  const [categories, setCategories] = useState([]);
-
   const form = useForm({
     initialValues: {},
     validate: {},
@@ -70,7 +69,13 @@ export default function ProductForm({
         );
       }
     }
+    if (isDirection) {
+      form.setFieldValue("name", dataDetail.name);
+      form.setFieldValue("price", dataDetail.price);
+      form.setFieldValue("description", dataDetail.description);
+    }
   }, [dataDetail]);
+  console.log(dataDetail);
   const router = useRouter();
   const [car, setCar] = useState([{ car: "" }]);
 
@@ -100,6 +105,7 @@ export default function ProductForm({
         title: "Thành công",
         message: "Thêm sản phẩm thành công",
       });
+      router.refresh();
     } catch (error) {
       handlers.close();
       notifications.show({
@@ -108,7 +114,6 @@ export default function ProductForm({
       });
     }
   };
-
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Grid gutter={12}>
