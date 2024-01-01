@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./index.module.scss";
+import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 
 import {
   Box,
   Button,
   Flex,
   Group,
+  Image,
   LoadingOverlay,
   Modal,
   Pagination,
@@ -49,16 +51,26 @@ export default function CategoryListPage({ dataSource }: any) {
       label: <span>Hình ảnh</span>,
       name: "image",
       dataIndex: ["image"],
-      width: "20%",
+      width: "90px",
       render: (data: any) => {
-        return <span>khoa</span>;
+        if (!data) {
+          return (
+            <Image
+              radius="md"
+              src={ImageDefult.src}
+              h={40}
+              w="auto"
+              fit="contain"
+            />
+          );
+        }
+        return <Image radius="md " h={40} w={80} fit="contain" src={data} />;
       },
     },
     {
       label: <span>Tên</span>,
       name: "title",
       dataIndex: ["title"],
-      width: "30%",
       render: (dataRow: any) => {
         return <h5>{dataRow}</h5>;
       },
@@ -67,12 +79,11 @@ export default function CategoryListPage({ dataSource }: any) {
       label: <span>Mô tả</span>,
       name: "description",
       dataIndex: ["description"],
-      width: "15%%",
     },
     {
       label: <span>Hành động</span>,
       dataIndex: [],
-      width: "20%",
+      width: "100px",
       render: (record: any) => {
         return (
           <>
