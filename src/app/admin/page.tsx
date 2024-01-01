@@ -1,4 +1,3 @@
-"use client";
 import { getOrders } from "@/utils/order";
 import Orders from "../components/elements/dashboard/order/orders";
 import React from "react";

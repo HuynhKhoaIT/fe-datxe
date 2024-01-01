@@ -5,6 +5,7 @@ const nextConfig = {
         apiGuest: 'https://v2.dlbd.vn/api/v3/guest',
         api: 'https://v2.dlbd.vn/api',
         apiUserV3: 'https://v2.dlbd.vn/api/v3/app',
+        urlBase: 'https://oga.datxe.com/'
     },
 };
 
