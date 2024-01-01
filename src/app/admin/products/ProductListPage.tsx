@@ -57,7 +57,7 @@ export default function ProductListPage({ dataSource, productsGara }: any) {
       label: <span>Hình ảnh</span>,
       name: "image",
       dataIndex: ["thumbnail"],
-      width: "20%",
+      width: "90px",
       render: (data: any) => {
         if (!data) {
           return (
@@ -77,16 +77,20 @@ export default function ProductListPage({ dataSource, productsGara }: any) {
       label: <span>Tên sản phẩm</span>,
       name: "name",
       dataIndex: ["name"],
-      width: "30%",
       render: (dataRow: any) => {
         return <h5>{dataRow}</h5>;
       },
     },
     {
+      label: <span>Số lượng</span>,
+      name: "quantity",
+      dataIndex: ["quantity"],
+      textAlign: "center",
+    },
+    {
       label: <span>Giá bán</span>,
       name: "price",
       dataIndex: ["price"],
-      width: "15%%",
       render: (dataRow: number) => {
         return <span>{dataRow?.toLocaleString()}đ</span>;
       },
@@ -95,7 +99,6 @@ export default function ProductListPage({ dataSource, productsGara }: any) {
       label: <span>Giá sale</span>,
       name: "priceSale",
       dataIndex: ["salePrice"],
-      width: "15%",
       render: (dataRow: number) => {
         return <span>{dataRow?.toLocaleString()}đ</span>;
       },
@@ -103,7 +106,7 @@ export default function ProductListPage({ dataSource, productsGara }: any) {
     {
       label: <span>Hành động</span>,
       dataIndex: [],
-      width: "20%",
+      width: "100px",
       render: (record: any) => {
         return (
           <>

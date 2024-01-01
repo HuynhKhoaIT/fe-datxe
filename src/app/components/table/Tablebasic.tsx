@@ -7,7 +7,10 @@ export default function TableBasic({ data = [], columns, loading }: any) {
         <Table.Tr>
           {columns?.map((item: any, index: number) => {
             return (
-              <Table.Th style={{ width: item?.width }} key={index}>
+              <Table.Th
+                style={{ width: item?.width, textAlign: item?.textAlign }}
+                key={index}
+              >
                 {item.label}
               </Table.Th>
             );
@@ -28,7 +31,13 @@ export default function TableBasic({ data = [], columns, loading }: any) {
                   return <span>{data}</span>;
                 }
                 return (
-                  <Table.Td style={item.styles} key={_index}>
+                  <Table.Td
+                    style={{
+                      width: col?.width,
+                      textAlign: col?.textAlign,
+                    }}
+                    key={_index}
+                  >
                     {render ? render(data, item) : returnFunc(data)}
                   </Table.Td>
                 );
