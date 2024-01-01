@@ -78,7 +78,7 @@ export default function CategoryListPage({ dataSource }: any) {
           <>
             <Link
               href={{
-                pathname: `/admin/products/${record.id}`,
+                pathname: `/admin/categories/${record.id}`,
               }}
             >
               <Button

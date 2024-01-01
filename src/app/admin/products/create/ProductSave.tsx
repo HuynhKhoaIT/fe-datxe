@@ -6,6 +6,7 @@ import ProductForm from "./ProductForm";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getProductDetail } from "@/utils/product";
+import { LoadingComponent } from "@/app/components/loading";
 export default function ProductSave({ isDirection }: any) {
   const searchParams = useSearchParams();
   const productId = searchParams.get("productId");

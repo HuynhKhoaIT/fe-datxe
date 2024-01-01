@@ -25,7 +25,9 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       title: "",
       description: "",
     },
-    validate: {},
+    validate: {
+      title: (value) => (value.length < 1 ? "Không được để trống" : null),
+    },
   });
   useEffect(() => {
     form.setInitialValues(dataDetail);
@@ -41,7 +43,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           body: JSON.stringify(values),
         });
       } else {
-        await fetch(`/api/product-category/${dataDetail?.productId}`, {
+        await fetch(`/api/product-category/${dataDetail?.id}`, {
           method: "PUT",
           body: JSON.stringify(values),
         });
@@ -52,6 +54,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
         title: "Thành công",
         message: "Thành công",
       });
+      router.refresh();
     } catch (error) {
       handlers.close();
       notifications.show({

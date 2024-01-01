@@ -1,8 +1,7 @@
 import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
-import ProductForm from "./ProductForm";
-import React, { Suspense } from "react";
+import React from "react";
 import ProductSave from "./ProductSave";
 export default function CreateProduct() {
   return (

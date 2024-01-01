@@ -2,7 +2,6 @@ import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
 import React from "react";
-import prisma from "@/app/libs/prismadb";
 export const dynamic = "force-dynamic";
 import ProductSave from "../create/ProductSave";
 

@@ -49,8 +49,12 @@ export default function ProductForm({
 }: any) {
   const [loading, handlers] = useDisclosure();
   const form = useForm({
-    initialValues: {},
-    validate: {},
+    initialValues: {
+      name: "",
+    },
+    validate: {
+      name: (value) => (value.length < 1 ? "Không được để trống" : null),
+    },
   });
   useEffect(() => {
     if (isEditing) {
