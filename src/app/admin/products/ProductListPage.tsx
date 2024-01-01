@@ -70,7 +70,7 @@ export default function ProductListPage({ dataSource, productsGara }: any) {
             />
           );
         }
-        return <Image radius="md " h={40} w="auto" fit="contain" src={data} />;
+        return <Image radius="md " h={40} w={80} fit="contain" src={data} />;
       },
     },
     {
@@ -163,7 +163,7 @@ export default function ProductListPage({ dataSource, productsGara }: any) {
             />
           );
         }
-        return <Image h={40} radius="md" w="auto" fit="contain" src={data} />;
+        return <Image h={40} radius="md" w={80} fit="contain" src={data} />;
       },
     },
     {
