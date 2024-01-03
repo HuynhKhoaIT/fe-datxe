@@ -5,14 +5,12 @@ import { useEffect, useState } from "react";
 import { Box, Button, Flex, Grid } from "@mantine/core";
 import ProductItem from "./ProductItem";
 export default function Product({
-  initialProductData,
+  initialProductData = [],
   garageId = 0,
-}: {
-  initialProductData: IProduct[];
-  garageId: any;
-}) {
+  limit: defaultLimit = 8,
+}: any) {
   const [productData, setProductData] = useState<IProduct[]>([]);
-  const [limit, setLimit] = useState<number>(8);
+  const [limit, setLimit] = useState<number>(defaultLimit);
   const handleButtonClick = async () => {
     if (garageId != 0) {
       let newProductData = await getProductByGar(

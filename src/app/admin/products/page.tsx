@@ -1,11 +1,10 @@
 import { getProductByGar } from "@/utils/product";
 import ProductListPage from "./ProductListPage";
-import prisma from "@/app/libs/prismadb";
 // export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import React from "react";
-import { getProducts } from "@/app/libs/prisma";
+import { getProducts } from "@/app/libs/prisma/product";
 async function getData() {
   const { products } = await getProducts();
   if (!products) {

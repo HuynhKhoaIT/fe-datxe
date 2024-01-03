@@ -5,7 +5,7 @@ import { MyFooter } from "../components/page/footer/footer";
 interface IProps {
   children: ReactNode;
 }
-export default async function DashboardLayout({ children }: IProps) {
+export default function DashboardLayout({ children }: IProps) {
   return (
     <>
       <Header />

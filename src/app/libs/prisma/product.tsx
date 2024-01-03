@@ -1,3 +1,4 @@
+import { IProduct } from "../interfaces/product";
 import prisma from "../prismadb";
 
 export async function getProducts() {
@@ -46,7 +47,6 @@ export async function getProductById(id: number) {
     const product = await prisma.product.findUnique({
       where: { id: Number(id) },
     });
-    console.log("product", product);
     return { product };
   } catch (error) {
     return { error };

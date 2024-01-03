@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./index.module.scss";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-
 import {
   Box,
   Button,

@@ -1,8 +1,4 @@
-.productImg {
-    height: 200px;
-    object-fit: fill;
-}
-.productName {
+.garageName {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -15,11 +11,4 @@
         color: var(--color-prymary);
         cursor: pointer;
     }
-}
-.productOnSale {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    color: var(--color-white);
-    background-color: var(--theme-color);
 }

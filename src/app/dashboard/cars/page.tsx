@@ -1,8 +1,8 @@
 import { getCarsSsr } from "@/utils/car";
-import CarComponent from "./CarComponent";
 import { getMyAccount } from "@/utils/user";
+import CarListPage from "./CarListPage";
 export default async function CarsPage() {
   const carsData = await getCarsSsr();
   const myAccount: any = await getMyAccount();
-  return <CarComponent carsData={carsData} myAccount={myAccount} />;
+  return <CarListPage carsData={carsData} myAccount={myAccount} />;
 }
