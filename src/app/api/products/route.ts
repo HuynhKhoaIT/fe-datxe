@@ -21,14 +21,51 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
-        const product = await prisma.product.create({
-            data: json,
-        });
+        const session = await getServerSession(authOptions);
+        let categoryId = 0;
+        if (!json.categoryId) {
+            return new NextResponse("Missing 'categoryId' parameter");
+        } else {
+            categoryId = json.categoryId;
+        }
 
-        return new NextResponse(JSON.stringify(product), {
-            status: 201,
-            headers: { 'Content-Type': 'application/json' },
-        });
+        if (session?.user?.token) {
+            const product = await prisma.product.create({
+                data: {
+                    name: json.name,
+                    price: json.price,
+                    salePrice: json.salePrice,
+                    productId: json.productId ?? 0,
+                    description: json.description ?? '',
+                    timeSaleStart: json.timeSaleStart ?? null,
+                    timeSaleEnd: json.timeSaleEnd ?? null,
+                    quantity: json.quantity ?? 0,
+                    images: json.images ?? null,
+                    metaDescription: json.metaDescription ?? null,
+                    status: json.status,
+                    createdBy: 1,
+                    garageId: 0,
+                    categories: {
+                        create: [
+                            {
+                                assignedBy: session.user.name ?? '',
+                                assignedAt: new Date(),
+                                category: {
+                                    connect: {
+                                        id: parseInt(categoryId.toString()),
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
+            });
+
+            return new NextResponse(JSON.stringify(product), {
+                status: 201,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }

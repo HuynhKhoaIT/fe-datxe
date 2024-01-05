@@ -44,7 +44,7 @@ const formats = [
 export default function ProductForm({
   isEditing = false,
   dataDetail = [],
-  categoryOptions = [],
+  categoryOptions = [1,2,4,5],
   isDirection = false,
 }: any) {
   const [loading, handlers] = useDisclosure();
