@@ -4,14 +4,13 @@ import { Card, Image, Badge, Group, Flex, Box } from "@mantine/core";
 import styles from "./ProductItem.module.scss";
 import Typo from "../Typo";
 export default function ProductItem({
-  key,
   product,
 }: {
   key: number;
   product: IProduct;
 }) {
   return (
-    <Box key={key} w={"100%"}>
+    <Box w={"100%"}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section>
           <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>

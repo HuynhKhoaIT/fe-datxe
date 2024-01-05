@@ -26,7 +26,6 @@ import {
   IconMinus,
   IconPlus,
 } from "@tabler/icons-react";
-import CartItemRow from "./CartItemRow";
 import InfoCustomer from "./InfoCustomer";
 import InfoCar from "./InfoCar";
 import InfoCart from "./InfoCart";
@@ -159,17 +158,6 @@ export default function CartComponent({
       setLoading(false);
     }
   };
-  const renderRows = () => {
-    return cartData?.map((record) => (
-      <CartItemRow
-        key={record.product.id}
-        record={record}
-        decrementQuantity={decrementQuantity}
-        incrementQuantity={incrementQuantity}
-        handleOpenModalDelete={handleOpenModalDelete}
-      />
-    ));
-  };
   const [visible, handlers] = useDisclosure(false);
   const selectCar = async (value: any) => {
     handlers.open();
@@ -206,8 +194,11 @@ export default function CartComponent({
           <Suspense fallback={<p>loading...</p>}>
             <InfoCart
               loading={loading}
-              renderRows={renderRows}
               calculateSubTotal={calculateSubTotal}
+              cartData={cartData}
+              decrementQuantity={decrementQuantity}
+              handleOpenModalDelete={handleOpenModalDelete}
+              incrementQuantity={incrementQuantity}
             />
           </Suspense>
         </div>

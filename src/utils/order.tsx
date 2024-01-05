@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth/next";
 import {
   GET_ORDER_ENDPOINT,
   GET_ORDER_DETAIL_ENDPOINT,
+  GET_ORDER_GARAGE_ENDPOINT,
 } from "./constants/endpoints";
 import { IOrder } from "@/interfaces/order";
 import { IOrderDetail } from "@/interfaces/orderDetail";
@@ -32,6 +33,28 @@ export const getOrders = async (pageNo = 1) => {
       return res.data.data as Promise<IOrder[]>;
     } catch (error) {
       throw new Error("Lỗi trong quá trình lấy danh sách đơn hàng");
+    }
+  }
+};
+
+export const getOrdersOfGarage = async (garageId: number) => {
+  console.log(GET_ORDER_GARAGE_ENDPOINT);
+  const session = await getServerSession(authOptions);
+  if (session?.user?.token) {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${session?.user?.token}` },
+      };
+      const res = await axios.get(
+        `${GET_ORDER_GARAGE_ENDPOINT}/${garageId}`,
+        config
+      );
+      console.log(res);
+      return res.data.data as Promise<IOrder[]>;
+    } catch (error) {
+      throw new Error(
+        "Lỗi trong quá trình lấy danh sách đơn hàng của chuyên gia"
+      );
     }
   }
 };

@@ -9,7 +9,7 @@ export default function ProductData({
   return (
     <Grid gutter={16}>
       {product_data?.map((product: IProduct, index) => (
-        <Grid.Col span={{ base: 12, xs: 6, sm: 6, md: 4, lg: 3 }}>
+        <Grid.Col span={{ base: 12, xs: 6, sm: 6, md: 4, lg: 3 }} key={index}>
           <ProductItem product={product} key={index} />
         </Grid.Col>
       ))}

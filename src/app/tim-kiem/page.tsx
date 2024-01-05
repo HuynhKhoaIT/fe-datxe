@@ -1,4 +1,4 @@
-import SearchData from "../components/elements/search/SearchData";
+import SearchData from "./SearchData";
 export default async function Search() {
   return <SearchData />;
 }
