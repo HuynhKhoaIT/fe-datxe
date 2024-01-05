@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         const json = await request.json();
         const session = await getServerSession(authOptions);
         let categoryId = 0;
-        if (0) {
+        if (!json.categoryId) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
             categoryId = json.categoryId;
