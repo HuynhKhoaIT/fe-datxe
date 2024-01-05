@@ -30,7 +30,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
         if (!id) {
             return new NextResponse("Missing 'id' parameter");
         }
-
         const json = await request.json();
         const product = await prisma.product.findUnique({
             where: {
