@@ -43,9 +43,9 @@ export async function GET(request: Request) {
             skip: skip,
             where: {
                 categories,
-                // title: {
-                //     search: searchText,
-                // },
+                name: {
+                    contains: searchText?.toString(),
+                },
             },
             include: {
                 categories: true,
