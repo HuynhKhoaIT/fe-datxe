@@ -64,7 +64,7 @@ export async function POST(request: Request) {
                     assignedAt: new Date(),
                     category: {
                         connect: {
-                            id: 2,
+                            id: parseInt(id.toString()),
                         },
                     },
                 });
@@ -88,9 +88,9 @@ export async function POST(request: Request) {
                     status: json.status,
                     createdBy: 1,
                     garageId: 0,
-                    // categories: {
-                    //     create: catArr,
-                    // },
+                    categories: {
+                        create: catArr,
+                    },
                 },
             });
 
