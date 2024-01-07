@@ -49,6 +49,7 @@ export default async function Orders() {
       carOptions={carOptions}
       carDefault={carDefault}
       ordersData={mappedOrdersData}
+      isSelectEvent={false}
     />
   );
 }

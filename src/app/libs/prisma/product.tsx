@@ -12,6 +12,19 @@ export async function getProducts() {
   }
 }
 
+export async function getProductsByGarage(garageId: number) {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        garageId: Number(garageId),
+      },
+    });
+    return { products };
+  } catch (error) {
+    return { error };
+  }
+}
+
 export async function createProduct(product: any) {
   try {
     const productFromDB = await prisma.product.create({ data: product });
