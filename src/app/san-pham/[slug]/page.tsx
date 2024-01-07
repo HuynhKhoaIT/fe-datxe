@@ -4,6 +4,8 @@ import { IProduct } from "@/interfaces/product";
 import Product from "@/app/components/elements/product/ListProductHot";
 import { getProductDetail, getProductsRelated } from "@/utils/product";
 import { getProductById, getProducts } from "@/app/libs/prisma/product";
+export const revalidate = 0;
+
 async function getProduct(productId: number) {
   const { product } = await getProductById(productId);
   if (!product) {
