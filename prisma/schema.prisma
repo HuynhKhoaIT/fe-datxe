@@ -7,54 +7,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ProductCategory{
-    id              Int      @id @default(autoincrement())
-    title           String
-    description     String?
-    image           String
-    createdBy       Int @default(1)
-    garageId        Int @default(1)
-    status          STATUS @default(DRAFT)
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
-    products        CategoriesOnProducts[]
-}
-
-model Product {
-    id              Int      @id @default(autoincrement())
-    productId       Int @default(0)
-    title           String
-    slug            String
-    description     String?
-    price           Int @default(0)
-    salePrice       Int @default(0)
-    timeSaleStart   DateTime? @default(now())
-    timeSaleEnd     DateTime? 
-    quantity        Int @default(1)
-    categories      CategoriesOnProducts[]
-    images          Json?
-    metaDescription String?
-    status          STATUS @default(DRAFT)
-    createdBy       Int @default(1)
-    garageId        Int @default(1)
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
-}
-model CategoriesOnProducts {
-  product       Product     @relation(fields: [productId], references: [id])
-  productId     Int // relation scalar field (used in the `@relation` attribute above)
-  category      ProductCategory @relation(fields: [categoryId], references: [id])
-  categoryId    Int // relation scalar field (used in the `@relation` attribute above)
-  assignedAt    DateTime @default(now())
-  assignedBy    String
+model categoriesonproducts {
+  productId       Int
+  categoryId      Int
+  assignedAt      DateTime        @default(now())
+  assignedBy      String
+  productcategory productcategory @relation(fields: [categoryId], references: [id], map: "CategoriesOnProducts_categoryId_fkey")
+  product         product         @relation(fields: [productId], references: [id], map: "CategoriesOnProducts_productId_fkey")
 
   @@id([productId, categoryId])
+  @@index([categoryId], map: "CategoriesOnProducts_categoryId_fkey")
 }
-enum STATUS {
+
+model product {
+  id                   Int                    @id @default(autoincrement())
+  productId            Int                    @default(0)
+  title                String
+  slug                 String
+  description          String?
+  price                Int                    @default(0)
+  salePrice            Int                    @default(0)
+  timeSaleStart        DateTime?              @default(now())
+  timeSaleEnd          DateTime?
+  quantity             Int                    @default(1)
+  images               Json?
+  metaDescription      String?
+  status               product_status         @default(DRAFT)
+  createdBy            Int                    @default(1)
+  garageId             Int                    @default(1)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @default(now())
+  categoriesonproducts categoriesonproducts[]
+}
+
+model productcategory {
+  id                   Int                    @id @default(autoincrement())
+  title                String
+  description          String?
+  image                String
+  createdBy            Int                    @default(1)
+  garageId             Int                    @default(1)
+  status               productcategory_status @default(DRAFT)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @default(now())
+  categoriesonproducts categoriesonproducts[]
+}
+
+enum productcategory_status {
   PUBLIC
   DRAFT
   PENDING
   DELETE
 }
 
-
+enum product_status {
+  PUBLIC
+  DRAFT
+  PENDING
+  DELETE
+}

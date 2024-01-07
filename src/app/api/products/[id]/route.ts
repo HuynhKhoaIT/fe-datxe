@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                     id: parseInt(id.toString()),
                 },
                 include: {
-                    categories: true,
+                    categoriesonproducts: true,
                 },
             });
             return NextResponse.json(products);
@@ -76,9 +76,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     status: json.status,
                     createdBy: 1,
                     garageId: 0,
-                    categories: {
-                        create: catArr,
-                    },
+                    // categories: {
+                    //     create: catArr,
+                    // },
                 },
             });
 
