@@ -13,7 +13,7 @@ const ProfileSidebar = ({ myAccount }: any) => {
   const { data: session } = useSession();
   const token = session?.user?.token;
   return (
-    <div className="user-profile-sidebar">
+    <div className="user-profile-sidebar" style={{ height: "100%" }}>
       <div className="user-profile-sidebar-top">
         <div className="user-profile-img">
           <img src="/assets/img/account/user.jpg" alt="" />

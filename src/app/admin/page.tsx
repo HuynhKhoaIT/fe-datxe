@@ -1,10 +1,14 @@
 import { getOrders } from "@/utils/order";
 import Orders from "../components/elements/dashboard/order/orders";
 import React from "react";
+import styles from "./index.module.scss";
+import FooterAdmin from "../components/page/footer/footerAdmin";
+import Breadcrumb from "../components/form/Breadcrumb";
 export default function DashboardAdmin() {
-  // const orders = await getOrders(1);
+  const Breadcrumbs = [{ title: "Tổng quan" }];
   return (
-    <div>
+    <div className={styles.wrapperAdmin}>
+      <Breadcrumb breadcrumbs={Breadcrumbs} />
       <div className="row">
         <div className="col-md-6 col-lg-4">
           <div className="dashboard-widget dashboard-widget-color-1">
@@ -40,6 +44,7 @@ export default function DashboardAdmin() {
           </div>
         </div>
       </div>
+      <FooterAdmin />
       {/* <Orders ordersData={orders} /> */}
     </div>
   );

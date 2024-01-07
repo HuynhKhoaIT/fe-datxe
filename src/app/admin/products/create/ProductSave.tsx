@@ -26,7 +26,7 @@ export default function ProductSave({
     }
   }, [isDirection]);
   return (
-    <Box maw={"100%"} mx="auto" className={styles.content}>
+    <Box maw={"100%"} mx="auto">
       <ProductForm
         isEditing={false}
         dataDetail={isDirection ? productDetail : []}

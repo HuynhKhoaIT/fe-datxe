@@ -9,7 +9,7 @@ interface IProps {
 export default function AdminLayout({ children }: IProps) {
   const Breadcrumbs = [
     { title: "Tổng quan", href: "/admin" },
-    { title: "Đặt lịch" },
+    { title: "Hồ sơ" },
   ];
   return (
     <main className={styles.wrapper}>

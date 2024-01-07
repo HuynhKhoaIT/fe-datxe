@@ -44,7 +44,7 @@ const formats = [
 export default function ProductForm({
   isEditing = false,
   dataDetail = [],
-  categoryOptions = [1,2,4,5],
+  categoryOptions = [1, 2, 4, 5],
   isDirection = false,
 }: any) {
   const [loading, handlers] = useDisclosure();
@@ -118,7 +118,7 @@ export default function ProductForm({
     }
   };
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(handleSubmit)} style={{ padding: "20px" }}>
       <Grid gutter={12}>
         <Grid.Col span={8}>
           <Card withBorder shadow="sm">

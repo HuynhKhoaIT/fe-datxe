@@ -19,11 +19,10 @@ export default async function UpdateCategory({
 }) {
   const dataDetail = await getData(Number(params?.slug));
   return (
-    <Box maw={"100%"} mx="auto" className={styles.content}>
-      <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
+    <Box maw={"100%"} mx="auto">
+      {/* <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
         Cập nhật danh mục sản phẩm
-      </Typo>
-      <Space h="md" />
+      </Typo> */}
       <CategoryForm isEditing={true} dataDetail={dataDetail} />
     </Box>
   );

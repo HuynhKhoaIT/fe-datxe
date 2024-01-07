@@ -7,10 +7,18 @@ import Header from "./components/page/header/header";
 import { MyFooter } from "./components/page/footer/footer";
 import ProductListItem from "./components/layout/ProductListItem";
 import Carousel from "./landing/carousel";
+import { getProducts } from "./libs/prisma/product";
+async function getListProduct() {
+  const { products } = await getProducts();
+  if (!products) {
+    throw new Error("Failed to fetch data");
+  }
+  return products;
+}
 export default async function Home() {
   const initialCategoryData = await getCategories();
-  const initialProductData: IProduct[] = await getProductsHot({ limit: 8 });
-  const initialServiceData: IProduct[] = await getServiceHot({ limit: 8 });
+  const initialProductData = await getListProduct();
+  const initialServiceData = await getListProduct();
 
   return (
     <>

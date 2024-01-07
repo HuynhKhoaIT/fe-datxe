@@ -21,10 +21,7 @@ export default async function CreateProduct() {
     label: item.title,
   }));
   return (
-    <Box maw={"100%"} mx="auto" className={styles.content}>
-      <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
-        Thêm sản phẩm
-      </Typo>
+    <Box maw={"100%"} mx="auto">
       <Space h="md" />
       <ProductSave isDirection={false} categoryOptions={dataOptions} />
     </Box>

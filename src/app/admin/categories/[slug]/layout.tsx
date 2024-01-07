@@ -1,21 +1,22 @@
 import { ReactNode, Suspense } from "react";
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import FooterAdmin from "@/app/components/page/footer/footerAdmin";
 interface IProps {
   children: ReactNode;
 }
 
-export default function AdminLayout({ children }: IProps) {
+export default function CreateLayout({ children }: IProps) {
   const Breadcrumbs = [
     { title: "Tổng quan", href: "/admin" },
-    { title: "Đặt lịch" },
+    { title: "Danh mục sản phẩm", href: "/admin/categories" },
+    { title: "Cập nhật danh mục" },
   ];
   return (
-    <main className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <div className={styles.content}>{children}</div>
       <FooterAdmin />
-    </main>
+    </div>
   );
 }

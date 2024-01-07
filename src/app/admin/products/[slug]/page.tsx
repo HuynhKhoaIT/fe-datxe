@@ -1,11 +1,11 @@
 import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
-import ProductForm from "../create/ProductForm";
 import React from "react";
 import prisma from "@/app/libs/prismadb";
 import { getProductById } from "@/app/libs/prisma/product";
 import { getCategories } from "@/app/libs/prisma/category";
+import ProductForm from "../create/ProductForm";
 export const dynamic = "force-dynamic";
 
 async function getProduct(productId: number) {
@@ -36,11 +36,10 @@ export default async function ProductSavePage({
     label: item.title,
   }));
   return (
-    <Box maw={"100%"} mx="auto" className={styles.content}>
-      <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
+    <Box maw={"100%"} mx="auto">
+      {/* <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
         Cập nhật sản phẩm
-      </Typo>
-      <Space h="md" />
+      </Typo> */}
       <ProductForm
         isEditing={true}
         dataDetail={product}
