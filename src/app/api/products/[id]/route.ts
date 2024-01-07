@@ -6,6 +6,7 @@ import { authOptions } from '../../auth/[...nextauth]/route';
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
         const id = params.id;
+
         if (!id) {
             return new NextResponse("Missing 'id' parameter");
         }
@@ -30,8 +31,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
 export async function PUT(request: NextRequest, { params }: { params: { id: number } }) {
     try {
         const session = await getServerSession(authOptions);
-        if (session?.user?.token) {
+        if (1) {
             const id = params.id;
+
             let catArr: any = [];
             if (!id) {
                 return new NextResponse("Missing 'id' parameter");
@@ -53,14 +55,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     });
                 });
             }
-            const product = await prisma.product.findUnique({
-                where: {
-                    id: parseInt(id.toString()),
-                },
-            });
             const updatedPost = await prisma.product.update({
                 where: {
-                    id: parseInt(id.toString()),
+                    id: Number(id),
                 },
                 data: {
                     name: json.title,
@@ -77,12 +74,24 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     createdBy: 1,
                     garageId: 0,
                     categories: {
-                        create: catArr,
+                        deleteMany: {},
+                        create: json.categories.map((cat: number) => ({
+                            assignedBy: session?.user?.name ?? '',
+                            assignedAt: new Date(),
+                            category: {
+                                connect: {
+                                    id: Number(cat),
+                                },
+                            },
+                        })),
                     },
+                },
+                include: {
+                    categories: true,
                 },
             });
 
-            return new NextResponse(JSON.stringify(product), {
+            return new NextResponse(JSON.stringify(updatedPost), {
                 status: 201,
                 headers: { 'Content-Type': 'application/json' },
             });

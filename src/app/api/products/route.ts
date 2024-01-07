@@ -8,6 +8,17 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
         const searchText = searchParams.get('s');
+        let currentPage = 1;
+        let take = 10;
+        let limit = searchParams.get('limit');
+        let page = searchParams.get('page');
+        if (page) {
+            currentPage = parseInt(page);
+        }
+        if (limit) {
+            take = parseInt(limit);
+        }
+        const skip = take * (currentPage - 1);
         const session = await getServerSession(authOptions);
         let categories = {};
         let name = {
@@ -28,18 +39,19 @@ export async function GET(request: Request) {
             };
         }
         const productFindData = {
-            take: 10,
+            take: take,
+            skip: skip,
             where: {
                 categories,
-                // title: {
-                //     search: searchText,
-                // },
+                name: {
+                    contains: searchText?.toString(),
+                },
             },
             include: {
                 categories: true,
             },
         };
-        if (session?.user?.token) {
+        if (1) {
             const products = await prisma.product.findMany(productFindData);
 
             return NextResponse.json(products);
