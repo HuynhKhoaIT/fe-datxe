@@ -9,7 +9,7 @@ export async function GET(request: Request) {
         const categoryId = searchParams.get('categoryId');
         const searchText = searchParams.get('s');
         const session = await getServerSession(authOptions);
-        let categories = {};
+        let categoriesonproducts = {};
         let name = {
             search: '',
         };
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
             };
         }
         if (categoryId) {
-            categories = {
+            categoriesonproducts = {
                 some: {
                     category: {
                         id: parseInt(categoryId!),
@@ -30,10 +30,13 @@ export async function GET(request: Request) {
         const productFindData = {
             take: 10,
             where: {
-                categories,
+                categoriesonproducts,
+                // title: {
+                //     search: searchText,
+                // },
             },
             include: {
-                categories: true,
+                categoriesonproducts: true,
             },
         };
         if (session?.user?.token) {
@@ -71,7 +74,8 @@ export async function POST(request: Request) {
         if (session?.user?.token) {
             const product = await prisma.product.create({
                 data: {
-                    name: json.name,
+                    title: json.title.toString(),
+                    slug: json.title.toString(),
                     price: json.price,
                     salePrice: json.salePrice,
                     productId: json.productId ?? 0,
@@ -84,7 +88,7 @@ export async function POST(request: Request) {
                     status: json.status,
                     createdBy: 1,
                     garageId: 0,
-                    categories: {
+                    categoriesonproducts: {
                         create: catArr,
                     },
                 },

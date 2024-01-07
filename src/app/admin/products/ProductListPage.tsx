@@ -76,8 +76,8 @@ export default function ProductListPage({ dataSource }: any) {
     },
     {
       label: <span>Tên sản phẩm</span>,
-      name: "name",
-      dataIndex: ["name"],
+      name: "title",
+      dataIndex: ["title"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
