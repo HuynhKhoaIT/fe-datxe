@@ -74,7 +74,8 @@ export async function POST(request: Request) {
         if (session?.user?.token) {
             const product = await prisma.product.create({
                 data: {
-                    name: json.name,
+                    title: json.title.toString(),
+                    slug: json.title.toString(),
                     price: json.price,
                     salePrice: json.salePrice,
                     productId: json.productId ?? 0,

@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     id: parseInt(id.toString()),
                 },
                 data: {
-                    name: json.name,
+                    title: json.title,
                     price: json.price,
                     salePrice: json.salePrice,
                     productId: json.productId ?? 0,
