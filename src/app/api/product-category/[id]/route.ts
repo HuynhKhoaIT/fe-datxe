@@ -45,7 +45,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
             data: json,
         });
 
-        return new NextResponse(JSON.stringify(productCategory), {
+        return new NextResponse(JSON.stringify(updatedPost), {
             status: 201,
             headers: { 'Content-Type': 'application/json' },
         });
