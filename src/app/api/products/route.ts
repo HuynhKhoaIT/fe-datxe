@@ -32,6 +32,9 @@ export async function GET(request: Request) {
             where: {
                 categories,
             },
+            include: {
+                categories: true,
+            },
         };
         if (session?.user?.token) {
             const products = await prisma.product.findMany(productFindData);
