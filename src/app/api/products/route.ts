@@ -31,9 +31,9 @@ export async function GET(request: Request) {
             take: 10,
             where: {
                 categories,
-                title: {
-                    search: searchText,
-                },
+                // title: {
+                //     search: searchText,
+                // },
             },
             include: {
                 categories: true,
