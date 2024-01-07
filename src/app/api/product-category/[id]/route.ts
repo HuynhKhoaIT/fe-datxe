@@ -60,9 +60,12 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: n
         return new NextResponse("Missing 'id' parameter");
     }
 
-    const deletePost = await prisma.productCategory.delete({
+    const deletePost = await prisma.productCategory.update({
         where: {
             id: parseInt(id.toString()),
+        },
+        data: {
+            status: 'DELETE',
         },
     });
 
