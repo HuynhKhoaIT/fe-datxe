@@ -1,21 +1,8 @@
+"use client";
 import { Box, Space } from "@mantine/core";
-import Typo from "@/app/components/elements/Typo";
-import styles from "../index.module.scss";
-import React from "react";
-import prisma from "@/app/libs/prismadb";
-import { getProductById } from "@/app/libs/prisma/product";
-import { getCategories } from "@/app/libs/prisma/category";
+import React, { Suspense, useEffect, useState } from "react";
 import ProductForm from "../create/ProductForm";
-export const dynamic = "force-dynamic";
-
-async function getProduct(productId: number) {
-  const { product } = await getProductById(productId);
-  if (!product) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return product;
-}
+import { getCategories } from "@/app/libs/prisma/category";
 async function getDataCategories() {
   const { categories } = await getCategories();
   if (!categories) {
@@ -24,22 +11,46 @@ async function getDataCategories() {
 
   return categories;
 }
-export default async function ProductSavePage({
+export default function ProductSavePage({
   params,
 }: {
   params: { slug: number };
 }) {
-  const product = await getProduct(params?.slug);
-  const categories = await getDataCategories();
-  const dataOption = categories?.map((item: any) => ({
-    value: item.id.toString(),
-    label: item.title,
-  }));
+  const [product, setProduct] = useState<any>();
+  const [dataOption, setDataOption] = useState<any>([]);
+  const getProductDetail = async (id: number) => {
+    try {
+      const res = await fetch(`/api/products/${id}`, { method: "GET" });
+      if (!res.ok) {
+        throw new Error("Failed to fetch product details");
+      }
+      const data = await res.json();
+      setProduct(data);
+    } catch (error) {}
+  };
+  const getCategories = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/product-category`, {
+        method: "GET",
+      });
+      console.log(res);
+      if (!res.ok) {
+        throw new Error("Failed to fetch category ");
+      }
+      const data = await res.json();
+      const dataOption = data?.map((item: any) => ({
+        value: item.id.toString(),
+        label: item.title,
+      }));
+      setDataOption(dataOption);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getProductDetail(params.slug);
+    getCategories();
+  }, [params]);
   return (
     <Box maw={"100%"} mx="auto">
-      {/* <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
-        Cập nhật sản phẩm
-      </Typo> */}
       <ProductForm
         isEditing={true}
         dataDetail={product}

@@ -20,6 +20,7 @@ export default async function CreateProduct() {
     value: item.id.toString(),
     label: item.title,
   }));
+
   return (
     <Box maw={"100%"} mx="auto">
       <Space h="md" />

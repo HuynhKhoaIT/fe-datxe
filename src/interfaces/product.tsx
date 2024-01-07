@@ -11,4 +11,5 @@ export interface IProduct {
   price?: number;
   garageId?: string;
   garage?: any;
+  title?: string;
 }

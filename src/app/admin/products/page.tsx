@@ -8,9 +8,10 @@ import styles from "./index.module.scss";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
 async function getData() {
   const { products } = await getProducts();
-  if (!products) {
-    throw new Error("Failed to fetch data");
-  }
+  console.log(products);
+  // if (!products) {
+  //   throw new Error("Failed to fetch data");
+  // }
   return products;
 }
 export default async function ProductsManaga() {

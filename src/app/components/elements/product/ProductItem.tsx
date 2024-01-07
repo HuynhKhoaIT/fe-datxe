@@ -22,7 +22,7 @@ export default function ProductItem({
         <Group justify="space-between" mt="md" mb="xs">
           <Link href={`/san-pham/${product.id}`}>
             <Typo size="sub" type="bold" className={styles.productName}>
-              {product.name}
+              {product.title}
             </Typo>
           </Link>
           <Badge classNames={{ root: styles.productOnSale }}>On Sale</Badge>

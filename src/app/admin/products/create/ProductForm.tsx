@@ -51,11 +51,11 @@ export default function ProductForm({
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
-      name: "",
+      title: "",
       categories: [],
     },
     validate: {
-      name: (value) => (value.length < 1 ? "Không được để trống" : null),
+      title: (value) => (value.length < 1 ? "Không được để trống" : null),
       categories: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
@@ -63,6 +63,7 @@ export default function ProductForm({
     if (isEditing) {
       form.setInitialValues(dataDetail);
       form.setValues(dataDetail);
+      form.setFieldValue("categories", dataDetail?.categoriesonproducts);
       if (dataDetail?.timeSaleEnd) {
         form.setFieldValue(
           "timeSaleEnd",
@@ -77,7 +78,7 @@ export default function ProductForm({
       }
     }
     if (isDirection) {
-      form.setFieldValue("name", dataDetail.name);
+      form.setFieldValue("title", dataDetail.name);
       form.setFieldValue("price", dataDetail.price);
       form.setFieldValue("description", dataDetail.description);
     }
@@ -128,7 +129,7 @@ export default function ProductForm({
               <Grid.Col span={12}>
                 <TextInput
                   withAsterisk
-                  {...form.getInputProps("name")}
+                  {...form.getInputProps("title")}
                   label="Tên sản phẩm"
                   type="text"
                   placeholder="Tên sản phẩm"
