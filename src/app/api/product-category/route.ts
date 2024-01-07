@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
         if (session?.user?.token) {
-            const productCategory = await prisma.productcategory.findMany({
+            const productCategory = await prisma.productCategory.findMany({
                 take: 10,
             });
             return NextResponse.json(productCategory);
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
-        const productCategory = await prisma.productcategory.create({
+        const productCategory = await prisma.productCategory.create({
             data: json,
         });
 

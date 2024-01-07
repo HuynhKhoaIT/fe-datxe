@@ -2,7 +2,7 @@ import prisma from "../prismadb";
 
 export async function getCategories() {
   try {
-    const categories = await prisma.productcategory.findMany({
+    const categories = await prisma.productCategory.findMany({
       take: 10,
     });
     return { categories };
@@ -13,7 +13,7 @@ export async function getCategories() {
 
 export async function createCategory(category: any) {
   try {
-    const categoryFromDB = await prisma.productcategory.create({
+    const categoryFromDB = await prisma.productCategory.create({
       data: category,
     });
     return { category: categoryFromDB };
@@ -24,7 +24,7 @@ export async function createCategory(category: any) {
 
 export async function updateCategory(id: number, category: any) {
   try {
-    const categoryFromDB = await prisma.productcategory.update({
+    const categoryFromDB = await prisma.productCategory.update({
       where: { id: Number(id) },
       data: category,
     });
@@ -36,7 +36,7 @@ export async function updateCategory(id: number, category: any) {
 
 export async function deleteCategory(id: number) {
   try {
-    const category = await prisma.productcategory.delete({
+    const category = await prisma.productCategory.delete({
       where: { id: Number(id) },
     });
     return { category };
@@ -47,7 +47,7 @@ export async function deleteCategory(id: number) {
 
 export async function getCategoryById(id: number) {
   try {
-    const category = await prisma.productcategory.findUnique({
+    const category = await prisma.productCategory.findUnique({
       where: { id: Number(id) },
     });
     return { category };
