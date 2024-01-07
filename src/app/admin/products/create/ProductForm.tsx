@@ -47,6 +47,7 @@ export default function ProductForm({
   categoryOptions = [1, 2, 4, 5],
   isDirection = false,
 }: any) {
+  console.log(dataDetail);
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {

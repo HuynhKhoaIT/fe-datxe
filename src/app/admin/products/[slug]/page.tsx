@@ -35,7 +35,6 @@ export default async function ProductSavePage({
     value: item.id.toString(),
     label: item.title,
   }));
-  console.log("product", product);
   return (
     <Box maw={"100%"} mx="auto">
       {/* <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>

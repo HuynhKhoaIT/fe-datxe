@@ -17,11 +17,19 @@ async function getListProduct() {
   }
   return products;
 }
+async function getResponse() {
+  const response = await fetch("/api/proudcts", {
+    method: "GET",
+  });
+  const data = await response.json(); // Extracting data as a JSON Object from the response
+  return data;
+}
 export default async function Home() {
   const initialCategoryData = await getCategories();
   const initialProductData = await getListProduct();
   const initialServiceData = await getListProduct();
-
+  const list = await getResponse();
+  console.log(list);
   return (
     <>
       <Header />
