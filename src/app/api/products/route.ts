@@ -48,11 +48,21 @@ export async function POST(request: Request) {
     try {
         const json = await request.json();
         const session = await getServerSession(authOptions);
-        let categoryId = 0;
-        if (!json.categoryId) {
+        let catArr: any = [];
+        if (!json.categories) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
-            categoryId = json.categoryId;
+            json.categories.forEach(function (id: number) {
+                catArr.push({
+                    assignedBy: session?.user?.name ?? '',
+                    assignedAt: new Date(),
+                    category: {
+                        connect: {
+                            id: parseInt(id.toString()),
+                        },
+                    },
+                });
+            });
         }
 
         if (session?.user?.token) {
@@ -72,17 +82,7 @@ export async function POST(request: Request) {
                     createdBy: 1,
                     garageId: 0,
                     categories: {
-                        create: [
-                            {
-                                assignedBy: session.user.name ?? '',
-                                assignedAt: new Date(),
-                                category: {
-                                    connect: {
-                                        id: parseInt(categoryId.toString()),
-                                    },
-                                },
-                            },
-                        ],
+                        create: catArr,
                     },
                 },
             });
