@@ -15,6 +15,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                 where: {
                     id: parseInt(id.toString()),
                 },
+                include: {
+                    categories: true,
+                },
             });
             return NextResponse.json(products);
         }
