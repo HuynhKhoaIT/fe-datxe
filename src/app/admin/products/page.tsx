@@ -5,7 +5,7 @@ import React from "react";
 import { getProducts } from "@/app/libs/prisma/product";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import styles from "./index.module.scss";
-import FooterAdmin from "@/app/components/page/footer/footerAdmin";
+import FooterAdmin from "@/app/components/page/footer/footer-admin";
 async function getData() {
   const { products } = await getProducts();
   if (!products) {

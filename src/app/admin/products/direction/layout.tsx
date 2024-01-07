@@ -1,7 +1,7 @@
 import { ReactNode, Suspense } from "react";
 import styles from "../index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footerAdmin";
+import FooterAdmin from "@/app/components/page/footer/footer-admin";
 interface IProps {
   children: ReactNode;
 }

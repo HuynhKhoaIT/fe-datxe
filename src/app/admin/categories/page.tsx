@@ -5,7 +5,7 @@ import { getCategories } from "@/app/libs/prisma/category";
 export const revalidate = 0;
 import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footerAdmin";
+import FooterAdmin from "@/app/components/page/footer/footer-admin";
 async function getData() {
   const { categories } = await getCategories();
   if (!categories) {

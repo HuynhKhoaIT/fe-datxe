@@ -2,7 +2,7 @@ import { getOrders } from "@/utils/order";
 import Orders from "../components/elements/dashboard/order/orders";
 import React from "react";
 import styles from "./index.module.scss";
-import FooterAdmin from "@/app/components/page/footer/FooterAdmin";
+import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import Breadcrumb from "../components/form/Breadcrumb";
 export default function DashboardAdmin() {
   const Breadcrumbs = [{ title: "Tổng quan" }];

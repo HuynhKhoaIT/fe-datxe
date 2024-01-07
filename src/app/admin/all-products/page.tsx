@@ -3,7 +3,7 @@ import ProductListPage from "./ProductListPage";
 import React from "react";
 import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footerAdmin";
+import FooterAdmin from "@/app/components/page/footer/footer-admin";
 export default async function ProductsManaga() {
   let garage_id: string = "9";
   const productsGara = await getProductByGar(garage_id.toString(), 20);
