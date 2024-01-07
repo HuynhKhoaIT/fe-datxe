@@ -3,6 +3,8 @@ import { LoadingComponent } from "../components/loading";
 import { SideBarFilter } from "../components/elements/shop-sidebar/sideBar";
 import { getCategories } from "@/utils/category";
 import { TableDataProduct } from "../components/pagination-area/pagination-area";
+export const revalidate = 0;
+
 export default async function Products() {
   const categorys = await getCategories();
 

@@ -8,6 +8,8 @@ import { MyFooter } from "./components/page/footer/footer";
 import ProductListItem from "./components/layout/ProductListItem";
 import Carousel from "./landing/carousel";
 import { getProducts } from "./libs/prisma/product";
+export const revalidate = 0;
+
 async function getListProduct() {
   const { products } = await getProducts();
   if (!products) {
