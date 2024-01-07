@@ -7,6 +7,8 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getProductDetail } from "@/utils/product";
 import { LoadingComponent } from "@/app/components/loading";
+import dynamic from "next/dynamic";
+
 export default function ProductSave({
   isDirection,
   categoryOptions = [],
@@ -27,12 +29,14 @@ export default function ProductSave({
   }, [isDirection]);
   return (
     <Box maw={"100%"} mx="auto">
-      <ProductForm
-        isEditing={false}
-        dataDetail={isDirection ? productDetail : []}
-        isDirection={isDirection}
-        categoryOptions={categoryOptions}
-      />
+      <Suspense>
+        <ProductForm
+          isEditing={false}
+          dataDetail={isDirection ? productDetail : []}
+          isDirection={isDirection}
+          categoryOptions={categoryOptions}
+        />
+      </Suspense>
     </Box>
   );
 }

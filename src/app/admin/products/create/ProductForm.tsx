@@ -51,9 +51,11 @@ export default function ProductForm({
   const form = useForm({
     initialValues: {
       name: "",
+      categories: [],
     },
     validate: {
       name: (value) => (value.length < 1 ? "Không được để trống" : null),
+      categories: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
@@ -79,7 +81,6 @@ export default function ProductForm({
       form.setFieldValue("description", dataDetail.description);
     }
   }, [dataDetail]);
-  console.log(dataDetail);
   const router = useRouter();
   const [car, setCar] = useState([{ car: "" }]);
 
@@ -168,6 +169,7 @@ export default function ProductForm({
               </Grid.Col>
               <Grid.Col span={6}>
                 <MultiSelect
+                  withAsterisk
                   {...form.getInputProps("categories")}
                   label="Danh mục"
                   checkIconPosition="right"
