@@ -50,10 +50,10 @@ export default function ProductForm({
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
-      name: "",
+      title: "",
     },
     validate: {
-      name: (value) => (value.length < 1 ? "Không được để trống" : null),
+      title: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function ProductForm({
       }
     }
     if (isDirection) {
-      form.setFieldValue("name", dataDetail.name);
+      form.setFieldValue("title", dataDetail.title);
       form.setFieldValue("price", dataDetail.price);
       form.setFieldValue("description", dataDetail.description);
     }
@@ -126,7 +126,7 @@ export default function ProductForm({
               <Grid.Col span={12}>
                 <TextInput
                   withAsterisk
-                  {...form.getInputProps("name")}
+                  {...form.getInputProps("title")}
                   label="Tên sản phẩm"
                   type="text"
                   placeholder="Tên sản phẩm"
