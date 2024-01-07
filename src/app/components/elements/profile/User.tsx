@@ -1,14 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Grid,
-  TextInput,
-  Select,
-  PasswordInput,
-  Group,
-  Radio,
-} from "@mantine/core";
+import React, { useState } from "react";
+import { Button, Grid, TextInput, Select, Group } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -16,13 +8,15 @@ import { getDistricts, getWards } from "@/utils/notion";
 import { updateAccount } from "@/utils/user";
 import { notifications } from "@mantine/notifications";
 import dayjs from "dayjs";
-
+import DateField from "../../form/DateField";
+import { useRouter } from "next/navigation";
 export default function UserProfile({
   myAccount,
   provinceData,
   districtData: dtData,
   wardData: wData,
 }: any) {
+  const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.token;
   const [districtData, setDistrictData] = useState<any>(dtData);
@@ -34,12 +28,12 @@ export default function UserProfile({
       province_id: myAccount.provinceId,
       district_id: myAccount.districtId,
       ward_id: myAccount.wardId,
-      dob: dayjs(myAccount.dob).toDate(),
+      dob: myAccount?.dob && dayjs(myAccount?.dob).toDate(),
       address: myAccount.address,
     },
 
     validate: {
-      // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      name: (value) => (value.length > 1 ? null : "Vui lòng nhập tên"),
     },
   });
   const handleProvince = async (value: any) => {
@@ -64,18 +58,13 @@ export default function UserProfile({
   };
 
   const handleUpdateProfile = async (values: any) => {
-    const dataUpdate = {
-      ...values,
-      province_id: parseInt(values.province_id),
-      district_id: parseInt(values.district_id),
-      ward_id: parseInt(values.ward_id),
-    };
     try {
-      const createdCar = await updateAccount(values, token ?? "");
+      await updateAccount(values, token ?? "");
       notifications.show({
         title: "Thành công",
         message: "Cập nhật thành công",
       });
+      router.refresh();
     } catch (error) {
       notifications.show({
         title: "Thất bại",
@@ -96,6 +85,7 @@ export default function UserProfile({
           <Grid gutter={16}>
             <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
               <TextInput
+                withAsterisk
                 {...form.getInputProps("name")}
                 label="Họ tên"
                 placeholder="Nguyễn Văn A"
@@ -104,11 +94,12 @@ export default function UserProfile({
           </Grid>
           <Grid gutter={16}>
             <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
-              <DateInput
+              <DateField
                 {...form.getInputProps("dob")}
                 label="Ngày sinh"
-                valueFormat="DD/MM/YYYY"
                 placeholder="Ngày sinh"
+                clearable={true}
+                maxDate={new Date()}
               />
             </Grid.Col>
             <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>

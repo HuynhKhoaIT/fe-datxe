@@ -3,7 +3,7 @@ export interface IProduct {
   productCode?: string;
   name?: string;
   description?: string;
-  thumbnail?: string;
+  images?: string;
   unitId?: BigInteger;
   categoryId?: BigInteger;
   entryPrice?: number;

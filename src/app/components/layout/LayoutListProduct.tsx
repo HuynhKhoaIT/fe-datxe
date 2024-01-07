@@ -1,6 +1,4 @@
 import { ReactNode, Suspense } from "react";
-import Link from "next/link";
-import { SideBarCategory } from "../elements/shop-sidebar/sideBarCategory";
 import Header from "../page/header/header";
 import { MyFooter } from "../page/footer/footer";
 

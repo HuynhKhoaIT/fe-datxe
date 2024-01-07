@@ -1,11 +1,11 @@
 import { getProductByGar } from "@/utils/product";
 import ProductListPage from "./ProductListPage";
-import prisma from "@/app/libs/prismadb";
-// export const dynamic = "force-dynamic";
 export const revalidate = 0;
-
 import React from "react";
-import { getProducts } from "@/app/libs/prisma";
+import { getProducts } from "@/app/libs/prisma/product";
+import Breadcrumb from "@/app/components/form/Breadcrumb";
+import styles from "./index.module.scss";
+import FooterAdmin from "@/app/components/page/footer/footer-admin";
 async function getData() {
   const { products } = await getProducts();
   if (!products) {
@@ -16,6 +16,15 @@ async function getData() {
 export default async function ProductsManaga() {
   let garage_id: string = "9";
   const products = await getData();
-  const productsGara = await getProductByGar(garage_id.toString(), 20);
-  return <ProductListPage dataSource={products} productsGara={productsGara} />;
+  const Breadcrumbs = [
+    { title: "Tổng quan", href: "/admin" },
+    { title: "Sản phẩm" },
+  ];
+  return (
+    <div className={styles.wrapper}>
+      <Breadcrumb breadcrumbs={Breadcrumbs} />
+      <ProductListPage dataSource={products} />
+      <FooterAdmin />
+    </div>
+  );
 }

@@ -10,7 +10,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
-import Link from "next/link";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { notifications } from "@mantine/notifications";
@@ -18,7 +17,6 @@ import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
-
   const form = useForm({
     initialValues: {
       image: "",
@@ -49,12 +47,12 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
         });
       }
       handlers.close();
-      router.push("/admin/categories");
+      router.back();
+      router.refresh();
       notifications.show({
         title: "Thành công",
         message: "Thành công",
       });
-      router.refresh();
     } catch (error) {
       handlers.close();
       notifications.show({
@@ -96,16 +94,15 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
         </Grid>
 
         <Group justify="end" style={{ marginTop: 60 }}>
-          <Link href={"/admin/categories"}>
-            <Button
-              variant="outline"
-              key="cancel"
-              color="red"
-              leftSection={<IconBan size={16} />}
-            >
-              Huỷ bỏ
-            </Button>
-          </Link>
+          <Button
+            variant="outline"
+            key="cancel"
+            color="red"
+            leftSection={<IconBan size={16} />}
+            onClick={() => router.back()}
+          >
+            Huỷ bỏ
+          </Button>
           <Button
             loading={loading}
             style={{ marginLeft: "12px" }}

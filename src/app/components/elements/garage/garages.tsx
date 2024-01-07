@@ -1,7 +1,7 @@
 "use client";
 import { IGarage } from "@/interfaces/garage";
 import { getGaragesNear } from "@/utils/garage";
-import { GarageItem } from "../garageItem/garageItem";
+import { GarageItem } from "./GarageItem";
 import { useState } from "react";
 
 export default function Garages({

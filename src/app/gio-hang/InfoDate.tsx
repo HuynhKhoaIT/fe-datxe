@@ -12,6 +12,7 @@ import {
 } from "@tabler/icons-react";
 import { ActionIcon, rem } from "@mantine/core";
 import dayjs from "dayjs";
+import DateField from "../components/form/DateField";
 
 export default function InfoDate({ setDate, setTime }: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -37,16 +38,7 @@ export default function InfoDate({ setDate, setTime }: any) {
         <Card className="bg-white mb-20 p-4">
           <Grid gutter={16}>
             <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
-              <DateInput
-                label="Ngày"
-                valueFormat={"DD/MM/YYYY"}
-                name="date"
-                defaultValue={new Date()}
-                style={{ width: "100%" }}
-                onChange={(date) => {
-                  handleDateChange(date?.toString());
-                }}
-              />
+              <DateField label="Ngày" name="date" defaultValue={new Date()} />
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>

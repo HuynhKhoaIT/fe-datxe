@@ -3,24 +3,19 @@ import { IProduct } from "@/interfaces/product";
 import { Card, Image, Badge, Group, Flex, Box } from "@mantine/core";
 import styles from "./ProductItem.module.scss";
 import Typo from "../Typo";
+import ImageField from "../../form/ImageField";
 export default function ProductItem({
-  key,
   product,
 }: {
   key: number;
   product: IProduct;
 }) {
   return (
-    <Box key={key} w={"100%"}>
+    <Box w={"100%"}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section>
           <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>
-            <Image
-              classNames={{ root: styles.productImg }}
-              src={product.thumbnail}
-              height={"160px"}
-              alt="Norway"
-            />
+            <ImageField src={product?.images} height={"160"} />
           </Link>
         </Card.Section>
 
@@ -42,7 +37,7 @@ export default function ProductItem({
             <del>{product.price?.toLocaleString()}đ</del>
           </Typo>
           <Typo size="sub" type="bold" style={{ color: "var(--theme-color)" }}>
-            {product.price?.toLocaleString()}đ{" "}
+            {product?.salePrice?.toLocaleString()}đ{" "}
           </Typo>
         </Flex>
       </Card>

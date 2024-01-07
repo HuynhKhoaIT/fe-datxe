@@ -4,6 +4,7 @@ import {
   Card,
   Grid,
   Group,
+  MultiSelect,
   NumberInput,
   Select,
   Switch,
@@ -13,10 +14,8 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
-import Link from "next/link";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { DateInput } from "@mantine/dates";
 import { useEffect, useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
 import InfoCar from "../[slug]/InfoCar";
@@ -24,6 +23,7 @@ import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
+import DateTimeField from "@/app/components/form/DateTimeField";
 const formats = [
   "header",
   "font",
@@ -44,7 +44,7 @@ const formats = [
 export default function ProductForm({
   isEditing = false,
   dataDetail = [],
-  categoryOptions = [1,2,4,5],
+  categoryOptions = [1, 2, 4, 5],
   isDirection = false,
 }: any) {
   const [loading, handlers] = useDisclosure();
@@ -90,7 +90,6 @@ export default function ProductForm({
   };
   const handleSubmit = async (values: any) => {
     handlers.open();
-    // values.categoryId = parseInt(values.categoryId);
     try {
       if (!isEditing) {
         await fetch(`/api/products`, {
@@ -104,12 +103,12 @@ export default function ProductForm({
         });
       }
       handlers.close();
-      router.push("/admin/products");
+      router.back();
+      router.refresh();
       notifications.show({
         title: "Thành công",
         message: "Thêm sản phẩm thành công",
       });
-      router.refresh();
     } catch (error) {
       handlers.close();
       notifications.show({
@@ -119,13 +118,14 @@ export default function ProductForm({
     }
   };
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(handleSubmit)} style={{ padding: "20px" }}>
       <Grid gutter={12}>
         <Grid.Col span={8}>
           <Card withBorder shadow="sm">
             <Grid gutter={10}>
               <Grid.Col span={12}>
                 <TextInput
+                  withAsterisk
                   {...form.getInputProps("name")}
                   label="Tên sản phẩm"
                   type="text"
@@ -153,19 +153,35 @@ export default function ProductForm({
                 />
               </Grid.Col>
               <Grid.Col span={6}>
-                <DateInput
+                <DateTimeField
                   {...form.getInputProps("timeSaleStart")}
-                  valueFormat="DD/MM/YYYY"
                   label="Thời gian bắt đầu"
                   placeholder="Thời gian bắt đầu"
                 />
               </Grid.Col>
               <Grid.Col span={6}>
-                <DateInput
+                <DateTimeField
                   {...form.getInputProps("timeSaleEnd")}
-                  valueFormat="DD/MM/YYYY"
                   label="Thời gian kết thúc"
                   placeholder="Thời giankết thúc"
+                />
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <MultiSelect
+                  {...form.getInputProps("categories")}
+                  label="Danh mục"
+                  checkIconPosition="right"
+                  placeholder="Danh mục"
+                  data={categoryOptions}
+                />
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <NumberInput
+                  {...form.getInputProps("quantity")}
+                  label="Số lượng"
+                  min={0}
+                  placeholder="Số lượng"
+                  thousandSeparator=","
                 />
               </Grid.Col>
             </Grid>
@@ -203,17 +219,6 @@ export default function ProductForm({
             <Grid>
               <Grid.Col span={12}>
                 <Select
-                  {...form.getInputProps("categoryId")}
-                  label="Danh mục"
-                  checkIconPosition="right"
-                  placeholder="Danh mục"
-                  data={categoryOptions}
-                />
-              </Grid.Col>
-            </Grid>
-            <Grid>
-              <Grid.Col span={12}>
-                <Select
                   {...form.getInputProps("status")}
                   label="Trạng thái"
                   checkIconPosition="right"
@@ -229,20 +234,12 @@ export default function ProductForm({
               <Grid.Col span={12}>
                 <BasicDropzone />
               </Grid.Col>
-              <Grid.Col span={12}>
+              {/* <Grid.Col span={12}>
                 <Switch onLabel="ON" offLabel="OFF" label="Quản lý kho" />
-              </Grid.Col>
+              </Grid.Col> */}
             </Grid>
-            <Grid gutter={10}>
-              <Grid.Col span={6}>
-                <NumberInput
-                  {...form.getInputProps("quantity")}
-                  label="Số lượng"
-                  min={0}
-                  placeholder="Số lượng"
-                  thousandSeparator=","
-                />
-              </Grid.Col>
+            <Grid gutter={10} mt={24}>
+              {/*               
               <Grid.Col span={6}>
                 <NumberInput
                   min={0}
@@ -251,7 +248,7 @@ export default function ProductForm({
                   thousandSeparator=","
                   {...form.getInputProps("priceSale")}
                 />
-              </Grid.Col>
+              </Grid.Col> */}
               <Grid.Col span={12}>
                 <Switch onLabel="ON" offLabel="OFF" label="Công khai" />
               </Grid.Col>
@@ -261,16 +258,15 @@ export default function ProductForm({
       </Grid>
 
       <Group justify="end" style={{ marginTop: 60 }}>
-        <Link href={"/admin/products"}>
-          <Button
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
-          >
-            Huỷ bỏ
-          </Button>
-        </Link>
+        <Button
+          variant="outline"
+          key="cancel"
+          color="red"
+          leftSection={<IconBan size={16} />}
+          onClick={() => router.back()}
+        >
+          Huỷ bỏ
+        </Button>
         <Button
           loading={loading}
           style={{ marginLeft: "12px" }}

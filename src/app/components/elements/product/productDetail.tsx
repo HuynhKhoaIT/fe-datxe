@@ -116,7 +116,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
           <Grid.Col span={5}>
             <div className="item-gallery">
               <div className="flexslider-thumbnails">
-                <ProductSlider images={ProductDetail?.thumbnail} />
+                <ProductSlider images={ProductDetail?.images} />
               </div>
             </div>
           </Grid.Col>
@@ -126,7 +126,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
               <div className="single-item-price">
                 <h4>
                   <del>{ProductDetail.price?.toLocaleString()}đ</del>
-                  <span>{ProductDetail.price?.toLocaleString()}đ</span>
+                  <span>{ProductDetail.salePrice?.toLocaleString()}đ</span>
                 </h4>
               </div>
 
@@ -203,8 +203,8 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
         </Grid>
       </Grid.Col>
       <Grid.Col span={12}>
-        {ProductDetail && ProductDetail.garage && (
-          <ProductGarage garage={ProductDetail.garage} />
+        {ProductDetail && ProductDetail.garageId && (
+          <ProductGarage garage={ProductDetail.garageId} />
         )}
       </Grid.Col>
       <Grid.Col span={12}>

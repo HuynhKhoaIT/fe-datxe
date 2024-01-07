@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./index.module.scss";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-
 import {
   Box,
   Button,
@@ -19,6 +18,7 @@ import {
   IconChevronRight,
   IconEye,
   IconPencil,
+  IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
@@ -72,7 +72,7 @@ export default function CategoryListPage({ dataSource }: any) {
       name: "title",
       dataIndex: ["title"],
       render: (dataRow: any) => {
-        return <h5>{dataRow}</h5>;
+        return <span>{dataRow}</span>;
       },
     },
     {
@@ -123,16 +123,13 @@ export default function CategoryListPage({ dataSource }: any) {
   ];
   return (
     <div className={styles.content}>
-      <Flex justify={"space-between"} align={"center"}>
-        <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
-          Tất cả danh mục sản phẩm
-        </Typo>
+      <Flex justify={"end"} align={"center"}>
         <Link
           href={{
             pathname: `/admin/categories/create`,
           }}
         >
-          <Button>Thêm danh mục</Button>
+          <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
         </Link>
       </Flex>
       <div className="row">

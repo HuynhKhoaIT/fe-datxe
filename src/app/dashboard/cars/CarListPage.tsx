@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getCars, deleteCar, setCarDefault } from "@/utils/car";
 import { useSession } from "next-auth/react";
 import {
@@ -10,36 +10,18 @@ import {
   IconBan,
 } from "@tabler/icons-react";
 import PreviewModal from "./PreviewModal";
-import UpdateModal from "./UpdateModal";
-import AddCarModal from "./AddCarModal";
-import {
-  Table,
-  Checkbox,
-  Radio,
-  Loader,
-  Center,
-  Button,
-  Modal,
-  Group,
-  Pagination,
-  LoadingOverlay,
-  Box,
-} from "@mantine/core";
-import { getMyAccount } from "@/utils/user";
+import { Radio, Button, Modal, Group, Pagination } from "@mantine/core";
 import { getModels, getYears } from "@/utils/branch";
 import { useDisclosure } from "@mantine/hooks";
-export default function CarComponent({ carsData: cars, myAccount }: any) {
+import TableBasic from "@/app/components/table/Tablebasic";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { notifications } from "@mantine/notifications";
+
+export default function CarListPage({ carsData, myAccount }: any) {
+  const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.token;
-  const [visible, handlers] = useDisclosure(false);
-  const [
-    openedAddCar,
-    { open: openAddCar, close: closeAddCar },
-  ] = useDisclosure(false);
-  const [
-    openedUpdateCar,
-    { open: openUpdateCar, close: closeUpdateCar },
-  ] = useDisclosure(false);
   const [
     openedPreviewCar,
     { open: openPreviewCar, close: closePreviewCar },
@@ -48,68 +30,34 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
     openedDeleteCar,
     { open: openDeleteCar, close: closeDeleteCar },
   ] = useDisclosure(false);
-  const [models, setModels] = useState<any>();
-  const [yearCar, setYearCar] = useState<any>();
-
   const [detail, setDetail] = useState<any>({});
   const [deleteRow, setDeleteRow] = useState("");
-  const [carsData, setCarsData] = useState<any>(cars);
   const [openModalCarDefault, setOpenModalCarDefault] = useState(false);
-  const fetchCars = async () => {
-    handlers.open();
-    try {
-      if (token) {
-        const fetchedCars = await getCars(token);
-        setCarsData(fetchedCars);
-        handlers.close();
-      }
-    } catch (error) {
-      console.error("Error fetching cars:", error);
-      handlers.close();
-    }
-  };
-  // useEffect(() => {
-  //   fetchCars();
-  // }, [token]);
 
   const handleDeleteCar = async (carId: string) => {
     try {
       await deleteCar(carId, token ?? "");
-      fetchCars();
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá thành công",
+      });
     } catch (error) {
       console.error("Error deleting car:", error);
+      notifications.show({
+        title: "Thất bại",
+        message: "Xoá thất bại",
+      });
     }
+    router.refresh();
   };
   const handleSetCarDefault = async (CarId: string) => {
     try {
-      const carDefault = await setCarDefault(CarId, token ?? "");
+      await setCarDefault(CarId, token ?? "");
     } catch (error) {
       console.error("Error set car:", error);
     }
   };
 
-  const selectBrand = async (value: number) => {
-    try {
-      const dong_xe: any = await getModels(value);
-      const newModels = dong_xe?.map((item: any) => ({
-        value: item.id?.toString() || "",
-        label: item.name || "",
-      }));
-      setModels(newModels);
-      openUpdateCar();
-    } catch (error) {}
-  };
-  const selectYearCar = async (value: number) => {
-    try {
-      const yearCarData: any = await getYears(value);
-      const newYearCar = yearCarData?.map((year: any) => ({
-        value: year.id?.toString() || "",
-        label: year.name || "",
-      }));
-      setYearCar(newYearCar);
-      openUpdateCar();
-    } catch (error) {}
-  };
   // select xe mặc định
   const [selectedRow, setSelectedRow] = useState<any>(myAccount?.carIdDefault);
   const [dataCarDefault, setdataCartDefault] = useState<any>();
@@ -134,33 +82,57 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-  const renderRows = () => {
-    if (visible) {
-      return (
-        <Box w={"100%"} h={100}>
-          <LoadingOverlay
-            visible={visible}
-            zIndex={1000}
-            overlayProps={{ radius: "sm", blur: 2 }}
-          />
-        </Box>
-      );
-    } else {
-      return paginatedData?.map((record: any) => (
-        <Table.Tr key={record.id}>
-          <Table.Td>
+  const columns = [
+    {
+      label: <span>Mặc định</span>,
+      name: "carDefault",
+      dataIndex: [],
+      width: "90px",
+      textAlign: "center",
+      render: (dataRow: any) => {
+        return (
+          <>
             <Radio
               style={{ display: "flex", justifyContent: "center" }}
-              checked={selectedRow === record.id}
-              onChange={() => handleRadioChange(record)}
+              checked={selectedRow === dataRow.id}
+              onChange={() => handleRadioChange(dataRow)}
             />
-          </Table.Td>
-          <Table.Td>{record.licensePlates}</Table.Td>
-          <Table.Td>{record.color}</Table.Td>
-          <Table.Td>{record.brandCarName?.name}</Table.Td>
-          <Table.Td>{record.modelCarName?.name}</Table.Td>
-          <Table.Td>{record.registrationDate}</Table.Td>
-          <Table.Td>
+          </>
+        );
+      },
+    },
+    {
+      label: <span>Biển số</span>,
+      name: "licensePlates",
+      dataIndex: ["licensePlates"],
+    },
+    {
+      label: <span>Màu xe</span>,
+      name: "color",
+      dataIndex: ["color"],
+    },
+    {
+      label: <span>Hãng xe</span>,
+      name: "bandName",
+      dataIndex: ["brandCarName", "name"],
+    },
+    {
+      label: <span>Dòng xe</span>,
+      name: "modelName",
+      dataIndex: ["modelCarName", "name"],
+    },
+    // {
+    //   label: <span>Năm sản xuất</span>,
+    //   name: "color",
+    //   dataIndex: ["color"],
+    // },
+    {
+      label: <span>Hành động</span>,
+      dataIndex: [],
+      width: "120px",
+      render: (record: any) => {
+        return (
+          <>
             <Button
               size="xs"
               p={5}
@@ -172,21 +144,18 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
             >
               <IconEye size={16} />
             </Button>
-            <Button
-              size="xs"
-              style={{ margin: "0 5px" }}
-              variant="transparent"
-              color="gray"
-              p={5}
-              onClick={() => {
-                console.log(record);
-                setDetail(record);
-                selectBrand(record?.automakerId || 0);
-                selectYearCar(record?.carNameId || 0);
-              }}
-            >
-              <IconPencil size={16} />
-            </Button>
+            <Link href={`/dashboard/cars/${record.id}`}>
+              <Button
+                size="xs"
+                style={{ margin: "0 5px" }}
+                variant="transparent"
+                color="gray"
+                p={5}
+              >
+                <IconPencil size={16} />
+              </Button>
+            </Link>
+
             <Button
               size="xs"
               p={5}
@@ -199,12 +168,11 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
             >
               <IconTrash size={16} color="red" />
             </Button>
-          </Table.Td>
-        </Table.Tr>
-      ));
-    }
-  };
-
+          </>
+        );
+      },
+    },
+  ];
   return (
     <div className="user-profile-wrapper">
       <div className="user-profile-card profile-ad">
@@ -214,29 +182,14 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
             <div className="user-profile-search">
               <div className="form-group"></div>
             </div>
-            <Button className="theme-btn btn-add-car" onClick={openAddCar}>
-              Thêm xe
-            </Button>
+            <Link href={{ pathname: `/dashboard/cars/create` }}>
+              <Button className="theme-btn btn-add-car">Thêm xe</Button>
+            </Link>
           </div>
         </div>
         <div className="col-lg-12">
           <div className="table-responsive" style={{ overflowY: "hidden" }}>
-            <Table>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th align="center">Mặc định</Table.Th>
-                  <Table.Th>Biển số</Table.Th>
-                  <Table.Th>Màu xe</Table.Th>
-                  <Table.Th>Hãng xe</Table.Th>
-                  <Table.Th>Dòng xe</Table.Th>
-                  <Table.Th>Ngày đăng ký</Table.Th>
-                  <Table.Th>Hành động</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody style={{ position: "relative" }}>
-                {renderRows()}
-              </Table.Tbody>
-            </Table>
+            <TableBasic data={paginatedData} columns={columns} loading={true} />
             <Pagination
               style={{
                 marginTop: "16px",
@@ -298,28 +251,12 @@ export default function CarComponent({ carsData: cars, myAccount }: any) {
           </Button>
         </Group>
       </Modal>
-      <AddCarModal
-        width={800}
-        opened={openedAddCar}
-        close={closeAddCar}
-        fetchCars={() => fetchCars()}
-      />
       <PreviewModal
         opened={openedPreviewCar}
         onOk={closePreviewCar}
         onCancel={closePreviewCar}
         width={800}
         data={detail}
-      />
-      <UpdateModal
-        opened={openedUpdateCar}
-        fetchCars={() => fetchCars()}
-        onCancel={closeUpdateCar}
-        data={detail ? detail : {}}
-        models={models}
-        yearCar={yearCar}
-        selectBrand={selectBrand}
-        selectYearCar={selectYearCar}
       />
     </div>
   );

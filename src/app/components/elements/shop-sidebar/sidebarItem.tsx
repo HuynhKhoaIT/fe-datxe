@@ -1,23 +1,23 @@
 "use client";
-import { ICategory } from "@/interfaces/category";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-export function SideBarItem({ category }: { category: ICategory }) {
+export function SideBarItem({ dataDetail, keyName }: any) {
   const router = useRouter();
-  const catId = category?.id;
-  const name = category ? category?.name : "";
+  const itemId = dataDetail?.id;
+  const name = dataDetail ? dataDetail?.name : "";
   const pathname = usePathname();
   const searchParams = useSearchParams();
   let params = new URLSearchParams(searchParams);
   function handleClick(checkbox: HTMLInputElement) {
-    const checkboxes = document.querySelectorAll('input[name="category"]');
-    checkboxes.forEach((item) => {
-      if (item !== checkbox) (item as HTMLInputElement).checked = false;
-    });
+    // const checkboxes = document.querySelectorAll('input[name="category"]');
+    // console.log("checkboxes", checkboxes);
+    // checkboxes.forEach((item) => {
+    //   if (item !== checkbox) (item as HTMLInputElement).checked = false;
+    // });
 
     if (checkbox.checked === false) {
-      params?.delete("cat_id");
+      params?.delete(keyName.toString());
     } else {
-      params?.set("cat_id", `${catId}`);
+      params?.set(keyName.toString(), `${itemId}`);
     }
     const path = pathname + "?" + params?.toString();
     router.push(path);
@@ -36,11 +36,11 @@ export function SideBarItem({ category }: { category: ICategory }) {
           name="category"
           className="form-check-input"
           type="checkBox"
-          id={category.id?.toString()}
-          checked={checkHandler("cat_id", catId?.toString() ?? "")}
+          id={dataDetail.id?.toString()}
+          checked={checkHandler(keyName, itemId?.toString() ?? "")}
           onClick={(e) => handleClick(e.target as HTMLInputElement)}
         />
-        <label className="form-check-label" htmlFor={category.id?.toString()}>
+        <label className="form-check-label" htmlFor={dataDetail.id?.toString()}>
           {name}
         </label>
       </div>

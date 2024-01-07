@@ -4,6 +4,6 @@ interface IProps {
   children: ReactNode;
 }
 
-export default function AdminLayout({ children }: IProps) {
+export default function CarLayout({ children }: IProps) {
   return <div className={styles.content}>{children}</div>;
 }

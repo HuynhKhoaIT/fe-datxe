@@ -7,7 +7,10 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getProductDetail } from "@/utils/product";
 import { LoadingComponent } from "@/app/components/loading";
-export default function ProductSave({ isDirection }: any) {
+export default function ProductSave({
+  isDirection,
+  categoryOptions = [],
+}: any) {
   const searchParams = useSearchParams();
   const productId = searchParams.get("productId");
   const [productDetail, setProductDetail] = useState<any>();
@@ -23,11 +26,12 @@ export default function ProductSave({ isDirection }: any) {
     }
   }, [isDirection]);
   return (
-    <Box maw={"100%"} mx="auto" className={styles.content}>
+    <Box maw={"100%"} mx="auto">
       <ProductForm
         isEditing={false}
         dataDetail={isDirection ? productDetail : []}
         isDirection={isDirection}
+        categoryOptions={categoryOptions}
       />
     </Box>
   );

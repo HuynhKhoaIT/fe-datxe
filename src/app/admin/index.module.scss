@@ -1,16 +1,19 @@
 .wrapper {
     display: flex;
     width: 100%;
-    gap: 40px;
-    padding: 40px 20px;
     position: relative;
-    height: 100%;
+    height: calc(100vh - 111px);
     .navBar {
         flex-shrink: 0;
         width: 360px;
-        height: 100%;
     }
     .content {
         width: 100%;
     }
+}
+.wrapperAdmin {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-left: 20px;
 }

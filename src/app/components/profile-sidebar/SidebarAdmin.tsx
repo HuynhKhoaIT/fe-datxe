@@ -41,7 +41,17 @@ const SidebarAdmin = () => {
             (page == "products" || pageUpdate == "products") && "active"
           }`}
         >
-          <i className="far fa-layer-group"></i>Sản phẩm
+          <i className="far fa-layer-group"></i>Sản phẩm trên sàn
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/admin/all-products"
+          className={`list-group-item ${
+            (page == "all-products" || pageUpdate == "all-products") && "active"
+          }`}
+        >
+          <i className="far fa-layer-group"></i>Sản phẩm trong kho
         </Link>
       </li>
       <li>

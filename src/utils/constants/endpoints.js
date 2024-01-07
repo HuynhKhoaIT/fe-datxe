@@ -23,5 +23,7 @@ export const GET_PROVINCE_ENDPOINT = `${process.env.apiGuest}/provinces`;
 export const GET_DISTRICT_ENDPOINT = `${process.env.apiGuest}/get-districts`;
 export const GET_WARD_ENDPOINT = `${process.env.apiGuest}/get-wards`;
 export const GET_PROFILE_ENDPOINT = `${process.env.apiUserV3}/my-account`;
+export const GET_ORDER_GARAGE_ENDPOINT = `${process.env.apiUserV3}/orders/get-by-garage`;
+
 
 
