@@ -5,11 +5,37 @@ import { authOptions } from '../auth/[...nextauth]/route';
 
 export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const categoryId = searchParams.get('categoryId');
+        const searchText = searchParams.get('s');
         const session = await getServerSession(authOptions);
+        let categories = {};
+        let name = {
+            search: '',
+        };
+        if (searchText) {
+            name = {
+                search: searchText.toString(),
+            };
+        }
+        if (categoryId) {
+            categories = {
+                some: {
+                    category: {
+                        id: parseInt(categoryId!),
+                    },
+                },
+            };
+        }
+        const productFindData = {
+            take: 10,
+            where: {
+                categories,
+            },
+        };
         if (session?.user?.token) {
-            const products = await prisma.product.findMany({
-                take: 10,
-            });
+            const products = await prisma.product.findMany(productFindData);
+
             return NextResponse.json(products);
         }
         throw new Error('Chua dang nhap');
