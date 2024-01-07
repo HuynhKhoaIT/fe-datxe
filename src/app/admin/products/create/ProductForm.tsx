@@ -56,7 +56,7 @@ export default function ProductForm({
     },
     validate: {
       title: (value) => (value.length < 1 ? "Không được để trống" : null),
-      categories: (value) => (value.length < 1 ? "Không được để trống" : null),
+      // categories: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
   useEffect(() => {

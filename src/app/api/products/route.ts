@@ -9,7 +9,7 @@ export async function GET(request: Request) {
         const categoryId = searchParams.get('categoryId');
         const searchText = searchParams.get('s');
         const session = await getServerSession(authOptions);
-        let categoriesonproducts = {};
+        let categories = {};
         let name = {
             search: '',
         };
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
             };
         }
         if (categoryId) {
-            categoriesonproducts = {
+            categories = {
                 some: {
                     category: {
                         id: parseInt(categoryId!),
@@ -30,13 +30,13 @@ export async function GET(request: Request) {
         const productFindData = {
             take: 10,
             where: {
-                categoriesonproducts,
+                categories,
                 // title: {
                 //     search: searchText,
                 // },
             },
             include: {
-                categoriesonproducts: true,
+                categories: true,
             },
         };
         if (session?.user?.token) {
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
                     assignedAt: new Date(),
                     category: {
                         connect: {
-                            id: parseInt(id.toString()),
+                            id: 2,
                         },
                     },
                 });
@@ -74,8 +74,8 @@ export async function POST(request: Request) {
         if (session?.user?.token) {
             const product = await prisma.product.create({
                 data: {
-                    title: json.title.toString(),
-                    slug: json.title.toString(),
+                    name: json.title,
+                    slug: json.title,
                     price: json.price,
                     salePrice: json.salePrice,
                     productId: json.productId ?? 0,
@@ -88,9 +88,9 @@ export async function POST(request: Request) {
                     status: json.status,
                     createdBy: 1,
                     garageId: 0,
-                    categoriesonproducts: {
-                        create: catArr,
-                    },
+                    // categories: {
+                    //     create: catArr,
+                    // },
                 },
             });
 

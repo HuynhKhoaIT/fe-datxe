@@ -11,7 +11,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
         }
         const session = await getServerSession(authOptions);
         if (session?.user?.token) {
-            const productCategory = await prisma.productcategory.findUnique({
+            const productCategory = await prisma.productCategory.findUnique({
                 where: {
                     id: parseInt(id.toString()),
                 },
@@ -32,13 +32,13 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
         }
 
         const json = await request.json();
-        const productCategory = await prisma.productcategory.findUnique({
+        const productCategory = await prisma.productCategory.findUnique({
             where: {
                 id: parseInt(id.toString()),
             },
         });
 
-        const updatedPost = await prisma.productcategory.update({
+        const updatedPost = await prisma.productCategory.update({
             where: {
                 id: parseInt(id.toString()),
             },
@@ -60,7 +60,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: n
         return new NextResponse("Missing 'id' parameter");
     }
 
-    const deletePost = await prisma.productcategory.update({
+    const deletePost = await prisma.productCategory.update({
         where: {
             id: parseInt(id.toString()),
         },

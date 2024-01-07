@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                     id: parseInt(id.toString()),
                 },
                 include: {
-                    categoriesonproducts: true,
+                    categories: true,
                 },
             });
             return NextResponse.json(products);
@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     id: parseInt(id.toString()),
                 },
                 data: {
-                    title: json.title,
+                    name: json.title,
                     price: json.price,
                     salePrice: json.salePrice,
                     productId: json.productId ?? 0,
@@ -76,9 +76,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     status: json.status,
                     createdBy: 1,
                     garageId: 0,
-                    // categories: {
-                    //     create: catArr,
-                    // },
+                    categories: {
+                        create: catArr,
+                    },
                 },
             });
 
