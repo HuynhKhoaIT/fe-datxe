@@ -18,7 +18,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                 },
                 include: {
                     categories: true,
-                    brands: true,
                 },
             });
             return NextResponse.json(products);
@@ -48,7 +47,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     catArr.push({
                         assignedBy: session?.user?.name ?? '',
                         assignedAt: new Date(),
-
                         category: {
                             connect: {
                                 id: parseInt(id.toString()),
@@ -56,6 +54,71 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                         },
                     });
                 });
+            }
+
+            let brands = {};
+            let brandArr: any = [];
+            if (json.brands) {
+                let brandArrTemp: any = [];
+                json.brands.forEach(function (b: any) {
+                    const assignedAt = new Date();
+                    const assignedBy = session?.user?.name ?? 'Admin';
+                    if (b.yearId) {
+                        const yearArr = b.yearId.split(',');
+                        yearArr.forEach(function (y: any) {
+                            let yO = {
+                                assignedBy: assignedBy,
+                                assignedAt: assignedAt,
+                                carBrandType: 'CARYEAR',
+                                carModel: {
+                                    connect: {
+                                        id: Number(y),
+                                    },
+                                },
+                            };
+                            if (!brandArrTemp.includes(Number(y))) {
+                                brandArrTemp.push(Number(y));
+                                brandArr.push(yO);
+                            }
+                        });
+                    }
+                    if (b.nameId) {
+                        let bO = {
+                            assignedBy: assignedBy,
+                            assignedAt: assignedAt,
+                            carBrandType: 'CARNAME',
+                            carModel: {
+                                connect: {
+                                    id: Number(b.nameId),
+                                },
+                            },
+                        };
+                        if (!brandArrTemp.includes(Number(b.nameId))) {
+                            brandArrTemp.push(Number(b.nameId));
+                            brandArr.push(bO);
+                        }
+                    }
+                    if (b.brandId) {
+                        let cO = {
+                            assignedBy: assignedBy,
+                            assignedAt: assignedAt,
+                            carBrandType: 'CARYEAR',
+                            carModel: {
+                                connect: {
+                                    id: Number(b.brandId),
+                                },
+                            },
+                        };
+                        if (!brandArrTemp.includes(Number(b.brandId))) {
+                            brandArrTemp.push(Number(b.brandId));
+                            brandArr.push(cO);
+                        }
+                    }
+                });
+                brands = {
+                    deleteMany: {},
+                    create: brandArr,
+                };
             }
             const updatedPost = await prisma.product.update({
                 where: {
@@ -87,6 +150,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                             },
                         })),
                     },
+                    brands,
                 },
                 include: {
                     categories: true,
