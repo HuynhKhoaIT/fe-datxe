@@ -50,10 +50,10 @@ export default function ProductForm({
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
-      title: "",
+      name: "",
     },
     validate: {
-      title: (value) => (value.length < 1 ? "Không được để trống" : null),
+      name: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
@@ -72,9 +72,16 @@ export default function ProductForm({
           dayjs(dataDetail?.timeSaleStart).toDate()
         );
       }
+      if (dataDetail?.categories?.length > 0) {
+        const dataOption = dataDetail?.categories?.map((item: any) =>
+          item.categoryId.toString()
+        );
+        console.log(dataOption);
+        form.setFieldValue("categories", dataOption);
+      }
     }
     if (isDirection) {
-      form.setFieldValue("title", dataDetail.title);
+      form.setFieldValue("name", dataDetail.name);
       form.setFieldValue("price", dataDetail.price);
       form.setFieldValue("description", dataDetail.description);
     }
@@ -89,6 +96,7 @@ export default function ProductForm({
     setCar(newCar);
   };
   const handleSubmit = async (values: any) => {
+    values.title = values.name;
     handlers.open();
     try {
       if (!isEditing) {
@@ -126,7 +134,7 @@ export default function ProductForm({
               <Grid.Col span={12}>
                 <TextInput
                   withAsterisk
-                  {...form.getInputProps("title")}
+                  {...form.getInputProps("name")}
                   label="Tên sản phẩm"
                   type="text"
                   placeholder="Tên sản phẩm"

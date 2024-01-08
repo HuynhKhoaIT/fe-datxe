@@ -75,9 +75,13 @@ export const getProductsRelated = async (
   }
 };
 
-export const getProductByGar = async (garageId: string, limit = 8) => {
+export const getProductByGar = async (
+  garageId: string,
+  limit = 8,
+  page = 1
+) => {
   try {
-    let url = `${GET_PRODUCTS_ENDPOINT}?garage_id=${garageId}&limit=${limit}`;
+    let url = `${GET_PRODUCTS_ENDPOINT}?page=${page}&garage_id=${garageId}&limit=${limit}`;
     const res = await axios.get(url);
     return res.data.data as Promise<IProduct[]>;
   } catch (error) {

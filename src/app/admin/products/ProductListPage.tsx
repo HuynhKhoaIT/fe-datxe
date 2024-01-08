@@ -30,7 +30,15 @@ import TableBasic from "@/app/components/table/Tablebasic";
 export const revalidate = 0;
 import { useRouter } from "next/navigation";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-export default function ProductListPage({ dataSource }: any) {
+import PaginationBase from "@/app/components/form/PaginationBase";
+import SearchForm from "@/app/components/form/SearchForm";
+
+export default function ProductListPage({
+  dataSource,
+  setPage,
+  activePage,
+  categoryOptions,
+}: any) {
   // console.log(productsGara);
   const router = useRouter();
   const [deleteRow, setDeleteRow] = useState();
@@ -76,8 +84,8 @@ export default function ProductListPage({ dataSource }: any) {
     },
     {
       label: <span>Tên sản phẩm</span>,
-      name: "title",
-      dataIndex: ["title"],
+      name: "name",
+      dataIndex: ["name"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
@@ -150,8 +158,22 @@ export default function ProductListPage({ dataSource }: any) {
     },
   ];
   const [activeTab, setActiveTab] = useState<string | null>("product");
+  const searchData = [
+    {
+      name: "s",
+      placeholder: "Tên sản phẩm",
+      type: "input",
+    },
+    {
+      name: "categoryId",
+      placeholder: "Danh mục",
+      type: "select",
+      data: categoryOptions,
+    },
+  ];
   return (
     <div className={styles.listPage}>
+      <SearchForm searchData={searchData} />
       <Flex justify={"end"} align={"center"}>
         {/* <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
           Danh sách sản phẩm
@@ -166,6 +188,7 @@ export default function ProductListPage({ dataSource }: any) {
       </Flex>
       <Space h={20} />
       <TableBasic data={dataSource} columns={columns} loading={true} />
+      <PaginationBase activePage={activePage} setPage={setPage} />
 
       <Modal
         title="Xoá sản phẩm"

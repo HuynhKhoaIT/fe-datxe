@@ -29,7 +29,12 @@ import TableBasic from "@/app/components/table/Tablebasic";
 export const revalidate = 0;
 import { useRouter } from "next/navigation";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-export default function ProductListPage({ productsGara }: any) {
+import PaginationBase from "@/app/components/form/PaginationBase";
+export default function ProductListPage({
+  productsGara,
+  setPage,
+  activePage,
+}: any) {
   const router = useRouter();
   const columnsGara = [
     {
@@ -109,6 +114,7 @@ export default function ProductListPage({ productsGara }: any) {
   return (
     <div className={styles.listPage}>
       <TableBasic data={productsGara} columns={columnsGara} />
+      <PaginationBase activePage={activePage} setPage={setPage} />
     </div>
   );
 }
