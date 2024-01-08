@@ -62,7 +62,9 @@ export default function InfoItem({
   }
   useEffect(() => {
     getDataBrands();
-  }, []);
+    getDataModels(dataDetail?.brandId);
+    getDataYearCar(dataDetail?.nameId);
+  }, [dataDetail]);
 
   return (
     <Flex key={index} gap={12} w={"100%"} align={"end"} justify="space-between">
@@ -83,7 +85,7 @@ export default function InfoItem({
           label="Dòng xe"
           placeholder="Dòng xe"
           data={modelOptions}
-          value={dataDetail?.nameId.toString()}
+          value={dataDetail?.nameId ? dataDetail?.nameId.toString() : null}
           onChange={(value) => {
             getDataYearCar(Number(value));
             handleChangeNameCar(index, Number(value));
@@ -94,7 +96,7 @@ export default function InfoItem({
           label="Năm sản xuất"
           placeholder="Năm sản xuất"
           data={yearCarOptions}
-          defaultValue={dataDetail?.yearId ? dataDetail?.yearId.split(",") : []}
+          value={dataDetail?.yearId ? dataDetail?.yearId.split(",") : []}
           onChange={(value) => {
             handleChangeYearCar(index, value);
           }}

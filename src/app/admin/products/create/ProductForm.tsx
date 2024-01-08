@@ -43,7 +43,7 @@ const formats = [
 ];
 export default function ProductForm({
   isEditing = false,
-  dataDetail = [],
+  dataDetail,
   categoryOptions = [],
   isDirection = false,
 }: any) {
@@ -59,10 +59,14 @@ export default function ProductForm({
     },
   });
   useEffect(() => {
-    if (isEditing) {
+    console.log(dataDetail?.brandDetail);
+    if (isEditing && dataDetail) {
       form.setInitialValues(dataDetail);
       form.setValues(dataDetail);
-      form.setFieldValue("brands", JSON.parse(dataDetail?.brandDetail));
+      if (dataDetail?.brandDetail) {
+        form.setFieldValue("brands", JSON?.parse(dataDetail?.brandDetail));
+        setCar(JSON?.parse(dataDetail?.brandDetail));
+      }
       if (dataDetail?.timeSaleEnd) {
         form.setFieldValue(
           "timeSaleEnd",
