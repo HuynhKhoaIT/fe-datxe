@@ -3,6 +3,7 @@ import { getCategories } from "@/utils/category";
 import { Button, Card, Flex, MultiSelect, Select } from "@mantine/core";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import InfoItem from "./InfoItem";
 export default function InfoCar({
   carData,
   setCar,
@@ -73,55 +74,65 @@ export default function InfoCar({
   return (
     <Card shadow="sm" padding="lg" withBorder title="Áp dụng dòng xe" mt={24}>
       {carData.map((item: any, index: number) => (
-        <Flex
-          key={index}
-          gap={12}
-          w={"100%"}
-          align={"end"}
-          justify="space-between"
-        >
-          <Flex gap={12} w={"90%"}>
-            <Select
-              w={"33%"}
-              label="Hãng xe"
-              placeholder="Hãng xe"
-              data={brandOptions}
-              value={item?.brandId.toString()}
-              onChange={(value) => {
-                getDataModels(Number(value));
-                handleChangeBrand(index, Number(value));
-              }}
-            />
-            <Select
-              w={"33%"}
-              label="Dòng xe"
-              placeholder="Dòng xe"
-              data={modelOptions}
-              value={item?.nameId.toString()}
-              onChange={(value) => {
-                getDataYearCar(Number(value));
-                handleChangeNameCar(index, Number(value));
-              }}
-            />
-            <Select
-              w={"33%"}
-              label="Năm sản xuất"
-              placeholder="Năm sản xuất"
-              data={yearCarOptions}
-              value={item?.yearId.toString()}
-              onChange={(value) => {
-                handleChangeYearCar(index, Number(value));
-              }}
-            />
-          </Flex>
-          <Button
-            onClick={() => removeCar(index)}
-            variant="outline"
-            color="red"
-          >
-            <IconTrash size={16} />
-          </Button>
-        </Flex>
+        // <Flex
+        //   key={index}
+        //   gap={12}
+        //   w={"100%"}
+        //   align={"end"}
+        //   justify="space-between"
+        // >
+        //   <Flex gap={12} w={"90%"}>
+        //     <Select
+        //       w={"33%"}
+        //       label="Hãng xe"
+        //       placeholder="Hãng xe"
+        //       data={brandOptions}
+        //       value={item?.brandId.toString()}
+        //       onChange={(value) => {
+        //         getDataModels(Number(value));
+        //         handleChangeBrand(index, Number(value));
+        //       }}
+        //     />
+        //     <Select
+        //       w={"33%"}
+        //       label="Dòng xe"
+        //       placeholder="Dòng xe"
+        //       data={modelOptions}
+        //       value={item?.nameId.toString()}
+        //       onChange={(value) => {
+        //         getDataYearCar(Number(value));
+        //         handleChangeNameCar(index, Number(value));
+        //       }}
+        //     />
+        //     <MultiSelect
+        //       w={"33%"}
+        //       label="Năm sản xuất"
+        //       placeholder="Năm sản xuất"
+        //       data={yearCarOptions}
+        //       defaultValue={item?.yearId ? item?.yearId.split(",") : []}
+        //       onChange={(value) => {
+        //         handleChangeYearCar(index, value);
+        //       }}
+        //     />
+        //     {typeof item?.yearId.split(",")}
+        //   </Flex>
+        //   <Button
+        //     onClick={() => removeCar(index)}
+        //     variant="outline"
+        //     color="red"
+        //   >
+        //     <IconTrash size={16} />
+        //   </Button>
+        // </Flex>
+        <InfoItem
+          dataDetail={item}
+          index={index}
+          setCar={setCar}
+          carData={carData}
+          handleChangeBrand={handleChangeBrand}
+          handleChangeNameCar={handleChangeNameCar}
+          handleChangeYearCar={handleChangeYearCar}
+        />
       ))}
       <Flex justify="end" mt={12}>
         <Button onClick={addCar} size="md">

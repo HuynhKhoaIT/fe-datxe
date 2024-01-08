@@ -62,6 +62,7 @@ export default function ProductForm({
     if (isEditing) {
       form.setInitialValues(dataDetail);
       form.setValues(dataDetail);
+      form.setFieldValue("brands", JSON.parse(dataDetail?.brandDetail));
       if (dataDetail?.timeSaleEnd) {
         form.setFieldValue(
           "timeSaleEnd",
@@ -98,15 +99,13 @@ export default function ProductForm({
   };
 
   const handleChangeNameCar = (index: number, value: any) => {
-    console.log(index, value);
     const newCar = [...car];
     newCar[index].nameId = value;
     setCar(newCar);
   };
   const handleChangeYearCar = (index: number, value: any) => {
-    console.log(index, value);
     const newCar = [...car];
-    newCar[index].yearId = value;
+    newCar[index].yearId = value.join(",");
 
     setCar(newCar);
   };
