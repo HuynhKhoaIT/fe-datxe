@@ -133,7 +133,8 @@ export async function POST(request: Request) {
                             },
                         });
                     });
-                } else if (b.nameId) {
+                }
+                if (b.nameId) {
                     brandArr.push({
                         assignedBy: session?.user?.name ?? 'Admin',
                         assignedAt: new Date(),
@@ -144,7 +145,8 @@ export async function POST(request: Request) {
                             },
                         },
                     });
-                } else if (b.brandId) {
+                }
+                if (b.brandId) {
                     brandArr.push({
                         assignedBy: session?.user?.name ?? 'Admin',
                         assignedAt: new Date(),
