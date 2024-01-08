@@ -110,16 +110,43 @@ export async function POST(request: Request) {
             };
         } else {
             json.brands.forEach(function (b: any) {
-                brandArr.push({
-                    assignedBy: session?.user?.name ?? 'Admin',
-                    assignedAt: new Date(),
-                    carBrandType: b.type,
-                    carModel: {
-                        connect: {
-                            id: Number(b.id),
+                if (b.yearId) {
+                    const yearArr = b.yearId.split(',');
+                    yearArr.forEach(function (y: any) {
+                        brandArr.push({
+                            assignedBy: session?.user?.name ?? 'Admin',
+                            assignedAt: new Date(),
+                            carBrandType: 'CARYEAR',
+                            carModel: {
+                                connect: {
+                                    id: Number(y),
+                                },
+                            },
+                        });
+                    });
+                } else if (b.nameId) {
+                    brandArr.push({
+                        assignedBy: session?.user?.name ?? 'Admin',
+                        assignedAt: new Date(),
+                        carBrandType: 'CARNAME',
+                        carModel: {
+                            connect: {
+                                id: Number(b.nameId),
+                            },
                         },
-                    },
-                });
+                    });
+                } else if (b.brandId) {
+                    brandArr.push({
+                        assignedBy: session?.user?.name ?? 'Admin',
+                        assignedAt: new Date(),
+                        carBrandType: 'CARYEAR',
+                        carModel: {
+                            connect: {
+                                id: Number(b.brandId),
+                            },
+                        },
+                    });
+                }
             });
         }
 
@@ -146,6 +173,7 @@ export async function POST(request: Request) {
                     brands: {
                         create: brandArr,
                     },
+                    brandDetail: JSON.stringify(json.brands),
                 },
             });
 

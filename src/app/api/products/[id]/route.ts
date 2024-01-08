@@ -11,13 +11,14 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
             return new NextResponse("Missing 'id' parameter");
         }
         const session = await getServerSession(authOptions);
-        if (session?.user?.token) {
+        if (1) {
             const products = await prisma.product.findUnique({
                 where: {
                     id: parseInt(id.toString()),
                 },
                 include: {
                     categories: true,
+                    brands: true,
                 },
             });
             return NextResponse.json(products);
@@ -47,6 +48,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     catArr.push({
                         assignedBy: session?.user?.name ?? '',
                         assignedAt: new Date(),
+
                         category: {
                             connect: {
                                 id: parseInt(id.toString()),
