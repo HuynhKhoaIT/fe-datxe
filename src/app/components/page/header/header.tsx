@@ -12,7 +12,6 @@ import SearchForm from "../../elements/search/Search";
 import { getBrands } from "@/utils/branch";
 
 export default async function Header() {
-  const brandsData = await getBrands();
   return (
     <header className="header">
       <div className="header-top">
@@ -64,7 +63,7 @@ export default async function Header() {
               />
             </Link>
             <div className="collapse navbar-collapse nav-search" id="main_nav">
-              <SearchForm brandsData={brandsData} />
+              <SearchForm />
               <div className="nav-right">
                 <div className="cart-btn">
                   <Link href="/gio-hang" className="nav-right-link">
