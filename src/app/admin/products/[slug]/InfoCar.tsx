@@ -2,11 +2,21 @@
 import { getCategories } from "@/utils/category";
 import { Button, Card, Flex, MultiSelect, Select } from "@mantine/core";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { useState } from "react";
-export default function InfoCar({ carData, setCar }: any) {
+import { useEffect, useState } from "react";
+export default function InfoCar({
+  carData,
+  setCar,
+  handleChangeBrand,
+  handleChangeNameCar,
+  handleChangeYearCar,
+}: any) {
+  const [brandOptions, setBrandOptions] = useState<any>([]);
+  const [modelOptions, setModelOptions] = useState<any>([]);
+  const [yearCarOptions, setYearCarOptions] = useState<any>([]);
+
   const addCar = () => {
     if (carData.length < 9) {
-      setCar([...carData, { carData: "" }]);
+      setCar([...carData, { brandId: "", nameId: "", yearId: "" }]);
     }
   };
 
@@ -15,6 +25,51 @@ export default function InfoCar({ carData, setCar }: any) {
     newCar.splice(index, 1);
     setCar(newCar);
   };
+
+  async function getDataBrands() {
+    const res = await fetch(`/api/car-model`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setBrandOptions(dataOption);
+  }
+  async function getDataModels(brandId: number) {
+    console.log("brandId", brandId);
+    const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setModelOptions(dataOption);
+  }
+  async function getDataYearCar(modelId: number) {
+    const res = await fetch(`/api/car-model/${modelId}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setYearCarOptions(dataOption);
+  }
+  useEffect(() => {
+    getDataBrands();
+  }, []);
+
+  console.log("carData", carData);
   return (
     <Card shadow="sm" padding="lg" withBorder title="Áp dụng dòng xe" mt={24}>
       {carData.map((item: any, index: number) => (
@@ -30,19 +85,33 @@ export default function InfoCar({ carData, setCar }: any) {
               w={"33%"}
               label="Hãng xe"
               placeholder="Hãng xe"
-              data={["React", "Angular", "Vue", "Svelte"]}
+              data={brandOptions}
+              value={item?.brandId.toString()}
+              onChange={(value) => {
+                getDataModels(Number(value));
+                handleChangeBrand(index, Number(value));
+              }}
             />
             <Select
               w={"33%"}
               label="Dòng xe"
               placeholder="Dòng xe"
-              data={["React", "Angular", "Vue", "Svelte"]}
+              data={modelOptions}
+              value={item?.nameId.toString()}
+              onChange={(value) => {
+                getDataYearCar(Number(value));
+                handleChangeNameCar(index, Number(value));
+              }}
             />
-            <MultiSelect
+            <Select
               w={"33%"}
               label="Năm sản xuất"
               placeholder="Năm sản xuất"
-              data={["2023", "2022", "2021", "2020"]}
+              data={yearCarOptions}
+              value={item?.yearId.toString()}
+              onChange={(value) => {
+                handleChangeYearCar(index, Number(value));
+              }}
             />
           </Flex>
           <Button

@@ -44,16 +44,18 @@ const formats = [
 export default function ProductForm({
   isEditing = false,
   dataDetail = [],
-  categoryOptions = [1, 2, 4, 5],
+  categoryOptions = [],
   isDirection = false,
 }: any) {
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
       name: "",
+      categories: [],
     },
     validate: {
       name: (value) => (value.length < 1 ? "Không được để trống" : null),
+      categories: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
@@ -86,17 +88,31 @@ export default function ProductForm({
       form.setFieldValue("description", dataDetail.description);
     }
   }, [dataDetail]);
-  console.log(dataDetail);
   const router = useRouter();
-  const [car, setCar] = useState([{ car: "" }]);
+  const [car, setCar] = useState([{ brandId: "", nameId: "", yearId: "" }]);
 
-  const handleChange = (index: number, value: any) => {
+  const handleChangeBrand = (index: number, value: any) => {
     const newCar = [...car];
-    newCar[index].car = value;
+    newCar[index].brandId = value;
+    setCar(newCar);
+  };
+
+  const handleChangeNameCar = (index: number, value: any) => {
+    console.log(index, value);
+    const newCar = [...car];
+    newCar[index].nameId = value;
+    setCar(newCar);
+  };
+  const handleChangeYearCar = (index: number, value: any) => {
+    console.log(index, value);
+    const newCar = [...car];
+    newCar[index].yearId = value;
+
     setCar(newCar);
   };
   const handleSubmit = async (values: any) => {
     values.title = values.name;
+    values.brands = car;
     handlers.open();
     try {
       if (!isEditing) {
@@ -219,7 +235,13 @@ export default function ProductForm({
                 />
               </Grid.Col>
             </Grid>
-            <InfoCar carData={car} setCar={setCar} />
+            <InfoCar
+              carData={car}
+              setCar={setCar}
+              handleChangeBrand={handleChangeBrand}
+              handleChangeNameCar={handleChangeNameCar}
+              handleChangeYearCar={handleChangeYearCar}
+            />
           </Card>
         </Grid.Col>
         <Grid.Col span={4}>
