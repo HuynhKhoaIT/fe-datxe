@@ -67,6 +67,7 @@ model CarModelsOnProducts {
   productId  Int // relation scalar field (used in the `@relation` attribute above)
   carModel   CarModels @relation(fields: [carModelId], references: [id])
   carModelId Int // relation scalar field (used in the `@relation` attribute above)
+  carBrandDetail String
   carBrandType  CARBRAND @default(CARBRAND)
   assignedAt DateTime  @default(now())
   assignedBy String

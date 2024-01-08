@@ -114,6 +114,7 @@ export async function POST(request: Request) {
                     assignedBy: session?.user?.name ?? 'Admin',
                     assignedAt: new Date(),
                     carBrandType: b.type,
+                    carBrandDetail: "[{ brands: '1', models: '2', years: '2,3,4' }]",
                     carModel: {
                         connect: {
                             id: Number(b.id),
