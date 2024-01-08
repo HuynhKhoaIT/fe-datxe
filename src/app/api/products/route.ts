@@ -7,11 +7,16 @@ export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
+        let titleFilter = '';
         const searchText = searchParams.get('s');
+        if (searchText) {
+            titleFilter = searchText;
+        }
         let currentPage = 1;
         let take = 10;
         let limit = searchParams.get('limit');
         let page = searchParams.get('page');
+
         if (page) {
             currentPage = parseInt(page);
         }
@@ -19,16 +24,16 @@ export async function GET(request: Request) {
             take = parseInt(limit);
         }
         const skip = take * (currentPage - 1);
+        let statusFilter = 'PUBLIC';
+        if (searchParams.get('status')) {
+            statusFilter = searchParams.get('status')!.toUpperCase();
+        }
+
         const session = await getServerSession(authOptions);
         let categories = {};
         let name = {
             search: '',
         };
-        if (searchText) {
-            name = {
-                search: searchText.toString(),
-            };
-        }
         if (categoryId) {
             categories = {
                 some: {
@@ -38,14 +43,22 @@ export async function GET(request: Request) {
                 },
             };
         }
+
         const productFindData = {
             take: take,
             skip: skip,
             where: {
-                categories,
-                name: {
-                    contains: searchText?.toString(),
-                },
+                AND: [
+                    {
+                        categories,
+                        name: {
+                            contains: titleFilter!,
+                        },
+                        // status: {
+                        //     contains: '',
+                        // },
+                    },
+                ],
             },
             include: {
                 categories: true,
@@ -67,12 +80,13 @@ export async function POST(request: Request) {
         const json = await request.json();
         const session = await getServerSession(authOptions);
         let catArr: any = [];
+        let brandArr: any = [];
         if (!json.categories) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
             json.categories.forEach(function (id: number) {
                 catArr.push({
-                    assignedBy: session?.user?.name ?? '',
+                    assignedBy: session?.user?.name ?? 'Admin',
                     assignedAt: new Date(),
                     category: {
                         connect: {
@@ -83,7 +97,33 @@ export async function POST(request: Request) {
             });
         }
 
-        if (session?.user?.token) {
+        if (!json.brands) {
+            brandArr = {
+                assignedBy: session?.user?.name ?? 'Admin',
+                assignedAt: new Date(),
+                carBrandType: 'CARBRAND',
+                carModel: {
+                    connect: {
+                        id: 1,
+                    },
+                },
+            };
+        } else {
+            json.brands.forEach(function (b: any) {
+                brandArr.push({
+                    assignedBy: session?.user?.name ?? 'Admin',
+                    assignedAt: new Date(),
+                    carBrandType: b.type,
+                    carModel: {
+                        connect: {
+                            id: Number(b.id),
+                        },
+                    },
+                });
+            });
+        }
+
+        if (1) {
             const product = await prisma.product.create({
                 data: {
                     name: json.title,
@@ -102,6 +142,9 @@ export async function POST(request: Request) {
                     garageId: 0,
                     categories: {
                         create: catArr,
+                    },
+                    brands: {
+                        create: brandArr,
                     },
                 },
             });
