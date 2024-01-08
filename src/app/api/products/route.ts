@@ -52,26 +52,29 @@ export async function GET(request: Request) {
             };
         }
 
-        const productFindData = {
-            take: take,
-            skip: skip,
-            where: {
-                AND: [
-                    {
-                        categories,
-                        name: {
-                            contains: titleFilter!,
-                        },
-                        brands,
-                    },
-                ],
-            },
-            include: {
-                categories: true,
-            },
-        };
+        // const productFindData = ;
         if (1) {
-            const products = await prisma.product.findMany(productFindData);
+            const products = await prisma.product.findMany({
+                take: take,
+                skip: skip,
+                where: {
+                    AND: [
+                        {
+                            categories,
+                            name: {
+                                contains: titleFilter!,
+                            },
+                            brands,
+                            status: {
+                                not: 'DELETE',
+                            },
+                        },
+                    ],
+                },
+                include: {
+                    categories: true,
+                },
+            });
 
             return NextResponse.json(products);
         }
