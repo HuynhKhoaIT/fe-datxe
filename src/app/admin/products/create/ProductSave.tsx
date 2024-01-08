@@ -26,6 +26,7 @@ export default function ProductSave({
       handleGetProduct(Number(productId));
     }
   }, [isDirection]);
+  console.log("productDetail", productDetail);
   return (
     <Box maw={"100%"} mx="auto">
       <ProductForm

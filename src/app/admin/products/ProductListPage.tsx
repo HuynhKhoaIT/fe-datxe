@@ -38,6 +38,7 @@ export default function ProductListPage({
   setPage,
   activePage,
   categoryOptions,
+  getData,
 }: any) {
   // console.log(productsGara);
   const router = useRouter();
@@ -54,6 +55,7 @@ export default function ProductListPage({
       title: "Thành công",
       message: "Xoá sản phẩm thành công",
     });
+    // getData();
     router.refresh();
   };
   const [

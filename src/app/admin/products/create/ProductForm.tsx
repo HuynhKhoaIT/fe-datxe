@@ -88,9 +88,9 @@ export default function ProductForm({
       }
     }
     if (isDirection) {
-      form.setFieldValue("name", dataDetail.name);
-      form.setFieldValue("price", dataDetail.price);
-      form.setFieldValue("description", dataDetail.description);
+      form.setFieldValue("name", dataDetail?.name);
+      form.setFieldValue("price", dataDetail?.price);
+      form.setFieldValue("description", dataDetail?.description);
     }
   }, [dataDetail]);
   const router = useRouter();
@@ -116,6 +116,9 @@ export default function ProductForm({
   const handleSubmit = async (values: any) => {
     values.title = values.name;
     values.brands = car;
+    if (isDirection) {
+      values.garageId = dataDetail?.garageId;
+    }
     handlers.open();
     try {
       if (!isEditing) {

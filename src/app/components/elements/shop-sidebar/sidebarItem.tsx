@@ -3,7 +3,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 export function SideBarItem({ dataDetail, keyName }: any) {
   const router = useRouter();
   const itemId = dataDetail?.id;
-  const name = dataDetail ? dataDetail?.name : "";
+  const name = dataDetail ? dataDetail?.title : "";
   const pathname = usePathname();
   const searchParams = useSearchParams();
   let params = new URLSearchParams(searchParams);

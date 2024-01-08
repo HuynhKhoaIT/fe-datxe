@@ -5,6 +5,15 @@ export async function getProducts() {
   try {
     const products = await prisma.product.findMany({
       take: 10,
+      where: {
+        AND: [
+          {
+            status: {
+              not: "DELETE",
+            },
+          },
+        ],
+      },
     });
     return { products };
   } catch (error) {

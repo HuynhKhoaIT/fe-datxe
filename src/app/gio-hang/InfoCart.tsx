@@ -43,8 +43,8 @@ export default function InfoCart({
     },
     {
       label: <span>Tên sản phẩm</span>,
-      name: "name",
-      dataIndex: ["product", "name"],
+      name: "title",
+      dataIndex: ["product", "title"],
     },
     {
       label: <span>Giá</span>,
