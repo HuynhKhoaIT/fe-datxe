@@ -52,6 +52,7 @@ export default function ProductsManaga() {
         setPage={setPage}
         activePage={page}
         categoryOptions={categoryOptions}
+        getData={getData}
       />
       <FooterAdmin />
     </div>

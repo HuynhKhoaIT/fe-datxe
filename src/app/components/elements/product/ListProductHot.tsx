@@ -13,14 +13,18 @@ export default function Product({
   const [limit, setLimit] = useState<number>(defaultLimit);
   const handleButtonClick = async () => {
     if (garageId != 0) {
+      let productLoadmore = await fetch(`/api/products?limit=${limit + 4}`);
       let newProductData = await getProductByGar(
         garageId.toString(),
         limit + 4
       );
       setProductData(newProductData);
     } else {
+      let productLoadmore = await fetch(`/api/products?limit=${limit + 4}`);
+      let data = await productLoadmore.json();
+
       let newProductData = await getProductsHot({ limit: limit + 4 });
-      setProductData(newProductData);
+      setProductData(data);
     }
     setLimit(limit + 4);
   };

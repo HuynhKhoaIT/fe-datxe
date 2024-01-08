@@ -4,6 +4,7 @@ export function SideBarFilter({
   filterName = "Filter",
   keyName,
 }: any) {
+  console.log("data", data);
   return (
     <div className="shop-sidebar">
       <div className="shop-widget">
