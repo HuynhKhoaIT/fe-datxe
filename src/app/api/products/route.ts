@@ -7,6 +7,7 @@ export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
+        const brandIdFilter = searchParams.get('brand');
         let titleFilter = '';
         const searchText = searchParams.get('s');
         if (searchText) {
@@ -28,17 +29,24 @@ export async function GET(request: Request) {
         if (searchParams.get('status')) {
             statusFilter = searchParams.get('status')!.toUpperCase();
         }
-
         const session = await getServerSession(authOptions);
         let categories = {};
-        let name = {
-            search: '',
-        };
+
         if (categoryId) {
             categories = {
                 some: {
                     category: {
                         id: parseInt(categoryId!),
+                    },
+                },
+            };
+        }
+        let brands = {};
+        if (brandIdFilter) {
+            brands = {
+                some: {
+                    carModel: {
+                        id: Number(brandIdFilter),
                     },
                 },
             };
@@ -54,9 +62,7 @@ export async function GET(request: Request) {
                         name: {
                             contains: titleFilter!,
                         },
-                        // status: {
-                        //     contains: '',
-                        // },
+                        brands,
                     },
                 ],
             },
