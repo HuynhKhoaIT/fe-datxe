@@ -118,45 +118,60 @@ export async function POST(request: Request) {
                 },
             };
         } else {
+            let brandArrTemp: any = [];
             json.brands.forEach(function (b: any) {
+                const assignedAt = new Date();
+                const assignedBy = session?.user?.name ?? 'Admin';
                 if (b.yearId) {
                     const yearArr = b.yearId.split(',');
                     yearArr.forEach(function (y: any) {
-                        brandArr.push({
-                            assignedBy: session?.user?.name ?? 'Admin',
-                            assignedAt: new Date(),
+                        let yO = {
+                            assignedBy: assignedBy,
+                            assignedAt: assignedAt,
                             carBrandType: 'CARYEAR',
                             carModel: {
                                 connect: {
                                     id: Number(y),
                                 },
                             },
-                        });
+                        };
+                        if (!brandArrTemp.includes(Number(y))) {
+                            brandArrTemp.push(Number(y));
+                            brandArr.push(yO);
+                        }
                     });
                 }
                 if (b.nameId) {
-                    brandArr.push({
-                        assignedBy: session?.user?.name ?? 'Admin',
-                        assignedAt: new Date(),
+                    let bO = {
+                        assignedBy: assignedBy,
+                        assignedAt: assignedAt,
                         carBrandType: 'CARNAME',
                         carModel: {
                             connect: {
                                 id: Number(b.nameId),
                             },
                         },
-                    });
+                    };
+                    if (!brandArrTemp.includes(Number(b.nameId))) {
+                        brandArrTemp.push(Number(b.nameId));
+                        brandArr.push(bO);
+                    }
                 }
                 if (b.brandId) {
-                    brandArr.push({
-                        assignedBy: session?.user?.name ?? 'Admin',
-                        assignedAt: new Date(),
+                    let cO = {
+                        assignedBy: assignedBy,
+                        assignedAt: assignedAt,
                         carBrandType: 'CARYEAR',
                         carModel: {
                             connect: {
                                 id: Number(b.brandId),
                             },
                         },
-                    });
+                    };
+                    if (!brandArrTemp.includes(Number(b.brandId))) {
+                        brandArrTemp.push(Number(b.brandId));
+                        brandArr.push(cO);
+                    }
                 }
             });
         }
