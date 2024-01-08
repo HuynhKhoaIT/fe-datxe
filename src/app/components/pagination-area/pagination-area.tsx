@@ -14,15 +14,20 @@ const TableDataProduct = () => {
   useEffect(() => {
     const fetchProducts = async (activePage: any, params: string) => {
       let limit = 8;
+      const res = await fetch(`/api/products?${params}&page=${activePage}`, {
+        method: "GET",
+      });
+      const data = await res.json();
+
       const newProductData = await getProductsSearch(params, activePage, limit);
       if (activePage !== 1) {
-        let array = [...productData, ...newProductData];
+        let array = [...productData, ...data];
         console.log(array);
-        console.log(newProductData);
+        console.log(data);
 
         setProductData(array);
       } else {
-        setProductData(newProductData);
+        setProductData(data);
       }
     };
     fetchProducts(activePage, searchParams.toString());
