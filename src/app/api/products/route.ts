@@ -80,12 +80,13 @@ export async function POST(request: Request) {
         const json = await request.json();
         const session = await getServerSession(authOptions);
         let catArr: any = [];
+        let brandArr: any = [];
         if (!json.categories) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
             json.categories.forEach(function (id: number) {
                 catArr.push({
-                    assignedBy: session?.user?.name ?? '',
+                    assignedBy: session?.user?.name ?? 'Admin',
                     assignedAt: new Date(),
                     category: {
                         connect: {
@@ -96,7 +97,33 @@ export async function POST(request: Request) {
             });
         }
 
-        if (session?.user?.token) {
+        if (!json.brands) {
+            brandArr = {
+                assignedBy: session?.user?.name ?? 'Admin',
+                assignedAt: new Date(),
+                carBrandType: 'CARBRAND',
+                carModel: {
+                    connect: {
+                        id: 1,
+                    },
+                },
+            };
+        } else {
+            json.brands.forEach(function (b: any) {
+                brandArr.push({
+                    assignedBy: session?.user?.name ?? 'Admin',
+                    assignedAt: new Date(),
+                    carBrandType: b.type,
+                    carModel: {
+                        connect: {
+                            id: Number(b.id),
+                        },
+                    },
+                });
+            });
+        }
+
+        if (1) {
             const product = await prisma.product.create({
                 data: {
                     name: json.title,
@@ -115,6 +142,9 @@ export async function POST(request: Request) {
                     garageId: 0,
                     categories: {
                         create: catArr,
+                    },
+                    brands: {
+                        create: brandArr,
                     },
                 },
             });
