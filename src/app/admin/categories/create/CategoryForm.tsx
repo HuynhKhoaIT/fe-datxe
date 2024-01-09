@@ -32,7 +32,14 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     form.setValues(dataDetail);
   }, [dataDetail]);
   const router = useRouter();
+  const convertToSlug = (str: string) => {
+    str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
+    str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
+    str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt
+    return str;
+  };
   const handleSubmit = async (values: any) => {
+    values.slug = convertToSlug(values?.title);
     handlers.open();
     try {
       if (!isEditing) {
