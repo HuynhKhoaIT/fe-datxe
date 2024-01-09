@@ -33,7 +33,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
         const session = await getServerSession(authOptions);
         if (1) {
             const id = params.id;
-
+            let createdBy = 0;
+            let garageId = 0;
             let catArr: any = [];
             if (!id) {
                 return new NextResponse("Missing 'id' parameter");
@@ -120,38 +121,44 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     create: brandArr,
                 };
             }
+            if (session?.user?.id) {
+                createdBy = Number(session.user.id);
+                garageId = Number(session.user.garageId);
+            }
+            let productUpdateData = {
+                name: json.title,
+                price: json.price,
+                salePrice: json.salePrice,
+                productId: json.productId ?? 0,
+                description: json.description ?? '',
+                timeSaleStart: json.timeSaleStart ?? null,
+                timeSaleEnd: json.timeSaleEnd ?? null,
+                quantity: json.quantity ?? 0,
+                images: json.images ?? null,
+                metaDescription: json.metaDescription ?? null,
+                status: json.status,
+                createdBy: createdBy,
+                garageId: garageId,
+                brandDetail: JSON.stringify(json.brands),
+                categories: {
+                    deleteMany: {},
+                    create: json.categories.map((cat: number) => ({
+                        assignedBy: session?.user?.name ?? '',
+                        assignedAt: new Date(),
+                        category: {
+                            connect: {
+                                id: Number(cat),
+                            },
+                        },
+                    })),
+                },
+                brands,
+            };
             const updatedPost = await prisma.product.update({
                 where: {
                     id: Number(id),
                 },
-                data: {
-                    name: json.title,
-                    price: json.price,
-                    salePrice: json.salePrice,
-                    productId: json.productId ?? 0,
-                    description: json.description ?? '',
-                    timeSaleStart: json.timeSaleStart ?? null,
-                    timeSaleEnd: json.timeSaleEnd ?? null,
-                    quantity: json.quantity ?? 0,
-                    images: json.images ?? null,
-                    metaDescription: json.metaDescription ?? null,
-                    status: json.status,
-                    createdBy: 1,
-                    garageId: 0,
-                    categories: {
-                        deleteMany: {},
-                        create: json.categories.map((cat: number) => ({
-                            assignedBy: session?.user?.name ?? '',
-                            assignedAt: new Date(),
-                            category: {
-                                connect: {
-                                    id: Number(cat),
-                                },
-                            },
-                        })),
-                    },
-                    brands,
-                },
+                data: productUpdateData,
                 include: {
                     categories: true,
                 },

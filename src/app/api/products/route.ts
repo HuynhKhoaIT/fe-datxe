@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { slugify } from '@/utils/index';
 
 export async function GET(request: Request) {
     try {
@@ -52,10 +53,18 @@ export async function GET(request: Request) {
             };
         }
 
+        let garageId = {};
+        if (searchParams.get('garage')) {
+            garageId = Number(searchParams.get('garage'));
+        }
+
         if (1) {
             const products = await prisma.product.findMany({
                 take: take,
                 skip: skip,
+                orderBy: {
+                    id: 'desc',
+                },
                 where: {
                     AND: [
                         {
@@ -67,6 +76,7 @@ export async function GET(request: Request) {
                             status: {
                                 not: 'DELETE',
                             },
+                            garageId,
                         },
                     ],
                 },
@@ -89,6 +99,9 @@ export async function POST(request: Request) {
         const session = await getServerSession(authOptions);
         let catArr: any = [];
         let brandArr: any = [];
+        let createdBy = 0;
+        let garageId = 0;
+
         if (!json.categories) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
@@ -174,7 +187,10 @@ export async function POST(request: Request) {
                 }
             });
         }
-
+        if (session?.user?.id) {
+            createdBy = Number(session.user.id);
+            garageId = Number(session.user.garageId);
+        }
         if (1) {
             const product = await prisma.product.create({
                 data: {
@@ -190,8 +206,8 @@ export async function POST(request: Request) {
                     images: json.images ?? null,
                     metaDescription: json.metaDescription ?? null,
                     status: json.status,
-                    createdBy: 1,
-                    garageId: 0,
+                    createdBy: createdBy,
+                    garageId: garageId,
                     categories: {
                         create: catArr,
                     },
@@ -202,7 +218,16 @@ export async function POST(request: Request) {
                 },
             });
 
-            return new NextResponse(JSON.stringify(product), {
+            const updatedPost = await prisma.product.update({
+                where: {
+                    id: Number(product.id),
+                },
+                data: {
+                    slug: slugify(product.name.toString()) + '-' + product.id,
+                },
+            });
+
+            return new NextResponse(JSON.stringify(updatedPost), {
                 status: 201,
                 headers: { 'Content-Type': 'application/json' },
             });

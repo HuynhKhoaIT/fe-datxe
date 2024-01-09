@@ -18,6 +18,7 @@ interface IUser extends DefaultUser {
     phone?: string;
     address?: string;
     token?: string;
+    garageId?: string;
 }
 declare module 'next-auth' {
     interface User extends IUser {}
