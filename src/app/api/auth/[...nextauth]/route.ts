@@ -48,6 +48,7 @@ export const authOptions: NextAuthOptions = {
                 token.phone = user.phone;
                 token.address = user.address;
                 token.token = user.token;
+                token.garageId = user.garageId;
             }
             if (account) {
                 token.accessToken = account.access_token;

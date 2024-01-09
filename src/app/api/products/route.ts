@@ -52,10 +52,18 @@ export async function GET(request: Request) {
             };
         }
 
+        let garageId = {};
+        if (searchParams.get('garage')) {
+            garageId = Number(searchParams.get('garage'));
+        }
+
         if (1) {
             const products = await prisma.product.findMany({
                 take: take,
                 skip: skip,
+                orderBy: {
+                    id: 'desc',
+                },
                 where: {
                     AND: [
                         {
@@ -67,6 +75,7 @@ export async function GET(request: Request) {
                             status: {
                                 not: 'DELETE',
                             },
+                            garageId,
                         },
                     ],
                 },
@@ -190,8 +199,8 @@ export async function POST(request: Request) {
                     images: json.images ?? null,
                     metaDescription: json.metaDescription ?? null,
                     status: json.status,
-                    createdBy: 1,
-                    garageId: 0,
+                    createdBy: Number(session?.user?.id) ?? 1,
+                    garageId: Number(session?.user?.garageId),
                     categories: {
                         create: catArr,
                     },
