@@ -199,7 +199,7 @@ export async function POST(request: Request) {
             garageId = Number(session.user.garageId);
         }
         if (json.isProduct.length) {
-            isProduct = Number(json.isProduct) > 0 ? true : false;
+            isProduct = Number(json.isProduct) == 1 ? true : false;
         }
         if (1) {
             const product = await prisma.product.create({
