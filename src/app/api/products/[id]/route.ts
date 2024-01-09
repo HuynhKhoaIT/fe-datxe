@@ -35,6 +35,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
             const id = params.id;
             let createdBy = 0;
             let garageId = 0;
+            let isProduct = true;
             let catArr: any = [];
             if (!id) {
                 return new NextResponse("Missing 'id' parameter");
@@ -125,6 +126,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 createdBy = Number(session.user.id);
                 garageId = Number(session.user.garageId);
             }
+            if (json.isProduct.length) {
+                isProduct = Number(json.isProduct) > 0 ? true : false;
+            }
             let productUpdateData = {
                 name: json.title,
                 price: json.price,
@@ -153,6 +157,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                     })),
                 },
                 brands,
+                isProduct: isProduct,
             };
             const updatedPost = await prisma.product.update({
                 where: {
