@@ -1,6 +1,6 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DatLich from "../../dat-lich/page";
+import CalendarScheduler from "@/app/components/elements/calendar/Calendar";
 import { getOrdersOfGarage } from "@/utils/order";
 import { mapArrayEventCalendar } from "@/app/domain/EventCalendar";
 import { getBrands } from "@/utils/branch";
@@ -9,32 +9,51 @@ import { getMyAccount } from "@/utils/user";
 import { getCategories } from "@/utils/category";
 import SearchForm from "@/app/components/form/SearchForm";
 import { Space } from "@mantine/core";
-import CalendarSchedulerGarage from "@/app/components/elements/calendar/CalendarGarage";
-import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-export default function Orders() {
-  const { data: session, status } = useSession();
-  const token: any = session?.user?.token;
-  const searchParams = useSearchParams();
-  const [dataOrder, setDataOrder] = useState<any>();
-  const getDataOrder = async (searchParams: string) => {
-    const orders = await getOrdersOfGarage(token, 9);
-    const mappedOrdersData = await mapArrayEventCalendar(orders);
-    setDataOrder(mappedOrdersData);
-  };
-  useEffect(() => {
-    getDataOrder(searchParams.toString());
-  }, [searchParams]);
+export default async function Orders() {
+  const orders = await getOrdersOfGarage(9);
+  const mappedOrdersData = mapArrayEventCalendar(orders);
+  // lấy danh sách brand
+  const brands = await getBrands();
+  const newBrands = brands?.map((brand) => ({
+    value: brand.id?.toString() || "",
+    label: brand.name || "",
+  }));
+  // lấy danh sách category
+  const categories = await getCategories();
+  const categoryOptions = categories?.map((category) => ({
+    value: category.id?.toString() || "",
+    label: category.name || "",
+  }));
+
+  const carsData = await getCarsSsr();
+  const carOptions = carsData?.map((car) => ({
+    value: car.id?.toString() || "",
+    label: car.licensePlates || "",
+    otherData: {
+      carId: car.id?.toString() || "",
+      brandId: car.brandCarName.id,
+      brandName: car.brandCarName.name,
+      modelId: car.modelCarName.id,
+      modelName: car.modelCarName.name,
+      yearCarName: car.yearCarName,
+    },
+  }));
+
+  const account: any = await getMyAccount();
+  const carDefault = carOptions?.filter(
+    (car) => car.value == account?.carIdDefault
+  );
+
   const searchData = [
     {
       name: "startDate",
       placeholder: "Ngày bắt đầu",
-      type: "date",
+      type: "input",
     },
     {
       name: "endDate",
       placeholder: "Ngày kết thúc",
-      type: "date",
+      type: "input",
     },
   ];
   const initialValuesSearch = {
@@ -45,7 +64,14 @@ export default function Orders() {
     <div>
       <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
       <Space h={20} />
-      <CalendarSchedulerGarage ordersData={dataOrder} selectable={false} />
+      <CalendarScheduler
+        brandOptions={newBrands}
+        categoryOptions={categoryOptions}
+        carsData={carsData}
+        carOptions={carOptions}
+        carDefault={carDefault}
+        ordersData={mappedOrdersData}
+      />
     </div>
   );
 }

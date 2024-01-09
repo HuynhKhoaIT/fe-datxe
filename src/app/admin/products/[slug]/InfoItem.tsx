@@ -62,8 +62,10 @@ export default function InfoItem({
   }
   useEffect(() => {
     getDataBrands();
-    getDataModels(dataDetail?.brandId);
-    getDataYearCar(dataDetail?.nameId);
+    if (dataDetail) {
+      getDataModels(dataDetail?.brandId);
+      getDataYearCar(dataDetail?.nameId);
+    }
   }, [dataDetail]);
 
   return (
