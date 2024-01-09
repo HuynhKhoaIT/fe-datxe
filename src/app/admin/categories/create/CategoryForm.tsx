@@ -35,7 +35,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   function convertToSlug(str: string) {
     str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
     str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
-    str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt
+    str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
     return str;
   }
   const handleSubmit = async (values: any) => {
