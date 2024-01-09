@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { slugify } from '@/utils/index';
 
 export async function GET(request: Request) {
     try {
@@ -52,11 +53,23 @@ export async function GET(request: Request) {
             };
         }
 
-        // const productFindData = ;
+        let garageId = {};
+        if (searchParams.get('garage')) {
+            garageId = Number(searchParams.get('garage'));
+        }
+
+        let isProduct = {};
+        if (searchParams.get('isProduct')?.length) {
+            isProduct = searchParams.get('isProduct') == '1' ? true : false;
+        }
+
         if (1) {
             const products = await prisma.product.findMany({
                 take: take,
                 skip: skip,
+                orderBy: {
+                    id: 'desc',
+                },
                 where: {
                     AND: [
                         {
@@ -68,6 +81,8 @@ export async function GET(request: Request) {
                             status: {
                                 not: 'DELETE',
                             },
+                            garageId,
+                            isProduct,
                         },
                     ],
                 },
@@ -90,6 +105,8 @@ export async function POST(request: Request) {
         const session = await getServerSession(authOptions);
         let catArr: any = [];
         let brandArr: any = [];
+        let createdBy = 0;
+        let garageId = 0;
         if (!json.categories) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
@@ -118,49 +135,67 @@ export async function POST(request: Request) {
                 },
             };
         } else {
+            let brandArrTemp: any = [];
             json.brands.forEach(function (b: any) {
+                const assignedAt = new Date();
+                const assignedBy = session?.user?.name ?? 'Admin';
                 if (b.yearId) {
                     const yearArr = b.yearId.split(',');
                     yearArr.forEach(function (y: any) {
-                        brandArr.push({
-                            assignedBy: session?.user?.name ?? 'Admin',
-                            assignedAt: new Date(),
+                        let yO = {
+                            assignedBy: assignedBy,
+                            assignedAt: assignedAt,
                             carBrandType: 'CARYEAR',
                             carModel: {
                                 connect: {
                                     id: Number(y),
                                 },
                             },
-                        });
+                        };
+                        if (!brandArrTemp.includes(Number(y))) {
+                            brandArrTemp.push(Number(y));
+                            brandArr.push(yO);
+                        }
                     });
                 }
                 if (b.nameId) {
-                    brandArr.push({
-                        assignedBy: session?.user?.name ?? 'Admin',
-                        assignedAt: new Date(),
+                    let bO = {
+                        assignedBy: assignedBy,
+                        assignedAt: assignedAt,
                         carBrandType: 'CARNAME',
                         carModel: {
                             connect: {
                                 id: Number(b.nameId),
                             },
                         },
-                    });
+                    };
+                    if (!brandArrTemp.includes(Number(b.nameId))) {
+                        brandArrTemp.push(Number(b.nameId));
+                        brandArr.push(bO);
+                    }
                 }
                 if (b.brandId) {
-                    brandArr.push({
-                        assignedBy: session?.user?.name ?? 'Admin',
-                        assignedAt: new Date(),
+                    let cO = {
+                        assignedBy: assignedBy,
+                        assignedAt: assignedAt,
                         carBrandType: 'CARYEAR',
                         carModel: {
                             connect: {
                                 id: Number(b.brandId),
                             },
                         },
-                    });
+                    };
+                    if (!brandArrTemp.includes(Number(b.brandId))) {
+                        brandArrTemp.push(Number(b.brandId));
+                        brandArr.push(cO);
+                    }
                 }
             });
         }
-
+        if (session?.user?.id) {
+            createdBy = Number(session.user.id);
+            garageId = Number(session.user.garageId);
+        }
         if (1) {
             const product = await prisma.product.create({
                 data: {
@@ -176,8 +211,8 @@ export async function POST(request: Request) {
                     images: json.images ?? null,
                     metaDescription: json.metaDescription ?? null,
                     status: json.status,
-                    createdBy: 1,
-                    garageId: 0,
+                    createdBy: createdBy,
+                    garageId: garageId,
                     categories: {
                         create: catArr,
                     },
@@ -188,7 +223,16 @@ export async function POST(request: Request) {
                 },
             });
 
-            return new NextResponse(JSON.stringify(product), {
+            const updatedPost = await prisma.product.update({
+                where: {
+                    id: Number(product.id),
+                },
+                data: {
+                    slug: slugify(product.name.toString()) + '-' + product.id,
+                },
+            });
+
+            return new NextResponse(JSON.stringify(updatedPost), {
                 status: 201,
                 headers: { 'Content-Type': 'application/json' },
             });
