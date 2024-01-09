@@ -107,6 +107,8 @@ export async function POST(request: Request) {
         let brandArr: any = [];
         let createdBy = 0;
         let garageId = 0;
+        let isProduct = true;
+
         if (!json.categories) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
@@ -196,6 +198,9 @@ export async function POST(request: Request) {
             createdBy = Number(session.user.id);
             garageId = Number(session.user.garageId);
         }
+        if (json.isProduct.length) {
+            isProduct = Number(json.isProduct) > 0 ? true : false;
+        }
         if (1) {
             const product = await prisma.product.create({
                 data: {
@@ -213,6 +218,7 @@ export async function POST(request: Request) {
                     status: json.status,
                     createdBy: createdBy,
                     garageId: garageId,
+                    isProduct: isProduct,
                     categories: {
                         create: catArr,
                     },
