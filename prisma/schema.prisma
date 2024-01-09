@@ -24,6 +24,7 @@ model ProductCategory {
 model Product {
   id              Int                    @id @default(autoincrement())
   productId       Int                    @default(0)
+  isProduct       Boolean                @default(true)
   name            String
   slug            String?
   description     String?
