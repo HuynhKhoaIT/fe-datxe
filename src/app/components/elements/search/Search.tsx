@@ -25,7 +25,6 @@ function SearchForm() {
   useEffect(() => {
     getBrandsData();
   }, []);
-  console.log(brandsData);
   return (
     <div style={{ width: "100%" }}>
       <Grid>

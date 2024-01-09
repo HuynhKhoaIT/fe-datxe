@@ -37,13 +37,11 @@ export const getOrders = async (pageNo = 1) => {
   }
 };
 
-export const getOrdersOfGarage = async (garageId: number) => {
-  console.log(GET_ORDER_GARAGE_ENDPOINT);
-  const session = await getServerSession(authOptions);
-  if (session?.user?.token) {
+export const getOrdersOfGarage = async (token: any, garageId: number) => {
+  if (token) {
     try {
       const config = {
-        headers: { Authorization: `Bearer ${session?.user?.token}` },
+        headers: { Authorization: `Bearer ${token}` },
       };
       const res = await axios.get(
         `${GET_ORDER_GARAGE_ENDPOINT}/${garageId}`,
