@@ -50,7 +50,6 @@ export default function ProductListPage({
     const deleteProduct = fetch(`/api/products/${idProduct}`, {
       method: "DELETE",
     });
-    console.log(deleteProduct);
     notifications.show({
       title: "Thành công",
       message: "Xoá sản phẩm thành công",
@@ -62,7 +61,6 @@ export default function ProductListPage({
     openedDeleteProduct,
     { open: openDeleteProduct, close: closeDeleteProduct },
   ] = useDisclosure(false);
-  const [totalPage, setTotalPage] = useState(0);
   const columns = [
     {
       label: <span>Hình ảnh</span>,
@@ -159,7 +157,6 @@ export default function ProductListPage({
       },
     },
   ];
-  const [activeTab, setActiveTab] = useState<string | null>("product");
   const searchData = [
     {
       name: "s",
@@ -173,9 +170,20 @@ export default function ProductListPage({
       data: categoryOptions,
     },
   ];
+  const initialValuesSearch = {
+    s: "",
+    categoryId: null,
+    brandId: null,
+    nameId: null,
+    yearId: null,
+  };
   return (
     <div className={styles.listPage}>
-      <SearchForm searchData={searchData} />
+      <SearchForm
+        searchData={searchData}
+        brandFilter={true}
+        initialValues={initialValuesSearch}
+      />
       <Flex justify={"end"} align={"center"}>
         {/* <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
           Danh sách sản phẩm

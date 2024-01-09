@@ -99,12 +99,15 @@ export default function ProductForm({
   const handleChangeBrand = (index: number, value: any) => {
     const newCar = [...car];
     newCar[index].brandId = value;
+    newCar[index].nameId = "";
+    newCar[index].yearId = "";
     setCar(newCar);
   };
 
   const handleChangeNameCar = (index: number, value: any) => {
     const newCar = [...car];
     newCar[index].nameId = value;
+    newCar[index].yearId = "";
     setCar(newCar);
   };
   const handleChangeYearCar = (index: number, value: any) => {
@@ -218,15 +221,22 @@ export default function ProductForm({
             <Grid mt={24}>
               <Grid.Col span={12}>
                 <>
-                  <Text size={"14px"} c={"#999999"} mb={"6px"}>
+                  {/* <Text size={"14px"} c={"#999999"} mb={"6px"}>
                     Mô tả chi tiết
-                  </Text>
-                  <ReactQuill
+                  </Text> */}
+                  <Textarea
+                    label="Mô tả chi tiết"
+                    minRows={6}
+                    autosize={true}
+                    {...form.getInputProps("metaDescription")}
+                    placeholder="Mô tả chi tiết"
+                  />
+                  {/* <ReactQuill
                     theme="snow"
                     style={{ height: "400px" }}
                     formats={formats}
                     {...form.getInputProps("metaDescription")}
-                  />
+                  /> */}
                 </>
               </Grid.Col>
             </Grid>
