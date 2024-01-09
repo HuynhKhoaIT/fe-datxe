@@ -139,7 +139,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 status: json.status,
                 createdBy: createdBy,
                 garageId: garageId,
-                brandDetail: json.brandDetail,
+                brandDetail: JSON.stringify(json.brands),
                 categories: {
                     deleteMany: {},
                     create: json.categories.map((cat: number) => ({
