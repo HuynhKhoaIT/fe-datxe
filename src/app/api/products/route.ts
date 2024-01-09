@@ -58,6 +58,11 @@ export async function GET(request: Request) {
             garageId = Number(searchParams.get('garage'));
         }
 
+        let isProduct = {};
+        if (searchParams.get('isProduct')?.length) {
+            isProduct = searchParams.get('isProduct') == '1' ? true : false;
+        }
+
         if (1) {
             const products = await prisma.product.findMany({
                 take: take,
@@ -77,6 +82,7 @@ export async function GET(request: Request) {
                                 not: 'DELETE',
                             },
                             garageId,
+                            isProduct,
                         },
                     ],
                 },
@@ -101,7 +107,6 @@ export async function POST(request: Request) {
         let brandArr: any = [];
         let createdBy = 0;
         let garageId = 0;
-
         if (!json.categories) {
             return new NextResponse("Missing 'categoryId' parameter");
         } else {
