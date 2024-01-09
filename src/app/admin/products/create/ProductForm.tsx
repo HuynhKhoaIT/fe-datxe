@@ -50,7 +50,6 @@ export default function ProductForm({
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
-      isProduct: "1",
       name: "",
       categories: [],
     },
@@ -60,7 +59,9 @@ export default function ProductForm({
     },
   });
   useEffect(() => {
-    console.log(dataDetail?.brandDetail);
+    if (!isEditing) {
+      form.setFieldValue("isProduct", "1");
+    }
     if (isEditing && dataDetail) {
       form.setInitialValues(dataDetail);
       form.setValues(dataDetail);
@@ -80,11 +81,13 @@ export default function ProductForm({
           dayjs(dataDetail?.timeSaleStart).toDate()
         );
       }
+      if (dataDetail?.isProduct) {
+        form.setFieldValue("isProduct", dataDetail?.isProduct.toString());
+      }
       if (dataDetail?.categories?.length > 0) {
         const dataOption = dataDetail?.categories?.map((item: any) =>
           item.categoryId.toString()
         );
-        console.log(dataOption);
         form.setFieldValue("categories", dataOption);
       }
     }
@@ -214,6 +217,7 @@ export default function ProductForm({
               </Grid.Col>
               <Grid.Col span={6}>
                 <MultiSelect
+                  withAsterisk
                   {...form.getInputProps("categories")}
                   label="Danh mục"
                   checkIconPosition="right"
@@ -283,10 +287,10 @@ export default function ProductForm({
                   checkIconPosition="right"
                   placeholder="Trạng thái"
                   data={[
-                    { value: "PUBLIC", label: "Public" },
-                    { value: "DRAFT", label: "Draft" },
-                    { value: "PENDING", label: "Pending" },
-                    { value: "DELETE", label: "Delete" },
+                    { value: "PUBLIC", label: "Công khai" },
+                    { value: "DRAFT", label: "Nháp" },
+                    { value: "PENDING", label: "Đang duyệt" },
+                    { value: "DELETE", label: "Xoá" },
                   ]}
                 />
               </Grid.Col>
