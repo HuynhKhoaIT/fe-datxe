@@ -108,7 +108,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
             leftSection={<IconBan size={16} />}
             onClick={() => router.back()}
           >
-            Huỷ bỏ
+            Huỷ
           </Button>
           <Button
             loading={loading}
