@@ -50,6 +50,7 @@ export default function ProductForm({
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
+      isProduct: "1",
       name: "",
       categories: [],
     },
@@ -156,13 +157,25 @@ export default function ProductForm({
         <Grid.Col span={8}>
           <Card withBorder shadow="sm">
             <Grid gutter={10}>
-              <Grid.Col span={12}>
+              <Grid.Col span={8}>
                 <TextInput
                   withAsterisk
                   {...form.getInputProps("name")}
                   label="Tên sản phẩm"
                   type="text"
                   placeholder="Tên sản phẩm"
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Select
+                  {...form.getInputProps("isProduct")}
+                  label="Loại"
+                  checkIconPosition="right"
+                  placeholder="Loại"
+                  data={[
+                    { value: "1", label: "Sản phẩm" },
+                    { value: "0", label: "Dịch vụ" },
+                  ]}
                 />
               </Grid.Col>
             </Grid>
