@@ -14,6 +14,7 @@ export default function ProductsManaga() {
 
   const [products, setProducts] = useState<any>();
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
+
   const [page, setPage] = useState<number>(1);
 
   const Breadcrumbs = [

@@ -50,6 +50,7 @@ export default function ProductForm({
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
+      isProduct: "1",
       name: "",
       categories: [],
     },
@@ -99,12 +100,15 @@ export default function ProductForm({
   const handleChangeBrand = (index: number, value: any) => {
     const newCar = [...car];
     newCar[index].brandId = value;
+    newCar[index].nameId = "";
+    newCar[index].yearId = "";
     setCar(newCar);
   };
 
   const handleChangeNameCar = (index: number, value: any) => {
     const newCar = [...car];
     newCar[index].nameId = value;
+    newCar[index].yearId = "";
     setCar(newCar);
   };
   const handleChangeYearCar = (index: number, value: any) => {
@@ -153,13 +157,25 @@ export default function ProductForm({
         <Grid.Col span={8}>
           <Card withBorder shadow="sm">
             <Grid gutter={10}>
-              <Grid.Col span={12}>
+              <Grid.Col span={8}>
                 <TextInput
                   withAsterisk
                   {...form.getInputProps("name")}
                   label="Tên sản phẩm"
                   type="text"
                   placeholder="Tên sản phẩm"
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Select
+                  {...form.getInputProps("isProduct")}
+                  label="Loại"
+                  checkIconPosition="right"
+                  placeholder="Loại"
+                  data={[
+                    { value: "1", label: "Sản phẩm" },
+                    { value: "0", label: "Dịch vụ" },
+                  ]}
                 />
               </Grid.Col>
             </Grid>
@@ -218,15 +234,22 @@ export default function ProductForm({
             <Grid mt={24}>
               <Grid.Col span={12}>
                 <>
-                  <Text size={"14px"} c={"#999999"} mb={"6px"}>
+                  {/* <Text size={"14px"} c={"#999999"} mb={"6px"}>
                     Mô tả chi tiết
-                  </Text>
-                  <ReactQuill
+                  </Text> */}
+                  <Textarea
+                    label="Mô tả chi tiết"
+                    minRows={6}
+                    autosize={true}
+                    {...form.getInputProps("metaDescription")}
+                    placeholder="Mô tả chi tiết"
+                  />
+                  {/* <ReactQuill
                     theme="snow"
                     style={{ height: "400px" }}
                     formats={formats}
                     {...form.getInputProps("metaDescription")}
-                  />
+                  /> */}
                 </>
               </Grid.Col>
             </Grid>

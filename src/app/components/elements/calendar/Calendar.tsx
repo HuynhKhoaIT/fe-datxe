@@ -23,6 +23,7 @@ export default function CalendarScheduler({
   carsData,
   carOptions,
   carDefault,
+  selectable = true,
 }: any) {
   const { data: session, status } = useSession();
   const token = session?.user?.token;
@@ -107,7 +108,7 @@ export default function CalendarScheduler({
           isResponsive={true}
           heightMobile="500px"
           heightDesktop="700px"
-          selectable={true}
+          selectable={selectable}
           views={{
             timeGridWeek: {
               type: "timeGridWeek",

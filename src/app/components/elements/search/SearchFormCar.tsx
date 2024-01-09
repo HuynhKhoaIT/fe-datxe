@@ -6,52 +6,48 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { getBrands, getModels, getYears } from "@/utils/branch";
 import { useRouter } from "next/navigation";
-export default function SearchFormCar({ brandsData }: any) {
+export default function SearchFormCar({ brandsOption }: any) {
   const router = useRouter();
   const [opened, handlers] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
   const [models, setModels] = useState<any>();
   const [yearCar, setYearCar] = useState<any>();
 
-  const brandsOption = brandsData?.map((brand: any) => ({
-    value: brand.id?.toString() || "",
-    label: brand.name || "",
-  }));
-
   const form = useForm({
     initialValues: {},
     validate: {},
   });
 
-  const selectModel = async (value: number) => {
-    try {
-      const dong_xe = await getModels(value);
-      const newModels = dong_xe?.map((model) => ({
-        value: model.id?.toString() || "",
-        label: model.name || "",
-      }));
-      setModels(newModels);
-    } catch (error) {}
-  };
-  const selectYear = async (value: number) => {
-    try {
-      const yearCar = await getYears(value);
-      const newYearCar = yearCar?.map((year) => ({
-        value: year.id?.toString() || "",
-        label: year.name || "",
-      }));
-      setYearCar(newYearCar.reverse());
-    } catch (error) {}
-  };
+  async function getModelsData(brandId: number) {
+    const res = await fetch(`/api/car-model/${brandId}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setModels(dataOption);
+  }
+  async function getYearsData(nameId: number) {
+    const res = await fetch(`/api/car-model/${nameId}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setYearCar(dataOption);
+  }
+
   const handleSubmit = async (values: any) => {
     let queryString = "";
     if (values?.brand_id) {
-      queryString += "brand_id" + "=" + values?.brand_id;
+      queryString = "brand" + "=" + values?.brand_id;
     }
-    if (values?.car_name_id)
-      queryString += "&" + "car_name_id" + "=" + values?.car_name_id;
-    if (values?.year_id) queryString += "&" + "year_id" + "=" + values?.year_id;
-
+    if (values?.car_name_id) queryString = "brand" + "=" + values?.car_name_id;
+    if (values?.year_id) queryString = "brand" + "=" + values?.year_id;
     try {
       router.push(`/tim-kiem?${queryString}`);
     } catch (error) {
@@ -69,7 +65,7 @@ export default function SearchFormCar({ brandsData }: any) {
             data={brandsOption}
             clearable
             onChange={(value) => {
-              selectModel(Number(value));
+              getModelsData(Number(value));
               form.setFieldValue("car_name_id", null);
               form.setFieldValue("brand_id", Number(value));
               form.setFieldValue("year_id", null);
@@ -84,7 +80,7 @@ export default function SearchFormCar({ brandsData }: any) {
             data={models}
             clearable
             onChange={(value) => {
-              selectYear(Number(value));
+              getYearsData(Number(value));
               form.setFieldValue("car_name_id", Number(value));
               form.setFieldValue("year_id", null);
             }}
