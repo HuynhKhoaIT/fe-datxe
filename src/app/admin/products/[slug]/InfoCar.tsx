@@ -16,8 +16,6 @@ export default function InfoCar({
       setCar([...carData, { brandId: "", nameId: "", yearId: "" }]);
     }
   };
-
-  console.log("carData", carData);
   return (
     <Card shadow="sm" padding="lg" withBorder title="Áp dụng dòng xe" mt={24}>
       {carData.map((item: any, index: number) => (
