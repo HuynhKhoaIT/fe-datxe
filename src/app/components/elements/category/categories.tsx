@@ -15,23 +15,21 @@ export default function Categories({
   garageId: any;
 }) {
   return (
-    <div className="row d-flex flex-row flex-nowrap">
-      <Swiper
-        slidesPerView={6}
-        spaceBetween={10}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Pagination, Navigation]}
-        className="mySwiper"
-      >
-        {initialCategoryData?.map((category: ICategory, index) => (
-          <SwiperSlide>
-            <CategoryItem category={category} key={index} garageId={garageId} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+    <Swiper
+      slidesPerView={6}
+      spaceBetween={10}
+      pagination={{
+        clickable: true,
+      }}
+      navigation={true}
+      modules={[Pagination, Navigation]}
+      // className="mySwiper"
+    >
+      {initialCategoryData?.map((category: ICategory, index) => (
+        <SwiperSlide>
+          <CategoryItem category={category} key={index} garageId={garageId} />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 }

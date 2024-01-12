@@ -1,5 +1,5 @@
 "use client";
-import BasicModal from "../../basicModal/BasicModal";
+import BasicModal from "../../common/BasicModal";
 import React, { useEffect, useState } from "react";
 import { Box, Avatar, Grid, Input, Button, PinInput } from "@mantine/core";
 import Link from "next/link";

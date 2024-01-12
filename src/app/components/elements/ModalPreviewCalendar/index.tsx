@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import BasicModal from "../../basicModal/BasicModal";
+import BasicModal from "../../common/BasicModal";
 import { ModalPreviewCalendar } from "./ModalPreviewCalendar";
 import styles from "./index.module.scss";
 export default function ModalPreviewDetailCalendar({

@@ -52,6 +52,7 @@ export async function deleteProduct(id: number) {
 }
 
 export async function getProductById(id: number) {
+  console.log("id", id);
   try {
     const product = await prisma.product.findUnique({
       where: { id: Number(id) },

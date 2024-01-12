@@ -3610,48 +3610,6 @@ label {
 }
 
 /*====================
-39. Car category css 
-======================*/
-
-.car-category {
-    position: relative;
-}
-
-.category-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    margin: 25px 0;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
-}
-
-.category-item:hover {
-    transform: translateY(-7px);
-}
-
-.category-img {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.category-item h5 {
-    transition: var(--transition);
-    text-align: center;
-}
-
-.category-item:hover h5 {
-    color: var(--theme-color);
-}
-
-/*====================
 40. Car dealer css 
 ======================*/
 

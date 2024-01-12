@@ -1,11 +1,9 @@
 import React, { Suspense } from "react";
 import ProductDetail from "../../components/elements/product/productDetail";
-import { IProduct } from "@/interfaces/product";
 import Product from "@/app/components/elements/product/ListProductHot";
-import { getProductDetail, getProductsRelated } from "@/utils/product";
 import { getProductById, getProducts } from "@/app/libs/prisma/product";
+import { LoadingComponent } from "@/app/components/loading";
 export const revalidate = 0;
-
 async function getProduct(productId: number) {
   const { product } = await getProductById(productId);
   if (!product) {
@@ -38,7 +36,9 @@ export default async function SingleShop({
     <main className="main">
       <div className="shop-item-single  ">
         <div className="container position-relative pd-50">
-          <ProductDetail ProductDetail={product} />
+          <Suspense fallback={<LoadingComponent />}>
+            <ProductDetail ProductDetail={product} />
+          </Suspense>
           <div className="related-item">
             <div className="row">
               <div className="col-12 mx-auto">
@@ -49,10 +49,12 @@ export default async function SingleShop({
             </div>
             <div className="shop-item-wrapper">
               <div className="row">
-                <Product
-                  initialProductData={products}
-                  garageId={product.garageId}
-                />
+                <Suspense fallback={<LoadingComponent />}>
+                  <Product
+                    initialProductData={products}
+                    garageId={product.garageId}
+                  />
+                </Suspense>
               </div>
             </div>
           </div>

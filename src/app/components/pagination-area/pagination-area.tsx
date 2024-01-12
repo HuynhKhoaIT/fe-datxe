@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import ProductData from "../elements/product/ProductData";
-import { Sort } from "../elements/shop-sort/sort";
+import { Sort } from "../elements/shop-sort";
 import { LoadingComponent } from "../loading";
 import { useSearchParams } from "next/navigation";
 import { getProductsSearch } from "@/utils/product";

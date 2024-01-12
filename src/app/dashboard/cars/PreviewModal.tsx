@@ -2,7 +2,7 @@
 import React from "react";
 import { Grid, Modal, Textarea, TextInput, Box } from "@mantine/core";
 import dayjs from "dayjs";
-import BasicModal from "@/app/components/basicModal/BasicModal";
+import BasicModal from "@/app/components/common/BasicModal";
 
 const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
   return (

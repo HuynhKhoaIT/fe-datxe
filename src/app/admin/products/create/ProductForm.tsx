@@ -18,7 +18,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
-import InfoCar from "../[slug]/InfoCar";
+import InfoCar from "../[productId]/InfoCar";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";

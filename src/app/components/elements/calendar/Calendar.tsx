@@ -5,7 +5,7 @@ import { useDisclosure } from "@mantine/hooks";
 import ModalCalendar from "../ModalInfosEventCalendar";
 import ModalPreviewDetailCalendar from "../ModalPreviewCalendar";
 import dayjs from "dayjs";
-import BasicModal from "../../basicModal/BasicModal";
+import BasicModal from "../../common/BasicModal";
 import { useSearchParams } from "next/navigation";
 import { getScheduleCsr } from "@/utils/order";
 import { mapArrayEventCalendar } from "../../../domain/EventCalendar";
