@@ -11,7 +11,7 @@ import {
     storageKeys,
 } from '../constants';
 import dayjs from 'dayjs';
-import moment from 'moment/moment';
+// import moment from 'moment/moment';
 
 export const convertGlobImportToObject = (modules) =>
     modules
@@ -202,23 +202,23 @@ export const formatMoney = (value, setting = {}) => {
     return '';
 };
 
-export const convertUtcToLocalTime = (utcTime, inputFormat = DATE_FORMAT_DISPLAY, format = DATE_FORMAT_DISPLAY) => {
-    try {
-        if (utcTime) return moment(moment.utc(utcTime, inputFormat).toDate()).format(format);
-        return '';
-    } catch (err) {
-        return '';
-    }
-};
+// export const convertUtcToLocalTime = (utcTime, inputFormat = DATE_FORMAT_DISPLAY, format = DATE_FORMAT_DISPLAY) => {
+//     try {
+//         if (utcTime) return moment(moment.utc(utcTime, inputFormat).toDate()).format(format);
+//         return '';
+//     } catch (err) {
+//         return '';
+//     }
+// };
 
-export const convertLocalTimeToUtc = (localTime, inputFormat = DATE_FORMAT_DISPLAY, format = DATE_FORMAT_DISPLAY) => {
-    try {
-        if (localTime) return moment(localTime, inputFormat).utc().format(format);
-        return '';
-    } catch (err) {
-        return '';
-    }
-};
+// export const convertLocalTimeToUtc = (localTime, inputFormat = DATE_FORMAT_DISPLAY, format = DATE_FORMAT_DISPLAY) => {
+//     try {
+//         if (localTime) return moment(localTime, inputFormat).utc().format(format);
+//         return '';
+//     } catch (err) {
+//         return '';
+//     }
+// };
 
 export function convertUtcToIso(date) {
     return dayjs(convertUtcToLocalTime(date, DEFAULT_FORMAT, DEFAULT_FORMAT), DEFAULT_FORMAT);
