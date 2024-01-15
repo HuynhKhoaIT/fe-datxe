@@ -6,10 +6,13 @@ import { getProductById, getProducts } from "@/app/libs/prisma/product";
 import { getCategories } from "@/app/libs/prisma/category";
 export const dynamic = "force-dynamic";
 
-async function getProductDetail(param: number) {
-  console.log("productDetail", param);
-  const { product } = await getProductById(param);
+export const revalidate = 0;
 
+async function getDataProduct(productId: number) {
+  const { product } = await getProductById(Number(productId));
+  if (!product) {
+    throw new Error("Failed to fetch data");
+  }
   return product;
 }
 async function getCategpriesOption() {
@@ -23,10 +26,10 @@ async function getCategpriesOption() {
 export default async function ProductSavePage({
   params,
 }: {
-  params: { slug: number };
+  params: { productId: number };
 }) {
-  const productDetail = getProductDetail(Number(params.slug));
-  const categoryOptions = getCategpriesOption();
+  const productDetail = await getDataProduct(params.productId);
+  const categoryOptions = await getCategpriesOption();
 
   return (
     <Box maw={"100%"} mx="auto">

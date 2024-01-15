@@ -11,7 +11,7 @@ interface IProps {
 
 export default function AdminLayout({ children }: IProps) {
   return (
-    <>
+    <main>
       <Header />
       <div className={styles.wrapper}>
         <div className={styles.navBar}>
@@ -19,6 +19,6 @@ export default function AdminLayout({ children }: IProps) {
         </div>
         <div className={styles.content}>{children}</div>
       </div>
-    </>
+    </main>
   );
 }

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Breadcrumbs, Anchor } from "@mantine/core";
 import Link from "next/link";

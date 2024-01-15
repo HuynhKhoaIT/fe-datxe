@@ -11,7 +11,7 @@ import SigninButton from "./login-button";
 import SearchForm from "../../elements/search/Search";
 import { getBrands } from "@/utils/branch";
 
-export default async function Header() {
+export default function Header() {
   return (
     <header className="header">
       <div className="header-top">
@@ -32,7 +32,7 @@ export default async function Header() {
               </div>
             </div>
             <div className="header-top-right">
-              <SigninButton />
+              {/* <SigninButton /> */}
               <div className="header-top-social">
                 <Link href="#">
                   <IconBrandFacebook size={18} />
