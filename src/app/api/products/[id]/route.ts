@@ -127,8 +127,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 garageId = Number(session.user.garageId);
             }
             if (json.isProduct.length) {
-                isProduct = Number(json.isProduct) > 0 ? true : false;
+                isProduct = Number(json.isProduct) == 1 ? true : false;
             }
+
             let productUpdateData = {
                 name: json.title,
                 price: json.price,
