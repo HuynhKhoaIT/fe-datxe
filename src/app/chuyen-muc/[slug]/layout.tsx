@@ -1,6 +1,6 @@
 import { ReactNode, Suspense } from "react";
 import Header from "@/app/components/page/header/header";
-import { SideBarFilter } from "@/app/components/elements/shop-sidebar/sideBar";
+import { FilterRadio } from "@/app/components/elements/filterRadio";
 import { MyFooter } from "@/app/components/page/footer/footer";
 import { getCategories } from "@/utils/category";
 interface IProps {
@@ -17,7 +17,7 @@ export default async function SearchLayout({ children }: IProps) {
             {/* <Breadcrumbs style={{ padding: "16px 0" }}>{items}</Breadcrumbs> */}
             <div className="row pb-60">
               <div className="col-lg-3">
-                <SideBarFilter
+                <FilterRadio
                   data={categorys}
                   filterName="Danh mục"
                   keyName="cat_id"

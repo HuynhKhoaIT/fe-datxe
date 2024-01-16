@@ -8,11 +8,12 @@ import {
 } from "@mantine/dropzone";
 import { useState } from "react";
 
-export function BasicDropzone(props: Partial<DropzoneProps>) {
+export function BasicDropzone({ setImages, props }: any) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
 
   const previews = files.map((file, index) => {
     const imageUrl = URL.createObjectURL(file);
+
     return (
       <Image
         key={index}
@@ -27,7 +28,10 @@ export function BasicDropzone(props: Partial<DropzoneProps>) {
         onReject={(files) => console.log("rejected files", files)}
         maxSize={5 * 1024 ** 2}
         accept={IMAGE_MIME_TYPE}
-        onDrop={setFiles}
+        onDrop={(files) => {
+          setFiles(files);
+          setImages(files);
+        }}
         {...props}
       >
         <Group

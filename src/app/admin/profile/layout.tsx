@@ -13,8 +13,10 @@ export default function AdminLayout({ children }: IProps) {
   ];
   return (
     <main className={styles.wrapper}>
-      <Breadcrumb breadcrumbs={Breadcrumbs} />
-      <div className={styles.content}>{children}</div>
+      <div className={styles.contents}>
+        <Breadcrumb breadcrumbs={Breadcrumbs} />
+        <div className={styles.content}>{children}</div>
+      </div>
       <FooterAdmin />
     </main>
   );

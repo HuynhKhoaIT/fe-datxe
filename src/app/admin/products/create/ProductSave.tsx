@@ -7,11 +7,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getProductDetail } from "@/utils/product";
 import { LoadingComponent } from "@/app/components/loading";
-export default function ProductSave({
-  isDirection,
-  categoryOptions = [],
-  brandOptions = [],
-}: any) {
+export default function ProductSave({ isDirection, brandOptions = [] }: any) {
   const searchParams = useSearchParams();
   const productId = searchParams.get("productId");
   const [productDetail, setProductDetail] = useState<any>();
@@ -33,7 +29,6 @@ export default function ProductSave({
         isEditing={false}
         dataDetail={isDirection ? productDetail : []}
         isDirection={isDirection}
-        categoryOptions={categoryOptions}
         brandOptions={brandOptions}
       />
     </Box>

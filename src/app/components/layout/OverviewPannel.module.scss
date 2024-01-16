@@ -1,0 +1,44 @@
+.panel {
+    .overview {
+        color: var(--theme-color);
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .head {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        .title {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--theme-color);
+        }
+
+        .showMore {
+            color: var(--theme-color);
+            font-size: 13px;
+            font-weight: 500;
+        }
+    }
+}
+
+.carousel {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    column-gap: 16px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin-right: -20px;
+    > * {
+        flex: none;
+    }
+
+    &::-webkit-scrollbar {
+        display: none;
+        width: 0 !important;
+    }
+}

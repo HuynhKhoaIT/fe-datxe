@@ -39,6 +39,7 @@ export const getDistricts = async (provinceId: string) => {
 export const getWards = async (districtId: string) => {
   try {
     const res = await axios.get(`${GET_WARD_ENDPOINT}/${districtId}`);
+    console.log("res", districtId);
     return res.data;
   } catch (error) {
     console.error(error);

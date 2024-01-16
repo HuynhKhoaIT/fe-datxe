@@ -186,9 +186,6 @@ export default function ProductListPage({
       />
       <Space h={20} />
       <Flex justify={"end"} align={"center"}>
-        {/* <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
-          Danh sách sản phẩm
-        </Typo> */}
         <Link
           href={{
             pathname: `/admin/products/create`,

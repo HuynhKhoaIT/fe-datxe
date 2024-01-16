@@ -9,15 +9,13 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
         if (!id) {
             return new NextResponse("Missing 'id' parameter");
         }
-        const session = await getServerSession(authOptions);
-        if (session?.user?.token) {
-            const productCategory = await prisma.productCategory.findUnique({
-                where: {
-                    id: parseInt(id.toString()),
-                },
-            });
-            return NextResponse.json(productCategory);
-        }
+        // const session = await getServerSession(authOptions);
+        const productCategory = await prisma.productCategory.findUnique({
+            where: {
+                id: parseInt(id.toString()),
+            },
+        });
+        return NextResponse.json(productCategory);
         throw new Error('Chua dang nhap');
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });

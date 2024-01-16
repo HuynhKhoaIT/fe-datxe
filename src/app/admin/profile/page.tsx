@@ -3,7 +3,7 @@ import { getMyAccount } from "@/utils/user";
 import { getDistricts, getProvinces, getWards } from "@/utils/notion";
 import UserProfile from "@/app/components/elements/profile/User";
 import { Box } from "@mantine/core";
-import axios from 'axios';
+import axios from "axios";
 export default async function ProfilePageAdmin() {
   const myAccount: any = await getMyAccount();
   const province: any = await getProvinces();
@@ -21,10 +21,6 @@ export default async function ProfilePageAdmin() {
     value: item.id.toString(),
     label: item.name,
   }));
-
-  console.log('aaa')
-  const result = await axios.post(`http://localhost:3002/api/products`);
-  console.log('p',result)
   return (
     <Box w={800}>
       <UserProfile
