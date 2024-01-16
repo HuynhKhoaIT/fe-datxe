@@ -12,7 +12,6 @@ export default function DashboardAdmin() {
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <Statistical />
       <FooterAdmin />
-      {/* <Orders ordersData={orders} /> */}
     </div>
   );
 }

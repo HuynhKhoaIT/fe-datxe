@@ -32,7 +32,7 @@ export default function Header() {
               </div>
             </div>
             <div className="header-top-right">
-              {/* <SigninButton /> */}
+              <SigninButton />
               <div className="header-top-social">
                 <Link href="#">
                   <IconBrandFacebook size={18} />

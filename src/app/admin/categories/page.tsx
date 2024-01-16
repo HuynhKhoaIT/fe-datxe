@@ -1,27 +1,21 @@
-// "use client";
 import CategoryListPage from "./CategoryListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
-export default async function Categories() {
-  // const searchParams = useSearchParams();
-  // const [categories, setCategories] = useState<any>([]);
-  // async function getDataCategories() {
-  //   const res = await fetch(`/api/product-category`, { method: "GET" });
-  //   const data = await res.json();
-  //   setCategories(data);
-  // }
-  const res = await axios.get(`http://localhost:3000/api/product-category`);
+import { apiUrl } from "@/constants";
 
-  console.log("res", res);
-  // useEffect(() => {
-  //   getDataCategories();
-  // }, [searchParams]);
+async function getData() {
+  const res = await fetch(`${apiUrl}api/product-category`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
+
+export default async function Categories() {
+  let categories = await getData();
   const breadcrumbs = [
     { title: "Tổng quan", href: "/admin" },
     { title: "Danh mục sản phẩm" },
@@ -29,7 +23,7 @@ export default async function Categories() {
   return (
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
-      {/* <CategoryListPage dataSource={categories} /> */}
+      <CategoryListPage dataSource={categories} />
       <FooterAdmin />
     </div>
   );

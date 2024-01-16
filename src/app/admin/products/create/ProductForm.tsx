@@ -24,30 +24,15 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
 import DateTimeField from "@/app/components/form/DateTimeField";
-const formats = [
-  "header",
-  "font",
-  "size",
-  "color",
-  "background",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "align",
-  "list",
-  "bullet",
-  "indent",
-  "image",
-];
+
 export default function ProductForm({
   isEditing = false,
   dataDetail,
-  categoryOptions = [],
   isDirection = false,
 }: any) {
   const [loading, handlers] = useDisclosure();
+  const [catOptions, setCatOptions] = useState<any>([]);
+  const [images, setImages] = useState<any>([]);
   const form = useForm({
     initialValues: {
       name: "",
@@ -121,39 +106,74 @@ export default function ProductForm({
     setCar(newCar);
   };
   const handleSubmit = async (values: any) => {
-    values.title = values.name;
-    values.brands = car;
-    if (isDirection) {
-      values.garageId = dataDetail?.garageId;
-    }
-    handlers.open();
-    try {
-      if (!isEditing) {
-        await fetch(`/api/products`, {
-          method: "POST",
-          body: JSON.stringify(values),
+    console.log(images[0]);
+    if (images[0]) {
+      fetch("https://up-image.dlbd.vn/api/image", {
+        method: "POST",
+        body: images[0],
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Upload success:", data);
+          // Xử lý kết quả sau khi upload thành công
+        })
+        .catch((error) => {
+          console.error("Upload error:", error);
+          // Xử lý lỗi
         });
-      } else {
-        await fetch(`/api/products/${dataDetail?.id}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-        });
-      }
-      handlers.close();
-      router.back();
-      router.refresh();
-      notifications.show({
-        title: "Thành công",
-        message: "Thêm sản phẩm thành công",
-      });
-    } catch (error) {
-      handlers.close();
-      notifications.show({
-        title: "Thất bại",
-        message: "Thêm sản phẩm thất bại",
-      });
+    } else {
+      console.error("No file selected");
     }
+
+    // values.title = values.name;
+    // values.brands = car;
+    // if (isDirection) {
+    //   values.garageId = dataDetail?.garageId;
+    // }
+    // handlers.open();
+    // try {
+    //   if (!isEditing) {
+    //     await fetch(`/api/products`, {
+    //       method: "POST",
+    //       body: JSON.stringify(values),
+    //     });
+    //   } else {
+    //     await fetch(`/api/products/${dataDetail?.id}`, {
+    //       method: "PUT",
+    //       body: JSON.stringify(values),
+    //     });
+    //   }
+    //   handlers.close();
+    //   router.back();
+    //   router.refresh();
+    //   notifications.show({
+    //     title: "Thành công",
+    //     message: "Thêm sản phẩm thành công",
+    //   });
+    // } catch (error) {
+    //   handlers.close();
+    //   notifications.show({
+    //     title: "Thất bại",
+    //     message: "Thêm sản phẩm thất bại",
+    //   });
+    // }
   };
+
+  const getCategories = async () => {
+    const res = await fetch(`/api/product-category`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setCatOptions(dataOption);
+  };
+  useEffect(() => {
+    getCategories();
+  }, []);
   return (
     <form onSubmit={form.onSubmit(handleSubmit)} style={{ padding: "20px" }}>
       <Grid gutter={12}>
@@ -222,7 +242,7 @@ export default function ProductForm({
                   label="Danh mục"
                   checkIconPosition="right"
                   placeholder="Danh mục"
-                  data={categoryOptions}
+                  data={catOptions}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -295,7 +315,7 @@ export default function ProductForm({
                 />
               </Grid.Col>
               <Grid.Col span={12}>
-                <BasicDropzone />
+                <BasicDropzone setImages={setImages} />
               </Grid.Col>
               {/* <Grid.Col span={12}>
                 <Switch onLabel="ON" offLabel="OFF" label="Quản lý kho" />

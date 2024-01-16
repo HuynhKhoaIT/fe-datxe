@@ -1,3 +1,5 @@
+export const apiUrl = process.env.REACT_APP_API;
+
 export const DATE_DISPLAY_FORMAT = 'hh:mm A DD/MM/YYYY';
 export const DATE_SHORT_MONTH_FORMAT = 'DD MMM YYYY';
 export const DATE_SHORT_MONTH_TIME_FORMAT = 'DD MMM YYYY HH:mm';

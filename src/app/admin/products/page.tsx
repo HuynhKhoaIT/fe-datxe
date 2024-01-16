@@ -44,7 +44,6 @@ export default function ProductsManaga() {
     getData(searchParams.toString(), page);
     getDataCategories();
   }, [searchParams, page]);
-  console.log("searchParams", searchParams.toString());
   return (
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
