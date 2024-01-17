@@ -9,6 +9,11 @@ export async function GET(request: NextRequest) {
                     not: 'DELETE',
                 },
             },
+            include: {
+                serviceAdvisor: true,
+                car: true,
+                customer: true,
+            },
         });
         return NextResponse.json(orders);
         throw new Error('Chua dang nhap');
@@ -27,7 +32,7 @@ export async function POST(request: Request) {
         }
         const order = await prisma.order.create({
             data: {
-                code: json.code,
+                code: 'abc',
                 customerId: json.customerId,
                 carId: json.carId,
                 dateTime: json.dateTime,
@@ -36,11 +41,16 @@ export async function POST(request: Request) {
                 note: json.note,
                 priorityLevel: json.priorityLevel,
                 orderCategoryId: 1,
-                brandId: 1,
-                modelId: 1,
-                yearId: 1,
+                brandId: json.brandId,
+                modelId: json.modelId,
+                yearId: json.yearId,
                 garageId: json.garageId,
                 serviceAdvisorId: json.serviceAdvisorId,
+            },
+            include: {
+                serviceAdvisor: true,
+                car: true,
+                customer: true,
             },
         });
 
