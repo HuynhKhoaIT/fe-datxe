@@ -132,7 +132,6 @@ export default function ProductForm({
 
     values.title = values.name;
     values.brands = car;
-    values.garageId = isDirection ? dataDetail?.garageId : undefined;
 
     handlers.open();
 
@@ -209,7 +208,7 @@ export default function ProductForm({
             <Grid gutter={10}>
               <Grid.Col span={6}>
                 <NumberInput
-                  {...form.getInputProps("brandId")}
+                  {...form.getInputProps("productBrandId")}
                   label="Thương hiệu sản phẩm"
                   placeholder="Thương hiệu sản phẩm"
                 />
