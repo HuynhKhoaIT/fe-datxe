@@ -9,6 +9,11 @@ export async function GET(request: NextRequest) {
                     not: 'DELETE',
                 },
             },
+            include: {
+                serviceAdvisor: true,
+                car: true,
+                customer: true,
+            },
         });
         return NextResponse.json(orders);
         throw new Error('Chua dang nhap');
