@@ -3,12 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     try {
+
         let data = {
             categories: {},
             carBrands: {},
             serviceadvisors: {},
             cars: {},
         }
+
         const categories = await prisma.orderCategory.findMany({
             where: {
                 status: {
@@ -31,7 +33,6 @@ export async function GET(request: NextRequest) {
         const cars = await prisma.car.findMany();
         data.cars = cars;
         return NextResponse.json(data);
-        throw new Error('Chua dang nhap');
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
