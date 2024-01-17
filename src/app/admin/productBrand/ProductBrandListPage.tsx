@@ -34,7 +34,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Tên thương hiệu</span>,
+      label: <span>Thương hiệu</span>,
       name: "title",
       dataIndex: ["title"],
       render: (dataRow: any) => {

@@ -3,14 +3,10 @@ import React, { useEffect, useState } from "react";
 import BasicModal from "../../common/BasicModal";
 import { ModalEventCalendar } from "./ModalEventCalendar";
 import { useSession } from "next-auth/react";
-import { getBrands, getModels, getYears } from "@/utils/branch";
+import { getModels, getYears } from "@/utils/branch";
 import { useSearchParams } from "next/navigation";
 import { getEmployees, getGarage } from "@/utils/garage";
-import { getCategories } from "@/utils/category";
-import Categories from "../category/categories";
 import { getCustomerCareCreate } from "@/utils/customerCare";
-import { getCars } from "@/utils/car";
-import { getMyAccount } from "@/utils/user";
 
 export default function ModalCalendar({
   opened,
