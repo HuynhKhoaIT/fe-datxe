@@ -22,7 +22,7 @@ model Garage {
   customers           Customer[]
   cars                Car[]
   serviceAdvisor      ServiceAdvisor[]
-  productCategory     ProductCategory[]
+  // productCategory     ProductCategory[]
   orderCategoies      OrderCategory[]
   productBrands       ProductBrand[]
   carStyle            CarStyle[]
@@ -30,13 +30,12 @@ model Garage {
   suppilers           Suppiler[]
 }
 model ProductCategory {
-  id          Int                    @id @default(autoincrement())
+  id          Int   @id @default(autoincrement())
   title       String
   slug        String
   description String?
   image       String
   createdBy   Int                    @default(1)
-  garage      Garage @relation(fields: [garageId], references: [id])
   garageId    Int                    @default(1)
   status      STATUS                 @default(DRAFT)
   createdAt   DateTime               @default(now())
