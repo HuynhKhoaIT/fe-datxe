@@ -6,9 +6,31 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
+model Garage {
+  id                  Int @id @default(autoincrement())
+  code                String
+  name                String
+  shortName           String?
+  logo                String?
+  phoneNumber         String?
+  email               String?
+  website             String?
+  address             String?
+  status              STATUS @default(PUBLIC)
+  product             Product[]
+  order               Order[]
+  customers           Customer[]
+  cars                Car[]
+  serviceAdvisor      ServiceAdvisor[]
+  // productCategory     ProductCategory[]
+  orderCategoies      OrderCategory[]
+  productBrands       ProductBrand[]
+  carStyle            CarStyle[]
+  customerGroups      CustomerGroup[]
+  suppilers           Suppiler[]
+}
 model ProductCategory {
-  id          Int                    @id @default(autoincrement())
+  id          Int   @id @default(autoincrement())
   title       String
   slug        String
   description String?
@@ -38,8 +60,11 @@ model Product {
   images          Json?
   metaDescription String?
   brandDetail     String?
+  supplier        Suppiler @relation(fields: [supplierId], references: [id])
+  supplierId      Int                    @default(1)
   status          STATUS                 @default(DRAFT)
   createdBy       Int                    @default(1)
+  garage          Garage @relation(fields: [garageId], references: [id])
   garageId        Int                    @default(1)
   createdAt       DateTime               @default(now())
   updatedAt       DateTime               @updatedAt
@@ -75,6 +100,144 @@ model CarModelsOnProducts {
   assignedBy   String
 
   @@id([productId, carModelId])
+}
+model Order{
+  id                Int @id @default(autoincrement())
+  code              String
+  customerRequest   String?
+  customerNote      String?
+  note              String?
+  priorityLevel     Int? @default(1)
+  orderCategory     OrderCategory @relation(fields: [orderCategoryId], references: [id])
+  orderCategoryId   Int @default(1)
+  customerId        Int
+  carId             Int
+  brandId           Int
+  modelId           Int
+  yearId            Int
+  subTotal          Int @default(0)
+  discount          Int @default(0)
+  total             Int @default(0)
+  dateTime          DateTime  @default(now())
+  dateExpected      DateTime  @default(now())
+  dateDone          DateTime  @default(now())
+  status            String @default("pending")
+  cancelReason      String?
+  garage            Garage @relation(fields: [garageId], references: [id])
+  garageId          Int @default(0)
+  serviceAdvisor    ServiceAdvisor @relation(fields: [serviceAdvisorId], references: [id])
+  serviceAdvisorId  Int @default(0)
+  createdById       Int @default(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt  
+}
+model OrderCategory{
+  id              Int @id @default(autoincrement())
+  title           String
+  order           Order[]
+  garage          Garage @relation(fields: [garageId], references: [id])
+  garageId        Int @default(1)
+}
+model ServiceAdvisor{
+  id                      Int @id @default(autoincrement())
+  fullName                String
+  phoneNumber             String?
+  email                   String?
+  garage                  Garage @relation(fields: [garageId], references: [id])
+  garageId                Int
+  status                  String @default("draft")
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt 
+  order                   Order[]
+}
+model Customer{
+  id                  Int @id @default(autoincrement())
+  fullName            String
+  phoneNumber         String?
+  cityId              Int?
+  districtId          Int?
+  wardId              Int?
+  address             String?
+  dob                 DateTime?
+  description         String?
+  sex                 SEX @default(MALE)
+  status              STATUS @default(PUBLIC)
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+  cars                Car[]
+  customerGroup       CustomerGroupsOnCustomers[]
+}
+
+model CustomerGroup {
+  id                  Int @id @default(autoincrement())
+  title               String
+  description         String?
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+  customers           CustomerGroupsOnCustomers[]
+}
+
+model CustomerGroupsOnCustomers {
+  customer            Customer   @relation(fields: [customerId], references: [id])
+  customerId          Int // relation scalar field (used in the `@relation` attribute above)
+  customerGroup       CustomerGroup @relation(fields: [customerGroupId], references: [id])
+  customerGroupId     Int // relation scalar field (used in the `@relation` attribute above)
+  carBrandType        CARBRAND  @default(CARBRAND)
+  assignedAt          DateTime  @default(now())
+  assignedBy          String
+
+  @@id([customerId, customerGroupId])
+}
+
+model Car {
+  id                  Int @id @default(autoincrement())
+  customer            Customer @relation(fields: [customerId], references: [id])
+  customerId          Int @default(1)
+  numberPlates        String
+  carBrandId          Int?
+  carNameId           Int?
+  carYearId           Int?
+  carStyle            CarStyle @relation(fields: [carStyleId], references: [id])
+  carStyleId          Int @default(1)
+  color               String?
+  vinNumber           String?
+  machineNumber       String?
+  description         String?
+  status              STATUS @default(PUBLIC)
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+}
+
+model ProductBrand{
+  id                  Int @id @default(autoincrement())
+  name                String
+  description         String?
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+}
+
+model Suppiler {
+  id                  Int @id @default(autoincrement())
+  title               String
+  description         String?
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+  products            Product[]
+}
+model CarStyle {
+  id                  Int @id @default(autoincrement())
+  name                String
+  description         String?
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+  cars                Car[]
+}
+
+enum SEX {
+  MALE
+  FEMALE
+  COMPANY
+  OTHER
 }
 
 enum STATUS {

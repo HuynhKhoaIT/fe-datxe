@@ -106,7 +106,7 @@ export async function POST(request: Request) {
         let catArr: any = [];
         let brandArr: any = [];
         let createdBy = 0;
-        let garageId = 0;
+        let garageId = 1;
         let isProduct = true;
 
         if (!json.categories) {
@@ -198,7 +198,7 @@ export async function POST(request: Request) {
             createdBy = Number(session.user.id);
             garageId = Number(session.user.garageId);
         }
-        if (json.isProduct.length) {
+        if (typeof json.isProduct !== 'undefined' ) {
             isProduct = Number(json.isProduct) == 1 ? true : false;
         }
         if (1) {
