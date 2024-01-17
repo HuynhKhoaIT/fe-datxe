@@ -32,7 +32,7 @@ export async function POST(request: Request) {
         }
         const order = await prisma.order.create({
             data: {
-                code: json.code,
+                code: 'abc',
                 customerId: json.customerId,
                 carId: json.carId,
                 dateTime: json.dateTime,
