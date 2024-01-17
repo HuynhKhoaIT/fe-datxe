@@ -86,6 +86,26 @@ const SidebarAdmin = () => {
       </li>
       <li>
         <Link
+          href="/admin/cars"
+          className={`list-group-item ${
+            (page == "cars" || pageUpdate == "cars") && "active"
+          }`}
+        >
+          <i className="far fa-layer-group"></i>Quản lý xe
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/admin/customers"
+          className={`list-group-item ${
+            (page == "customers" || pageUpdate == "customers") && "active"
+          }`}
+        >
+          <i className="far fa-layer-group"></i>Quản lý khách hàng
+        </Link>
+      </li>
+      <li>
+        <Link
           style={{ display: "flex", alignItems: "center" }}
           href={"/"}
           onClick={() => signOut()}
