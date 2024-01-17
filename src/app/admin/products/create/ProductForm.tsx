@@ -205,7 +205,22 @@ export default function ProductForm({
                 />
               </Grid.Col>
             </Grid>
+
             <Grid gutter={10}>
+              <Grid.Col span={6}>
+                <NumberInput
+                  {...form.getInputProps("brandId")}
+                  label="Thương hiệu sản phẩm"
+                  placeholder="Thương hiệu sản phẩm"
+                />
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <NumberInput
+                  {...form.getInputProps("supplierId")}
+                  label="Nhà cung cấp"
+                  placeholder="Nhà cung cấp"
+                />
+              </Grid.Col>
               <Grid.Col span={6}>
                 <NumberInput
                   {...form.getInputProps("price")}

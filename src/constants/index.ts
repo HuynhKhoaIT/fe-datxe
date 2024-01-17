@@ -11,5 +11,5 @@ export const STATUS_DRAFT = 'DRAFT';
 export const STATUS_PENDING = 'PENDING';
 export const STATUS_DELETE = 'DELETE';
 
-export const IS_PRODUCT = 1;
+export const IS_PRODUCT = '1';
 export const IS_SERVICE = '0';
