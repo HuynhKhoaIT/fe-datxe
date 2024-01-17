@@ -141,6 +141,7 @@ model OrderCategory{
   order           Order[]
   garage          Garage @relation(fields: [garageId], references: [id])
   garageId        Int @default(1)
+  status              STATUS @default(PUBLIC)
 }
 model ServiceAdvisor{
   id                      Int @id @default(autoincrement())

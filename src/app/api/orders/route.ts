@@ -24,8 +24,13 @@ export async function GET(request: NextRequest) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
-        if (!json.customerId) {
-            return new NextResponse("Missing 'customerId' parameter");
+        if (!json.customerId || json.customerId == 0) {
+            // check and create customer
+            // check customer via phone number
+            const customerFind = prisma.customer.findFirst({
+                
+            });
+            // end check customer
         }
         if (!json.carId) {
             return new NextResponse("Missing 'carId' parameter");
