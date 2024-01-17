@@ -25,16 +25,26 @@ export async function POST(request: Request) {
         if (!json.carId) {
             return new NextResponse("Missing 'carId' parameter");
         }
-        // const order = await prisma.order.create({
-        //     data: {
-        //         code: json.code,
-        //         customerId: json.customerId,
-        //         carId: json.carId,
-        //         dateTime: json.dateTime,
-        //     },
-        // });
+        const order = await prisma.order.create({
+            data: {
+                code: json.code,
+                customerId: json.customerId,
+                carId: json.carId,
+                dateTime: json.dateTime,
+                customerRequest: json.customerRequest,
+                customerNote: json.customerNote,
+                note: json.note,
+                priorityLevel: json.priorityLevel,
+                orderCategoryId: 1,
+                brandId: 1,
+                modelId: 1,
+                yearId: 1,
+                garageId: json.garageId,
+                serviceAdvisorId: json.serviceAdvisorId,
+            },
+        });
 
-        return new NextResponse(JSON.stringify({}), {
+        return new NextResponse(JSON.stringify(order), {
             status: 201,
             headers: { 'Content-Type': 'application/json' },
         });
