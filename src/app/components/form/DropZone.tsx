@@ -1,36 +1,63 @@
-import { Group, Text, rem, Image, SimpleGrid, Card } from "@mantine/core";
-import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
+import {
+  Group,
+  Text,
+  rem,
+  Image,
+  SimpleGrid,
+  Card,
+  Indicator,
+  ThemeIcon,
+} from "@mantine/core";
+import { IconUpload, IconPhoto, IconX, IconSquareX } from "@tabler/icons-react";
 import {
   Dropzone,
   DropzoneProps,
   IMAGE_MIME_TYPE,
   FileWithPath,
+  MIME_TYPES,
 } from "@mantine/dropzone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export function BasicDropzone({ setImages, props }: any) {
+export function BasicDropzone({ setImages, maxFiles, images, props }: any) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
+  const handleDelete = (index: number) => {
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setFiles(updatedFiles);
+  };
 
   const previews = files.map((file, index) => {
     const imageUrl = URL.createObjectURL(file);
-
     return (
-      <Image
+      <Indicator
         key={index}
-        src={imageUrl}
-        onLoad={() => URL.revokeObjectURL(imageUrl)}
-      />
+        inline
+        radius="sm"
+        size={25}
+        label={
+          <ThemeIcon size={18} onClick={() => handleDelete(index)}>
+            <IconX />
+          </ThemeIcon>
+        }
+      >
+        <Image src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />
+      </Indicator>
     );
   });
+  useEffect(() => {
+    if (files.length > 0) {
+      setImages(files);
+    }
+  }, [files]);
   return (
     <Card withBorder>
       <Dropzone
+        accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
         onReject={(files) => console.log("rejected files", files)}
-        maxSize={5 * 1024 ** 2}
-        accept={IMAGE_MIME_TYPE}
+        maxFiles={maxFiles}
+        disabled={files?.length >= maxFiles}
+        // maxSize={5 * 1024 ** 2}
         onDrop={(files) => {
-          setFiles(files);
-          setImages(files);
+          setFiles((prevFiles) => [...prevFiles, ...files]);
         }}
         {...props}
       >
@@ -73,10 +100,10 @@ export function BasicDropzone({ setImages, props }: any) {
 
           <div>
             <Text size="xl" inline>
-              Drag images here or click to select files
+              Kéo hình ảnh vào đây hoặc nhấp để chọn
             </Text>
             <Text size="sm" c="dimmed" inline mt={7}>
-              Attach as many files as you like, each file should not exceed 5mb
+              Đính kèm tối đa 5 file, mỗi file không quá 5mb
             </Text>
           </div>
         </Group>

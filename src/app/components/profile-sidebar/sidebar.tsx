@@ -9,7 +9,6 @@ const ProfileSidebar = ({ myAccount }: any) => {
   const pathname = usePathname();
   const parts = pathname.split("/");
   let page = parts[parts.length - 1];
-  console.log("pathname", parts[1]);
   const { data: session } = useSession();
   const token = session?.user?.token;
   return (

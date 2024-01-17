@@ -10,10 +10,10 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 12px;
-
+        align-items: center;
         .title {
             font-weight: 600;
-            font-size: 18px;
+            font-size: 28px;
             color: var(--theme-color);
         }
 

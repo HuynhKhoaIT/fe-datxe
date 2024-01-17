@@ -22,14 +22,14 @@ const CategoryItem = ({
           className={styles.ItemCat}
         >
           <div>
-            <ImageField src={category.thumbnail} height={"60px"} />
+            <ImageField src={category.image} height={"60px"} />
           </div>
           <Typo
             size="sub"
             className={styles.titleItem}
             style={{ transition: "var(--transition)", height: "56px" }}
           >
-            {category.name}
+            {category.title}
           </Typo>
         </Link>
       ) : (
@@ -39,14 +39,14 @@ const CategoryItem = ({
           className={styles.ItemCat}
         >
           <div>
-            <ImageField src={category.thumbnail} height={"60px"} />
+            <ImageField src={category.image} height={"60px"} />
           </div>
           <Typo
             size="sub"
             className={styles.titleItem}
             style={{ transition: "var(--transition)", height: "56px" }}
           >
-            {category.name}
+            {category.title}
           </Typo>
         </Link>
       )}

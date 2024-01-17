@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
 import DateTimeField from "@/app/components/form/DateTimeField";
+import axios, { AxiosRequestConfig } from "axios";
 
 export default function ProductForm({
   isEditing = false,
@@ -32,7 +33,7 @@ export default function ProductForm({
 }: any) {
   const [loading, handlers] = useDisclosure();
   const [catOptions, setCatOptions] = useState<any>([]);
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<any>();
   const form = useForm({
     initialValues: {
       name: "",
@@ -45,7 +46,9 @@ export default function ProductForm({
   });
   useEffect(() => {
     if (!isEditing) {
+      form.setFieldValue("garageId", 9);
       form.setFieldValue("isProduct", "1");
+      form.setFieldValue("status", "PUBLIC");
     }
     if (isEditing && dataDetail) {
       form.setInitialValues(dataDetail);
@@ -77,9 +80,12 @@ export default function ProductForm({
       }
     }
     if (isDirection) {
+      form.setFieldValue("garageId", 9);
       form.setFieldValue("name", dataDetail?.name);
       form.setFieldValue("price", dataDetail?.price);
       form.setFieldValue("description", dataDetail?.description);
+      form.setFieldValue("status", "PUBLIC");
+      form.setFieldValue("isProduct", "1");
     }
   }, [dataDetail]);
   const router = useRouter();
@@ -106,57 +112,53 @@ export default function ProductForm({
     setCar(newCar);
   };
   const handleSubmit = async (values: any) => {
-    console.log(images[0]);
-    if (images[0]) {
-      fetch("https://up-image.dlbd.vn/api/image", {
-        method: "POST",
-        body: images[0],
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Upload success:", data);
-          // Xử lý kết quả sau khi upload thành công
+    try {
+      const baseURL = "https://up-image.dlbd.vn/api/image";
+      const options = { headers: { "Content-Type": "multipart/form-data" } };
+
+      const responses = await Promise.all(
+        images.map(async (image: string | Blob) => {
+          const formData = new FormData();
+          formData.append("image", image);
+          const response = await axios.post(baseURL, formData, options);
+          return response.data;
         })
-        .catch((error) => {
-          console.error("Upload error:", error);
-          // Xử lý lỗi
-        });
-    } else {
-      console.error("No file selected");
+      );
+
+      values.images = JSON.stringify(responses);
+    } catch (error) {
+      console.error("Error:", error);
     }
 
-    // values.title = values.name;
-    // values.brands = car;
-    // if (isDirection) {
-    //   values.garageId = dataDetail?.garageId;
-    // }
-    // handlers.open();
-    // try {
-    //   if (!isEditing) {
-    //     await fetch(`/api/products`, {
-    //       method: "POST",
-    //       body: JSON.stringify(values),
-    //     });
-    //   } else {
-    //     await fetch(`/api/products/${dataDetail?.id}`, {
-    //       method: "PUT",
-    //       body: JSON.stringify(values),
-    //     });
-    //   }
-    //   handlers.close();
-    //   router.back();
-    //   router.refresh();
-    //   notifications.show({
-    //     title: "Thành công",
-    //     message: "Thêm sản phẩm thành công",
-    //   });
-    // } catch (error) {
-    //   handlers.close();
-    //   notifications.show({
-    //     title: "Thất bại",
-    //     message: "Thêm sản phẩm thất bại",
-    //   });
-    // }
+    values.title = values.name;
+    values.brands = car;
+
+    handlers.open();
+
+    try {
+      const url = isEditing
+        ? `/api/products/${dataDetail?.id}`
+        : `/api/products`;
+      await fetch(url, {
+        method: isEditing ? "PUT" : "POST",
+        body: JSON.stringify(values),
+      });
+
+      handlers.close();
+      router.back();
+      router.refresh();
+
+      notifications.show({
+        title: "Thành công",
+        message: "Thêm sản phẩm thành công",
+      });
+    } catch (error) {
+      handlers.close();
+      notifications.show({
+        title: "Thất bại",
+        message: "Thêm sản phẩm thất bại",
+      });
+    }
   };
 
   const getCategories = async () => {
@@ -202,7 +204,22 @@ export default function ProductForm({
                 />
               </Grid.Col>
             </Grid>
+
             <Grid gutter={10}>
+              <Grid.Col span={6}>
+                <NumberInput
+                  {...form.getInputProps("productBrandId")}
+                  label="Thương hiệu sản phẩm"
+                  placeholder="Thương hiệu sản phẩm"
+                />
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <NumberInput
+                  {...form.getInputProps("supplierId")}
+                  label="Nhà cung cấp"
+                  placeholder="Nhà cung cấp"
+                />
+              </Grid.Col>
               <Grid.Col span={6}>
                 <NumberInput
                   {...form.getInputProps("price")}
@@ -310,12 +327,15 @@ export default function ProductForm({
                     { value: "PUBLIC", label: "Công khai" },
                     { value: "DRAFT", label: "Nháp" },
                     { value: "PENDING", label: "Đang duyệt" },
-                    { value: "DELETE", label: "Xoá" },
                   ]}
                 />
               </Grid.Col>
               <Grid.Col span={12}>
-                <BasicDropzone setImages={setImages} />
+                <BasicDropzone
+                  setImages={setImages}
+                  maxFiles={5}
+                  images={images}
+                />
               </Grid.Col>
               {/* <Grid.Col span={12}>
                 <Switch onLabel="ON" offLabel="OFF" label="Quản lý kho" />
@@ -332,9 +352,9 @@ export default function ProductForm({
                   {...form.getInputProps("priceSale")}
                 />
               </Grid.Col> */}
-              <Grid.Col span={12}>
+              {/* <Grid.Col span={12}>
                 <Switch onLabel="ON" offLabel="OFF" label="Công khai" />
-              </Grid.Col>
+              </Grid.Col> */}
             </Grid>
           </Card>
         </Grid.Col>

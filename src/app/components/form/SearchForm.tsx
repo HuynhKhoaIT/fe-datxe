@@ -2,7 +2,7 @@
 import { Box, Button, Flex, Input, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconSearch, IconTrash } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SearchForm({
@@ -11,6 +11,7 @@ export default function SearchForm({
   initialValues,
 }: any) {
   const router = useRouter();
+  const pathname = usePathname();
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
@@ -24,7 +25,6 @@ export default function SearchForm({
     setBrandOptions(dataOption);
   };
   async function getDataModels(brandId: number) {
-    console.log("brandId", brandId);
     const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
     const data = await res.json();
     if (!data) {
@@ -51,7 +51,9 @@ export default function SearchForm({
     setYearCarOptions(dataOption);
   }
   useEffect(() => {
-    getBrands();
+    if (brandFilter) {
+      getBrands();
+    }
   }, [brandFilter]);
   const form = useForm({
     initialValues: initialValues,
@@ -76,8 +78,7 @@ export default function SearchForm({
         (key) => `${encodeURIComponent(key)}=${encodeURIComponent(values[key])}`
       )
       .join("&");
-    console.log(values);
-    router.push(`/admin/products?${queryString}`);
+    router.push(`${pathname}?${queryString}`);
   };
   return (
     <Box>

@@ -150,7 +150,6 @@ export default function CartComponent({
       setLoading(false);
       // router.push('/dashboard/order/' + checkOut.id);
     } catch (error) {
-      console.log("Order fail");
       notifications.show({
         title: "Thất bại",
         message: "Đặt hàng thất bại! Vui lòng thử lại.",

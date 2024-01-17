@@ -17,7 +17,7 @@ export default function UpdateCategory({
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}api/product-category/${params?.categoryId}`
+          `/api/product-category/${params?.categoryId}`
         );
         setCategory(response.data);
       } catch (error) {

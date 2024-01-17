@@ -17,7 +17,9 @@ export default function AdminLayout({ children }: IProps) {
         <Breadcrumb breadcrumbs={Breadcrumbs} />
         <div className={styles.content}>{children}</div>
       </div>
-      <FooterAdmin />
+      <div style={{ marginLeft: "20px" }}>
+        <FooterAdmin />
+      </div>
     </main>
   );
 }

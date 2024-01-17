@@ -10,9 +10,13 @@ function OverviewPanel({
   showHeader = true,
   className,
   hiddenShowMore = false,
+  stylesProps,
 }: any) {
   return (
-    <Box className={classNames(styles.panel, className)}>
+    <Box
+      className={classNames(styles.panel, className)}
+      stylesProps={stylesProps}
+    >
       {showHeader && (
         <>
           <div className={styles.head}>

@@ -9,7 +9,6 @@ export function ItemCheckBox({ dataDetail, keyName }: any) {
   const searchParams = useSearchParams();
   let params = new URLSearchParams(searchParams);
   function handleClick(checkbox: HTMLInputElement) {
-    console.log("checkbox", checkbox);
     if (checkbox.checked === false) {
       params?.delete(keyName.toString());
     } else {

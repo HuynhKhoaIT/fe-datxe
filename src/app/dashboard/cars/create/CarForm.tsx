@@ -30,7 +30,6 @@ export default function CarForm({
   brandOptions = [],
   modelOption = [],
 }: any) {
-  console.log(dataDetail);
   const { data: session } = useSession();
   const token = session?.user?.token;
   const router = useRouter();
@@ -39,7 +38,6 @@ export default function CarForm({
   const [models, setModels] = useState<any>(modelOption);
   const [yearCar, setYearCar] = useState<any>([]);
 
-  console.log(dataDetail);
   const form = useForm({
     initialValues: {
       automakerId: dataDetail?.automakerId,
@@ -100,7 +98,6 @@ export default function CarForm({
         );
       }
       selectYearCar(dataDetail?.carNameId);
-      console.log(form.values);
     }
   }, [dataDetail]);
   const handleSubmit = async (values: any) => {

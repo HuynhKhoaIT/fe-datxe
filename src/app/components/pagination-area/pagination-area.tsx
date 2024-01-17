@@ -22,9 +22,6 @@ const TableDataProduct = () => {
       const newProductData = await getProductsSearch(params, activePage, limit);
       if (activePage !== 1) {
         let array = [...productData, ...data];
-        console.log(array);
-        console.log(data);
-
         setProductData(array);
       } else {
         setProductData(data);

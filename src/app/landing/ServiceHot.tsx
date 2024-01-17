@@ -6,13 +6,16 @@ import OverviewPanel from "../components/layout/OverviewPanel";
 import ProductItem from "../components/elements/product/ProductItem";
 import { Box, Grid } from "@mantine/core";
 import { IProduct } from "@/interfaces/product";
-export default function ServicesHot() {
+export default function ServicesHot({ garageId = 9 }: any) {
   const [services, setServices] = useState<any>([]);
 
   async function getServicesHot() {
-    const res = await fetch("/api/products?isProduct=0&limit=8", {
-      method: "GET",
-    });
+    const res = await fetch(
+      `/api/products?isProduct=0&garageId=${garageId}&limit=8`,
+      {
+        method: "GET",
+      }
+    );
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
@@ -38,15 +41,11 @@ export default function ServicesHot() {
       linkToList={"/dich-vu"}
       id="products"
     >
-      <Box w={"100%"}>
-        <Grid>
-          {services?.map((product: IProduct, index: number) => (
-            <Grid.Col span={{ base: 12, xs: 6, sm: 4, md: 4, lg: 3 }}>
-              <ProductItem product={product} key={index} />
-            </Grid.Col>
-          ))}
-        </Grid>
-      </Box>
+      <div className={styles.rowItem}>
+        {services?.map((product: IProduct, index: number) => (
+          <ProductItem product={product} key={index} />
+        ))}
+      </div>
     </OverviewPanel>
   );
 }

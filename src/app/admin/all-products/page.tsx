@@ -13,7 +13,12 @@ export default function ProductsManaga() {
   const [products, setProducts] = useState<any>();
 
   async function getData(searchParams: any, page: number) {
-    const res = await getProductByGar(garage_id.toString(), 10, page);
+    const res = await getProductByGar(
+      searchParams,
+      garage_id.toString(),
+      10,
+      page
+    );
     setProducts(res);
   }
   useEffect(() => {

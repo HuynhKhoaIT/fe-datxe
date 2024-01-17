@@ -1,0 +1,6 @@
+.rowItem {
+    display: grid;
+    grid-template-columns: 24% 24% 24% 24%;
+    justify-content: space-between;
+    gap: 8px;
+}

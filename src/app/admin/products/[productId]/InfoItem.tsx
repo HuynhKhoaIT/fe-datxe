@@ -15,6 +15,7 @@ export default function InfoItem({
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
+
   const removeCar = (index: number) => {
     const newCar = [...carData];
     newCar.splice(index, 1);
@@ -34,35 +35,38 @@ export default function InfoItem({
     setBrandOptions(dataOption);
   }
   async function getDataModels(brandId: number) {
-    console.log("brandId", brandId);
-    const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
+    if (brandId) {
+      const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("Failed to fetch data");
+      }
+      const dataOption = data?.map((item: any) => ({
+        value: item.id.toString(),
+        label: item.title,
+      }));
+      setModelOptions(dataOption);
     }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setModelOptions(dataOption);
   }
   async function getDataYearCar(modelId: number) {
-    const res = await fetch(`/api/car-model/${modelId}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
+    if (modelId) {
+      const res = await fetch(`/api/car-model/${modelId}`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("Failed to fetch data");
+      }
+      const dataOption = data?.map((item: any) => ({
+        value: item.id.toString(),
+        label: item.title,
+      }));
+      setYearCarOptions(dataOption);
     }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setYearCarOptions(dataOption);
   }
   useEffect(() => {
     getDataBrands();
-    if (dataDetail) {
+    if (dataDetail?.brandId && dataDetail?.nameId) {
       getDataModels(dataDetail?.brandId);
       getDataYearCar(dataDetail?.nameId);
     }
