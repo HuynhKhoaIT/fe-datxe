@@ -1,36 +1,24 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import styles from "./index.module.scss";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import {
-  Box,
-  Button,
-  Flex,
-  Group,
-  Image,
-  LoadingOverlay,
-  Modal,
-  Pagination,
-} from "@mantine/core";
-import {
-  IconBan,
-  IconChevronRight,
-  IconEye,
-  IconPencil,
-  IconPlus,
-  IconTrash,
-} from "@tabler/icons-react";
+import { Badge, Button, Flex, Image } from "@mantine/core";
+import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
-import { deleteCar } from "@/utils/car";
-import Typo from "@/app/components/elements/Typo";
 import { notifications } from "@mantine/notifications";
 import TableBasic from "@/app/components/table/Tablebasic";
+import dynamic from "next/dynamic";
+import { statusOptions } from "@/constants/masterData";
+import SearchForm from "@/app/components/form/SearchForm";
+const DynamicModalDeleteProduct = dynamic(
+  () => import("../board/ModalDeleteProduct"),
+  {
+    ssr: false,
+  }
+);
 export default function CategoryListPage({ dataSource }: any) {
-  const [categories, setCategories] = useState([]);
   const [deleteRow, setDeleteRow] = useState();
-  const [visible, handlers] = useDisclosure(false);
   const handleDeleteCategory = async (id: any) => {
     await fetch(`/api/product-category/${id}`, {
       method: "DELETE",
@@ -44,8 +32,6 @@ export default function CategoryListPage({ dataSource }: any) {
     openedDeleteProduct,
     { open: openDeleteProduct, close: closeDeleteProduct },
   ] = useDisclosure(false);
-  const [totalPage, setTotalPage] = useState(0);
-
   const columns = [
     {
       label: <span>Hình ảnh</span>,
@@ -79,6 +65,24 @@ export default function CategoryListPage({ dataSource }: any) {
       label: <span>Mô tả</span>,
       name: "description",
       dataIndex: ["description"],
+    },
+    {
+      label: <span>Trạng thái</span>,
+      name: "status",
+      dataIndex: ["status"],
+      width: "100px",
+      render: (record: any) => {
+        const matchedStatus = statusOptions.find(
+          (item) => item.value === record
+        );
+        if (matchedStatus) {
+          return (
+            <Badge color={matchedStatus.color} key={record}>
+              {matchedStatus.label}
+            </Badge>
+          );
+        }
+      },
     },
     {
       label: <span>Hành động</span>,
@@ -121,8 +125,27 @@ export default function CategoryListPage({ dataSource }: any) {
       },
     },
   ];
+
+  const searchData = [
+    {
+      name: "s",
+      placeholder: "Tên danh mục",
+      type: "input",
+    },
+    {
+      name: "status",
+      placeholder: "Trạng thái",
+      type: "select",
+      data: statusOptions,
+    },
+  ];
+  const initialValuesSearch = {
+    s: "",
+    status: null,
+  };
   return (
     <div className={styles.content}>
+      <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
       <Flex justify={"end"} align={"center"}>
         <Link
           href={{
@@ -135,47 +158,14 @@ export default function CategoryListPage({ dataSource }: any) {
       <div className="row">
         <div className="col-12">
           <TableBasic data={dataSource} columns={columns} />
-          <Pagination
-            style={{
-              marginTop: "16px",
-              display: "flex",
-              justifyContent: "end",
-            }}
-            total={totalPage}
-            // onChange={())}
-          />
         </div>
       </div>
-      <Modal
-        title="Xoá danh mục"
-        opened={openedDeleteProduct}
-        onClose={closeDeleteProduct}
-        lockScroll={false}
-      >
-        <div>Bạn có muốn xoá không?</div>
-        <Group justify="end" style={{ marginTop: 10 }}>
-          <Button
-            variant="filled"
-            key="cancel"
-            onClick={closeDeleteProduct}
-            color="red"
-            leftSection={<IconBan />}
-          >
-            Huỷ bỏ
-          </Button>
-          <Button
-            style={{ marginLeft: "12px" }}
-            onClick={() => {
-              closeDeleteProduct();
-              handleDeleteCategory(deleteRow);
-            }}
-            variant="filled"
-            leftSection={<IconChevronRight />}
-          >
-            Tiếp tục
-          </Button>
-        </Group>
-      </Modal>
+      <DynamicModalDeleteProduct
+        openedDeleteProduct={openedDeleteProduct}
+        closeDeleteProduct={closeDeleteProduct}
+        handleDeleteProduct={handleDeleteCategory}
+        deleteRow={deleteRow}
+      />
     </div>
   );
 }

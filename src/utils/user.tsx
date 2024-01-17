@@ -96,7 +96,6 @@ export const register = async (
         password: password,
         callbackUrl: "/dashboard",
       });
-      console.log("đăng ký thành công");
     } else {
       console.log("Regiter failed");
     }

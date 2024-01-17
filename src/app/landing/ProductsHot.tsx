@@ -6,13 +6,16 @@ import OverviewPanel from "../components/layout/OverviewPanel";
 import ProductItem from "../components/elements/product/ProductItem";
 import { Box, Button, Flex, Grid } from "@mantine/core";
 import { IProduct } from "@/interfaces/product";
-export default function ProductsHot() {
+export default function ProductsHot({ garageId = 9 }: any) {
   const [products, setProducts] = useState<any>([]);
 
   async function getProductsHot() {
-    const res = await fetch("/api/products?isProduct=1&limit=8", {
-      method: "GET",
-    });
+    const res = await fetch(
+      `/api/products?isProduct=1&garageId=${garageId}&limit=8`,
+      {
+        method: "GET",
+      }
+    );
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
@@ -37,16 +40,13 @@ export default function ProductsHot() {
       title="Sản phẩm hot"
       linkToList={"/san-pham"}
       id="products"
+      padding={"30px 0"}
     >
-      <Box w={"100%"}>
-        <Grid>
-          {products?.map((product: IProduct, index: number) => (
-            <Grid.Col span={{ base: 12, xs: 6, sm: 4, md: 4, lg: 3 }}>
-              <ProductItem product={product} key={index} />
-            </Grid.Col>
-          ))}
-        </Grid>
-      </Box>
+      <div className={styles.rowItem}>
+        {products?.map((product: IProduct, index: number) => (
+          <ProductItem product={product} key={index} />
+        ))}
+      </div>
     </OverviewPanel>
   );
 }

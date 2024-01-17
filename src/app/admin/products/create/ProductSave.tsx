@@ -22,7 +22,6 @@ export default function ProductSave({ isDirection, brandOptions = [] }: any) {
       handleGetProduct(Number(productId));
     }
   }, [isDirection]);
-  console.log("productDetail", productDetail);
   return (
     <Box maw={"100%"} mx="auto">
       <ProductForm

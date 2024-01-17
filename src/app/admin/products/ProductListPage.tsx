@@ -12,6 +12,7 @@ import {
   Image,
   Tooltip,
   Space,
+  Badge,
 } from "@mantine/core";
 import {
   IconBan,
@@ -28,11 +29,18 @@ import Typo from "@/app/components/elements/Typo";
 import { notifications } from "@mantine/notifications";
 import TableBasic from "@/app/components/table/Tablebasic";
 export const revalidate = 0;
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import PaginationBase from "@/app/components/form/PaginationBase";
 import SearchForm from "@/app/components/form/SearchForm";
-
+import dynamic from "next/dynamic";
+import { statusOptions, kindProductOptions } from "@/constants/masterData";
+const DynamicModalDeleteProduct = dynamic(
+  () => import("../board/ModalDeleteProduct"),
+  {
+    ssr: false,
+  }
+);
 export default function ProductListPage({
   dataSource,
   setPage,
@@ -40,8 +48,9 @@ export default function ProductListPage({
   categoryOptions,
   getData,
 }: any) {
-  // console.log(productsGara);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteProduct = async (idProduct: any) => {
     await fetch(`/api/products/${idProduct}`, {
@@ -54,7 +63,7 @@ export default function ProductListPage({
       title: "Thành công",
       message: "Xoá sản phẩm thành công",
     });
-    // getData();
+    getData(searchParams, activePage);
     router.refresh();
   };
   const [
@@ -65,10 +74,11 @@ export default function ProductListPage({
     {
       label: <span>Hình ảnh</span>,
       name: "image",
-      dataIndex: ["thumbnail"],
+      dataIndex: ["images"],
       width: "90px",
       render: (data: any) => {
-        if (!data) {
+        const images = JSON.parse(data);
+        if (!images) {
           return (
             <Image
               radius="md"
@@ -79,7 +89,9 @@ export default function ProductListPage({
             />
           );
         }
-        return <Image radius="md " h={40} w={80} fit="contain" src={data} />;
+        return (
+          <Image radius="md " h={40} w={80} fit="contain" src={images[0]} />
+        );
       },
     },
     {
@@ -110,6 +122,42 @@ export default function ProductListPage({
       dataIndex: ["salePrice"],
       render: (dataRow: number) => {
         return <span>{dataRow?.toLocaleString()}đ</span>;
+      },
+    },
+    {
+      label: <span>Loại</span>,
+      name: "kind",
+      dataIndex: ["isProduct"],
+      width: "100px",
+      render: (record: any) => {
+        const matchedStatus = kindProductOptions.find(
+          (item) => item.value === record
+        );
+        if (matchedStatus) {
+          return (
+            <Badge color={matchedStatus.color} key={record}>
+              {matchedStatus.label}
+            </Badge>
+          );
+        }
+      },
+    },
+    {
+      label: <span>Trạng thái</span>,
+      name: "status",
+      dataIndex: ["status"],
+      width: "100px",
+      render: (record: any) => {
+        const matchedStatus = statusOptions.find(
+          (item) => item.value === record
+        );
+        if (matchedStatus) {
+          return (
+            <Badge color={matchedStatus.color} key={record}>
+              {matchedStatus.label}
+            </Badge>
+          );
+        }
       },
     },
     {
@@ -169,6 +217,12 @@ export default function ProductListPage({
       type: "select",
       data: categoryOptions,
     },
+    {
+      name: "isProduct",
+      placeholder: "Loại",
+      type: "select",
+      data: kindProductOptions,
+    },
   ];
   const initialValuesSearch = {
     s: "",
@@ -198,36 +252,12 @@ export default function ProductListPage({
       <TableBasic data={dataSource} columns={columns} loading={true} />
       <PaginationBase activePage={activePage} setPage={setPage} />
 
-      <Modal
-        title="Xoá sản phẩm"
-        opened={openedDeleteProduct}
-        onClose={closeDeleteProduct}
-        lockScroll={false}
-      >
-        <div>Bạn có muốn xoá không?</div>
-        <Group justify="end" style={{ marginTop: 10 }}>
-          <Button
-            variant="filled"
-            key="cancel"
-            onClick={closeDeleteProduct}
-            color="red"
-            leftSection={<IconBan />}
-          >
-            Huỷ bỏ
-          </Button>
-          <Button
-            style={{ marginLeft: "12px" }}
-            onClick={() => {
-              closeDeleteProduct();
-              handleDeleteProduct(deleteRow);
-            }}
-            variant="filled"
-            leftSection={<IconChevronRight />}
-          >
-            Tiếp tục
-          </Button>
-        </Group>
-      </Modal>
+      <DynamicModalDeleteProduct
+        openedDeleteProduct={openedDeleteProduct}
+        closeDeleteProduct={closeDeleteProduct}
+        handleDeleteProduct={handleDeleteProduct}
+        deleteRow={deleteRow}
+      />
     </div>
   );
 }

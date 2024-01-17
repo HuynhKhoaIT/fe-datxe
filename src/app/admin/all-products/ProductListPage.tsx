@@ -30,6 +30,7 @@ export const revalidate = 0;
 import { useRouter } from "next/navigation";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import PaginationBase from "@/app/components/form/PaginationBase";
+import SearchForm from "@/app/components/form/SearchForm";
 export default function ProductListPage({
   productsGara,
   setPage,
@@ -111,8 +112,20 @@ export default function ProductListPage({
       },
     },
   ];
+
+  const searchData = [
+    {
+      name: "s",
+      placeholder: "Tên sản phẩm",
+      type: "input",
+    },
+  ];
+  const initialValuesSearch = {
+    s: "",
+  };
   return (
     <div className={styles.listPage}>
+      <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
       <TableBasic data={productsGara} columns={columnsGara} />
       <PaginationBase activePage={activePage} setPage={setPage} />
     </div>

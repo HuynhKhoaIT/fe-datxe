@@ -1,12 +1,7 @@
 "use client";
-import FullCalendar from "@fullcalendar/react";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import ModalCalendar from "../ModalInfosEventCalendar";
-import ModalPreviewDetailCalendar from "../ModalPreviewCalendar";
 import dayjs from "dayjs";
-import BasicModal from "../../common/BasicModal";
-import { useSearchParams } from "next/navigation";
 import { getScheduleCsr } from "@/utils/order";
 import { mapArrayEventCalendar } from "../../../domain/EventCalendar";
 import { useSession } from "next-auth/react";
@@ -15,7 +10,22 @@ import styles from "./index.module.scss";
 import "dayjs/locale/vi";
 import CalendarEventBase from "../../form/CalendarEventBase";
 dayjs.locale("vi");
-
+import dynamic from "next/dynamic";
+const DynamicModalCalendar = dynamic(
+  () => import("../ModalInfosEventCalendar"),
+  {
+    ssr: false,
+  }
+);
+const DynamicModalPreviewDetailCalendar = dynamic(
+  () => import("../ModalPreviewCalendar"),
+  {
+    ssr: false,
+  }
+);
+const DynamicBasicModal = dynamic(() => import("../../common/BasicModal"), {
+  ssr: false,
+});
 export default function CalendarScheduler({
   ordersData: dataDetail,
   brandOptions,
@@ -125,51 +135,7 @@ export default function CalendarScheduler({
         />
       </Box>
 
-      {/* {viewDefault !== "danh sách" && (
-        <Box w={"100%"} className={styles.eventGroup}>
-          <div className={styles.title}>Sự kiện trong {viewDefault}</div>
-          <Flex direction="column" className={styles.listEvent}>
-            {eventData?.length > 0 ? (
-              eventData?.map((events: any, index: number) => (
-                <div key={index}>
-                  <Flex
-                    className={styles.titleEvent}
-                    align="center"
-                    justify="space-between"
-                  >
-                    <div>{events?.dayOfWeek}</div>
-                    <div>{events?.date}</div>
-                  </Flex>
-
-                  {events?.events.map((event: any, innerIndex: number) => (
-                    <Flex
-                      className={styles.itemEvent}
-                      align="center"
-                      key={innerIndex}
-                    >
-                      <div className={styles.hours}>
-                        {dayjs(event.start).format("HH:mm")}
-                      </div>
-                      <div className={styles.licensePlates}>
-                        {event?.extendedProps?.orderDetail?.car?.licensePlates}
-                      </div>
-                      <div className={styles.customerRequest}>
-                        {event?.extendedProps?.orderDetail?.customerRequest}
-                      </div>
-                    </Flex>
-                  ))}
-                </div>
-              ))
-            ) : (
-              <Flex justify={"center"} align={"center"} h={50}>
-                Không có sự kiện nào
-              </Flex>
-            )}
-          </Flex>
-        </Box>
-      )} */}
-
-      <ModalCalendar
+      <DynamicModalCalendar
         opened={openedCalendar}
         onClose={closeCalendar}
         eventInfos={eventInfos}
@@ -180,12 +146,12 @@ export default function CalendarScheduler({
         carDefault={carDefault}
         fetchDataOrders={fetchDataOrders}
       />
-      <ModalPreviewDetailCalendar
+      <DynamicModalPreviewDetailCalendar
         opened={openedPreviewCalendar}
         onClose={closePreviewCalendar}
         previewInfos={previewInfos}
       />
-      <BasicModal
+      <DynamicBasicModal
         size={300}
         isOpen={openedNotification}
         onCloseModal={closeNotification}
@@ -195,7 +161,7 @@ export default function CalendarScheduler({
         centered={true}
       >
         <div>Vui lòng chọn ngày giờ lớn hơn hiện tại.</div>
-      </BasicModal>
+      </DynamicBasicModal>
     </div>
   );
 }

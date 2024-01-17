@@ -10,28 +10,28 @@ export default function Product({
   limit: defaultLimit = 8,
 }: any) {
   const [productData, setProductData] = useState<IProduct[]>([]);
-  const [limit, setLimit] = useState<number>(defaultLimit);
-  const handleButtonClick = async () => {
-    if (garageId != 0) {
-      let productLoadmore = await fetch(`/api/products?limit=${limit + 4}`);
-      let newProductData = await getProductByGar(
-        garageId.toString(),
-        limit + 4
-      );
-      setProductData(newProductData);
-    } else {
-      let productLoadmore = await fetch(`/api/products?limit=${limit + 4}`);
-      let data = await productLoadmore.json();
+  // const [limit, setLimit] = useState<number>(defaultLimit);
+  // const handleButtonClick = async () => {
+  //   if (garageId != 0) {
+  //     let productLoadmore = await fetch(`/api/products?limit=${limit + 4}`);
+  //     let newProductData = await getProductByGar(
+  //       garageId.toString(),
+  //       limit + 4
+  //     );
+  //     setProductData(newProductData);
+  //   } else {
+  //     let productLoadmore = await fetch(`/api/products?limit=${limit + 4}`);
+  //     let data = await productLoadmore.json();
 
-      let newProductData = await getProductsHot({ limit: limit + 4 });
-      setProductData(data);
-    }
-    setLimit(limit + 4);
-  };
+  //     let newProductData = await getProductsHot({ limit: limit + 4 });
+  //     setProductData(data);
+  //   }
+  //   setLimit(limit + 4);
+  // };
 
-  useEffect(() => {
-    setProductData(initialProductData);
-  }, [initialProductData]);
+  // useEffect(() => {
+  //   setProductData(initialProductData);
+  // }, [initialProductData]);
 
   return (
     <Box w={"100%"}>
@@ -42,11 +42,11 @@ export default function Product({
           </Grid.Col>
         ))}
       </Grid>
-      <Flex justify="center" mt={36}>
+      {/* <Flex justify="center" mt={36}>
         <Button onClick={handleButtonClick} color={"var(--theme-color)"}>
           Xem Thêm
         </Button>
-      </Flex>
+      </Flex> */}
     </Box>
   );
 }

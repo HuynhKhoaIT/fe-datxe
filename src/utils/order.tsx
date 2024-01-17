@@ -38,7 +38,6 @@ export const getOrders = async (pageNo = 1) => {
 };
 
 export const getOrdersOfGarage = async (garageId: number) => {
-  console.log(GET_ORDER_GARAGE_ENDPOINT);
   const session = await getServerSession(authOptions);
   if (session?.user?.token) {
     try {
@@ -49,7 +48,6 @@ export const getOrdersOfGarage = async (garageId: number) => {
         `${GET_ORDER_GARAGE_ENDPOINT}/${garageId}`,
         config
       );
-      console.log(res);
       return res.data.data as Promise<IOrder[]>;
     } catch (error) {
       throw new Error(

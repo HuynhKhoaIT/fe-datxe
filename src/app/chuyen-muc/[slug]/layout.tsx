@@ -10,7 +10,6 @@ export default async function SearchLayout({ children }: IProps) {
   const categorys = await getCategories();
   return (
     <>
-      <Header />
       <main className="main">
         <div className="shop-area bg pt-40">
           <div className="container">
@@ -28,7 +27,6 @@ export default async function SearchLayout({ children }: IProps) {
           </div>
         </div>
       </main>
-      <MyFooter />
     </>
   );
 }

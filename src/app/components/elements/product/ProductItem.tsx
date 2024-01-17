@@ -10,12 +10,13 @@ export default function ProductItem({
   key: number;
   product: IProduct;
 }) {
+  const images = JSON.parse(product.images);
   return (
     <Box w={"100%"}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section>
           <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>
-            <ImageField src={product?.images} height={"160"} />
+            <ImageField src={images ? images[0] : null} height={"160"} />
           </Link>
         </Card.Section>
 

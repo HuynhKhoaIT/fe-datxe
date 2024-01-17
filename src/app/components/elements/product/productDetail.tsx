@@ -116,7 +116,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
           <Grid.Col span={5}>
             <div className="item-gallery">
               <div className="flexslider-thumbnails">
-                <ProductSlider images={ProductDetail?.images} />
+                <ProductSlider images={JSON.parse(ProductDetail?.images)} />
               </div>
             </div>
           </Grid.Col>

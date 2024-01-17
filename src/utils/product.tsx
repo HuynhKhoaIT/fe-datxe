@@ -39,7 +39,6 @@ export const getProducts2 = async () => {
 };
 
 export const getProductDetail = async (productId = 0) => {
-  console.log("productId", productId);
   try {
     const res = await axios.get(`${GET_PRODUCT_DETAIL}/${productId}`);
     return res.data.data;
@@ -76,12 +75,13 @@ export const getProductsRelated = async (
 };
 
 export const getProductByGar = async (
+  searchParams: string,
   garageId: string,
   limit = 8,
   page = 1
 ) => {
   try {
-    let url = `${GET_PRODUCTS_ENDPOINT}?page=${page}&garage_id=${garageId}&limit=${limit}`;
+    let url = `${GET_PRODUCTS_ENDPOINT}?${searchParams}&page=${page}&garage_id=${garageId}&limit=${limit}`;
     const res = await axios.get(url);
     return res.data.data as Promise<IProduct[]>;
   } catch (error) {
