@@ -62,6 +62,8 @@ model Product {
   brandDetail     String?
   supplier        Suppiler @relation(fields: [supplierId], references: [id])
   supplierId      Int                    @default(1)
+  productBrand    ProductBrand @relation(fields: [productBrandId], references: [id])
+  productBrandId  Int                    @default(1)
   status          STATUS                 @default(DRAFT)
   createdBy       Int                    @default(1)
   garage          Garage @relation(fields: [garageId], references: [id])
@@ -214,6 +216,7 @@ model ProductBrand{
   description         String?
   garage              Garage @relation(fields: [garageId], references: [id])
   garageId            Int @default(1)
+  products            Product[]
 }
 
 model Suppiler {
