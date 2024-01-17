@@ -6,8 +6,22 @@ import { authOptions } from '../auth/[...nextauth]/route';
 export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
+        const { searchParams } = new URL(request.url);
+        let garageId = {};
+        if (searchParams.get('garage')) {
+            garageId = Number(searchParams.get('garage'));
+        }
         const productCategory = await prisma.productCategory.findMany({
-            take: 10,
+            where: {
+                AND: [
+                    {
+                        status: {
+                            not: 'DELETE',
+                        },
+                        garageId,
+                    },
+                ],
+            },
         });
         return NextResponse.json(productCategory);
         throw new Error('Chua dang nhap');
