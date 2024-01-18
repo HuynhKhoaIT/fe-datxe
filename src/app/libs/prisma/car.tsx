@@ -4,18 +4,18 @@ export async function createCar(json: any) {
         // return json;
         const car = await prisma.car.create({
             data: {                
-                customerId: parseInt(json.customerId),
+                customerId: Number(json.customerId),
                 numberPlates: json.numberPlates,
-                carBrandId: parseInt(json.carBrandId),
-                carNameId: parseInt(json.carNameId),
-                carYearId: parseInt(json.carYearId),
+                carBrandId: Number(json.carBrandId),
+                carNameId: Number(json.carNameId),
+                carYearId: Number(json.carYearId),
                 carStyleId: json.carStyleId,
                 color: json.color,
                 vinNumber: json.vinNumber,
                 machineNumber: json.machineNumber,
                 description: json.description,
                 status: json.status,
-                garageId: parseInt(json.garageId),
+                garageId: Number(json.garageId),
             },
             include:{
                 customer: true,
