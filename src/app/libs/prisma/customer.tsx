@@ -5,14 +5,14 @@ export async function createCustomer(json: any) {
             data: {
                 fullName: json.fullName,
                 phoneNumber: json.phoneNumber,
-                cityId: parseInt(json.cityId),
-                districtId: parseInt(json.districtId),
-                wardId: parseInt(json.wardId),
+                cityId: Number(json.cityId),
+                districtId: Number(json.districtId),
+                wardId: Number(json.wardId),
                 address: json.address,
                 dob: json.dob,
                 description: json.description,
                 sex: json.sex,
-                garageId: parseInt(json.garageId),
+                garageId: Number(json.garageId),
                 status: json.status,
             },
             include:{
