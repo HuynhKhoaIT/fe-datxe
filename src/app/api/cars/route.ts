@@ -36,18 +36,18 @@ export async function POST(request: Request) {
         const json = await request.json();        
         const car = await prisma.car.create({
             data: {                
-                customerId: json.customerId,
+                customerId: parseInt(json.customerId),
                 numberPlates: json.numberPlates,
-                carBrandId: json.carBrandId,
-                carNameId: json.carNameId,
-                carYearId: json.carYearId,
-                carStyleId: json.carStyleId,
+                carBrandId: parseInt(json.carBrandId),
+                carNameId: parseInt(json.carNameId),
+                carYearId: parseInt(json.carYearId),
+                carStyleId: parseInt(json.carStyleId),
                 color: json.color,
                 vinNumber: json.vinNumber,
                 machineNumber: json.machineNumber,
                 description: json.description,
                 status: json.status,
-                garageId: json.garageId,
+                garageId: parseInt(json.garageId),
             },
             include:{
                 customer: true,

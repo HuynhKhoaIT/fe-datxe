@@ -24,12 +24,19 @@ export async function GET(request: NextRequest) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
-        if (!json.customerId || json.customerId == 0) {
+        if ((!json.customerId || json.customerId == 0) && json.phoneNumber) {
             // check and create customer
             // check customer via phone number
-            const customerFind = prisma.customer.findFirst({
-                
-            });
+            let phoneNumber = json.phoneNumber;
+            if(phoneNumber){
+                const customerFind = await prisma.customer.findFirstOrThrow({
+                    where: { phoneNumber: phoneNumber }
+                })
+            }
+            
+            // if(customerFind.){
+
+            // }
             // end check customer
         }
         if (!json.carId) {
@@ -38,19 +45,19 @@ export async function POST(request: Request) {
         const order = await prisma.order.create({
             data: {
                 code: 'abc',
-                customerId: json.customerId,
-                carId: json.carId,
+                customerId: parseInt(json.customerId),
+                carId: parseInt(json.carId),
                 dateTime: json.dateTime,
                 customerRequest: json.customerRequest,
                 customerNote: json.customerNote,
                 note: json.note,
-                priorityLevel: json.priorityLevel,
+                priorityLevel: parseInt(json.priorityLevel),
                 orderCategoryId: 1,
-                brandId: json.brandId,
-                modelId: json.modelId,
-                yearId: json.yearId,
-                garageId: json.garageId,
-                serviceAdvisorId: json.serviceAdvisorId,
+                brandId: parseInt(json.brandId),
+                modelId: parseInt(json.modelId),
+                yearId: parseInt(json.yearId),
+                garageId: parseInt(json.garageId),
+                serviceAdvisorId: parseInt(json.serviceAdvisorId),
             },
             include: {
                 serviceAdvisor: true,

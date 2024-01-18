@@ -47,14 +47,14 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
             let updateData = {
                 fullName: json.fullName,
                 phoneNumber: json.phoneNumber,
-                cityId: json.cityId,
-                districtId: json.districtId,
-                wardId: json.wardId,
+                cityId: parseInt(json.cityId),
+                districtId: parseInt(json.districtId),
+                wardId: parseInt(json.wardId),
                 address: json.address,
                 dob: json.dob,
                 description: json.description,
                 sex: json.sex,
-                garageId: json.garageId,
+                garageId: parseInt(json.garageId),
                 status: json.status,
             };
             const updatedCat = await prisma.customer.update({

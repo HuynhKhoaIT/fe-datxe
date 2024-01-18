@@ -39,18 +39,18 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
             }
             const json = await request.json();
             let updateData = {
-                customerId: json.customerId,
+                customerId: parseInt(json.customerId),
                 numberPlates: json.numberPlates,
-                carBrandId: json.carBrandId,
-                carNameId: json.carNameId,
-                carYearId: json.carYearId,
-                carStyleId: json.carStyleId,
+                carBrandId: parseInt(json.carBrandId),
+                carNameId: parseInt(json.carNameId),
+                carYearId: parseInt(json.carYearId),
+                carStyleId: parseInt(json.carStyleId),
                 color: json.color,
                 vinNumber: json.vinNumber,
                 machineNumber: json.machineNumber,
                 description: json.description,
                 status: json.status,
-                garageId: json.garageId,
+                garageId: parseInt(json.garageId),
             }
             const updatedCar = await prisma.car.update({
                 where: {
