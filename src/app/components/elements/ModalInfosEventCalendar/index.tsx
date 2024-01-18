@@ -18,6 +18,7 @@ export default function ModalCalendar({
   carOptions,
   carDefault: dataCarDefault,
   fetchDataOrders,
+  advisorOptions,
 }: any) {
   const searchParams = useSearchParams();
   const garageId = searchParams.get("garage");
@@ -32,14 +33,13 @@ export default function ModalCalendar({
   const [modelOptions, setModelsOptions] = useState<any>();
   const [yearCarOptions, setYearCarOptions] = useState<any>();
 
-  const [advisorOptions, setAdvisoroptions] = useState<any>();
   const [garageOptions, setGarageOptions] = useState<any>([]);
   const [customerCreate, setCustomerCreate] = useState<any>();
   const [garage, setGarage] = useState<any>();
 
   // lấy danh sách model
   const fetchModel = async (brand: any) => {
-    const models = await fetch(`/api/models/${brand}`);
+    const models = await fetch(`/api/car-model/${brand}`);
     const data = await models.json();
     const newModels = data?.map((model: any) => ({
       value: model.id?.toString() || "",
@@ -54,7 +54,7 @@ export default function ModalCalendar({
   }, [brand]);
   // lấy danh sách năm sản xuất
   const fetchYearCar = async (model: any) => {
-    const yearCarData = await fetch(`/api/models/${model}`);
+    const yearCarData = await fetch(`/api/car-model/${model}`);
     const data = await yearCarData.json();
 
     const newYears = data?.map((year: any) => ({
@@ -73,12 +73,6 @@ export default function ModalCalendar({
   const fetchGarage = async (garageId: string) => {
     if (garageId.length > 0) {
       const garage = await getGarage(garageId || "");
-      const employees = await getEmployees(garageId || "");
-      const newEmployees = employees?.map((employee: any) => ({
-        value: employee.id?.toString() || "",
-        label: employee.name || "",
-      }));
-      setAdvisoroptions(newEmployees);
       setGarage(garage);
     }
   };

@@ -19,16 +19,6 @@ async function getDataInfoOrder() {
 export default async function DatLich() {
   const orders = await getSchedule();
   const mappedOrdersData = mapArrayEventCalendar(orders);
-  // lấy danh sách brand
-  const brands = await getBrands();
-
-  // lấy danh sách category
-  const categories = await getCategories();
-  // const categoryOptions = categories?.map((category) => ({
-  //   value: category.id?.toString() || "",
-  //   label: category.name || "",
-  // }));
-
   const carsData = await getCarsSsr();
   // const carOptions = carsData?.map((car) => ({
   //   value: car.id?.toString() || "",
@@ -61,7 +51,10 @@ export default async function DatLich() {
     value: brand.id?.toString() || "",
     label: brand.title || "",
   }));
-
+  const advisorOptions = orderInfo?.serviceadvisors?.map((advisor: any) => ({
+    value: advisor.id?.toString(),
+    label: advisor.fullName,
+  }));
   return (
     <main className="main">
       <CalendarScheduler
@@ -72,6 +65,7 @@ export default async function DatLich() {
         carDefault={carDefault}
         ordersData={mappedOrdersData}
         orderInfo={orderInfo}
+        advisorOptions={advisorOptions}
       />
     </main>
   );
