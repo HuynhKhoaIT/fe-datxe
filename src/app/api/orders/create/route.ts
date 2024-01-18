@@ -1,15 +1,14 @@
-import prisma from "@/app/libs/prismadb";
-import { NextRequest, NextResponse } from "next/server";
+import prisma from '@/app/libs/prismadb';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-
         let data = {
             categories: {},
             carBrands: {},
             serviceadvisors: {},
             cars: {},
-        }
+        };
 
         const categories = await prisma.orderCategory.findMany({
             where: {
@@ -28,7 +27,7 @@ export async function GET(request: NextRequest) {
             },
         });
         data.carBrands = brands;
-        const serviceadvisors = await prisma.serviceAdvisor.findMany(); 
+        const serviceadvisors = await prisma.serviceAdvisor.findMany();
         data.serviceadvisors = serviceadvisors;
         const cars = await prisma.car.findMany();
         data.cars = cars;
