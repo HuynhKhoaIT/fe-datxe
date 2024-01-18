@@ -59,6 +59,7 @@ export const ModalEventCalendar = ({
       fullName: user?.name || "",
       phoneNumber: user?.phone || "",
       numberPlates: "",
+      dateTime: typeView === "dayGridMonth" ? newDate : eventInfos?.start,
     },
 
     validate: {
