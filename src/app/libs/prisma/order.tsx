@@ -76,7 +76,7 @@ export async function createOrder(json: any) {
         }
         const order = await prisma.order.create({
             data: {
-                code: 'abc',
+                code: (await codeGeneration(json.garageId)).toString(),
                 customerId: customerId,
                 carId: carId,
                 dateTime: json.dateTime,
@@ -100,5 +100,26 @@ export async function createOrder(json: any) {
         return {order};
     } catch (error) {
         return { error };
+    }
+}
+
+export async function codeGeneration(garageId: Number){
+    let num = '1';
+    const order = await prisma.order.findFirst({
+        where: {
+            garageId: Number(garageId),
+        },
+        orderBy: [
+            {
+              id: 'desc',
+            },
+        ],
+    });
+
+    if(!order){
+        return num.padStart(6, '0');
+    }else{
+        num = (parseInt(order.code) + 1).toString();
+        return num.padStart(6, '0');
     }
 }
