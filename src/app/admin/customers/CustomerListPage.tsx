@@ -8,7 +8,7 @@ import Link from "next/link";
 import { notifications } from "@mantine/notifications";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
-import { statusOptions } from "@/constants/masterData";
+import { sexOptions, statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
@@ -19,7 +19,7 @@ const DynamicModalDeleteProduct = dynamic(
 export default function CustomerListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCustomer = async (id: any) => {
-    await fetch(`/api/customer-groups/${id}`, {
+    await fetch(`/api/customer/${id}`, {
       method: "DELETE",
     });
     notifications.show({
@@ -34,16 +34,37 @@ export default function CustomerListPage({ dataSource }: any) {
   const columns = [
     {
       label: <span>Tên khách hàng</span>,
-      name: "title",
-      dataIndex: ["title"],
+      name: "fullname",
+      dataIndex: ["fullName"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
     },
     {
-      label: <span>Mô tả</span>,
-      name: "description",
-      dataIndex: ["description"],
+      label: <span>Số điện thoại</span>,
+      name: "phoneNumber",
+      dataIndex: ["phoneNumber"],
+    },
+    {
+      label: <span>Ngày sinh</span>,
+      name: "dob",
+      dataIndex: ["dob"],
+    },
+    {
+      label: <span>Giới tính</span>,
+      name: "sex",
+      dataIndex: ["sex"],
+      width: "100px",
+      render: (record: any) => {
+        const matchedStatus = sexOptions.find((item) => item.value === record);
+        if (matchedStatus) {
+          return (
+            <Badge color={matchedStatus.color} key={record}>
+              {matchedStatus.label}
+            </Badge>
+          );
+        }
+      },
     },
     {
       label: <span>Trạng thái</span>,
@@ -72,7 +93,7 @@ export default function CustomerListPage({ dataSource }: any) {
           <>
             <Link
               href={{
-                pathname: `/admin/customer-groups/${record.id}`,
+                pathname: `/admin/customers/${record.id}`,
               }}
             >
               <Button
@@ -121,7 +142,7 @@ export default function CustomerListPage({ dataSource }: any) {
       <Flex justify={"end"} align={"center"}>
         <Link
           href={{
-            pathname: `/admin/customer-groups/create`,
+            pathname: `/admin/customers/create`,
           }}
         >
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>

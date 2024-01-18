@@ -172,7 +172,7 @@ export const ModalEventCalendar = ({
             {token ? (
               <Select
                 withAsterisk
-                {...form.getInputProps("car_id")}
+                {...form.getInputProps("carId")}
                 checkIconPosition="right"
                 placeholder="Biển số xe"
                 classNames={{
