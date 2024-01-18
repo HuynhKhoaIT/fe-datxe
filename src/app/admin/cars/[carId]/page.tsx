@@ -1,33 +1,35 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Box, Space } from "@mantine/core";
-import ProductBrandForm from "../create/ProductBrandForm";
+import CarForm from "../create/CarForm";
+import { getCategories, getCategoryById } from "@/app/libs/prisma/category";
 import axios from "axios";
+import { apiUrl } from "@/constants";
 export const revalidate = 60;
-export default function UpdateProductBrand({
+export default function UpdateCar({
   params,
 }: {
-  params: { brandId: number };
+  params: { categoryId: number };
 }) {
-  const [brand, setBrand] = useState(null);
+  const [category, setCategory] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `/api/product-brands/${params?.brandId}`
+          `/api/product-category/${params?.categoryId}`
         );
-        setBrand(response.data);
+        setCategory(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [params?.brandId]);
+  }, [params?.categoryId]);
   return (
     <Box maw={"100%"} mx="auto">
-      <ProductBrandForm isEditing={true} dataDetail={brand} />
+      <CarForm isEditing={true} dataDetail={category} />
     </Box>
   );
 }

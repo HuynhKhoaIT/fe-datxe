@@ -17,15 +17,15 @@ const DynamicModalDeleteProduct = dynamic(
     ssr: false,
   }
 );
-export default function CategoryListPage({ dataSource }: any) {
+export default function CarsListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
-    await fetch(`/api/product-category/${id}`, {
+    await fetch(`/api/cars/${id}`, {
       method: "DELETE",
     });
     notifications.show({
       title: "Thành công",
-      message: "Xoá danh mục thành công",
+      message: "Xoá xe thành công",
     });
   };
   const [
@@ -34,17 +34,37 @@ export default function CategoryListPage({ dataSource }: any) {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Nhà cung cấp</span>,
+      label: <span>Biển số xe</span>,
       name: "title",
-      dataIndex: ["title"],
+      dataIndex: ["numberPlates"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
     },
     {
-      label: <span>Mô tả</span>,
-      name: "description",
-      dataIndex: ["description"],
+      label: <span>Màu xe</span>,
+      name: "color",
+      dataIndex: ["color"],
+    },
+    {
+      label: <span>Hãng xe</span>,
+      name: "carBrandId",
+      dataIndex: ["carBrandId"],
+    },
+    {
+      label: <span>Dòng xe</span>,
+      name: "carNameId",
+      dataIndex: ["carNameId"],
+    },
+    {
+      label: <span>Năm sản xuất</span>,
+      name: "carYearId",
+      dataIndex: ["carYearId"],
+    },
+    {
+      label: <span>Loại xe</span>,
+      name: "carYearId",
+      dataIndex: ["carYearId"],
     },
     {
       label: <span>Trạng thái</span>,
@@ -73,7 +93,7 @@ export default function CategoryListPage({ dataSource }: any) {
           <>
             <Link
               href={{
-                pathname: `/admin/suppliers/${record.id}`,
+                pathname: `/admin/cars/${record.id}`,
               }}
             >
               <Button
@@ -109,12 +129,19 @@ export default function CategoryListPage({ dataSource }: any) {
   const searchData = [
     {
       name: "s",
-      placeholder: "Tên nhà cung cấp",
+      placeholder: "Tên danh mục",
       type: "input",
+    },
+    {
+      name: "status",
+      placeholder: "Trạng thái",
+      type: "select",
+      data: statusOptions,
     },
   ];
   const initialValuesSearch = {
     s: "",
+    status: null,
   };
   return (
     <div className={styles.content}>
@@ -122,7 +149,7 @@ export default function CategoryListPage({ dataSource }: any) {
       <Flex justify={"end"} align={"center"}>
         <Link
           href={{
-            pathname: `/admin/suppliers/create`,
+            pathname: `/admin/cars/create`,
           }}
         >
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>

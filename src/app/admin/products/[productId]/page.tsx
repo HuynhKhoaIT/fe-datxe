@@ -14,6 +14,7 @@ async function getDataProduct(productId: number) {
   }
   return res.json();
 }
+
 export default async function ProductSavePage({
   params,
 }: {

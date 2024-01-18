@@ -33,15 +33,22 @@ export default function ProductForm({
 }: any) {
   const [loading, handlers] = useDisclosure();
   const [catOptions, setCatOptions] = useState<any>([]);
+  const [productBrandOptions, setProductBrandOptions] = useState<any>([]);
+  const [supplierOptions, setSuppliersOptions] = useState<any>([]);
+
   const [images, setImages] = useState<any>();
   const form = useForm({
     initialValues: {
       name: "",
       categories: [],
+      supplierId: null,
+      productBrandId: null,
     },
     validate: {
       name: (value) => (value.length < 1 ? "Không được để trống" : null),
       categories: (value) => (value.length < 1 ? "Không được để trống" : null),
+      supplierId: (value) => (!value ? "Không được để trống" : null),
+      productBrandId: (value) => (!value ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
@@ -161,6 +168,31 @@ export default function ProductForm({
     }
   };
 
+  const getProductBrands = async () => {
+    const res = await fetch(`/api/product-brands`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.name,
+    }));
+    setProductBrandOptions(dataOption);
+  };
+  const getSuppliers = async () => {
+    const res = await fetch(`/api/suppliers`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setSuppliersOptions(dataOption);
+  };
+
   const getCategories = async () => {
     const res = await fetch(`/api/product-category`, { method: "GET" });
     const data = await res.json();
@@ -175,6 +207,8 @@ export default function ProductForm({
   };
   useEffect(() => {
     getCategories();
+    getSuppliers();
+    getProductBrands();
   }, []);
   return (
     <form onSubmit={form.onSubmit(handleSubmit)} style={{ padding: "20px" }}>
@@ -207,17 +241,21 @@ export default function ProductForm({
 
             <Grid gutter={10}>
               <Grid.Col span={6}>
-                <NumberInput
+                <Select
+                  withAsterisk
                   {...form.getInputProps("productBrandId")}
                   label="Thương hiệu sản phẩm"
                   placeholder="Thương hiệu sản phẩm"
+                  data={productBrandOptions}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
-                <NumberInput
+                <Select
+                  withAsterisk
                   {...form.getInputProps("supplierId")}
                   label="Nhà cung cấp"
                   placeholder="Nhà cung cấp"
+                  data={supplierOptions}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
