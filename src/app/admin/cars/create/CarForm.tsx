@@ -1,6 +1,5 @@
 "use client";
 import {
-  Box,
   Button,
   Card,
   FileButton,
@@ -20,61 +19,90 @@ import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
+import { statusOptions } from "@/constants/masterData";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
-  const [loading, handlers] = useDisclosure();
-  const [file, setFile] = useState<File | null>(null);
-  const resetRef = useRef<() => void>(null);
+  const [brandOptions, setBrandOptions] = useState<any>([]);
+  const [modelOptions, setModelOptions] = useState<any>([]);
+  const [yearCarOptions, setYearCarOptions] = useState<any>([]);
+  async function getDataBrands() {
+    const res = await fetch(`/api/car-model`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setBrandOptions(dataOption);
+  }
+  async function getDataModels(brandId: number) {
+    if (brandId) {
+      const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("Failed to fetch data");
+      }
+      const dataOption = data?.map((item: any) => ({
+        value: item.id.toString(),
+        label: item.title,
+      }));
+      setModelOptions(dataOption);
+    }
+  }
+  async function getDataYearCar(modelId: number) {
+    if (modelId) {
+      const res = await fetch(`/api/car-model/${modelId}`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("Failed to fetch data");
+      }
+      const dataOption = data?.map((item: any) => ({
+        value: item.id.toString(),
+        label: item.title,
+      }));
+      setYearCarOptions(dataOption);
+    }
+  }
+  useEffect(() => {
+    getDataBrands();
+    if (dataDetail?.brandId && dataDetail?.nameId) {
+      getDataModels(dataDetail?.brandId);
+      getDataYearCar(dataDetail?.nameId);
+    }
+  }, [dataDetail]);
 
-  const clearFile = () => {
-    setFile(null);
-    resetRef.current?.();
-  };
+  const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
-      image: "",
-      title: "",
+      customerId: "",
+      numberPlates: "",
+      color: "",
+      vinNumber: "",
+      machineNumber: "",
       description: "",
+      status: isEditing ? dataDetail?.status : "PUBLIC",
+      garageId: "",
     },
-    validate: {
-      title: (value) => (value.length < 1 ? "Không được để trống" : null),
-    },
+    validate: {},
   });
   useEffect(() => {
     form.setInitialValues(dataDetail);
     form.setValues(dataDetail);
   }, [dataDetail]);
   const router = useRouter();
-  function convertToSlug(str: string) {
-    str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
-    str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
-    str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
-    return str;
-  }
   const handleSubmit = async (values: any) => {
-    try {
-      const baseURL = "https://up-image.dlbd.vn/api/image";
-      const options = { headers: { "Content-Type": "multipart/form-data" } };
-
-      const formData = new FormData();
-      if (file) {
-        formData.append("image", file);
-      }
-      const response = await axios.post(baseURL, formData, options);
-      values.image = response.data;
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    values.slug = convertToSlug(values?.title);
     handlers.open();
     try {
       if (!isEditing) {
-        await fetch(`/api/product-category`, {
+        await fetch(`/api/cars`, {
           method: "POST",
           body: JSON.stringify(values),
         });
       } else {
-        await fetch(`/api/product-category/${dataDetail?.id}`, {
+        await fetch(`/api/cars/${dataDetail?.id}`, {
           method: "PUT",
           body: JSON.stringify(values),
         });
@@ -100,42 +128,21 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       <Grid gutter={12}>
         <Grid.Col span={12}>
           <Card withBorder shadow="sm">
-            <Grid>
-              <Grid.Col span={12}>
-                <Text size={"16px"} c={"#999999"} mb={"6px"}>
-                  Hình ảnh
-                </Text>
-                <FileButton
-                  resetRef={resetRef}
-                  onChange={setFile}
-                  accept="image/png,image/jpeg"
-                >
-                  {(props) => (
-                    <Image
-                      {...props}
-                      radius="md"
-                      h={150}
-                      w={150}
-                      src={
-                        file
-                          ? URL.createObjectURL(file)
-                          : dataDetail
-                          ? dataDetail.image
-                          : null
-                      }
-                      fallbackSrc="https://placehold.co/600x400?text=Upload"
-                    />
-                  )}
-                </FileButton>
-              </Grid.Col>
-            </Grid>
-            <Grid gutter={10} mt={24}>
-              <Grid.Col span={8}>
+            <Grid gutter={10}>
+              <Grid.Col span={4}>
                 <TextInput
-                  {...form.getInputProps("title")}
-                  label="Tên danh mục"
+                  {...form.getInputProps("numberPlates")}
+                  label="Biển số xe"
                   type="text"
-                  placeholder="Tên danh mục"
+                  placeholder="Biển số xe"
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <TextInput
+                  {...form.getInputProps("color")}
+                  label="Màu xe"
+                  type="text"
+                  placeholder="Màu xe"
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -144,14 +151,80 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                   label="Trạng thái"
                   checkIconPosition="right"
                   placeholder="Trạng thái"
-                  data={[
-                    { value: "PUBLIC", label: "Công khai" },
-                    { value: "DRAFT", label: "Nháp" },
-                    { value: "PENDING", label: "Đang duyệt" },
-                  ]}
+                  data={statusOptions}
                 />
               </Grid.Col>
             </Grid>
+            <Grid gutter={10}>
+              <Grid.Col span={4}>
+                <Select
+                  {...form.getInputProps("carBrandId")}
+                  label="Hãng xe"
+                  placeholder="Hãng xe"
+                  data={brandOptions}
+                  onChange={(value) => {
+                    getDataModels(Number(value));
+                    form.setFieldValue("carBrandId", value);
+                  }}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Select
+                  {...form.getInputProps("carNameId")}
+                  label="Dòng xe"
+                  placeholder="Dòng xe"
+                  data={modelOptions}
+                  onChange={(value) => {
+                    getDataYearCar(Number(value));
+                    form.setFieldValue("carNameId", value);
+                  }}
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Select
+                  {...form.getInputProps("carYearId")}
+                  label="Năm sản xuất"
+                  placeholder="Năm sản xuất"
+                  data={yearCarOptions}
+                  onChange={(value) => {
+                    form.setFieldValue("carYearId", value);
+                  }}
+                />
+              </Grid.Col>
+            </Grid>
+            <Grid gutter={10}>
+              <Grid.Col span={4}>
+                <TextInput
+                  {...form.getInputProps("vinNumber")}
+                  label="vinNumber"
+                  type="text"
+                  placeholder="vinNumber"
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <TextInput
+                  {...form.getInputProps("machineNumber")}
+                  label="machineNumber"
+                  type="text"
+                  placeholder="machineNumber"
+                />
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <Select
+                  {...form.getInputProps("carStyle")}
+                  label="Năm sản xuất"
+                  placeholder="Năm sản xuất"
+                  data={yearCarOptions}
+                  value={
+                    dataDetail?.yearId ? dataDetail?.yearId.split(",") : []
+                  }
+                  onChange={(value) => {
+                    form.setFieldValue("carYearId", value);
+                  }}
+                />
+              </Grid.Col>
+            </Grid>
+
             <Grid mt={24}>
               <Grid.Col span={12}>
                 <Textarea

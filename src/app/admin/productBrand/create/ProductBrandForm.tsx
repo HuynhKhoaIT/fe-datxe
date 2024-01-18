@@ -3,13 +3,10 @@ import {
   Box,
   Button,
   Card,
-  FileButton,
   Grid,
   Group,
-  Text,
   TextInput,
   Textarea,
-  Image,
   Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -19,24 +16,18 @@ import { useEffect, useRef, useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
-import axios from "axios";
+import { statusOptions } from "@/constants/masterData";
 export default function ProductBrandForm({ isEditing, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
-  const [file, setFile] = useState<File | null>(null);
-  const resetRef = useRef<() => void>(null);
-
-  const clearFile = () => {
-    setFile(null);
-    resetRef.current?.();
-  };
   const form = useForm({
     initialValues: {
-      image: "",
-      title: "",
+      name: "",
       description: "",
+      status: isEditing ? dataDetail?.status : "PUBLIC",
     },
     validate: {
-      title: (value) => (value.length < 1 ? "Không được để trống" : null),
+      name: (value) => (value.length < 1 ? "Không được để trống" : null),
+      status: (value) => (!value ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
@@ -44,37 +35,17 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
     form.setValues(dataDetail);
   }, [dataDetail]);
   const router = useRouter();
-  function convertToSlug(str: string) {
-    str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
-    str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
-    str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
-    return str;
-  }
+
   const handleSubmit = async (values: any) => {
-    try {
-      const baseURL = "https://up-image.dlbd.vn/api/image";
-      const options = { headers: { "Content-Type": "multipart/form-data" } };
-
-      const formData = new FormData();
-      if (file) {
-        formData.append("image", file);
-      }
-      const response = await axios.post(baseURL, formData, options);
-      values.image = response.data;
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    values.slug = convertToSlug(values?.title);
     handlers.open();
     try {
       if (!isEditing) {
-        await fetch(`/api/product-category`, {
+        await fetch(`/api/product-brands`, {
           method: "POST",
           body: JSON.stringify(values),
         });
       } else {
-        await fetch(`/api/product-category/${dataDetail?.id}`, {
+        await fetch(`/api/product-brands/${dataDetail?.id}`, {
           method: "PUT",
           body: JSON.stringify(values),
         });
@@ -100,55 +71,23 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
       <Grid gutter={12}>
         <Grid.Col span={12}>
           <Card withBorder shadow="sm">
-            <Grid>
-              <Grid.Col span={12}>
-                <Text size={"16px"} c={"#999999"} mb={"6px"}>
-                  Hình ảnh
-                </Text>
-                <FileButton
-                  resetRef={resetRef}
-                  onChange={setFile}
-                  accept="image/png,image/jpeg"
-                >
-                  {(props) => (
-                    <Image
-                      {...props}
-                      radius="md"
-                      h={150}
-                      w={150}
-                      src={
-                        file
-                          ? URL.createObjectURL(file)
-                          : dataDetail
-                          ? dataDetail.image
-                          : null
-                      }
-                      fallbackSrc="https://placehold.co/600x400?text=Upload"
-                    />
-                  )}
-                </FileButton>
-              </Grid.Col>
-            </Grid>
             <Grid gutter={10} mt={24}>
               <Grid.Col span={8}>
                 <TextInput
-                  {...form.getInputProps("title")}
-                  label="Tên danh mục"
+                  withAsterisk
+                  {...form.getInputProps("name")}
+                  label="Tên thương hiệu"
                   type="text"
-                  placeholder="Tên danh mục"
+                  placeholder="Tên thương hiệu"
                 />
               </Grid.Col>
               <Grid.Col span={4}>
                 <Select
-                  {...form.getInputProps("status")}
                   label="Trạng thái"
                   checkIconPosition="right"
                   placeholder="Trạng thái"
-                  data={[
-                    { value: "PUBLIC", label: "Công khai" },
-                    { value: "DRAFT", label: "Nháp" },
-                    { value: "PENDING", label: "Đang duyệt" },
-                  ]}
+                  data={statusOptions}
+                  {...form.getInputProps("status")}
                 />
               </Grid.Col>
             </Grid>

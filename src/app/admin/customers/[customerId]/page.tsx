@@ -1,32 +1,32 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import CategoryForm from "../create/SupplierForm";
+import CustomersForm from "../create/CustomersForm";
 import axios from "axios";
 export const revalidate = 60;
-export default function UpdateCategory({
+export default function UpdateCustomer({
   params,
 }: {
-  params: { supplierId: number };
+  params: { customerId: number };
 }) {
-  const [supplier, setSupplier] = useState(null);
+  const [customer, setCustomer] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `/api/suppliers/${params?.supplierId}`
+          `/api/customer-groups/${params?.customerId}`
         );
-        setSupplier(response.data);
+        setCustomer(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [params?.supplierId]);
+  }, [params?.customerId]);
   return (
     <div style={{ width: "100%", margin: "auto" }}>
-      <CategoryForm isEditing={true} dataDetail={supplier} />
+      <CustomersForm isEditing={true} dataDetail={customer} />
     </div>
   );
 }

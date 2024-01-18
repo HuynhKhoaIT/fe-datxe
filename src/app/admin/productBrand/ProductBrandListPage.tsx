@@ -35,8 +35,8 @@ export default function ProductBrandListPage({ dataSource }: any) {
   const columns = [
     {
       label: <span>Thương hiệu</span>,
-      name: "title",
-      dataIndex: ["title"],
+      name: "name",
+      dataIndex: ["name"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
@@ -73,7 +73,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
           <>
             <Link
               href={{
-                pathname: `/admin/categories/${record.id}`,
+                pathname: `/admin/productBrand/${record.id}`,
               }}
             >
               <Button
@@ -129,7 +129,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
       <Flex justify={"end"} align={"center"}>
         <Link
           href={{
-            pathname: `/admin/categories/create`,
+            pathname: `/admin/productBrand/create`,
           }}
         >
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>

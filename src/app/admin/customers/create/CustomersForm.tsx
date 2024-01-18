@@ -16,7 +16,7 @@ import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { statusOptions } from "@/constants/masterData";
-export default function SupplierForm({ isEditing, dataDetail }: any) {
+export default function CustomersForm({ isEditing, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const form = useForm({
     initialValues: {
@@ -38,12 +38,12 @@ export default function SupplierForm({ isEditing, dataDetail }: any) {
     handlers.open();
     try {
       if (!isEditing) {
-        await fetch(`/api/suppliers`, {
+        await fetch(`/api/customer-groups`, {
           method: "POST",
           body: JSON.stringify(values),
         });
       } else {
-        await fetch(`/api/suppliers/${dataDetail?.id}`, {
+        await fetch(`/api/customer-groups/${dataDetail?.id}`, {
           method: "PUT",
           body: JSON.stringify(values),
         });

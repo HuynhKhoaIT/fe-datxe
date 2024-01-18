@@ -20,12 +20,12 @@ const DynamicModalDeleteProduct = dynamic(
 export default function CarsListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
-    await fetch(`/api/product-category/${id}`, {
+    await fetch(`/api/cars/${id}`, {
       method: "DELETE",
     });
     notifications.show({
       title: "Thành công",
-      message: "Xoá danh mục thành công",
+      message: "Xoá xe thành công",
     });
   };
   const [
@@ -93,7 +93,7 @@ export default function CarsListPage({ dataSource }: any) {
           <>
             <Link
               href={{
-                pathname: `/admin/categories/${record.id}`,
+                pathname: `/admin/cars/${record.id}`,
               }}
             >
               <Button
@@ -149,7 +149,7 @@ export default function CarsListPage({ dataSource }: any) {
       <Flex justify={"end"} align={"center"}>
         <Link
           href={{
-            pathname: `/admin/categories/create`,
+            pathname: `/admin/cars/create`,
           }}
         >
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>

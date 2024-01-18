@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import styles from "./index.module.scss";
-import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { Badge, Button, Flex, Image } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
@@ -17,10 +16,10 @@ const DynamicModalDeleteProduct = dynamic(
     ssr: false,
   }
 );
-export default function CategoryListPage({ dataSource }: any) {
+export default function CustomerListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteCategory = async (id: any) => {
-    await fetch(`/api/product-category/${id}`, {
+  const handleDeleteCustomer = async (id: any) => {
+    await fetch(`/api/customer-groups/${id}`, {
       method: "DELETE",
     });
     notifications.show({
@@ -34,7 +33,7 @@ export default function CategoryListPage({ dataSource }: any) {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Nhà cung cấp</span>,
+      label: <span>Tên khách hàng</span>,
       name: "title",
       dataIndex: ["title"],
       render: (dataRow: any) => {
@@ -73,7 +72,7 @@ export default function CategoryListPage({ dataSource }: any) {
           <>
             <Link
               href={{
-                pathname: `/admin/suppliers/${record.id}`,
+                pathname: `/admin/customer-groups/${record.id}`,
               }}
             >
               <Button
@@ -122,7 +121,7 @@ export default function CategoryListPage({ dataSource }: any) {
       <Flex justify={"end"} align={"center"}>
         <Link
           href={{
-            pathname: `/admin/suppliers/create`,
+            pathname: `/admin/customer-groups/create`,
           }}
         >
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
@@ -136,7 +135,7 @@ export default function CategoryListPage({ dataSource }: any) {
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteCategory}
+        handleDeleteProduct={handleDeleteCustomer}
         deleteRow={deleteRow}
       />
     </div>
