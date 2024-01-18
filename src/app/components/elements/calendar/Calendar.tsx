@@ -133,7 +133,7 @@ export default function CalendarScheduler({
           selectAllow={handleSelectAllow}
           firstDay={new Date().getDay() - 3}
           windowResize={handleWindowResize}
-          isListEvent={true}
+          isListEvent={false}
         />
       </Box>
 
