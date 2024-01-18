@@ -198,7 +198,50 @@ export const ModalEventCalendar = ({
             )}
           </Grid.Col>
         </Grid>
-        {token ? (
+        <Grid gutter={10} mt="md">
+          <Grid.Col span={4}>
+            <Select
+              {...form.getInputProps("brandId")}
+              name="brandId"
+              data={brandOptions}
+              placeholder="Hãng xe"
+              allowDeselect={false}
+              leftSection={<IconPlus size={22} color="blue" />}
+              onChange={(value) => {
+                form.setFieldValue("brandId", value);
+                form.setFieldValue("modelId", null);
+                setBrand(value);
+              }}
+              withAsterisk
+            />
+          </Grid.Col>
+          <Grid.Col span={4}>
+            <Select
+              data={modelOptions}
+              placeholder="Dòng xe"
+              leftSection={<IconPlus size={22} color="blue" />}
+              withAsterisk
+              allowDeselect={false}
+              {...form.getInputProps("modelId")}
+              onChange={(value: any) => {
+                form.setFieldValue("modelId", value);
+                form.setFieldValue("yearId", null);
+                setModel(value);
+              }}
+            />
+          </Grid.Col>
+          <Grid.Col span={4}>
+            <Select
+              data={yearCarOptions}
+              placeholder="Năm sản xuất"
+              leftSection={<IconPlus size={22} color="blue" />}
+              withAsterisk
+              allowDeselect={false}
+              {...form.getInputProps("yearId")}
+            />
+          </Grid.Col>
+        </Grid>
+        {/* {token ? (
           <Grid gutter={10} mt="md">
             <Grid.Col span={4}>
               <TextInput
@@ -271,7 +314,7 @@ export const ModalEventCalendar = ({
               />
             </Grid.Col>
           </Grid>
-        )}
+        )} */}
         <Grid gutter={10} mt="md">
           <Grid.Col span={6}>
             <Select

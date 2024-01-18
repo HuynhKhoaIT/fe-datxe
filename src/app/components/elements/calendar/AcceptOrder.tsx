@@ -1,14 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import BasicModal from "../../common/BasicModal";
-import { ModalEventCalendar } from "./ModalEventCalendar";
 import { useSession } from "next-auth/react";
 import { getModels, getYears } from "@/utils/branch";
 import { useSearchParams } from "next/navigation";
 import { getEmployees, getGarage } from "@/utils/garage";
 import { getCustomerCareCreate } from "@/utils/customerCare";
 
-export default function ModalCalendar({
+export default function AcceptOrder({
   opened,
   onClose,
   eventInfos,
@@ -126,26 +125,6 @@ export default function ModalCalendar({
       footer={false}
       title="Đặt lịch"
       style={{ position: "relative" }}
-    >
-      <ModalEventCalendar
-        user={user}
-        brandOptions={brandOptions}
-        modelOptions={modelOptions}
-        token={token}
-        eventInfos={eventInfos}
-        setBrand={setBrand}
-        setModel={setModel}
-        garage={garage}
-        categoryOptions={categoryOptions}
-        advisorOptions={advisorOptions}
-        carOptions={carOptions}
-        yearCarOptions={yearCarOptions}
-        cars={carsData}
-        garageOptions={garageOptions}
-        dataCarDefault={dataCarDefault?.[0]?.otherData}
-        onClose={onClose}
-        fetchDataOrders={fetchDataOrders}
-      />
-    </BasicModal>
+    ></BasicModal>
   );
 }

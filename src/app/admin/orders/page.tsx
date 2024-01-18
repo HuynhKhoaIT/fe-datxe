@@ -9,8 +9,17 @@ import { getMyAccount } from "@/utils/user";
 import { getCategories } from "@/utils/category";
 import SearchForm from "@/app/components/form/SearchForm";
 import { Space } from "@mantine/core";
+import { apiUrl } from "@/constants";
+import CalendarSchedulerGarage from "@/app/components/elements/calendar/CalendarGarage";
+async function getDataOrder(garageId: number) {
+  const res = await fetch(`${apiUrl}api/orders?garage=${garageId}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
 export default async function Orders() {
-  const orders = await getOrdersOfGarage(9);
+  const orders = await getDataOrder(9);
   const mappedOrdersData = mapArrayEventCalendar(orders);
   // lấy danh sách brand
   const brands = await getBrands();
@@ -64,7 +73,7 @@ export default async function Orders() {
     <div>
       <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
       <Space h={20} />
-      <CalendarScheduler
+      <CalendarSchedulerGarage
         brandOptions={newBrands}
         categoryOptions={categoryOptions}
         carsData={carsData}

@@ -1,11 +1,11 @@
 import { getCategories } from "@/utils/category";
 import { Suspense } from "react";
-import Carousel from "../landing/Carousel";
 import ProductListItem from "../components/layout/ProductListItem";
 import ProductsHot from "../landing/ProductsHot";
 import ServicesHot from "../landing/ServiceHot";
 import { Space } from "@mantine/core";
 import { apiUrl } from "@/constants";
+import Carousel from "./Carousel";
 export const revalidate = 0;
 
 async function getData() {

@@ -34,6 +34,8 @@ export default function CalendarScheduler({
   carOptions,
   carDefault,
   selectable = true,
+  orderInfo,
+  advisorOptions,
 }: any) {
   const { data: session, status } = useSession();
   const token = session?.user?.token;
@@ -145,6 +147,7 @@ export default function CalendarScheduler({
         carOptions={carOptions}
         carDefault={carDefault}
         fetchDataOrders={fetchDataOrders}
+        advisorOptions={advisorOptions}
       />
       <DynamicModalPreviewDetailCalendar
         opened={openedPreviewCalendar}
