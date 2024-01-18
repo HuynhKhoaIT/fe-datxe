@@ -126,11 +126,15 @@ export const ModalEventCalendar = ({
   );
 
   const handlePlace = (value: any) => {
-    form.setFieldValue("car_id", value);
+    console.log("value", value);
+    form.setFieldValue("carId", value);
+    console.log(carOptions);
     carOptions?.map((item: any) => {
+      console.log(item);
       if (item?.otherData?.carId === value) {
-        form.setFieldValue("brandId", item.otherData?.brandName);
-        form.setFieldValue("modelId", item.otherData?.modelName);
+        form.setFieldValue("brandId", item.otherData?.brandId);
+        form.setFieldValue("modelId", item.otherData?.modelId);
+        form.setFieldValue("yearId", item.otherData?.carYearId);
       }
     });
   };
@@ -198,50 +202,8 @@ export const ModalEventCalendar = ({
             )}
           </Grid.Col>
         </Grid>
-        <Grid gutter={10} mt="md">
-          <Grid.Col span={4}>
-            <Select
-              {...form.getInputProps("brandId")}
-              name="brandId"
-              data={brandOptions}
-              placeholder="Hãng xe"
-              allowDeselect={false}
-              leftSection={<IconPlus size={22} color="blue" />}
-              onChange={(value) => {
-                form.setFieldValue("brandId", value);
-                form.setFieldValue("modelId", null);
-                setBrand(value);
-              }}
-              withAsterisk
-            />
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Select
-              data={modelOptions}
-              placeholder="Dòng xe"
-              leftSection={<IconPlus size={22} color="blue" />}
-              withAsterisk
-              allowDeselect={false}
-              {...form.getInputProps("modelId")}
-              onChange={(value: any) => {
-                form.setFieldValue("modelId", value);
-                form.setFieldValue("yearId", null);
-                setModel(value);
-              }}
-            />
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Select
-              data={yearCarOptions}
-              placeholder="Năm sản xuất"
-              leftSection={<IconPlus size={22} color="blue" />}
-              withAsterisk
-              allowDeselect={false}
-              {...form.getInputProps("yearId")}
-            />
-          </Grid.Col>
-        </Grid>
-        {/* {token ? (
+
+        {token ? (
           <Grid gutter={10} mt="md">
             <Grid.Col span={4}>
               <TextInput
@@ -281,7 +243,7 @@ export const ModalEventCalendar = ({
                 allowDeselect={false}
                 leftSection={<IconPlus size={22} color="blue" />}
                 onChange={(value) => {
-                  form.setFieldValue("brandId", value || "");
+                  form.setFieldValue("brandId", value);
                   form.setFieldValue("modelId", null);
                   setBrand(value);
                 }}
@@ -314,7 +276,7 @@ export const ModalEventCalendar = ({
               />
             </Grid.Col>
           </Grid>
-        )} */}
+        )}
         <Grid gutter={10} mt="md">
           <Grid.Col span={6}>
             <Select
