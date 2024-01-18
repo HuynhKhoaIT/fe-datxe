@@ -88,6 +88,7 @@ export async function GET(request: Request) {
                 },
                 include: {
                     categories: true,
+                    garage: true,
                 },
             });
 
@@ -198,7 +199,7 @@ export async function POST(request: Request) {
             createdBy = Number(session.user.id);
             garageId = Number(session.user.garageId);
         }
-        if (typeof json.isProduct !== 'undefined' ) {
+        if (typeof json.isProduct !== 'undefined') {
             isProduct = Number(json.isProduct) == 1 ? true : false;
         }
         if (1) {
