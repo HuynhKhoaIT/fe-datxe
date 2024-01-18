@@ -10,6 +10,8 @@ import {
   Textarea,
   Image,
   Select,
+  Box,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
@@ -123,144 +125,165 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     }
   };
 
+  const [customerOptions, setCustomerOptions] = useState();
+  const getCustomers = async () => {
+    handlers.open();
+    const res = await fetch(`/api/customer`, { method: "GET" });
+    const data = await res.json();
+    handlers.close();
+
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.fullName,
+    }));
+    setCustomerOptions(dataOption);
+  };
+  useEffect(() => {
+    getCustomers();
+  }, []);
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Grid gutter={12}>
-        <Grid.Col span={12}>
-          <Card withBorder shadow="sm">
-            <Grid gutter={10}>
-              <Grid.Col span={4}>
-                <TextInput
-                  {...form.getInputProps("numberPlates")}
-                  label="Biển số xe"
-                  type="text"
-                  placeholder="Biển số xe"
-                />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <TextInput
-                  {...form.getInputProps("color")}
-                  label="Màu xe"
-                  type="text"
-                  placeholder="Màu xe"
-                />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Select
-                  {...form.getInputProps("status")}
-                  label="Trạng thái"
-                  checkIconPosition="right"
-                  placeholder="Trạng thái"
-                  data={statusOptions}
-                />
-              </Grid.Col>
-            </Grid>
-            <Grid gutter={10}>
-              <Grid.Col span={4}>
-                <Select
-                  {...form.getInputProps("carBrandId")}
-                  label="Hãng xe"
-                  placeholder="Hãng xe"
-                  data={brandOptions}
-                  onChange={(value) => {
-                    getDataModels(Number(value));
-                    form.setFieldValue("carBrandId", value);
-                  }}
-                />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Select
-                  {...form.getInputProps("carNameId")}
-                  label="Dòng xe"
-                  placeholder="Dòng xe"
-                  data={modelOptions}
-                  onChange={(value) => {
-                    getDataYearCar(Number(value));
-                    form.setFieldValue("carNameId", value);
-                  }}
-                />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Select
-                  {...form.getInputProps("carYearId")}
-                  label="Năm sản xuất"
-                  placeholder="Năm sản xuất"
-                  data={yearCarOptions}
-                  onChange={(value) => {
-                    form.setFieldValue("carYearId", value);
-                  }}
-                />
-              </Grid.Col>
-            </Grid>
-            <Grid gutter={10}>
-              <Grid.Col span={4}>
-                <TextInput
-                  {...form.getInputProps("vinNumber")}
-                  label="vinNumber"
-                  type="text"
-                  placeholder="vinNumber"
-                />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <TextInput
-                  {...form.getInputProps("machineNumber")}
-                  label="machineNumber"
-                  type="text"
-                  placeholder="machineNumber"
-                />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Select
-                  {...form.getInputProps("carStyle")}
-                  label="Năm sản xuất"
-                  placeholder="Năm sản xuất"
-                  data={yearCarOptions}
-                  value={
-                    dataDetail?.yearId ? dataDetail?.yearId.split(",") : []
-                  }
-                  onChange={(value) => {
-                    form.setFieldValue("carYearId", value);
-                  }}
-                />
-              </Grid.Col>
-            </Grid>
+    <Box pos="relative">
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Grid gutter={12}>
+          <Grid.Col span={12}>
+            <Card withBorder shadow="sm">
+              <Grid gutter={10}>
+                <Grid.Col span={4}>
+                  <Select
+                    {...form.getInputProps("customerId")}
+                    label="Khách hàng"
+                    type="text"
+                    placeholder="Khách hàng"
+                    data={customerOptions}
+                  />
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <TextInput
+                    {...form.getInputProps("numberPlates")}
+                    label="Biển số xe"
+                    type="text"
+                    placeholder="Biển số xe"
+                  />
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <TextInput
+                    {...form.getInputProps("color")}
+                    label="Màu xe"
+                    type="text"
+                    placeholder="Màu xe"
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid gutter={10}>
+                <Grid.Col span={4}>
+                  <Select
+                    {...form.getInputProps("carBrandId")}
+                    label="Hãng xe"
+                    placeholder="Hãng xe"
+                    data={brandOptions}
+                    onChange={(value) => {
+                      getDataModels(Number(value));
+                      form.setFieldValue("carBrandId", value);
+                    }}
+                  />
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Select
+                    {...form.getInputProps("carNameId")}
+                    label="Dòng xe"
+                    placeholder="Dòng xe"
+                    data={modelOptions}
+                    onChange={(value) => {
+                      getDataYearCar(Number(value));
+                      form.setFieldValue("carNameId", value);
+                    }}
+                  />
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Select
+                    {...form.getInputProps("carYearId")}
+                    label="Năm sản xuất"
+                    placeholder="Năm sản xuất"
+                    data={yearCarOptions}
+                    onChange={(value) => {
+                      form.setFieldValue("carYearId", value);
+                    }}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid gutter={10}>
+                <Grid.Col span={4}>
+                  <TextInput
+                    {...form.getInputProps("vinNumber")}
+                    label="vinNumber"
+                    type="text"
+                    placeholder="vinNumber"
+                  />
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <TextInput
+                    {...form.getInputProps("machineNumber")}
+                    label="machineNumber"
+                    type="text"
+                    placeholder="machineNumber"
+                  />
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Select
+                    {...form.getInputProps("status")}
+                    label="Trạng thái"
+                    checkIconPosition="right"
+                    placeholder="Trạng thái"
+                    data={statusOptions}
+                  />
+                </Grid.Col>
+              </Grid>
 
-            <Grid mt={24}>
-              <Grid.Col span={12}>
-                <Textarea
-                  label="Mô tả chi tiết"
-                  minRows={4}
-                  autosize={true}
-                  {...form.getInputProps("description")}
-                  placeholder="Mô tả"
-                />
-              </Grid.Col>
-            </Grid>
-          </Card>
-        </Grid.Col>
-      </Grid>
+              <Grid mt={24}>
+                <Grid.Col span={12}>
+                  <Textarea
+                    label="Mô tả chi tiết"
+                    minRows={4}
+                    autosize={true}
+                    {...form.getInputProps("description")}
+                    placeholder="Mô tả"
+                  />
+                </Grid.Col>
+              </Grid>
+            </Card>
+          </Grid.Col>
+        </Grid>
 
-      <Group justify="end" style={{ marginTop: 60 }}>
-        <Button
-          variant="outline"
-          key="cancel"
-          color="red"
-          leftSection={<IconBan size={16} />}
-          onClick={() => router.back()}
-        >
-          Huỷ
-        </Button>
-        <Button
-          loading={loading}
-          style={{ marginLeft: "12px" }}
-          key="submit"
-          type="submit"
-          variant="filled"
-          leftSection={<IconPlus size={16} />}
-        >
-          Thêm
-        </Button>
-      </Group>
-    </form>
+        <Group justify="end" style={{ marginTop: 60 }}>
+          <Button
+            variant="outline"
+            key="cancel"
+            color="red"
+            leftSection={<IconBan size={16} />}
+            onClick={() => router.back()}
+          >
+            Huỷ
+          </Button>
+          <Button
+            loading={loading}
+            style={{ marginLeft: "12px" }}
+            key="submit"
+            type="submit"
+            variant="filled"
+            leftSection={<IconPlus size={16} />}
+          >
+            Thêm
+          </Button>
+        </Group>
+      </form>
+    </Box>
   );
 }

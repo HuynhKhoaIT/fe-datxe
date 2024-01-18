@@ -13,3 +13,7 @@ export const STATUS_DELETE = 'DELETE';
 
 export const IS_PRODUCT = '1';
 export const IS_SERVICE = '0';
+export const MALE = 'MALE';
+export const FEMALE = 'FEMALE';
+export const COMPANY = 'COMPANY';
+export const OTHER = 'OTHER';
