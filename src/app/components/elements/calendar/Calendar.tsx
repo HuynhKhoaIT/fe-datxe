@@ -34,7 +34,9 @@ export default function CalendarScheduler({
   carOptions,
   carDefault,
   selectable = true,
+  orderInfo,
 }: any) {
+  console.log(orderInfo);
   const { data: session, status } = useSession();
   const token = session?.user?.token;
   const [ordersData, setOrdersData] = useState(dataDetail);

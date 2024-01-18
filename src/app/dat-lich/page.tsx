@@ -6,6 +6,16 @@ import { getBrands } from "@/utils/branch";
 import { getCategories } from "@/utils/category";
 import { getCarsSsr } from "@/utils/car";
 import { getMyAccount } from "@/utils/user";
+import { apiUrl } from "@/constants";
+
+async function getDataInfoOrder() {
+  const res = await fetch(`${apiUrl}api/orders/create`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
+
 export default async function DatLich() {
   const orders = await getSchedule();
   const mappedOrdersData = mapArrayEventCalendar(orders);
@@ -41,6 +51,8 @@ export default async function DatLich() {
     (car) => car.value == account?.carIdDefault
   );
 
+  let orderInfo = await getDataInfoOrder();
+
   return (
     <main className="main">
       <CalendarScheduler
@@ -50,6 +62,7 @@ export default async function DatLich() {
         carOptions={carOptions}
         carDefault={carDefault}
         ordersData={mappedOrdersData}
+        orderInfo={orderInfo}
       />
     </main>
   );
