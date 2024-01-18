@@ -10,6 +10,8 @@ import { getCategories } from "@/utils/category";
 import SearchForm from "@/app/components/form/SearchForm";
 import { Space } from "@mantine/core";
 import { apiUrl } from "@/constants";
+export const revalidate = 0;
+
 import CalendarSchedulerGarage from "@/app/components/elements/calendar/CalendarGarage";
 async function getDataOrder(garageId: number) {
   const res = await fetch(`${apiUrl}api/orders?garage=${garageId}`);
@@ -20,7 +22,7 @@ async function getDataOrder(garageId: number) {
 }
 export default async function Orders() {
   const orders = await getDataOrder(9);
-  const mappedOrdersData = mapArrayEventCalendar(orders);
+  const mappedOrdersData = mapArrayEventCalendar(orders.orders);
   // lấy danh sách brand
   const brands = await getBrands();
   const newBrands = brands?.map((brand) => ({

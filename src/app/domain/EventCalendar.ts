@@ -17,8 +17,8 @@ export const mapEventCalendar = (eventCalendar: IOrder, index: number): IEventCa
     dayjs.extend(utc);
     return {
         _id: (index + 1).toString(),
-        title: eventCalendar?.garage?.name || '',
-        start: dayjs.utc(eventCalendar?.arrivalTime).format('YYYY-MM-DD HH:mm:ss'),
+        title: eventCalendar?.customerRequest || '',
+        start: dayjs.utc(eventCalendar?.dateTime).format('YYYY-MM-DD HH:mm:ss'),
         user: '',
         orderDetail: eventCalendar,
     };

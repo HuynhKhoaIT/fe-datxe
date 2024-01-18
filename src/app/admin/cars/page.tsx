@@ -7,7 +7,7 @@ import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { apiUrl } from "@/constants";
 
 async function getData() {
-  const res = await fetch(`${apiUrl}api/cars`);
+  const res = await fetch(`${apiUrl}api/car`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
