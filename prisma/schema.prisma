@@ -125,6 +125,7 @@ model Order{
   dateTime          DateTime  @default(now())
   dateExpected      DateTime  @default(now())
   dateDone          DateTime  @default(now())
+  step              Int @default(1)
   status            String @default("pending")
   cancelReason      String?
   garage            Garage @relation(fields: [garageId], references: [id])
