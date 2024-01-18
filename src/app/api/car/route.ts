@@ -1,3 +1,4 @@
+import { createCar } from '@/app/libs/prisma/car';
 import prisma from '@/app/libs/prismadb';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -16,14 +17,13 @@ export async function GET(request: NextRequest) {
                         status: {
                             not: 'DELETE',
                         },
-                    }
-                ]
+                    },
+                ],
             },
-            include:{
+            include: {
                 customer: true,
                 carStyle: true,
-                
-            }
+            },
         });
         return NextResponse.json(cars);
         throw new Error('Chua dang nhap');
@@ -33,28 +33,8 @@ export async function GET(request: NextRequest) {
 }
 export async function POST(request: Request) {
     try {
-        const json = await request.json();        
-        const car = await prisma.car.create({
-            data: {                
-                customerId: parseInt(json.customerId),
-                numberPlates: json.numberPlates,
-                carBrandId: parseInt(json.carBrandId),
-                carNameId: parseInt(json.carNameId),
-                carYearId: parseInt(json.carYearId),
-                carStyleId: parseInt(json.carStyleId),
-                color: json.color,
-                vinNumber: json.vinNumber,
-                machineNumber: json.machineNumber,
-                description: json.description,
-                status: json.status,
-                garageId: parseInt(json.garageId),
-            },
-            include:{
-                customer: true,
-                carStyle: true
-            }
-        });
-
+        const json = await request.json();
+        const car = await createCar(json);
         return new NextResponse(JSON.stringify(car), {
             status: 201,
             headers: { 'Content-Type': 'application/json' },
