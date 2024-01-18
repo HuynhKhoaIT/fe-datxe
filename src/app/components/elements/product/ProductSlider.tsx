@@ -31,7 +31,7 @@ export default function ProductSlider({ images }: any) {
         modules={[FreeMode, Navigation, Thumbs]}
         className="my-swiper2"
       >
-        {images.map((image: any, index: number) => {
+        {images?.map((image: any, index: number) => {
           return (
             <SwiperSlide key={index}>
               <img src={image} alt={`Image ${index}`} />
@@ -49,7 +49,7 @@ export default function ProductSlider({ images }: any) {
         modules={[FreeMode, Navigation, Thumbs]}
         className="my-swiper"
       >
-        {images.map((image: any, index: number) => {
+        {images?.map((image: any, index: number) => {
           return (
             <SwiperSlide key={index}>
               <img src={image} alt={`Image ${index}`} />
