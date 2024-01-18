@@ -47,19 +47,19 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 garageId = Number(session.user.garageId);
             }
             let orderUpdateData = {
-                customerId: json.customerId,
-                carId: json.carId,
+                customerId: parseInt(json.customerId),
+                carId: parseInt(json.carId),
                 dateTime: json.dateTime,
                 customerRequest: json.customerRequest,
                 customerNote: json.customerNote,
                 note: json.note,
-                priorityLevel: json.priorityLevel,
+                priorityLevel: parseInt(json.priorityLevel),
                 orderCategoryId: 1,
-                brandId: 1,
-                modelId: 1,
-                yearId: 1,
-                garageId: json.garageId,
-                serviceAdvisorId: json.serviceAdvisorId,
+                brandId: parseInt(json.brandId),
+                modelId: parseInt(json.modelId),
+                yearId: parseInt(json.yearId),
+                garageId: parseInt(json.garageId),
+                serviceAdvisorId: parseInt(json.serviceAdvisorId),
             };
             const updatedOrder = await prisma.order.update({
                 where: {

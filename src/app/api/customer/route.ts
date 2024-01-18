@@ -31,14 +31,14 @@ export async function POST(request: Request) {
             data: {
                 fullName: json.fullName,
                 phoneNumber: json.phoneNumber,
-                cityId: json.cityId,
-                districtId: json.districtId,
-                wardId: json.wardId,
+                cityId: parseInt(json.cityId),
+                districtId: parseInt(json.districtId),
+                wardId: parseInt(json.wardId),
                 address: json.address,
                 dob: json.dob,
                 description: json.description,
                 sex: json.sex,
-                garageId: json.garageId,
+                garageId: parseInt(json.garageId),
                 status: json.status,
             },
             include:{
