@@ -151,6 +151,8 @@ export default function CalendarEventBase({
     }
     handleGetVisibleEvents();
   }, []);
+
+  console.log("eventData", eventData);
   return (
     <>
       <FullCalendar
@@ -209,9 +211,12 @@ export default function CalendarEventBase({
                         {dayjs(event.start).format("HH:mm")}
                       </div>
                       <div className={styles.licensePlates}>
-                        {event?.extendedProps?.orderDetail?.car?.licensePlates}
+                        {event?.extendedProps?.orderDetail?.car?.numberPlates}
                       </div>
                       <div className={styles.customerRequest}>
+                        {event?.extendedProps?.orderDetail?.customerRequest}
+                      </div>
+                      <div className={styles.licensePlates}>
                         {event?.extendedProps?.orderDetail?.customerRequest}
                       </div>
                     </Flex>

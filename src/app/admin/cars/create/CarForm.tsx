@@ -86,7 +86,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       machineNumber: "",
       description: "",
       status: isEditing ? dataDetail?.status : "PUBLIC",
-      garageId: "",
+      garageId: 1,
+      carStyleId: 1,
     },
     validate: {},
   });
@@ -99,12 +100,12 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     handlers.open();
     try {
       if (!isEditing) {
-        await fetch(`/api/cars`, {
+        await fetch(`/api/car`, {
           method: "POST",
           body: JSON.stringify(values),
         });
       } else {
-        await fetch(`/api/cars/${dataDetail?.id}`, {
+        await fetch(`/api/car/${dataDetail?.id}`, {
           method: "PUT",
           body: JSON.stringify(values),
         });

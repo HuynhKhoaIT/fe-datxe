@@ -56,29 +56,16 @@ export const ModalEventCalendar = ({
   const form = useForm({
     initialValues: {
       customerRequest: "",
-      full_name: user?.name || "",
-      phone_number: user?.phone || "",
-      category: "",
-      garaName: garage?.data?.name,
-      garaAddress: "",
-      description: "",
-      garageId: garage?.data?.id || "",
-      priorityLevel: "2",
-      dateTime: typeView === "dayGridMonth" ? newDate : eventInfos?.start,
-      carId: dataCarDefault?.carId || "",
-      serviceAdvisorId: "",
-      brandId: dataCarDefault?.brandName || "",
-      modelId: dataCarDefault?.modelName || null,
-      number_plates: "",
-      yearId: null,
-      customerNote: "",
+      fullName: user?.name || "",
+      phoneNumber: user?.phone || "",
+      numberPlates: "",
     },
 
     validate: {
-      full_name: (value) => (value.length < 1 ? "Vui lòng nhập tên" : null),
-      phone_number: (value) =>
+      fullName: (value) => (value.length < 1 ? "Vui lòng nhập tên" : null),
+      phoneNumber: (value) =>
         value.length < 1 ? "Vui lòng nhập số điện thoại" : null,
-      number_plates: (value) =>
+      numberPlates: (value) =>
         !token && value.length < 1 ? "Vui lòng nhập biển số xe" : null,
       customerRequest: (value) =>
         value.length < 1 ? "Vui lòng nhập yêu cầu" : null,
@@ -86,33 +73,39 @@ export const ModalEventCalendar = ({
   });
   const handleSubmit = async (values: any) => {
     console.log(values);
+    values.token = token;
+    values.garageId = 1;
     // setLoading(true);
-    // if (!token) {
-    //   // const genRs = await GenOTP(phone_number);
-    //   // setLoading(false);
-    //   // openLogin();
-    // } else {
-    //   try {
-    //     const createdCar = await addCustomerCare(values, token ?? "");
-    //     setLoading(false);
-    //     notifications.show({
-    //       title: "Thành công",
-    //       message: "Đặt lịch thành công",
-    //     });
-    //     onClose();
-    //     fetchDataOrders();
-    //     // router.push('/dashboard');
-    //   } catch (error) {
-    //     console.error("Error creating customer care:", error);
-    //     notifications.show({
-    //       title: "Thất bại",
-    //       message: "Đặt lịch thất bại",
-    //     });
-    //     setLoading(false);
-    //     onClose();
-    //     fetchDataOrders();
-    //   }
-    // }
+    if (!token) {
+      // const genRs = await GenOTP(phoneNumber);
+      // setLoading(false);
+      // openLogin();
+      alert("vui long dang nhap");
+    } else {
+      try {
+        const createdCar = await fetch(`/api/orders`, {
+          method: "POST",
+          body: JSON.stringify(values),
+        });
+        setLoading(false);
+        notifications.show({
+          title: "Thành công",
+          message: "Đặt lịch thành công",
+        });
+        onClose();
+        fetchDataOrders();
+        // router.push('/dashboard');
+      } catch (error) {
+        console.error("Error creating customer care:", error);
+        notifications.show({
+          title: "Thất bại",
+          message: "Đặt lịch thất bại",
+        });
+        setLoading(false);
+        onClose();
+        fetchDataOrders();
+      }
+    }
   };
   const ref = useRef<HTMLInputElement>(null);
   const pickerControl = (
@@ -126,11 +119,14 @@ export const ModalEventCalendar = ({
   );
 
   const handlePlace = (value: any) => {
-    form.setFieldValue("car_id", value);
+    form.setFieldValue("carId", value);
+    form.setFieldValue("numberPlates", value);
+
     carOptions?.map((item: any) => {
       if (item?.otherData?.carId === value) {
-        form.setFieldValue("brandId", item.otherData?.brandName);
-        form.setFieldValue("modelId", item.otherData?.modelName);
+        form.setFieldValue("carBrandId", item.otherData?.brandId);
+        form.setFieldValue("carNameId", item.otherData?.modelId);
+        form.setFieldValue("carYearId", item.otherData?.carYearId);
       }
     });
   };
@@ -156,14 +152,14 @@ export const ModalEventCalendar = ({
             <TextInput
               placeholder="Họ và tên"
               withAsterisk
-              {...form.getInputProps("full_name")}
+              {...form.getInputProps("fullName")}
             />
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
               placeholder="Số điện thoại"
               withAsterisk
-              {...form.getInputProps("phone_number")}
+              {...form.getInputProps("phoneNumber")}
             />
           </Grid.Col>
         </Grid>
@@ -193,62 +189,20 @@ export const ModalEventCalendar = ({
                 }}
                 placeholder="Nhập biển số xe"
                 size="lg"
-                {...form.getInputProps("number_plates")}
+                {...form.getInputProps("numberPlates")}
               ></TextInput>
             )}
           </Grid.Col>
         </Grid>
-        <Grid gutter={10} mt="md">
-          <Grid.Col span={4}>
-            <Select
-              {...form.getInputProps("brandId")}
-              name="brandId"
-              data={brandOptions}
-              placeholder="Hãng xe"
-              allowDeselect={false}
-              leftSection={<IconPlus size={22} color="blue" />}
-              onChange={(value) => {
-                form.setFieldValue("brandId", value);
-                form.setFieldValue("modelId", null);
-                setBrand(value);
-              }}
-              withAsterisk
-            />
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Select
-              data={modelOptions}
-              placeholder="Dòng xe"
-              leftSection={<IconPlus size={22} color="blue" />}
-              withAsterisk
-              allowDeselect={false}
-              {...form.getInputProps("modelId")}
-              onChange={(value: any) => {
-                form.setFieldValue("modelId", value);
-                form.setFieldValue("yearId", null);
-                setModel(value);
-              }}
-            />
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Select
-              data={yearCarOptions}
-              placeholder="Năm sản xuất"
-              leftSection={<IconPlus size={22} color="blue" />}
-              withAsterisk
-              allowDeselect={false}
-              {...form.getInputProps("yearId")}
-            />
-          </Grid.Col>
-        </Grid>
-        {/* {token ? (
+
+        {token ? (
           <Grid gutter={10} mt="md">
             <Grid.Col span={4}>
               <TextInput
                 placeholder="Hãng xe"
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
-                {...form.getInputProps("brandId")}
+                {...form.getInputProps("carBrandId")}
                 // value={carSelect?.brandCarName?.name || carDefault?.brandCarName?.name}
               />
             </Grid.Col>
@@ -256,7 +210,7 @@ export const ModalEventCalendar = ({
               <TextInput
                 placeholder="Dòng xe"
                 leftSection={<IconPlus size={22} color="blue" />}
-                {...form.getInputProps("modelId")}
+                {...form.getInputProps("carNameId")}
                 // value={carSelect?.modelCarName?.name || carDefault?.modelCarName?.name}
                 withAsterisk
               />
@@ -266,7 +220,7 @@ export const ModalEventCalendar = ({
                 placeholder="Năm sản xuất"
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
-                {...form.getInputProps("yearId")}
+                {...form.getInputProps("carYearId")}
               />
             </Grid.Col>
           </Grid>
@@ -274,15 +228,15 @@ export const ModalEventCalendar = ({
           <Grid gutter={10} mt="md">
             <Grid.Col span={4}>
               <Select
-                {...form.getInputProps("brandId")}
-                name="brandId"
+                {...form.getInputProps("carBrandId")}
+                name="carBrandId"
                 data={brandOptions}
                 placeholder="Hãng xe"
                 allowDeselect={false}
                 leftSection={<IconPlus size={22} color="blue" />}
                 onChange={(value) => {
-                  form.setFieldValue("brandId", value || "");
-                  form.setFieldValue("modelId", null);
+                  form.setFieldValue("carBrandId", value);
+                  form.setFieldValue("carNameId", null);
                   setBrand(value);
                 }}
                 withAsterisk
@@ -295,10 +249,10 @@ export const ModalEventCalendar = ({
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
                 allowDeselect={false}
-                {...form.getInputProps("modelId")}
+                {...form.getInputProps("carNameId")}
                 onChange={(value: any) => {
-                  form.setFieldValue("modelId", value);
-                  form.setFieldValue("yearId", null);
+                  form.setFieldValue("carNameId", value);
+                  form.setFieldValue("carYearId", null);
                   setModel(value);
                 }}
               />
@@ -310,11 +264,11 @@ export const ModalEventCalendar = ({
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
                 allowDeselect={false}
-                {...form.getInputProps("yearId")}
+                {...form.getInputProps("carYearId")}
               />
             </Grid.Col>
           </Grid>
-        )} */}
+        )}
         <Grid gutter={10} mt="md">
           <Grid.Col span={6}>
             <Select
@@ -404,8 +358,8 @@ export const ModalEventCalendar = ({
       {/* <ModalOrderGuest
         close={closeLogin}
         opened={openedLogin}
-        phone={form.values.phone_number}
-        name={form.values.full_name}
+        phone={form.values.phoneNumber}
+        name={form.values.fullName}
         dataDetail={newCustomerCare}
         onClose={onClose}
         router={router}

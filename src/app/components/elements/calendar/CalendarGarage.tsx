@@ -10,6 +10,7 @@ import "dayjs/locale/vi";
 import CalendarEventBase from "../../form/CalendarEventBase";
 dayjs.locale("vi");
 import dynamic from "next/dynamic";
+import ModalPreviewDetailCalendar from "../ModalPreviewCalendar";
 
 const DynamicModalCalendar = dynamic(
   () => import("../ModalInfosEventCalendar"),
@@ -76,6 +77,11 @@ export default function CalendarSchedulerGarage({
           isListEvent={true}
         />
       </Box>
+      <ModalPreviewDetailCalendar
+        opened={openedPreviewCalendar}
+        onClose={closePreviewCalendar}
+        previewInfos={previewInfos}
+      />
     </div>
   );
 }

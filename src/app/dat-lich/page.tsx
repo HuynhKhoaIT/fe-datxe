@@ -43,6 +43,12 @@ export default async function DatLich() {
   const carOptions = orderInfo?.cars?.map((car: any) => ({
     value: car.id?.toString() || "",
     label: car.numberPlates || "",
+    otherData: {
+      carId: car.id?.toString() || "",
+      brandId: car.carBrandId,
+      modelId: car.carNameId,
+      carYearId: car.carYearId,
+    },
   }));
   const carDefault = carOptions?.filter(
     (car: any) => car.value == account?.carIdDefault
