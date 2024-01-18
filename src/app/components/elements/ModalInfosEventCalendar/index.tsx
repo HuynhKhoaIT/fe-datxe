@@ -38,28 +38,35 @@ export default function ModalCalendar({
   const [garage, setGarage] = useState<any>();
 
   // lấy danh sách model
-  const fetchModel = async () => {
-    const models = await getModels(brand || 0);
-    const newModels = models?.map((model) => ({
+  const fetchModel = async (brand: any) => {
+    const models = await fetch(`/api/models/${brand}`);
+    const data = await models.json();
+    const newModels = data?.map((model: any) => ({
       value: model.id?.toString() || "",
-      label: model.name || "",
+      label: model.title || "",
     }));
     setModelsOptions(newModels);
   };
   useEffect(() => {
-    fetchModel();
+    if (brand) {
+      fetchModel(brand);
+    }
   }, [brand]);
   // lấy danh sách năm sản xuất
-  const fetchYearCar = async () => {
-    const yearCarData = await getYears(model || 0);
-    const newYears = yearCarData?.map((year) => ({
+  const fetchYearCar = async (model: any) => {
+    const yearCarData = await fetch(`/api/models/${model}`);
+    const data = await yearCarData.json();
+
+    const newYears = data?.map((year: any) => ({
       value: year.id?.toString() || "",
-      label: year.name || "",
+      label: year.title || "",
     }));
     setYearCarOptions(newYears);
   };
   useEffect(() => {
-    fetchYearCar();
+    if (model) {
+      fetchYearCar(model);
+    }
   }, [model]);
 
   //  lấy  Garage

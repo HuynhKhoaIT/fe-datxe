@@ -21,37 +21,46 @@ export default async function DatLich() {
   const mappedOrdersData = mapArrayEventCalendar(orders);
   // lấy danh sách brand
   const brands = await getBrands();
-  const newBrands = brands?.map((brand) => ({
-    value: brand.id?.toString() || "",
-    label: brand.name || "",
-  }));
+
   // lấy danh sách category
   const categories = await getCategories();
-  const categoryOptions = categories?.map((category) => ({
-    value: category.id?.toString() || "",
-    label: category.name || "",
-  }));
+  // const categoryOptions = categories?.map((category) => ({
+  //   value: category.id?.toString() || "",
+  //   label: category.name || "",
+  // }));
 
   const carsData = await getCarsSsr();
-  const carOptions = carsData?.map((car) => ({
-    value: car.id?.toString() || "",
-    label: car.licensePlates || "",
-    otherData: {
-      carId: car.id?.toString() || "",
-      brandId: car.brandCarName.id,
-      brandName: car.brandCarName.name,
-      modelId: car.modelCarName.id,
-      modelName: car.modelCarName.name,
-      yearCarName: car.yearCarName,
-    },
-  }));
+  // const carOptions = carsData?.map((car) => ({
+  //   value: car.id?.toString() || "",
+  //   label: car.licensePlates || "",
+  //   otherData: {
+  //     carId: car.id?.toString() || "",
+  //     brandId: car.brandCarName.id,
+  //     brandName: car.brandCarName.name,
+  //     modelId: car.modelCarName.id,
+  //     modelName: car.modelCarName.name,
+  //     yearCarName: car.yearCarName,
+  //   },
+  // }));
 
   const account: any = await getMyAccount();
-  const carDefault = carOptions?.filter(
-    (car) => car.value == account?.carIdDefault
-  );
 
   let orderInfo = await getDataInfoOrder();
+  const categoryOptions = orderInfo?.categories?.map((category: any) => ({
+    value: category.id?.toString() || "",
+    label: category.title || "",
+  }));
+  const carOptions = orderInfo?.cars?.map((car: any) => ({
+    value: car.id?.toString() || "",
+    label: car.numberPlates || "",
+  }));
+  const carDefault = carOptions?.filter(
+    (car: any) => car.value == account?.carIdDefault
+  );
+  const newBrands = orderInfo?.carBrands?.map((brand: any) => ({
+    value: brand.id?.toString() || "",
+    label: brand.title || "",
+  }));
 
   return (
     <main className="main">
