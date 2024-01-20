@@ -12,17 +12,15 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
         }
         const session = await getServerSession(authOptions);
         if (1) {
-            const orders = await prisma.order.findUnique({
+            const garage = await prisma.garage.findUnique({
                 where: {
                     id: parseInt(id.toString()),
                 },
                 include: {
-                    serviceAdvisor: true,
-                    car: true,
-                    customer: true,
+                    cars: true,
                 },
             });
-            return NextResponse.json(orders);
+            return NextResponse.json(garage);
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {
@@ -36,7 +34,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
         if (1) {
             const id = params.id;
             let createdBy = 1;
-            let garageId = 1;
             if (!id) {
                 return new NextResponse("Missing 'id' parameter");
             }
@@ -44,37 +41,27 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
 
             if (session?.user?.id) {
                 createdBy = Number(session.user.id);
-                garageId = Number(session.user.garageId);
             }
-            let orderUpdateData = {
-                customerId: parseInt(json.customerId),
-                carId: parseInt(json.carId),
-                dateTime: json.dateTime,
-                customerRequest: json.customerRequest,
-                customerNote: json.customerNote,
-                note: json.note,
-                step: json.step,
-                priorityLevel: parseInt(json.priorityLevel),
-                orderCategoryId: 1,
-                brandId: parseInt(json.brandId),
-                modelId: parseInt(json.modelId),
-                yearId: parseInt(json.yearId),
-                garageId: parseInt(json.garageId),
-                serviceAdvisorId: parseInt(json.serviceAdvisorId),
+            let updateData = {
+                routeId: Number(json.routeId),
+                code: json.code,
+                name: json.name,
+                shortName: json.shortName,
+                logo: json.logo,
+                email: json.email,
+                phoneNumber: json.phoneNumber,
+                website: json.website,
+                address: json.address,
+                status: json.status,
             };
-            const updatedOrder = await prisma.order.update({
+            const updatedData = await prisma.customer.update({
                 where: {
                     id: Number(id),
                 },
-                data: orderUpdateData,
-                include: {
-                    serviceAdvisor: true,
-                    car: true,
-                    customer: true,
-                },
+                data: updateData,
             });
 
-            return new NextResponse(JSON.stringify(updatedOrder), {
+            return new NextResponse(JSON.stringify(updatedData), {
                 status: 201,
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -90,7 +77,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: n
         return new NextResponse("Missing 'id' parameter");
     }
 
-    const order = await prisma.order.update({
+    const rs = await prisma.garage.update({
         where: {
             id: parseInt(id.toString()),
         },

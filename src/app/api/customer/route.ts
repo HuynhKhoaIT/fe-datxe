@@ -56,12 +56,6 @@ export async function POST(request: Request) {
                 }),
                 errorMessage: 'phoneNumber is invalid',
             },
-            {
-                valid: validator.isNumeric(json.garageId, {
-                    min: 1,
-                }),
-                errorMessage: 'phoneNumber is invalid',
-            },
         ];
         validationSchame.forEach((check) => {
             if (!check.valid) {

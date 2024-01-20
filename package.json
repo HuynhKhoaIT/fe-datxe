@@ -20,7 +20,7 @@
         "@mantine/hooks": "^7.2.2",
         "@mantine/notifications": "^7.2.2",
         "@next/bundle-analyzer": "^14.0.4",
-        "@prisma/client": "^5.7.0",
+        "@prisma/client": "^5.8.1",
         "@prisma/extension-accelerate": "^0.6.2",
         "@tabler/icons-react": "^2.40.0",
         "@types/node": "20.5.9",
@@ -59,6 +59,6 @@
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
         "prettier": "^3.0.3",
-        "prisma": "^5.7.0"
+        "prisma": "^5.8.1"
     }
 }
