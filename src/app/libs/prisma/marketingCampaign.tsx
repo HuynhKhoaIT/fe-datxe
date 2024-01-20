@@ -24,6 +24,18 @@ export async function getMarketingCampaign(garage: Number,requestData: any) {
     return {marketingCampaign};
 }
 
+export async function findMarketingCampaign(id: Number) {
+    const marketingCampaign = await prisma.marketingCampaign.findUnique({
+        where: {
+            id: Number(id),
+        },
+        include: {
+            detail: true,
+        },
+    });
+    return marketingCampaign;
+}
+
 export async function createMarketingCampaign(json: any) {
     try {
         const marketingCampaign = await prisma.marketingCampaign.create({
@@ -56,19 +68,7 @@ export async function createMarketingCampaign(json: any) {
 
 export async function editMarketingCampaign(id: Number,json: any) {
     try {
-        const updatedPost = await prisma.marketingCampaign.update({
-            where: {
-                id: parseInt(id.toString()),
-            },
-            data: {
-                title: json.title,
-                dateTimeStart: json.dateTimeStart,
-                dateTimeEnd: json.dateTimeEnd,
-                garageId: json.garageId,
-                createdBy: json.createdBy,
-                status: json.status,
-            },
-        });
+        
         const deleteDetail = await prisma.marketingCampaignDetail.delete({
             where: {
                 marketingCampaignId: Number(id),
@@ -80,7 +80,24 @@ export async function editMarketingCampaign(id: Number,json: any) {
                 await createMarketingCampaignDetail(id,d);
             });
         }
-        return {updatedPost};
+        const updatedPost = await prisma.marketingCampaign.update({
+            where: {
+                id: Number(id),
+            },
+            data: {
+                title: json.title,
+                dateTimeStart: json.dateTimeStart,
+                dateTimeEnd: json.dateTimeEnd,
+                garageId: json.garageId,
+                createdBy: json.createdBy,
+                status: json.status,
+            },
+            include: {
+                detail: true
+            }
+        });
+        const rs = await prisma.marketingCampaign.findFirst({where:{id:Number(id)},include:{detail:true}})
+        return rs;
     } catch (error) {
         return { error };
     }

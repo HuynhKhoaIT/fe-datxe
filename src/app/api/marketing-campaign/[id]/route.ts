@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { editMarketingCampaign, findMarketingCampaign } from '@/app/libs/prisma/marketingCampaign';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -9,11 +10,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
         if (!id) {
             return new NextResponse("Missing 'id' parameter");
         }
-        const marketingCampaign = await prisma.marketingCampaign.findUnique({
-            where: {
-                id: parseInt(id.toString()),
-            },
-        });
+        const marketingCampaign = await findMarketingCampaign(id);
         return NextResponse.json(marketingCampaign);
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
@@ -28,27 +25,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
         }
         const json = await request.json();
 
-        const updatedPost = await prisma.marketingCampaign.update({
-            where: {
-                id: parseInt(id.toString()),
-            },
-            data: {
-                title: json.title,
-                dateTimeStart: json.dateTimeStart,
-                dateTimeEnd: json.dateTimeEnd,
-                garageId: json.garageId,
-                createdBy: json.createdBy,
-                status: json.status,
-            },
-        });
-
-        // const marketingCampaign = await createMarketingCampaign(json);
-        // const marketingCampaignDetail = json.detail;
-        // if (marketingCampaignDetail) {
-        //     marketingCampaignDetail.forEach(async function (d: any) {
-        //         await createMarketingCampaignDetail(d);
-        //     });
-        // }
+        const updatedPost = await editMarketingCampaign(id, json);
 
         return new NextResponse(JSON.stringify(updatedPost), {
             status: 201,
