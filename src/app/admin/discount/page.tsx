@@ -1,55 +1,61 @@
 "use client";
-import React, { useState } from "react";
-import styles from "./index.module.scss";
-import {
-  Button,
-  Flex,
-  Group,
-  LoadingOverlay,
-  Modal,
-  Pagination,
-  Tabs,
-  Image,
-  Tooltip,
-  Space,
-  Badge,
-} from "@mantine/core";
-import {
-  IconBan,
-  IconChevronRight,
-  IconEye,
-  IconPencil,
-  IconTrash,
-  IconPlayerTrackNext,
-  IconPlus,
-} from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
-import Link from "next/link";
-import Typo from "@/app/components/elements/Typo";
-import { notifications } from "@mantine/notifications";
-import TableBasic from "@/app/components/table/Tablebasic";
 export const revalidate = 0;
+import React, { useEffect, useState } from "react";
+import Breadcrumb from "@/app/components/form/Breadcrumb";
+import styles from "./index.module.scss";
+import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Badge, Button, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import PaginationBase from "@/app/components/form/PaginationBase";
-import SearchForm from "@/app/components/form/SearchForm";
+import { kindProductOptions, statusOptions } from "@/constants/masterData";
+import Link from "next/link";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
-import { statusOptions, kindProductOptions } from "@/constants/masterData";
+import { useDisclosure } from "@mantine/hooks";
+import ListPage from "../products/ListPage";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
     ssr: false,
   }
 );
-export default function ProductListPage({
-  dataSource,
-  setPage,
-  activePage,
-  categoryOptions,
-  getData,
-}: any) {
-  const router = useRouter();
+export default function ProductsManaga() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [products, setProducts] = useState<any>();
+  const [categoryOptions, setCategoryOptions] = useState<any>([]);
+
+  const [page, setPage] = useState<number>(1);
+
+  const Breadcrumbs = [
+    { title: "Tổng quan", href: "/admin" },
+    { title: "Sản phẩm" },
+  ];
+  async function getData(searchParams: any, page: number) {
+    const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    setProducts(data);
+  }
+  async function getDataCategories() {
+    const res = await fetch(`/api/product-category`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setCategoryOptions(dataOption);
+  }
+  useEffect(() => {
+    getData(searchParams.toString(), page);
+    getDataCategories();
+  }, [searchParams, page]);
 
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteProduct = async (idProduct: any) => {
@@ -63,7 +69,7 @@ export default function ProductListPage({
       title: "Thành công",
       message: "Xoá sản phẩm thành công",
     });
-    getData(searchParams, activePage);
+    getData(searchParams, page);
     router.refresh();
   };
   const [
@@ -129,13 +135,13 @@ export default function ProductListPage({
       name: "kind",
       dataIndex: ["isProduct"],
       width: "100px",
-      render: (record: any) => {
+      render: (record: any, index: number) => {
         const matchedStatus = kindProductOptions.find(
-          (item) => item.value === record
+          (item) => item.value === record.toString()
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge color={matchedStatus.color} key={index}>
               {matchedStatus.label}
             </Badge>
           );
@@ -232,32 +238,25 @@ export default function ProductListPage({
     yearId: null,
   };
   return (
-    <div className={styles.listPage}>
-      <SearchForm
+    <div className={styles.wrapper}>
+      <Breadcrumb breadcrumbs={Breadcrumbs} />
+      <ListPage
+        dataSource={products}
+        setPage={setPage}
+        activePage={page}
+        columns={columns}
         searchData={searchData}
+        initialValuesSearch={initialValuesSearch}
         brandFilter={true}
-        initialValues={initialValuesSearch}
+        isCreate={true}
       />
-      <Space h={20} />
-      <Flex justify={"end"} align={"center"}>
-        <Link
-          href={{
-            pathname: `/admin/products/create`,
-          }}
-        >
-          <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
-        </Link>
-      </Flex>
-      <Space h={20} />
-      <TableBasic data={dataSource} columns={columns} loading={true} />
-      <PaginationBase activePage={activePage} setPage={setPage} />
-
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}
         handleDeleteProduct={handleDeleteProduct}
         deleteRow={deleteRow}
       />
+      <FooterAdmin />
     </div>
   );
 }

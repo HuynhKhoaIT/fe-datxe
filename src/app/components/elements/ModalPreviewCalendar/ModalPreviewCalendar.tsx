@@ -50,9 +50,6 @@ export const ModalPreviewCalendar = ({ previewInfos }: any) => {
         <IconMapPin size={18} color="#21A4DD" />
         <p className={styles.address}>{data?.orderDetail?.garage?.address}</p>
       </div>
-      <Flex justify={"end"}>
-        <Button>Xác nhận đơn hàng</Button>
-      </Flex>
     </div>
   );
 };

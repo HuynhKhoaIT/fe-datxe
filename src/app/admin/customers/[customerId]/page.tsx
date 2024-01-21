@@ -13,9 +13,7 @@ export default function UpdateCustomer({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `/api/customer-groups/${params?.customerId}`
-        );
+        const response = await axios.get(`/api/customer/${params?.customerId}`);
         setCustomer(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

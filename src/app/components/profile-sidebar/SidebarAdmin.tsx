@@ -28,6 +28,14 @@ const SidebarAdmin = () => {
       </li>
       <li>
         <Link
+          href="/admin/discount"
+          className={`list-group-item ${page == "discount" && "active"}`}
+        >
+          <i className="far fa-user"></i> Chương trình của chuyên gia
+        </Link>
+      </li>
+      <li>
+        <Link
           href="/admin/orders"
           className={`${page == "orders" && "active"}`}
         >

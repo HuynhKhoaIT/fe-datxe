@@ -2,18 +2,14 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { Box, Flex, LoadingOverlay } from "@mantine/core";
+import { Box } from "@mantine/core";
 import styles from "./index.module.scss";
 import "dayjs/locale/vi";
-import CalendarEventBase from "../../form/CalendarEventBase";
+import CalendarEventBase from "../../components/form/CalendarEventBase";
 dayjs.locale("vi");
 import dynamic from "next/dynamic";
-import ModalPreviewDetailCalendar from "../ModalPreviewCalendar";
-
-const DynamicModalCalendar = dynamic(
-  () => import("../ModalInfosEventCalendar"),
+const DynamicModalAcceptCalendar = dynamic(
+  () => import("./ModalAcceptCalendar/index"),
   {
     ssr: false,
   }
@@ -77,7 +73,7 @@ export default function CalendarSchedulerGarage({
           isListEvent={true}
         />
       </Box>
-      <ModalPreviewDetailCalendar
+      <DynamicModalAcceptCalendar
         opened={openedPreviewCalendar}
         onClose={closePreviewCalendar}
         previewInfos={previewInfos}

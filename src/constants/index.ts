@@ -11,9 +11,16 @@ export const STATUS_DRAFT = 'DRAFT';
 export const STATUS_PENDING = 'PENDING';
 export const STATUS_DELETE = 'DELETE';
 
-export const IS_PRODUCT = '1';
-export const IS_SERVICE = '0';
+export const IS_PRODUCT = 'true';
+export const IS_SERVICE = 'false';
 export const MALE = 'MALE';
 export const FEMALE = 'FEMALE';
 export const COMPANY = 'COMPANY';
 export const OTHER = 'OTHER';
+
+export const ORDER_CANCEL = '0';
+export const ORDER_ACCEPT = '1';
+export const ORDER_QUOTE = '2';
+export const ORDER_REPAIR = '3';
+export const ORDER_DONE = '4';
+export const ORDER_FINISH = '5';

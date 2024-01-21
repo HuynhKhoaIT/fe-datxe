@@ -1,24 +1,15 @@
 .wrapper {
     display: flex;
-    width: 100%;
-    position: relative;
-    height: calc(100vh - 111px);
-    .navBar {
-        flex-shrink: 0;
-        width: 360px;
-    }
-    .content {
-        width: 100%;
-    }
-}
-
-.wrapperAdmin {
-    display: flex;
     flex-direction: column;
     height: 100%;
+    .pagination {
+        display: flex;
+        height: 50px;
+        align-items: center;
+    }
     .contents {
         padding: 0 20px;
-        height: calc(100% - 50px);
+        height: calc(100% - 90px);
         margin-bottom: 20px;
         .content {
             background-color: var(--white-background);

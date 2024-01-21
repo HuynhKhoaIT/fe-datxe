@@ -25,6 +25,7 @@ import { notifications } from "@mantine/notifications";
 
 const cx = classNames.bind(styles);
 function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
+  console.log("ProductDetail", ProductDetail);
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
 

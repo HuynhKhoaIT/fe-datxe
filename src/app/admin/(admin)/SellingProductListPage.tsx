@@ -1,38 +1,22 @@
 "use client";
-export const revalidate = 0;
-import React, { useEffect, useState } from "react";
-import Breadcrumb from "@/app/components/form/Breadcrumb";
-import styles from "./index.module.scss";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import styles from "./SellingProduct.module.scss";
+import ListPage from "../products/ListPage";
 import { Badge, Button, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
 import Link from "next/link";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
-import dynamic from "next/dynamic";
-import { useDisclosure } from "@mantine/hooks";
-import ListPage from "./ListPage";
-const DynamicModalDeleteProduct = dynamic(
-  () => import("../board/ModalDeleteProduct"),
-  {
-    ssr: false,
-  }
-);
-export default function ProductsManaga() {
+import { IconEye } from "@tabler/icons-react";
+import Typo from "@/app/components/elements/Typo";
+
+export default function SellingProductListPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const [products, setProducts] = useState<any>();
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
 
   const [page, setPage] = useState<number>(1);
-
-  const Breadcrumbs = [
-    { title: "Tổng quan", href: "/admin" },
-    { title: "Sản phẩm" },
-  ];
   async function getData(searchParams: any, page: number) {
     const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
       method: "GET",
@@ -56,26 +40,27 @@ export default function ProductsManaga() {
     getData(searchParams.toString(), page);
     getDataCategories();
   }, [searchParams, page]);
-
-  const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteProduct = async (idProduct: any) => {
-    await fetch(`/api/products/${idProduct}`, {
-      method: "DELETE",
-    });
-    const deleteProduct = fetch(`/api/products/${idProduct}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá sản phẩm thành công",
-    });
-    getData(searchParams, page);
-    router.refresh();
+  const searchData = [
+    {
+      name: "s",
+      placeholder: "Tên sản phẩm",
+      type: "input",
+    },
+    {
+      name: "categoryId",
+      placeholder: "Danh mục",
+      type: "select",
+      data: categoryOptions,
+    },
+  ];
+  const initialValuesSearch = {
+    s: "",
+    categoryId: null,
+    brandId: null,
+    nameId: null,
+    yearId: null,
   };
-  const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
-  ] = useDisclosure(false);
+
   const columns = [
     {
       label: <span>Hình ảnh</span>,
@@ -166,97 +151,50 @@ export default function ProductsManaga() {
         }
       },
     },
-    {
-      label: <span>Hành động</span>,
-      dataIndex: [],
-      width: "100px",
-      render: (record: any) => {
-        return (
-          <>
-            <Link
-              href={{
-                pathname: `/admin/products/${record.id}`,
-              }}
-            >
-              <Tooltip label="Cập nhật" withArrow position="bottom">
-                <Button
-                  size="xs"
-                  style={{ margin: "0 5px" }}
-                  variant="transparent"
-                  color="gray"
-                  p={5}
-                  onClick={() => {}}
-                >
-                  <IconPencil size={16} />
-                </Button>
-              </Tooltip>
-            </Link>
-
-            <Tooltip label="Xoá" withArrow position="bottom">
-              <Button
-                size="xs"
-                p={5}
-                variant="transparent"
-                color="red"
-                onClick={(e) => {
-                  openDeleteProduct();
-                  setDeleteRow(record.id);
-                }}
-              >
-                <IconTrash size={16} color="red" />
-              </Button>
-            </Tooltip>
-          </>
-        );
-      },
-    },
+    // {
+    //   label: <span>Hành động</span>,
+    //   dataIndex: [],
+    //   width: "100px",
+    //   render: (record: any) => {
+    //     return (
+    //       <>
+    //         <Link
+    //           href={{
+    //             pathname: `/admin/products/${record.id}`,
+    //           }}
+    //         >
+    //           <Tooltip label="Xem chi tiết" withArrow position="bottom">
+    //             <Button
+    //               size="xs"
+    //               style={{ margin: "0 5px" }}
+    //               variant="transparent"
+    //               color="gray"
+    //               p={5}
+    //               onClick={() => {}}
+    //             >
+    //               <IconEye size={16} />
+    //             </Button>
+    //           </Tooltip>
+    //         </Link>
+    //       </>
+    //     );
+    //   },
+    // },
   ];
-  const searchData = [
-    {
-      name: "s",
-      placeholder: "Tên sản phẩm",
-      type: "input",
-    },
-    {
-      name: "categoryId",
-      placeholder: "Danh mục",
-      type: "select",
-      data: categoryOptions,
-    },
-    {
-      name: "isProduct",
-      placeholder: "Loại",
-      type: "select",
-      data: kindProductOptions,
-    },
-  ];
-  const initialValuesSearch = {
-    s: "",
-    categoryId: null,
-    brandId: null,
-    nameId: null,
-    yearId: null,
-  };
   return (
     <div className={styles.wrapper}>
-      <Breadcrumb breadcrumbs={Breadcrumbs} />
+      <Typo size="primary" type="bold" style={{ color: "var(--theme-color)" }}>
+        Danh sách sản phẩm bán chạy
+      </Typo>
       <ListPage
         dataSource={products}
         setPage={setPage}
         activePage={page}
-        columns={columns}
         searchData={searchData}
         initialValuesSearch={initialValuesSearch}
-        brandFilter={true}
-        isCreate={true}
+        columns={columns}
+        className={styles.listPage}
       />
-      <DynamicModalDeleteProduct
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteProduct}
-        deleteRow={deleteRow}
-      />
-      <FooterAdmin />
     </div>
   );
 }
