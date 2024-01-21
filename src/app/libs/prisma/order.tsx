@@ -16,6 +16,27 @@ export async function getOrders(request: NextRequest){
                 serviceAdvisor: true,
                 car: true,
                 customer: true,
+                 orderDetails: {
+                    select: {
+                        productId:true,
+                        note: true,
+                        priceSale: true,
+                        price: true,
+                        subTotal: true,
+                        saleType: true,
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    }
+                },
+            },
+            orderBy: {
+                id: 'desc',
             },
         });
         return {orders};
@@ -24,8 +45,48 @@ export async function getOrders(request: NextRequest){
     }
     
 }
+export async function findOrders(id: Number,request: NextRequest){
+    try {
+        const rs = await prisma.order.findFirst({
+            where: {
+                id: Number(id),
+            },
+            include: {
+                serviceAdvisor: true,
+                car: true,
+                customer: true,
+                 orderDetails: {
+                    select: {
+                        productId:true,
+                        note: true,
+                        priceSale: true,
+                        price: true,
+                        subTotal: true,
+                        saleType: true,
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    }
+                },
+            },
+            orderBy: {
+                id: 'desc',
+            },
+        });
+        return rs;
+    } catch (error) {
+        return { error };
+    }
+    
+}
 export async function createOrder(json: any) {
-    try {  
+    try {
+        
         let customerId = 0;
         let carId = 0;
         if ((!json.customerId || json.customerId == 0) && json.phoneNumber) {
@@ -74,6 +135,24 @@ export async function createOrder(json: any) {
         }else{
             carId = json.carId;
         }
+        let orderDetails: any = [];
+        if(json.detail){
+            json.detail.forEach(function (data: any) {
+                orderDetails.push({
+                    productId: data.productId,
+                    note: data.note,
+                    price: Number(data.price),
+                    priceSale: Number(data.priceSale),
+                    saleType: data.saleType,
+                    saleValue: data.saleValue,
+                    quantity: Number(data.quantity),
+                    subTotal: Number(data.subTotal),
+                    garageId: Number(json.garageId),
+                    createdBy: json.createdBy,
+                });
+            });
+        }
+        
         const order = await prisma.order.create({
             data: {
                 code: (await codeGeneration(json.garageId)).toString(),
@@ -90,11 +169,28 @@ export async function createOrder(json: any) {
                 yearId: Number(json.carYearId),
                 garageId: Number(json.garageId),
                 serviceAdvisorId: Number(json.serviceAdvisorId),
+                orderDetails: {
+                    createMany : {
+                        data:orderDetails
+                    }
+                }
             },
             include: {
                 serviceAdvisor: true,
                 car: true,
                 customer: true,
+                orderDetails: {
+                    select: {
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    }
+                }
             },
         });
         return {order};
@@ -102,7 +198,6 @@ export async function createOrder(json: any) {
         return { error };
     }
 }
-
 export async function codeGeneration(garageId: Number){
     let num = '1';
     const order = await prisma.order.findFirst({
