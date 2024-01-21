@@ -55,17 +55,16 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
       }));
       form.setFieldValue("detail", updatedProducts);
     } else {
-      console.log(selectedRows);
       let updatedProducts = selectedRows.map((detail: any) => ({
         name: detail?.product?.name || detail?.name,
         price: detail.price,
         productId: detail.productId !== 0 ? detail.productId : detail.id,
-        quantity: detail?.quantity,
+        quantity: detail?.quantity || 1,
         priceSale: detail?.priceSale,
         subTotal: detail.subTotal,
         status: detail?.status,
         saleType: detail?.saleType || "FIXED",
-        saleValue: detail?.saleValue,
+        saleValue: detail?.saleValue || 0,
       }));
       form.setFieldValue("detail", updatedProducts);
     }
@@ -159,6 +158,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                       `detail.${index}.salePrice`,
                       form.values.detail[index].price - Number(value)
                     );
+                    form.setFieldValue(`detail.${index}.saleValue`, value);
                   }}
                 />
               ) : (
@@ -174,6 +174,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                       form.values.detail[index].price -
                         (form.values.detail[index].price * Number(value)) / 100
                     );
+                    form.setFieldValue(`detail.${index}.saleValue`, value);
                   }}
                 />
               )}

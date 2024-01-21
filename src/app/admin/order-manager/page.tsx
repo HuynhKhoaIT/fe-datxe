@@ -207,6 +207,17 @@ export default function OrdersManaga() {
         //     initialValues={initialValuesSearch}
         //   />
         // }
+        actionBar={
+          <Flex justify={"end"} align={"center"}>
+            <Link
+              href={{
+                pathname: `/admin/orders-manager/create`,
+              }}
+            >
+              <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+            </Link>
+          </Flex>
+        }
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
