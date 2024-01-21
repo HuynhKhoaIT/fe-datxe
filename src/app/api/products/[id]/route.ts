@@ -19,6 +19,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                 include: {
                     categories: true,
                     garage: true,
+                    marketingCampaignDetail: true,
                 },
             });
             return NextResponse.json(products);
