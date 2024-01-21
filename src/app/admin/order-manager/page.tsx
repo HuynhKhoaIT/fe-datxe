@@ -8,76 +8,55 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import {
-  kindMarketingOptions,
   kindProductOptions,
   statusOptions,
+  stepOrderOptions,
 } from "@/constants/masterData";
 import Link from "next/link";
-import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconEye, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 import { useDisclosure } from "@mantine/hooks";
-import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
-import dayjs from "dayjs";
+import ListPage from "@/app/components/layout/ListPage";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
     ssr: false,
   }
 );
-export default function Discounts() {
+const Breadcrumbs = [
+  { title: "Tổng quan", href: "/admin" },
+  { title: "Quản lý đơn hàng" },
+];
+export default function OrdersManaga() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [products, setProducts] = useState<any>();
-  const [categoryOptions, setCategoryOptions] = useState<any>([]);
-
+  const [orders, setOrders] = useState<any>();
   const [page, setPage] = useState<number>(1);
+  const [deleteRow, setDeleteRow] = useState();
 
-  const Breadcrumbs = [
-    { title: "Tổng quan", href: "/admin" },
-    { title: "Danh sách chương trình" },
-  ];
   async function getData(searchParams: any, page: number) {
-    const res = await fetch(
-      `/api/marketing-campaign?${searchParams}&page=${page}`,
-      {
-        method: "GET",
-      }
-    );
+    const res = await fetch(`/api/orders?${searchParams}&page=${page}`, {
+      method: "GET",
+    });
     const data = await res.json();
-    setProducts(data);
+    setOrders(data);
   }
-  async function getDataCategories() {
-    const res = await fetch(`/api/product-category`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setCategoryOptions(dataOption);
-  }
+
   useEffect(() => {
     getData(searchParams.toString(), page);
-    getDataCategories();
   }, [searchParams, page]);
 
-  const [deleteRow, setDeleteRow] = useState();
   const handleDeleteProduct = async (idProduct: any) => {
-    await fetch(`/api/products/${idProduct}`, {
-      method: "DELETE",
-    });
-    const deleteProduct = fetch(`/api/products/${idProduct}`, {
+    await fetch(`/api/orders/${idProduct}`, {
       method: "DELETE",
     });
     notifications.show({
       title: "Thành công",
-      message: "Xoá sản phẩm thành công",
+      message: "Xoá đơn hàng thành công",
     });
     getData(searchParams, page);
     router.refresh();
@@ -88,58 +67,64 @@ export default function Discounts() {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Tên chương trình</span>,
-      name: "title",
-      dataIndex: ["title"],
+      label: <span>Mã đơn hàng</span>,
+      name: "fullName",
+      dataIndex: ["code"],
+      width: "120px",
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
     },
     {
-      label: <span>Sản phẩm</span>,
-      name: "detail",
-      dataIndex: ["detail"],
-      textAlign: "center",
+      label: <span>Tên khách hàng</span>,
+      name: "fullName",
+      dataIndex: ["customer"],
       render: (dataRow: any) => {
-        return <span>{dataRow ? dataRow?.length : 0} Sản phẩm</span>;
+        return <span>{dataRow.fullName}</span>;
       },
     },
     {
-      label: <span>Thời gian bắt đầu</span>,
-      name: "dateTimeStart",
-      dataIndex: ["dateTimeStart"],
+      label: <span>số điện thoại</span>,
+      name: "phoneNumber",
+      dataIndex: ["customer"],
+      render: (dataRow: any) => {
+        return <span>{dataRow.phoneNumber}</span>;
+      },
+    },
+    {
+      label: <span>Biển số xe</span>,
+      name: "phoneNumber",
+      dataIndex: ["car", "numberPlates"],
+      render: (dataRow: any) => {
+        return <span>{dataRow}</span>;
+      },
+    },
+    {
+      label: <span>Số lượng</span>,
+      name: "quantity",
+      dataIndex: ["quantity"],
+      textAlign: "center",
+    },
+    {
+      label: <span>Tổng tiền</span>,
+      name: "total",
+      dataIndex: ["total"],
       render: (dataRow: number) => {
-        return (
-          <span>
-            {dataRow ? dayjs(dataRow).format("DD-MM-YYYY HH:MM") : null}
-          </span>
-        );
+        return <span>{dataRow?.toLocaleString()}đ</span>;
       },
     },
     {
-      label: <span>Thời gian kết thúc</span>,
-      name: "dateTimeEnd",
-      dataIndex: ["dateTimeEnd"],
-      render: (dataRow: number) => {
-        return (
-          <span>
-            {dataRow ? dayjs(dataRow).format("DD-MM-YYYY HH:MM") : null}
-          </span>
-        );
-      },
-    },
-    {
-      label: <span>Trạng thái</span>,
-      name: "status",
-      dataIndex: ["status"],
+      label: <span>Tình trạng</span>,
+      name: "kind",
+      dataIndex: ["step"],
       width: "100px",
-      render: (record: any) => {
-        const matchedStatus = statusOptions.find(
-          (item) => item.value === record
+      render: (record: any, index: number) => {
+        const matchedStatus = stepOrderOptions.find(
+          (item) => item.value === record.toString()
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge color={matchedStatus.color} key={index}>
               {matchedStatus.label}
             </Badge>
           );
@@ -155,10 +140,10 @@ export default function Discounts() {
           <>
             <Link
               href={{
-                pathname: `/admin/marketing-campaign/${record.id}`,
+                pathname: `/admin/order-manager/${record.id}`,
               }}
             >
-              <Tooltip label="Cập nhật" withArrow position="bottom">
+              <Tooltip label="Chi tiết" withArrow position="bottom">
                 <Button
                   size="xs"
                   style={{ margin: "0 5px" }}
@@ -167,7 +152,7 @@ export default function Discounts() {
                   p={5}
                   onClick={() => {}}
                 >
-                  <IconPencil size={16} />
+                  <IconEye size={16} />
                 </Button>
               </Tooltip>
             </Link>
@@ -194,49 +179,41 @@ export default function Discounts() {
   const searchData = [
     {
       name: "s",
-      placeholder: "Tên chương trình",
+      placeholder: "Tên sản phẩm",
       type: "input",
     },
     {
-      name: "state",
-      placeholder: "Tình trạng",
+      name: "isProduct",
+      placeholder: "Loại",
       type: "select",
-      data: kindMarketingOptions,
+      data: kindProductOptions,
     },
   ];
   const initialValuesSearch = {
     s: "",
-    state: null,
+    categoryId: null,
+    brandId: null,
+    nameId: null,
+    yearId: null,
   };
   return (
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <ListPage
-        searchForm={
-          <SearchForm
-            searchData={searchData}
-            brandFilter={false}
-            initialValues={initialValuesSearch}
-          />
-        }
-        actionBar={
-          <Flex justify={"end"} align={"center"}>
-            <Link
-              href={{
-                pathname: `/admin/marketing-campaign/choose-products`,
-              }}
-            >
-              <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
-            </Link>
-          </Flex>
-        }
+        // searchForm={
+        //   <SearchForm
+        //     searchData={searchData}
+        //     brandFilter={true}
+        //     initialValues={initialValuesSearch}
+        //   />
+        // }
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
-            data={products?.data}
+            data={orders?.orders}
             columns={columns}
             loading={true}
-            totalPage={products?.totalPage}
+            totalPage={orders?.totalPage}
             setPage={setPage}
             activePage={page}
           />

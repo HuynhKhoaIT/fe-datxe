@@ -11,7 +11,6 @@ export default function InfoCar({
   selectCar,
 }: any) {
   const token = session?.user?.token;
-
   return (
     <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
       <div className="checkout-widget">
