@@ -20,7 +20,7 @@ const DynamicModalDeleteProduct = dynamic(
     ssr: false,
   }
 );
-export default function ProductsManaga() {
+export default function Discounts() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -31,12 +31,15 @@ export default function ProductsManaga() {
 
   const Breadcrumbs = [
     { title: "Tổng quan", href: "/admin" },
-    { title: "Sản phẩm" },
+    { title: "Danh sách chương trình" },
   ];
   async function getData(searchParams: any, page: number) {
-    const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
-      method: "GET",
-    });
+    const res = await fetch(
+      `/api/marketing-campaign?${searchParams}&page=${page}`,
+      {
+        method: "GET",
+      }
+    );
     const data = await res.json();
     setProducts(data);
   }
@@ -78,39 +81,16 @@ export default function ProductsManaga() {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Hình ảnh</span>,
-      name: "image",
-      dataIndex: ["images"],
-      width: "90px",
-      render: (data: any) => {
-        const images = JSON.parse(data);
-        if (!images) {
-          return (
-            <Image
-              radius="md"
-              src={ImageDefult.src}
-              h={40}
-              w="auto"
-              fit="contain"
-            />
-          );
-        }
-        return (
-          <Image radius="md " h={40} w={80} fit="contain" src={images[0]} />
-        );
-      },
-    },
-    {
-      label: <span>Tên sản phẩm</span>,
-      name: "name",
-      dataIndex: ["name"],
+      label: <span>Tên chương trình</span>,
+      name: "title",
+      dataIndex: ["title"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
     },
     {
-      label: <span>Số lượng</span>,
-      name: "quantity",
+      label: <span>Sản phẩm</span>,
+      name: "productName",
       dataIndex: ["quantity"],
       textAlign: "center",
     },
