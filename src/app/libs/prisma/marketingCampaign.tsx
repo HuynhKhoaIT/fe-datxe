@@ -159,16 +159,15 @@ export async function editMarketingCampaign(id: Number,json: any) {
         if(json.detail){
             json.detail.forEach(function (data: any) {
                 detail.push({
-                    productId: data.productId,
+                    productId: Number(data.productId),
                     note: data.note,
                     price: Number(data.price),
                     priceSale: Number(data.priceSale ?? 0),
                     saleType: data.saleType,
-                    saleValue: data.saleValue.toString(),
+                    saleValue: Number(data.saleValue).toString(),
                     quantity: Number(data.quantity),
-                    subTotal: Number(data.subTotal),
-                    garageId: Number(data.garageId),
-                    createdBy: json.createdBy,
+                    garageId: Number(json.garageId),
+                    createdBy: Number(json.createdBy),
                 });
             });
         }

@@ -10,7 +10,6 @@ export async function createMarketingCampaignDetail(marketingCampaignId: Number,
                 priceSale: json.priceSale,
                 saleType: json.saleType,
                 quantity: json.quantity,
-                subTotal: json.subTotal,
                 garageId: json.garageId,
                 createdBy: json.createdBy
             }
