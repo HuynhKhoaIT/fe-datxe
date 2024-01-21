@@ -96,19 +96,19 @@ export async function createMarketingCampaign(json: any) {
         if(json.detail){
             json.detail.forEach(function (data: any) {
                 detail.push({
-                    productId: data.productId,
+                    productId: Number(data.productId),
                     note: data.note,
                     price: Number(data.price),
                     priceSale: Number(data.priceSale),
                     saleType: data.saleType,
-                    saleValue: data.saleValue,
+                    saleValue: data.saleValue.toString(),
                     quantity: Number(data.quantity),
-                    subTotal: Number(data.subTotal),
                     garageId: Number(json.garageId),
-                    createdBy: json.createdBy,
+                    createdBy: Number(json.createdBy),
                 });
             });
         }
+        // return detail;
         const marketingCampaign = await prisma.marketingCampaign.create({
             data: {                
                 title: json.title,
@@ -119,7 +119,7 @@ export async function createMarketingCampaign(json: any) {
                 status: json.status,
                 detail: {
                     createMany : {
-                        data:detail
+                        data: detail
                     }
                 }
             },
@@ -143,7 +143,7 @@ export async function createMarketingCampaign(json: any) {
                 }
             }
         });        
-        return marketingCampaign;
+        return {marketingCampaign};
     } catch (error) {
         return { error };
     }
@@ -161,10 +161,10 @@ export async function editMarketingCampaign(id: Number,json: any) {
                     price: Number(data.price),
                     priceSale: Number(data.priceSale),
                     saleType: data.saleType,
-                    saleValue: data.saleValue,
+                    saleValue: data.saleValue.toString(),
                     quantity: Number(data.quantity),
                     subTotal: Number(data.subTotal),
-                    garageId: Number(json.garageId),
+                    garageId: Number(data.garageId),
                     createdBy: json.createdBy,
                 });
             });
@@ -182,9 +182,7 @@ export async function editMarketingCampaign(id: Number,json: any) {
                 createdBy: json.createdBy,
                 status: json.status,
                 detail: {
-                    deleteMany: {
-                        
-                    },
+                    deleteMany: {},
                     createMany : {
                         data:detail
                     }
