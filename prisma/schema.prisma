@@ -54,6 +54,7 @@ model Product {
   isProduct       Boolean                @default(true)
   name            String
   slug            String?
+  sku             String?
   description     String?
   price           Int                    @default(0)
   salePrice       Int                    @default(0)
@@ -75,8 +76,8 @@ model Product {
   garageId        Int                    @default(1)
   createdAt       DateTime               @default(now())
   updatedAt       DateTime               @updatedAt
-  marketingCampaignDetail MarketingCampaignDetail?
-  orderDetail     OrderDetail?
+  marketingCampaignDetail MarketingCampaignDetail[]
+  orderDetail     OrderDetail[]
 }
 
 model CategoriesOnProducts {
@@ -142,7 +143,7 @@ model Order{
   createdById       Int @default(0)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt  
-  orderDetail       OrderDetail?
+  orderDetails       OrderDetail[]
 }
 model OrderCategory{
   id              Int @id @default(autoincrement())
@@ -157,20 +158,20 @@ model OrderDetail {
   order               Order @relation(fields: [orderId], references: [id])
   orderId             Int  @unique // relation scalar field (used in the `@relation` attribute above)
   product             Product @relation(fields: [productId],references: [id])
-  productId           Int @unique
+  productId           Int
   note                String?
   price               Int
   priceSale           Int
   saleType            SALETYPE @default(FIXED)
+  saleValue           String @default("0")
   quantity            Float
   subTotal            Int
   garage              Garage @relation(fields: [garageId], references: [id])
   garageId            Int @default(1)
   createdBy           Int @default(1)
-  status          STATUS @default(PUBLIC)
+  status              STATUS @default(PUBLIC)
   @@id([orderId,productId])
 }
-
 
 model ServiceAdvisor{
   id                      Int @id @default(autoincrement())
@@ -283,18 +284,19 @@ model MarketingCampaign {
   garageId        Int @default(1)
   createdBy       Int @default(1)
   status          STATUS @default(PUBLIC)
-  detail          MarketingCampaignDetail?
+  detail          MarketingCampaignDetail[]
 }
 
 model MarketingCampaignDetail {
   marketingCampaign   MarketingCampaign @relation(fields: [marketingCampaignId], references: [id])
-  marketingCampaignId Int  @unique // relation scalar field (used in the `@relation` attribute above)
+  marketingCampaignId Int // relation scalar field (used in the `@relation` attribute above)
   product             Product @relation(fields: [productId],references: [id])
-  productId           Int @unique
+  productId           Int
   note                String?
   price               Int
   priceSale           Int
   saleType            SALETYPE @default(FIXED)
+  saleValue           String @default("0")
   quantity            Float
   subTotal            Int
   garage              Garage @relation(fields: [garageId], references: [id])
