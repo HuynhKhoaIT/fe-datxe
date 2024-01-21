@@ -41,7 +41,7 @@ export default function Discounts() {
       }
     );
     const data = await res.json();
-    setProducts(data);
+    setProducts(data.marketingCampaign);
   }
   async function getDataCategories() {
     const res = await fetch(`/api/product-category`, { method: "GET" });
@@ -91,42 +91,27 @@ export default function Discounts() {
     {
       label: <span>Sản phẩm</span>,
       name: "productName",
-      dataIndex: ["quantity"],
+      dataIndex: ["detail"],
       textAlign: "center",
-    },
-    {
-      label: <span>Giá bán</span>,
-      name: "price",
-      dataIndex: ["price"],
-      render: (dataRow: number) => {
-        return <span>{dataRow?.toLocaleString()}đ</span>;
+      render: (dataRow: any) => {
+        return <span>{dataRow?.length()}</span>;
       },
     },
     {
-      label: <span>Giá sale</span>,
-      name: "priceSale",
-      dataIndex: ["salePrice"],
-      render: (dataRow: number) => {
-        return <span>{dataRow?.toLocaleString()}đ</span>;
-      },
+      label: <span>Thời gian bắt đầu</span>,
+      name: "dateTimeStart",
+      dataIndex: ["dateTimeStart"],
+      // render: (dataRow: number) => {
+      //   return <span>{dataRow?.toLocaleString()}đ</span>;
+      // },
     },
     {
-      label: <span>Loại</span>,
-      name: "kind",
-      dataIndex: ["isProduct"],
-      width: "100px",
-      render: (record: any, index: number) => {
-        const matchedStatus = kindProductOptions.find(
-          (item) => item.value === record.toString()
-        );
-        if (matchedStatus) {
-          return (
-            <Badge color={matchedStatus.color} key={index}>
-              {matchedStatus.label}
-            </Badge>
-          );
-        }
-      },
+      label: <span>Thời gian kết thúc</span>,
+      name: "dateTimeEnd",
+      dataIndex: ["dateTimeEnd"],
+      // render: (dataRow: number) => {
+      //   return <span>{dataRow?.toLocaleString()}đ</span>;
+      // },
     },
     {
       label: <span>Trạng thái</span>,

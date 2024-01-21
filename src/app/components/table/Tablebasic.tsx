@@ -1,6 +1,7 @@
 import { Table } from "@mantine/core";
 import React from "react";
 export default function TableBasic({ data = [], columns, loading }: any) {
+  console.log(data);
   return (
     <Table>
       <Table.Thead>
