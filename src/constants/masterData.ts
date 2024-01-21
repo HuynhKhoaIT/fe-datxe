@@ -15,6 +15,10 @@ import {
     ORDER_DONE,
     ORDER_FINISH,
     ORDER_CANCEL,
+    MARKETING_CANCEL,
+    MARKETING_ALL,
+    MARKETING_COMING,
+    MARKETING_PENDING,
 } from './index';
 
 export const statusOptions = [
@@ -43,4 +47,11 @@ export const stepOrderOptions = [
     { value: ORDER_DONE, label: 'Hoàn thành', color: 'cyan' },
     { value: ORDER_FINISH, label: 'Xuất Xưởng', color: 'green' },
     { value: ORDER_CANCEL, label: 'Đã huỷ', color: 'red' },
+];
+
+export const kindMarketingOptions = [
+    { value: MARKETING_ALL, label: 'Tất cả', color: 'green' },
+    { value: MARKETING_COMING, label: 'Sắp diễn ra', color: 'orange' },
+    { value: MARKETING_PENDING, label: 'Đang diễn ra', color: 'blue' },
+    { value: MARKETING_CANCEL, label: 'Đã kết thúc', color: 'red' },
 ];

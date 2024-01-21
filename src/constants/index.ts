@@ -24,3 +24,8 @@ export const ORDER_QUOTE = '2';
 export const ORDER_REPAIR = '3';
 export const ORDER_DONE = '4';
 export const ORDER_FINISH = '5';
+
+export const MARKETING_CANCEL = '0';
+export const MARKETING_PENDING = '1';
+export const MARKETING_COMING = '2';
+export const MARKETING_ALL = '3';

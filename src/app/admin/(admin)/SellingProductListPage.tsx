@@ -2,13 +2,12 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./SellingProduct.module.scss";
-import ListPage from "../products/ListPage";
 import { Badge, Button, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
-import Link from "next/link";
-import { IconEye } from "@tabler/icons-react";
 import Typo from "@/app/components/elements/Typo";
+import ListPage from "@/app/components/layout/ListPage";
+import TableBasic from "@/app/components/table/Tablebasic";
 
 export default function SellingProductListPage() {
   const searchParams = useSearchParams();
@@ -151,35 +150,6 @@ export default function SellingProductListPage() {
         }
       },
     },
-    // {
-    //   label: <span>Hành động</span>,
-    //   dataIndex: [],
-    //   width: "100px",
-    //   render: (record: any) => {
-    //     return (
-    //       <>
-    //         <Link
-    //           href={{
-    //             pathname: `/admin/products/${record.id}`,
-    //           }}
-    //         >
-    //           <Tooltip label="Xem chi tiết" withArrow position="bottom">
-    //             <Button
-    //               size="xs"
-    //               style={{ margin: "0 5px" }}
-    //               variant="transparent"
-    //               color="gray"
-    //               p={5}
-    //               onClick={() => {}}
-    //             >
-    //               <IconEye size={16} />
-    //             </Button>
-    //           </Tooltip>
-    //         </Link>
-    //       </>
-    //     );
-    //   },
-    // },
   ];
   return (
     <div className={styles.wrapper}>
@@ -187,13 +157,17 @@ export default function SellingProductListPage() {
         Danh sách sản phẩm bán chạy
       </Typo>
       <ListPage
-        dataSource={products}
-        setPage={setPage}
-        activePage={page}
-        searchData={searchData}
-        initialValuesSearch={initialValuesSearch}
-        columns={columns}
-        className={styles.listPage}
+        style={{ height: "100%" }}
+        baseTable={
+          <TableBasic
+            data={products?.data}
+            columns={columns}
+            loading={true}
+            totalPage={products?.totalPage}
+            setPage={setPage}
+            activePage={page}
+          />
+        }
       />
     </div>
   );

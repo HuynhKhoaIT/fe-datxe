@@ -5,15 +5,17 @@ import Breadcrumb from "@/app/components/form/Breadcrumb";
 import styles from "./index.module.scss";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Badge, Button, Image, Tooltip } from "@mantine/core";
+import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
 import Link from "next/link";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 import { useDisclosure } from "@mantine/hooks";
-import ListPage from "./ListPage";
+import SearchForm from "@/app/components/form/SearchForm";
+import TableBasic from "@/app/components/table/Tablebasic";
+import ListPage from "@/app/components/layout/ListPage";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -241,14 +243,35 @@ export default function ProductsManaga() {
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <ListPage
-        dataSource={products}
-        setPage={setPage}
-        activePage={page}
-        columns={columns}
-        searchData={searchData}
-        initialValuesSearch={initialValuesSearch}
-        brandFilter={true}
-        isCreate={true}
+        searchForm={
+          <SearchForm
+            searchData={searchData}
+            brandFilter={true}
+            initialValues={initialValuesSearch}
+          />
+        }
+        actionBar={
+          <Flex justify={"end"} align={"center"}>
+            <Link
+              href={{
+                pathname: `/admin/products/create`,
+              }}
+            >
+              <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+            </Link>
+          </Flex>
+        }
+        style={{ height: "100%" }}
+        baseTable={
+          <TableBasic
+            data={products?.data}
+            columns={columns}
+            loading={true}
+            totalPage={products?.totalPage}
+            setPage={setPage}
+            activePage={page}
+          />
+        }
       />
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}

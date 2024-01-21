@@ -1,0 +1,21 @@
+.baseListPage {
+    min-height: calc(100vh - 190px);
+    border: 1px solid #fff;
+    background-color: #fff;
+    border-radius: 0;
+    .action-bar {
+        margin: 10px 0 10px 0;
+    }
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.searchForm {
+    margin-bottom: 20px;
+}
+.actionBar {
+    margin-bottom: 1rem;
+}

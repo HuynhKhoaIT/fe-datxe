@@ -5,15 +5,21 @@ import Breadcrumb from "@/app/components/form/Breadcrumb";
 import styles from "./index.module.scss";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Badge, Button, Image, Tooltip } from "@mantine/core";
+import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import { kindProductOptions, statusOptions } from "@/constants/masterData";
+import {
+  kindMarketingOptions,
+  kindProductOptions,
+  statusOptions,
+} from "@/constants/masterData";
 import Link from "next/link";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 import { useDisclosure } from "@mantine/hooks";
-import ListPage from "../products/ListPage";
+import ListPage from "@/app/components/layout/ListPage";
+import SearchForm from "@/app/components/form/SearchForm";
+import TableBasic from "@/app/components/table/Tablebasic";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -41,7 +47,7 @@ export default function Discounts() {
       }
     );
     const data = await res.json();
-    setProducts(data.marketingCampaign);
+    setProducts(data);
   }
   async function getDataCategories() {
     const res = await fetch(`/api/product-category`, { method: "GET" });
@@ -90,11 +96,12 @@ export default function Discounts() {
     },
     {
       label: <span>Sản phẩm</span>,
-      name: "productName",
+      name: "detail",
       dataIndex: ["detail"],
       textAlign: "center",
       render: (dataRow: any) => {
-        return <span>{dataRow?.length()}</span>;
+        console.log(dataRow);
+        return <span>khoa</span>;
       },
     },
     {
@@ -179,41 +186,53 @@ export default function Discounts() {
   const searchData = [
     {
       name: "s",
-      placeholder: "Tên sản phẩm",
+      placeholder: "Tên chương trình",
       type: "input",
     },
     {
-      name: "categoryId",
-      placeholder: "Danh mục",
+      name: "state",
+      placeholder: "Tình trạng",
       type: "select",
-      data: categoryOptions,
-    },
-    {
-      name: "isProduct",
-      placeholder: "Loại",
-      type: "select",
-      data: kindProductOptions,
+      data: kindMarketingOptions,
     },
   ];
   const initialValuesSearch = {
     s: "",
-    categoryId: null,
-    brandId: null,
-    nameId: null,
-    yearId: null,
+    state: null,
   };
   return (
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <ListPage
-        dataSource={products}
-        setPage={setPage}
-        activePage={page}
-        columns={columns}
-        searchData={searchData}
-        initialValuesSearch={initialValuesSearch}
-        brandFilter={true}
-        isCreate={true}
+        searchForm={
+          <SearchForm
+            searchData={searchData}
+            brandFilter={false}
+            initialValues={initialValuesSearch}
+          />
+        }
+        actionBar={
+          <Flex justify={"end"} align={"center"}>
+            <Link
+              href={{
+                pathname: `/admin/marketing-campaign/choose-products`,
+              }}
+            >
+              <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+            </Link>
+          </Flex>
+        }
+        style={{ height: "100%" }}
+        baseTable={
+          <TableBasic
+            data={products?.data}
+            columns={columns}
+            loading={true}
+            totalPage={products?.totalPage}
+            setPage={setPage}
+            activePage={page}
+          />
+        }
       />
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}

@@ -28,8 +28,10 @@ const SidebarAdmin = () => {
       </li>
       <li>
         <Link
-          href="/admin/discounts"
-          className={`list-group-item ${page == "discounts" && "active"}`}
+          href="/admin/marketing-campaign"
+          className={`list-group-item ${
+            page == "marketing-campaign" && "active"
+          }`}
         >
           <i className="far fa-user"></i> Chương trình của chuyên gia
         </Link>

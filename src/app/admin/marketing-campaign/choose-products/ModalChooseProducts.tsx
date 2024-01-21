@@ -1,28 +1,23 @@
 "use client";
-export const revalidate = 0;
+import { Badge, Image, Modal } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "@/app/components/form/Breadcrumb";
-import styles from "./index.module.scss";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Badge, Button, Image, Tooltip } from "@mantine/core";
-import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
+import ImageDefult from "../../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
-import ListPage from "../../products/ListPage";
+import ListPage from "@/app/components/layout/ListPage";
+import SearchForm from "@/app/components/form/SearchForm";
+import TableBasic from "@/app/components/table/Tablebasic";
+import { useSearchParams } from "next/navigation";
 
-export default function ProductsManaga() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
+export default function ModalChooseProducts({
+  openModal,
+  close,
+  selectedRows,
+  setSelectedRows,
+}: any) {
   const [products, setProducts] = useState<any>();
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
-
+  const searchParams = useSearchParams();
   const [page, setPage] = useState<number>(1);
-
-  const Breadcrumbs = [
-    { title: "Tổng quan", href: "/admin" },
-    { title: "Sản phẩm" },
-  ];
   async function getData(searchParams: any, page: number) {
     const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
       method: "GET",
@@ -43,10 +38,11 @@ export default function ProductsManaga() {
     setCategoryOptions(dataOption);
   }
   useEffect(() => {
-    getData(searchParams.toString(), page);
-    getDataCategories();
-  }, [searchParams, page]);
-
+    if (openModal) {
+      getData(searchParams.toString(), page);
+      getDataCategories();
+    }
+  }, [openModal]);
   const columns = [
     {
       label: <span>Hình ảnh</span>,
@@ -165,19 +161,36 @@ export default function ProductsManaga() {
     yearId: null,
   };
   return (
-    <div className={styles.wrapper}>
-      <Breadcrumb breadcrumbs={Breadcrumbs} />
+    <Modal
+      title="Chọn sản phẩm"
+      opened={openModal}
+      onClose={close}
+      lockScroll={false}
+      size={"80%"}
+    >
       <ListPage
-        dataSource={products}
-        setPage={setPage}
-        activePage={page}
-        columns={columns}
-        searchData={searchData}
-        initialValuesSearch={initialValuesSearch}
-        brandFilter={true}
-        isCreate={true}
+        searchForm={
+          <SearchForm
+            searchData={searchData}
+            brandFilter={true}
+            initialValues={initialValuesSearch}
+          />
+        }
+        style={{ height: "100%" }}
+        baseTable={
+          <TableBasic
+            data={products?.data}
+            columns={columns}
+            loading={true}
+            totalPage={products?.totalPage}
+            setPage={setPage}
+            activePage={page}
+            selectRow={true}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+          />
+        }
       />
-      <FooterAdmin />
-    </div>
+    </Modal>
   );
 }
