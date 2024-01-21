@@ -14,7 +14,7 @@ export default function TableBasic({
   selectedRows,
   setSelectedRows,
 }: any) {
-  console.log(selectedRows);
+  console.log("columns", columns);
 
   return (
     <>

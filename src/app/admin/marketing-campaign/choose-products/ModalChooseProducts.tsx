@@ -1,5 +1,5 @@
 "use client";
-import { Badge, Image, Modal } from "@mantine/core";
+import { Badge, Button, Group, Image, Modal } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import ImageDefult from "../../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
@@ -7,6 +7,7 @@ import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { useSearchParams } from "next/navigation";
+import { IconBan, IconChevronRight } from "@tabler/icons-react";
 
 export default function ModalChooseProducts({
   openModal,
@@ -42,7 +43,7 @@ export default function ModalChooseProducts({
       getData(searchParams.toString(), page);
       getDataCategories();
     }
-  }, [openModal]);
+  }, [openModal, searchParams]);
   const columns = [
     {
       label: <span>Hình ảnh</span>,
@@ -191,6 +192,25 @@ export default function ModalChooseProducts({
           />
         }
       />
+      {/* <Group justify="end" style={{ marginTop: 10 }}>
+        <Button
+          variant="outline"
+          key="cancel"
+          onClick={close}
+          color="red"
+          leftSection={<IconBan size={16} />}
+        >
+          Huỷ bỏ
+        </Button>
+        <Button
+          style={{ marginLeft: "12px" }}
+          onClick={close}
+          variant="filled"
+          leftSection={<IconChevronRight size={16} />}
+        >
+          Tiếp tục
+        </Button>
+      </Group> */}
     </Modal>
   );
 }

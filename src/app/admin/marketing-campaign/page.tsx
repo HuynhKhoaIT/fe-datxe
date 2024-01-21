@@ -20,6 +20,7 @@ import { useDisclosure } from "@mantine/hooks";
 import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
+import dayjs from "dayjs";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -100,25 +101,32 @@ export default function Discounts() {
       dataIndex: ["detail"],
       textAlign: "center",
       render: (dataRow: any) => {
-        console.log(dataRow);
-        return <span>khoa</span>;
+        return <span>{dataRow ? dataRow?.length : 0} Sản phẩm</span>;
       },
     },
     {
       label: <span>Thời gian bắt đầu</span>,
       name: "dateTimeStart",
       dataIndex: ["dateTimeStart"],
-      // render: (dataRow: number) => {
-      //   return <span>{dataRow?.toLocaleString()}đ</span>;
-      // },
+      render: (dataRow: number) => {
+        return (
+          <span>
+            {dataRow ? dayjs(dataRow).format("DD-MM-YYYY HH:MM") : null}
+          </span>
+        );
+      },
     },
     {
       label: <span>Thời gian kết thúc</span>,
       name: "dateTimeEnd",
       dataIndex: ["dateTimeEnd"],
-      // render: (dataRow: number) => {
-      //   return <span>{dataRow?.toLocaleString()}đ</span>;
-      // },
+      render: (dataRow: number) => {
+        return (
+          <span>
+            {dataRow ? dayjs(dataRow).format("DD-MM-YYYY HH:MM") : null}
+          </span>
+        );
+      },
     },
     {
       label: <span>Trạng thái</span>,

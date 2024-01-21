@@ -5,12 +5,12 @@ import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
-import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { Button, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { IconPlayerTrackNext } from "@tabler/icons-react";
+import ListPage from "@/app/components/layout/ListPage";
 
 export default function ProductsManaga() {
   const searchParams = useSearchParams();
@@ -145,11 +145,6 @@ export default function ProductsManaga() {
           />
         }
       />
-      {/* <ProductListPage
-        productsGara={products}
-        setPage={setPage}
-        activePage={page}
-      /> */}
       <FooterAdmin />
     </div>
   );
