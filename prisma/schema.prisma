@@ -8,6 +8,7 @@ datasource db {
 }
 model Garage {
   id                  Int @id @default(autoincrement())
+  routeId             Int?
   code                String
   name                String
   shortName           String?
@@ -28,6 +29,9 @@ model Garage {
   carStyle            CarStyle[]
   customerGroups      CustomerGroup[]
   suppilers           Suppiler[]
+  financeCards      FinanceCard[]
+  MarketingCampaigns MarketingCampaign[]
+  marketingCampaignDetails MarketingCampaignDetail[]
 }
 model ProductCategory {
   id          Int   @id @default(autoincrement())
@@ -244,6 +248,52 @@ model CarStyle {
   garageId            Int @default(1)
   cars                Car[]
   status              STATUS @default(PUBLIC)
+}
+
+model MarketingCampaign {
+  id              Int @id @default(autoincrement())
+  title           String
+  dateTimeStart   DateTime @default(now())
+  dateTimeEnd     DateTime @default(now())
+  garage          Garage @relation(fields: [garageId], references: [id])
+  garageId        Int @default(1)
+  createdBy       Int @default(1)
+  status          STATUS @default(PUBLIC)
+  detail          MarketingCampaignDetail?
+}
+
+model MarketingCampaignDetail {
+  marketingCampaign   MarketingCampaign @relation(fields: [marketingCampaignId], references: [id])
+  marketingCampaignId Int  @unique // relation scalar field (used in the `@relation` attribute above)
+  productId           Int
+  note                String?
+  price               Int
+  priceSale           Int
+  saleType            SALETYPE @default(FIXED)
+  quantity            Float
+  subTotal            Int
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+  createdBy           Int @default(1)
+  @@id([marketingCampaignId,productId])
+}
+
+model FinanceCard {
+  id              Int @id @default(autoincrement())
+  title           String
+  bankName        String
+  bankBrand       String?
+  bankNumber      String
+  bankFullName    String
+  garage          Garage @relation(fields: [garageId], references: [id])
+  garageId        Int @default(1)
+  createdBy       Int @default(1)
+  status          STATUS @default(PUBLIC)
+}
+
+enum SALETYPE {
+  FIXED
+  PERCENT
 }
 
 enum SEX {
