@@ -1,27 +1,65 @@
 import prisma from "../prismadb";
-import { createMarketingCampaignDetail } from "./marketingCampaignDetail";
-
 export async function getMarketingCampaign(garage: Number,requestData: any) {
+
+    let titleFilter = '';
+    const searchText = requestData.s;
+    if (searchText) {
+        titleFilter = searchText;
+    }
     let garageId = {};
     if (garage) {
         garageId = Number(garage);
     }
-    const marketingCampaignTotal = await prisma.marketingCampaign.findMany({
-        where: {
-            AND: [
-                {
-                    status: {
-                        not: 'DELETE',
+    let currentPage = 1;
+    let take = 10;
+    let limit = Number(requestData.limit);
+    let page = requestData.page;
+
+    if (page) {
+        currentPage = Number(page);
+    }
+    if (limit) {
+        take = Number(limit);
+    } else {
+        limit = 10;
+    }
+    const skip = take * (currentPage - 1);
+    
+
+    const [data,total] = await prisma.$transaction([
+        prisma.marketingCampaign.findMany({
+            take: take,
+            skip: skip,
+            orderBy: {
+                id: 'desc',
+            },
+            where: {
+                AND: [
+                    {
+                        title: {
+                            contains: titleFilter
+                        },
+                        status: {
+                            not: 'DELETE',
+                        },
+                        garageId,
                     },
-                    garageId,
-                },
-            ],
-        },
-        include: {
-            detail: true
-        }
-    });
-    return {data:marketingCampaignTotal};
+                ],
+            },
+            include: {
+                detail: true
+            }
+        }),
+        prisma.marketingCampaign.count()
+    ]);
+    return {
+        data: data,
+        total: total,
+        currentPage: currentPage,
+        limit: limit,
+        totalPage: Math.ceil(total / limit),
+        status: 200
+    };
 }
 
 export async function findMarketingCampaign(id: Number) {

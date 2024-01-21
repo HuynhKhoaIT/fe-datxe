@@ -9,11 +9,17 @@ export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
         const { searchParams } = new URL(request.url);
-        const requestData = {};
         let garageId = 0;
         if (searchParams.get('garage')) {
             garageId = Number(searchParams.get('garage'));
         }
+
+        const requestData = {
+            s: searchParams.get('s'),
+            limit: searchParams.get('limit'),
+            page: searchParams.get('page'),
+        };
+
         const marketingCampaign = await getMarketingCampaign(garageId, requestData);
         return NextResponse.json(marketingCampaign);
     } catch (error: any) {
