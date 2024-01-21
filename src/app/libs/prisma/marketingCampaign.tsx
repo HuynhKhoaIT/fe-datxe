@@ -6,7 +6,7 @@ export async function getMarketingCampaign(garage: Number,requestData: any) {
     if (garage) {
         garageId = Number(garage);
     }
-    const marketingCampaign = await prisma.marketingCampaign.findMany({
+    const marketingCampaignTotal = await prisma.marketingCampaign.findMany({
         where: {
             AND: [
                 {
@@ -21,7 +21,7 @@ export async function getMarketingCampaign(garage: Number,requestData: any) {
             detail: true
         }
     });
-    return {marketingCampaign};
+    return {data:marketingCampaignTotal,total:222};
 }
 
 export async function findMarketingCampaign(id: Number) {

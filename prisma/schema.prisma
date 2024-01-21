@@ -32,6 +32,7 @@ model Garage {
   financeCards      FinanceCard[]
   MarketingCampaigns MarketingCampaign[]
   marketingCampaignDetails MarketingCampaignDetail[]
+  orderDetails OrderDetail[]
 }
 model ProductCategory {
   id          Int   @id @default(autoincrement())
@@ -74,6 +75,8 @@ model Product {
   garageId        Int                    @default(1)
   createdAt       DateTime               @default(now())
   updatedAt       DateTime               @updatedAt
+  marketingCampaignDetail MarketingCampaignDetail?
+  orderDetail     OrderDetail?
 }
 
 model CategoriesOnProducts {
@@ -139,6 +142,7 @@ model Order{
   createdById       Int @default(0)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt  
+  orderDetail       OrderDetail?
 }
 model OrderCategory{
   id              Int @id @default(autoincrement())
@@ -148,6 +152,26 @@ model OrderCategory{
   garageId        Int @default(1)
   status              STATUS @default(PUBLIC)
 }
+
+model OrderDetail {
+  order               Order @relation(fields: [orderId], references: [id])
+  orderId             Int  @unique // relation scalar field (used in the `@relation` attribute above)
+  product             Product @relation(fields: [productId],references: [id])
+  productId           Int @unique
+  note                String?
+  price               Int
+  priceSale           Int
+  saleType            SALETYPE @default(FIXED)
+  quantity            Float
+  subTotal            Int
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+  createdBy           Int @default(1)
+  status          STATUS @default(PUBLIC)
+  @@id([orderId,productId])
+}
+
+
 model ServiceAdvisor{
   id                      Int @id @default(autoincrement())
   fullName                String
@@ -265,7 +289,8 @@ model MarketingCampaign {
 model MarketingCampaignDetail {
   marketingCampaign   MarketingCampaign @relation(fields: [marketingCampaignId], references: [id])
   marketingCampaignId Int  @unique // relation scalar field (used in the `@relation` attribute above)
-  productId           Int
+  product             Product @relation(fields: [productId],references: [id])
+  productId           Int @unique
   note                String?
   price               Int
   priceSale           Int
@@ -275,6 +300,7 @@ model MarketingCampaignDetail {
   garage              Garage @relation(fields: [garageId], references: [id])
   garageId            Int @default(1)
   createdBy           Int @default(1)
+  status              STATUS @default(PUBLIC)
   @@id([marketingCampaignId,productId])
 }
 

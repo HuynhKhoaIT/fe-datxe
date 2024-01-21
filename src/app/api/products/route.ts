@@ -16,14 +16,16 @@ export async function GET(request: Request) {
         }
         let currentPage = 1;
         let take = 10;
-        let limit = searchParams.get('limit');
+        let limit = Number(searchParams.get('limit'));
         let page = searchParams.get('page');
 
         if (page) {
             currentPage = parseInt(page);
         }
         if (limit) {
-            take = parseInt(limit);
+            take = Number(limit);
+        } else {
+            limit = 10;
         }
         const skip = take * (currentPage - 1);
         let statusFilter = 'PUBLIC';
@@ -64,35 +66,47 @@ export async function GET(request: Request) {
         }
 
         if (1) {
-            const products = await prisma.product.findMany({
-                take: take,
-                skip: skip,
-                orderBy: {
-                    id: 'desc',
-                },
-                where: {
-                    AND: [
-                        {
-                            categories,
-                            name: {
-                                contains: titleFilter!,
+            const [products, total] = await prisma.$transaction([
+                prisma.product.findMany({
+                    take: take,
+                    skip: skip,
+                    orderBy: {
+                        id: 'desc',
+                    },
+                    where: {
+                        AND: [
+                            {
+                                categories,
+                                name: {
+                                    contains: titleFilter!,
+                                },
+                                brands,
+                                status: {
+                                    not: 'DELETE',
+                                },
+                                garageId,
+                                isProduct,
                             },
-                            brands,
-                            status: {
-                                not: 'DELETE',
-                            },
-                            garageId,
-                            isProduct,
-                        },
-                    ],
-                },
-                include: {
-                    categories: true,
-                    garage: true,
-                },
-            });
+                        ],
+                    },
+                    include: {
+                        categories: true,
+                        garage: true,
+                    },
+                }),
+                prisma.product.count(),
+            ]);
 
-            return NextResponse.json(products);
+            const totalPage = Math.ceil(total / limit);
+
+            return NextResponse.json({
+                data: products,
+                total: total,
+                currentPage: currentPage,
+                limit: limit,
+                totalPage: totalPage,
+                status: 200,
+            });
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {
