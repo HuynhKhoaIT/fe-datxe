@@ -1,3 +1,4 @@
+import { STATUS } from "@prisma/client";
 import prisma from "../prismadb";
 export async function getMarketingCampaign(garage: Number,requestData: any) {
 
@@ -73,6 +74,7 @@ export async function findMarketingCampaign(id: Number) {
                     productId:true,
                     note: true,
                     priceSale: true,
+                    saleValue: true,
                     price: true,
                     saleType: true,
                     quantity: true,
@@ -99,9 +101,9 @@ export async function createMarketingCampaign(json: any) {
                     productId: Number(data.productId),
                     note: data.note,
                     price: Number(data.price),
-                    priceSale: Number(data.priceSale),
+                    priceSale: Number(data.priceSale ?? 0),
                     saleType: data.saleType,
-                    saleValue: data.saleValue.toString(),
+                    saleValue: Number(data.saleValue).toString(),
                     quantity: Number(data.quantity),
                     garageId: Number(json.garageId),
                     createdBy: Number(json.createdBy),
@@ -131,6 +133,7 @@ export async function createMarketingCampaign(json: any) {
                         priceSale: true,
                         price: true,
                         saleType: true,
+                        saleValue: true,
                         quantity: true,
                         product: {
                             select:{
@@ -159,7 +162,7 @@ export async function editMarketingCampaign(id: Number,json: any) {
                     productId: data.productId,
                     note: data.note,
                     price: Number(data.price),
-                    priceSale: Number(data.priceSale),
+                    priceSale: Number(data.priceSale ?? 0),
                     saleType: data.saleType,
                     saleValue: data.saleValue.toString(),
                     quantity: Number(data.quantity),
@@ -196,6 +199,7 @@ export async function editMarketingCampaign(id: Number,json: any) {
                         priceSale: true,
                         price: true,
                         saleType: true,
+                        saleValue: true,
                         quantity: true,
                         product: {
                             select:{
@@ -213,4 +217,49 @@ export async function editMarketingCampaign(id: Number,json: any) {
     } catch (error) {
         return { error };
     }
+}
+
+export async function updateMarketingCampaignStatus(id:Number,status:STATUS){
+    const m = await prisma.marketingCampaign.findFirst({
+        where: {
+            id: Number(id)
+        },
+        include:{
+            detail: true
+        }
+    });
+    let detail: any = [];
+    if(m?.detail){        
+        m.detail.forEach(function (data: any) {
+            detail.push({
+                productId: data.productId,
+                note: data.note,
+                price: Number(data.price),
+                priceSale: Number(data.priceSale ?? 0),
+                saleType: data.saleType,
+                saleValue: data.saleValue.toString(),
+                quantity: Number(data.quantity),
+                garageId: Number(data.garageId),
+                createdBy: data.createdBy,
+                status: status
+            });
+        });
+    }
+    const rs = await prisma.marketingCampaign.update({
+            where:{
+                id: Number(id)
+            },
+            data: {
+                status: status,
+                detail:{
+                    deleteMany: {},
+                    createMany: {
+                        data: detail
+                    }
+                }
+            }
+        }
+    );
+    
+    return rs;
 }

@@ -143,7 +143,7 @@ model Order{
   createdById       Int @default(0)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt  
-  orderDetails       OrderDetail[]
+  orderDetails      OrderDetail[]
 }
 model OrderCategory{
   id              Int @id @default(autoincrement())
@@ -156,7 +156,7 @@ model OrderCategory{
 
 model OrderDetail {
   order               Order @relation(fields: [orderId], references: [id])
-  orderId             Int  @unique // relation scalar field (used in the `@relation` attribute above)
+  orderId             Int  // relation scalar field (used in the `@relation` attribute above)
   product             Product @relation(fields: [productId],references: [id])
   productId           Int
   note                String?

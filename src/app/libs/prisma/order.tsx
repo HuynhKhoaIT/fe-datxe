@@ -86,9 +86,8 @@ export async function findOrders(id: Number,request: NextRequest){
 }
 export async function createOrder(json: any) {
     try {
-        
-        let customerId = 0;
-        let carId = 0;
+        let customerId = 1;
+        let carId = 1;
         if ((!json.customerId || json.customerId == 0) && json.phoneNumber) {
             
             // check and create customer
@@ -139,16 +138,16 @@ export async function createOrder(json: any) {
         if(json.detail){
             json.detail.forEach(function (data: any) {
                 orderDetails.push({
-                    productId: data.productId,
+                    productId: Number(data.productId),
                     note: data.note,
-                    price: Number(data.price),
-                    priceSale: Number(data.priceSale),
+                    price: Number(data.price ?? 0),
+                    priceSale: Number(data.priceSale ?? 0),
                     saleType: data.saleType,
                     saleValue: data.saleValue.toString(),
-                    quantity: Number(data.quantity),
-                    subTotal: Number(data.subTotal),
-                    garageId: Number(json.garageId),
-                    createdBy: json.createdBy,
+                    quantity: Number(data.quantity ?? 1),
+                    subTotal: Number(data.subTotal ?? 0),
+                    garageId: Number(json.garageId ?? 1),
+                    createdBy: Number(json.createdBy ?? 1),
                 });
             });
         }
@@ -197,6 +196,170 @@ export async function createOrder(json: any) {
     } catch (error) {
         return { error };
     }
+}
+
+export async function updateOrder(id: Number,json: any) {
+    try {
+        let customerId = 1;
+        let carId = 1;
+        if ((!json.customerId || json.customerId == 0) && json.phoneNumber) {            
+            // check and create customer
+            // check customer via phone number
+            let phoneNumber = json.phoneNumber;
+            if (phoneNumber) {
+                const customerFind = await prisma.customer.findFirst({
+                    where: { phoneNumber: phoneNumber },
+                });
+                if (customerFind) {
+                    customerId = customerFind.id;
+                } else {
+                    
+                    let cusNew = await createCustomer(json);
+                    if (cusNew) {
+                        customerId = cusNew.customer?.id ?? 0;
+                    }
+                }
+            }
+            // end check customer
+        }else{
+            customerId = json.customerId;
+        }
+        if (!json.carId) {
+            // begin check isset car
+            let numberPlates = json.numberPlates;
+            if (numberPlates) {
+                const carFind = await prisma.car.findFirst({
+                    where: { numberPlates: numberPlates },
+                });
+                if (carFind) {
+                    carId = carFind.id;
+                } else {
+                    let jsonCar = json;
+                    jsonCar.customerId = customerId;
+                    let carNew = await createCar(jsonCar);
+                    if (carNew) {
+                        carId = carNew?.car?.id ?? 0;
+                    }
+                }
+            }            
+            // end check car
+        }else{
+            carId = json.carId;
+        }
+        let orderDetails: any = [];
+        if(json.detail){
+            json.detail.forEach(function (data: any) {
+                orderDetails.push({
+                    productId: Number(data.productId),
+                    note: data.note,
+                    price: Number(data.price ?? 0),
+                    priceSale: Number(data.priceSale ?? 0),
+                    saleType: data.saleType,
+                    saleValue: data.saleValue.toString(),
+                    quantity: Number(data.quantity ?? 1),
+                    subTotal: Number(data.subTotal ?? 0),
+                    garageId: Number(json.garageId ?? 1),
+                    createdBy: Number(json.createdBy ?? 1),
+                });
+            });
+        }
+        
+        const order = await prisma.order.update(
+            {
+                where:{
+                    id: Number(id)
+                },
+            data: {
+                code: (await codeGeneration(json.garageId)).toString(),
+                customer: {
+                    connect:{
+                        id: Number(customerId)
+                    }
+                },
+                car: {
+                    connect:{
+                        id: Number(carId)
+                    }
+                },
+                dateTime: json.dateTime,
+                customerRequest: json.customerRequest,
+                customerNote: json.customerNote,
+                note: json.note,
+                priorityLevel: Number(json.priorityLevel),
+                orderCategory: {
+                    connect: {
+                        id: Number(json.orderCategoryId)
+                    }
+                },
+                brandId: Number(json.carBrandId),
+                modelId: Number(json.carNameId),
+                yearId: Number(json.carYearId),
+                garage: {
+                    connect: {
+                        id: Number(json.garageId)
+                    }
+                },
+                serviceAdvisor: {
+                    connect: {
+                        id: Number(json.serviceAdvisorId)
+                    }
+                },
+                orderDetails: {
+                    deleteMany: {},
+                    createMany : {
+                        data:orderDetails
+                    }
+                }
+            },
+            include: {
+                serviceAdvisor: true,
+                car: true,
+                customer: true,
+                orderDetails: {
+                    select: {
+                        productId: true,
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    }
+                }
+            },
+        });
+        return {order};
+    } catch (error) {
+        return { error };
+    }
+}
+export async function updateOrderStatus(id:Number,status:string){
+    const order = await prisma.order.update(
+        {
+            where:{
+                id: Number(id)
+            },
+            data: {
+                status: status
+            }
+        }
+    );
+    return order;
+}
+export async function updateOrderStep(id:Number,step:any){
+    const order = await prisma.order.update(
+        {
+            where:{
+                id: Number(id)
+            },
+            data: {
+                step: Number(step)
+            }
+        }
+    );
+    return order;
 }
 export async function codeGeneration(garageId: Number){
     let num = '1';
