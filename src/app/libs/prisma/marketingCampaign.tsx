@@ -1,3 +1,4 @@
+import { STATUS } from "@prisma/client";
 import prisma from "../prismadb";
 export async function getMarketingCampaign(garage: Number,requestData: any) {
 
@@ -213,4 +214,49 @@ export async function editMarketingCampaign(id: Number,json: any) {
     } catch (error) {
         return { error };
     }
+}
+
+export async function updateMarketingCampaignStatus(id:Number,status:STATUS){
+    const m = await prisma.marketingCampaign.findFirst({
+        where: {
+            id: Number(id)
+        },
+        include:{
+            detail: true
+        }
+    });
+    let detail: any = [];
+    if(m?.detail){        
+        m.detail.forEach(function (data: any) {
+            detail.push({
+                productId: data.productId,
+                note: data.note,
+                price: Number(data.price),
+                priceSale: Number(data.priceSale ?? 0),
+                saleType: data.saleType,
+                saleValue: data.saleValue.toString(),
+                quantity: Number(data.quantity),
+                garageId: Number(data.garageId),
+                createdBy: data.createdBy,
+                status: status
+            });
+        });
+    }
+    const rs = await prisma.marketingCampaign.update({
+            where:{
+                id: Number(id)
+            },
+            data: {
+                status: status,
+                detail:{
+                    deleteMany: {},
+                    createMany: {
+                        data: detail
+                    }
+                }
+            }
+        }
+    );
+    
+    return rs;
 }

@@ -335,7 +335,32 @@ export async function updateOrder(id: Number,json: any) {
         return { error };
     }
 }
-
+export async function updateOrderStatus(id:Number,status:string){
+    const order = await prisma.order.update(
+        {
+            where:{
+                id: Number(id)
+            },
+            data: {
+                status: status
+            }
+        }
+    );
+    return order;
+}
+export async function updateOrderStep(id:Number,step:any){
+    const order = await prisma.order.update(
+        {
+            where:{
+                id: Number(id)
+            },
+            data: {
+                step: Number(step)
+            }
+        }
+    );
+    return order;
+}
 export async function codeGeneration(garageId: Number){
     let num = '1';
     const order = await prisma.order.findFirst({
