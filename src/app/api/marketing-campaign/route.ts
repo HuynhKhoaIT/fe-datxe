@@ -30,6 +30,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
+
         const marketingCampaign = await createMarketingCampaign(json);
         return new NextResponse(JSON.stringify(marketingCampaign), {
             status: 201,
