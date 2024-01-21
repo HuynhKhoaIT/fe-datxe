@@ -74,7 +74,6 @@ export async function findMarketingCampaign(id: Number) {
                     note: true,
                     priceSale: true,
                     price: true,
-                    subTotal: true,
                     saleType: true,
                     quantity: true,
                     product: {
@@ -131,7 +130,6 @@ export async function createMarketingCampaign(json: any) {
                         note: true,
                         priceSale: true,
                         price: true,
-                        subTotal: true,
                         saleType: true,
                         quantity: true,
                         product: {
@@ -199,7 +197,6 @@ export async function editMarketingCampaign(id: Number,json: any) {
                         note: true,
                         priceSale: true,
                         price: true,
-                        subTotal: true,
                         saleType: true,
                         quantity: true,
                         product: {
