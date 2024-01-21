@@ -5,6 +5,7 @@ import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
+        const now = new Date();
         const id = params.id;
 
         if (!id) {
@@ -19,7 +20,24 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                 include: {
                     categories: true,
                     garage: true,
-                    marketingCampaignDetail: true,
+                    marketingCampaignDetail: {
+                        take: 1,
+                        where: {
+                            marketingCampaign: {
+                                AND: [
+                                    {
+                                        status: 'PUBLIC',
+                                        dateTimeStart: {
+                                            gte: new Date(),
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                        include: {
+                            marketingCampaign: true,
+                        },
+                    },
                 },
             });
             return NextResponse.json(products);
