@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { findOrders } from '@/app/libs/prisma/order';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -12,17 +13,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
         }
         const session = await getServerSession(authOptions);
         if (1) {
-            const orders = await prisma.order.findUnique({
-                where: {
-                    id: parseInt(id.toString()),
-                },
-                include: {
-                    serviceAdvisor: true,
-                    car: true,
-                    customer: true,
-                },
-            });
-            return NextResponse.json(orders);
+            const order = await findOrders(id, request);
+            return NextResponse.json(order);
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {

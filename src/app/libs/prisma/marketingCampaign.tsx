@@ -21,7 +21,7 @@ export async function getMarketingCampaign(garage: Number,requestData: any) {
             detail: true
         }
     });
-    return {data:marketingCampaignTotal,total:222};
+    return {data:marketingCampaignTotal};
 }
 
 export async function findMarketingCampaign(id: Number) {
@@ -30,14 +30,48 @@ export async function findMarketingCampaign(id: Number) {
             id: Number(id),
         },
         include: {
-            detail: true,
-        },
+            detail: {
+                select: {
+                    productId:true,
+                    note: true,
+                    priceSale: true,
+                    price: true,
+                    subTotal: true,
+                    saleType: true,
+                    quantity: true,
+                    product: {
+                        select:{
+                            name: true,
+                            sku: true,
+                            images:true
+                        }
+                    }
+                },
+            }
+        }
     });
     return marketingCampaign;
 }
 
 export async function createMarketingCampaign(json: any) {
     try {
+        let detail: any = [];
+        if(json.detail){
+            json.detail.forEach(function (data: any) {
+                detail.push({
+                    productId: data.productId,
+                    note: data.note,
+                    price: Number(data.price),
+                    priceSale: Number(data.priceSale),
+                    saleType: data.saleType,
+                    saleValue: data.saleValue,
+                    quantity: Number(data.quantity),
+                    subTotal: Number(data.subTotal),
+                    garageId: Number(json.garageId),
+                    createdBy: json.createdBy,
+                });
+            });
+        }
         const marketingCampaign = await prisma.marketingCampaign.create({
             data: {                
                 title: json.title,
@@ -46,40 +80,60 @@ export async function createMarketingCampaign(json: any) {
                 garageId: json.garageId,
                 createdBy: json.createdBy,
                 status: json.status,
-            },include: {
-                detail: true
+                detail: {
+                    createMany : {
+                        data:detail
+                    }
+                }
+            },
+            include: {
+                detail: {
+                    select: {
+                        productId:true,
+                        note: true,
+                        priceSale: true,
+                        price: true,
+                        subTotal: true,
+                        saleType: true,
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    },
+                }
             }
-        });
-        if(marketingCampaign){
-            const marketingCampaignDetail = json.detail;
-            if (marketingCampaignDetail) {
-                marketingCampaignDetail.forEach(async function (d: any) {
-                    await createMarketingCampaignDetail(marketingCampaign.id,d);
-                });
-            }
-        }
-        
-        return {marketingCampaign};
+        });        
+        return marketingCampaign;
     } catch (error) {
-        return 'a11';
         return { error };
     }
 }
 
 export async function editMarketingCampaign(id: Number,json: any) {
     try {
-        
-        const deleteDetail = await prisma.marketingCampaignDetail.delete({
-            where: {
-                marketingCampaignId: Number(id),
-            },
-        })
-        const marketingCampaignDetail = json.detail;
-        if (marketingCampaignDetail) {
-            marketingCampaignDetail.forEach(async function (d: any) {
-                await createMarketingCampaignDetail(id,d);
+
+        let detail: any = [];
+        if(json.detail){
+            json.detail.forEach(function (data: any) {
+                detail.push({
+                    productId: data.productId,
+                    note: data.note,
+                    price: Number(data.price),
+                    priceSale: Number(data.priceSale),
+                    saleType: data.saleType,
+                    saleValue: data.saleValue,
+                    quantity: Number(data.quantity),
+                    subTotal: Number(data.subTotal),
+                    garageId: Number(json.garageId),
+                    createdBy: json.createdBy,
+                });
             });
         }
+
         const updatedPost = await prisma.marketingCampaign.update({
             where: {
                 id: Number(id),
@@ -91,13 +145,38 @@ export async function editMarketingCampaign(id: Number,json: any) {
                 garageId: json.garageId,
                 createdBy: json.createdBy,
                 status: json.status,
+                detail: {
+                    deleteMany: {
+                        
+                    },
+                    createMany : {
+                        data:detail
+                    }
+                }
             },
             include: {
-                detail: true
+                detail: {
+                    select: {
+                        productId:true,
+                        note: true,
+                        priceSale: true,
+                        price: true,
+                        subTotal: true,
+                        saleType: true,
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    },
+                }
             }
         });
-        const rs = await prisma.marketingCampaign.findFirst({where:{id:Number(id)},include:{detail:true}})
-        return rs;
+        
+        return updatedPost;
     } catch (error) {
         return { error };
     }
