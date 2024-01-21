@@ -144,7 +144,7 @@ export async function createOrder(json: any) {
                     price: Number(data.price),
                     priceSale: Number(data.priceSale),
                     saleType: data.saleType,
-                    saleValue: data.saleValue,
+                    saleValue: data.saleValue.toString(),
                     quantity: Number(data.quantity),
                     subTotal: Number(data.subTotal),
                     garageId: Number(json.garageId),
