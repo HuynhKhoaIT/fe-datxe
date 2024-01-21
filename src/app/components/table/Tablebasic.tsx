@@ -14,8 +14,6 @@ export default function TableBasic({
   selectedRows,
   setSelectedRows,
 }: any) {
-  console.log("data", data);
-
   return (
     <>
       <Table>

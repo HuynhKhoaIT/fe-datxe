@@ -31,10 +31,10 @@ const DynamicModalChooseProducts = dynamic(
 export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
   const router = useRouter();
   const [selectedRows, setSelectedRows] = useState<any>(
-    dataDetail ? dataDetail?.detail : []
+    dataDetail
+      ? dataDetail?.detail.map((item: any) => ({ ...item, id: item.productId }))
+      : []
   );
-  console.log(selectedRows);
-
   const [loading, handlers] = useDisclosure();
   const [
     openModalChoose,
@@ -46,25 +46,26 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         name: detail.name,
         price: detail.price,
         productId: detail.id,
-        quantity: null,
-        priceSale: null,
+        quantity: 1,
+        priceSale: detail.price,
         subTotal: 1,
         status: "PUBLIC",
         saleType: "FIXED",
-        salevalue: 0,
+        saleValue: 0,
       }));
       form.setFieldValue("detail", updatedProducts);
     } else {
+      console.log(selectedRows);
       let updatedProducts = selectedRows.map((detail: any) => ({
-        name: detail.product.name,
+        name: detail?.product?.name || detail?.name,
         price: detail.price,
-        productId: detail.productId,
-        quantity: detail.quantity,
-        priceSale: detail.priceSale,
+        productId: detail.productId !== 0 ? detail.productId : detail.id,
+        quantity: detail?.quantity,
+        priceSale: detail?.priceSale,
         subTotal: detail.subTotal,
         status: detail?.status,
-        saleType: detail?.saleType,
-        salevalue: detail?.salevalue,
+        saleType: detail?.saleType || "FIXED",
+        saleValue: detail?.saleValue,
       }));
       form.setFieldValue("detail", updatedProducts);
     }
@@ -108,7 +109,6 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
 
   const rows = form.values.detail.map((selectedRow: any, index: number) => {
     // const images = JSON.parse(selectedRow.images);
-    console.log(selectedRow);
     return (
       <Table.Tr key={selectedRow.id}>
         {/* <Table.Td>
@@ -128,9 +128,17 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
           {selectedRow.name || selectedRow?.product?.name || ""}
         </Table.Td>
         <Table.Td>{selectedRow.price.toLocaleString()}đ</Table.Td>
+        <Table.Td>
+          {form.values.detail[index].salePrice
+            ? Number(form.values.detail[index].salePrice).toLocaleString()
+            : form.values.detail[index].salePrice == 0
+            ? 0
+            : selectedRow.price.toLocaleString()}
+          đ
+        </Table.Td>
         <Table.Td style={{ width: "350px" }}>
           <Grid>
-            <Grid.Col span={4}>
+            <Grid.Col span={5}>
               <Select
                 {...form.getInputProps(`detail.${index}.saleType`)}
                 data={[
@@ -139,22 +147,34 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                 ]}
               />
             </Grid.Col>
-            <Grid.Col span={8}>
+            <Grid.Col span={7}>
               {selectedRow.saleType === "FIXED" ? (
                 <NumberInput
-                  {...form.getInputProps(`detail.${index}.priceSale`)}
-                  // label="Giá sale"
+                  {...form.getInputProps(`detail.${index}.saleValue`)}
                   min={0}
                   placeholder="Giá sale"
                   thousandSeparator=","
+                  onChange={(value) => {
+                    form.setFieldValue(
+                      `detail.${index}.salePrice`,
+                      form.values.detail[index].price - Number(value)
+                    );
+                  }}
                 />
               ) : (
                 <NumberInput
-                  {...form.getInputProps(`detail.${index}.salevalue`)}
+                  {...form.getInputProps(`detail.${index}.saleValue`)}
                   placeholder="Phầm trăm sale"
                   suffix="%"
                   min={0}
                   max={100}
+                  onChange={(value) => {
+                    form.setFieldValue(
+                      `detail.${index}.salePrice`,
+                      form.values.detail[index].price -
+                        (form.values.detail[index].price * Number(value)) / 100
+                    );
+                  }}
                 />
               )}
             </Grid.Col>
@@ -168,7 +188,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             thousandSeparator=","
           />
         </Table.Td>
-        <Table.Td>
+        <Table.Td style={{ width: "120px", textAlign: "center" }}>
           <>
             <Tooltip label="Xoá" withArrow position="bottom">
               <Button
@@ -180,8 +200,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                   setSelectedRows(
                     selectedRows.filter(
                       (selectedItem: any) =>
-                        selectedItem?.productId !== selectedRow.productId ||
-                        selectedItem?.id !== selectedRow.productId
+                        selectedItem.id !== selectedRow.id &&
+                        selectedItem.id !== selectedRow.productId
                     )
                   );
                 }}
@@ -197,6 +217,9 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
 
   const handleSubmit = async (values: any) => {
     handlers.open();
+    values.garageId = 1;
+    values.createdBy = 1;
+
     try {
       const url = isEditing
         ? `/api/marketing-campaign/${dataDetail?.id}`
@@ -211,6 +234,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
       router.push("/admin/marketing-campaign");
     }
   };
+
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -274,13 +298,14 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                 <Table>
                   <Table.Thead>
                     <Table.Tr>
-                      {/* <Table.Th>Hình ảnh</Table.Th> */}
                       <Table.Th>Tên sản phẩm</Table.Th>
                       <Table.Th>Giá gốc</Table.Th>
+                      <Table.Th>Giá sau giảm</Table.Th>
                       <Table.Th>Giá sale</Table.Th>
                       <Table.Th>Số lượng khuyến mãi</Table.Th>
-                      {/* <Table.Th>Loại</Table.Th> */}
-                      <Table.Th>hành động</Table.Th>
+                      <Table.Th style={{ width: "120px", textAlign: "center" }}>
+                        hành động
+                      </Table.Th>
                     </Table.Tr>
                   </Table.Thead>
                   <Table.Tbody>{rows}</Table.Tbody>
