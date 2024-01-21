@@ -2,7 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { findOrders } from '@/app/libs/prisma/order';
+import { findOrders, updateOrder } from '@/app/libs/prisma/order';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -38,33 +38,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 createdBy = Number(session.user.id);
                 garageId = Number(session.user.garageId);
             }
-            let orderUpdateData = {
-                customerId: parseInt(json.customerId),
-                carId: parseInt(json.carId),
-                dateTime: json.dateTime,
-                customerRequest: json.customerRequest,
-                customerNote: json.customerNote,
-                note: json.note,
-                step: Number(json.step),
-                priorityLevel: parseInt(json.priorityLevel),
-                orderCategoryId: Number(json.orderCategoryId),
-                brandId: parseInt(json.brandId),
-                modelId: parseInt(json.modelId),
-                yearId: parseInt(json.yearId),
-                garageId: parseInt(json.garageId),
-                serviceAdvisorId: parseInt(json.serviceAdvisorId),
-            };
-            const updatedOrder = await prisma.order.update({
-                where: {
-                    id: Number(id),
-                },
-                data: orderUpdateData,
-                include: {
-                    serviceAdvisor: true,
-                    car: true,
-                    customer: true,
-                },
-            });
+            const updatedOrder = await updateOrder(id, json);
 
             return new NextResponse(JSON.stringify(updatedOrder), {
                 status: 201,
