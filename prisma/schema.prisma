@@ -166,6 +166,7 @@ model OrderDetail {
   saleValue           String @default("0")
   quantity            Float
   subTotal            Int
+  total               Int @default(0)
   garage              Garage @relation(fields: [garageId], references: [id])
   garageId            Int @default(1)
   createdBy           Int @default(1)
@@ -298,7 +299,6 @@ model MarketingCampaignDetail {
   saleType            SALETYPE @default(FIXED)
   saleValue           String @default("0")
   quantity            Float
-  subTotal            Int
   garage              Garage @relation(fields: [garageId], references: [id])
   garageId            Int @default(1)
   createdBy           Int @default(1)
