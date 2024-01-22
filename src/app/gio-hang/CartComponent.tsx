@@ -1,62 +1,29 @@
 "use client";
-import React, { FormEvent, Suspense, useEffect, useRef, useState } from "react";
-import { checkOutCart } from "@/utils/order";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import {
-  Grid,
-  Modal,
-  TextInput,
-  Box,
-  Select,
-  Button,
-  Group,
-  Table,
-  LoadingOverlay,
-  Card,
-  Avatar,
-} from "@mantine/core";
-import { ActionIcon, rem } from "@mantine/core";
+import { Grid, Modal, Button, Group } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import {
-  IconClock12,
-  IconTrash,
-  IconBan,
-  IconChevronRight,
-  IconMinus,
-  IconPlus,
-} from "@tabler/icons-react";
+import { IconBan, IconChevronRight } from "@tabler/icons-react";
 import InfoCustomer from "./InfoCustomer";
 import InfoCar from "./InfoCar";
 import InfoCart from "./InfoCart";
 import InfoDate from "./InfoDate";
 import { useDisclosure } from "@mantine/hooks";
-import { getCar } from "@/utils/car";
+import { useForm } from "@mantine/form";
+import { useRouter } from "next/navigation";
 
-export default function CartComponent({
-  carDefault,
-  carOptions,
-  carId: carIdDefault,
-}: any) {
-  // const [form] = Form.useForm();
-  const ref = useRef<HTMLInputElement>(null);
-  const { data: session } = useSession();
-  const token = session?.user?.token;
+export default function CartComponent() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(dayjs().format("HH:mm:ss"));
   const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [deleteRow, setDeleteRow] = useState<any>();
-  const [cartData, setCartData] = useState<
-    {
-      product: { id: number; name: string; price: number; thumbnail: string };
-      quantity: number;
-    }[]
-  >([]);
-  const [carId, setCarId] = useState<any>(carIdDefault);
+  const [cartData, setCartData] = useState<any>([]);
   const handleDeleteOk = () => {
     setIsModalDeleteOpen(false);
-    deleteItem(deleteRow?.product?.id);
+    deleteItem(deleteRow?.productId);
   };
   const handleDeleteCancel = () => {
     setIsModalDeleteOpen(false);
@@ -65,17 +32,10 @@ export default function CartComponent({
     setIsModalDeleteOpen(true);
     setDeleteRow(record);
   };
-  const transformedProducts = cartData?.map((item) => {
-    return {
-      id: item?.product?.id,
-      quantity: item?.quantity,
-      price: item?.product?.price,
-    };
-  });
 
-  const incrementQuantity = (productId: number) => {
-    const updateCartData = cartData.map((item) => {
-      if (item.product.id === productId) {
+  const incrementQuantity = (idProduct: number) => {
+    const updateCartData = cartData.map((item: any) => {
+      if (item.productId === idProduct) {
         item.quantity += 1;
       }
       return item;
@@ -84,11 +44,11 @@ export default function CartComponent({
     setCartData(updateCartData);
   };
   // giảm số lượng sản phẩm
-  const decrementQuantity = (productId: number) => {
-    const updateCartData = cartData.map((item) => {
+  const decrementQuantity = (idProduct: number) => {
+    const updateCartData = cartData.map((item: any) => {
       if (item.quantity === 1) {
-        deleteItem(productId);
-      } else if (item.product.id === productId && item.quantity > 1) {
+        deleteItem(idProduct);
+      } else if (item.productId === idProduct && item.quantity > 1) {
         item.quantity -= 1;
       }
 
@@ -101,15 +61,15 @@ export default function CartComponent({
   // Tính tổng tiền
   const calculateSubTotal = () => {
     let subTotal = 0;
-    cartData?.forEach((item) => {
-      subTotal += item.product.price * item.quantity;
+    cartData?.forEach((item: any) => {
+      subTotal += item.priceSale * item.quantity;
     });
     return subTotal;
   };
   // Xóa sản phẩm ra khỏi giỏ hàng
-  const deleteItem = (productId: number) => {
+  const deleteItem = (idProduct: any) => {
     const updatedCartData = cartData.filter(
-      (item) => item?.product?.id !== productId
+      (item: any) => item?.productId !== idProduct
     );
     localStorage.setItem("cartData", JSON.stringify(updatedCartData));
     setCartData(updatedCartData);
@@ -122,69 +82,104 @@ export default function CartComponent({
     }
   }, []);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const form = useForm({
+    initialValues: {
+      customerId: "1",
+      fullName: "",
+      phoneNumber: "",
+      address: "",
+      carId: "1",
+      carYearId: "",
+      carNameId: "",
+      carBrandId: "",
+      numberPlates: "",
+      detail: cartData,
+      subTotal: 0,
+    },
+    validate: {},
+  });
 
+  useEffect(() => {
+    form.setFieldValue("detail", cartData);
+  }, [cartData]);
+
+  const handleSubmit = async (values: any) => {
+    console.log(values);
     setLoading(true);
+    values.garageId = 1;
+    values.dateTime = new Date();
     try {
-      if (cartData.length == 0) {
+      const res = await fetch(`/api/orders`, {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      if (!data) {
         notifications.show({
-          title: "Error",
-          message: "Vui lòng thêm sản phẩm vào giỏ hàng",
+          title: "Thất bại",
+          message: "Đặt hàng thất bại",
         });
-        setLoading(false);
-        return;
+      } else {
+        notifications.show({
+          title: "Thành công",
+          message: "Đặt hàng thành công",
+        });
+        router.refresh();
+
+        // localStorage.setItem("cartData", JSON.stringify([]));
       }
-      const arrivalTime = date + " " + time;
-      await checkOutCart(carId, arrivalTime, transformedProducts, token ?? "");
-      localStorage.setItem("cartData", JSON.stringify([]));
-      const existingCartData = localStorage.getItem("cartData");
-      if (existingCartData) {
-        const parsedCartData = JSON.parse(existingCartData);
-        setCartData(parsedCartData);
-      }
-      notifications.show({
-        title: "Thành công",
-        message: "Đặt hàng thành công",
-      });
-      setLoading(false);
-      // router.push('/dashboard/order/' + checkOut.id);
     } catch (error) {
-      notifications.show({
-        title: "Thất bại",
-        message: "Đặt hàng thất bại! Vui lòng thử lại.",
-      });
+    } finally {
       setLoading(false);
     }
   };
+
   const [visible, handlers] = useDisclosure(false);
-  const selectCar = async (value: any) => {
-    handlers.open();
-    try {
-      const selectedCar = await getCar(token ?? "", value);
-      setCarSelect(selectedCar);
-      handlers.close();
-    } catch (error) {
-      console.error("Error selecting car:", error);
+  const [customer, setCustomer] = useState();
+  const [carOptions, setCarOptions] = useState<any>([]);
+  const [carDetail, setCarDetail] = useState<any>();
+
+  async function getCustomer() {
+    const res = await fetch(`/api/customer/1`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
     }
-  };
-  const [carSelect, setCarSelect] = useState<any>();
+    const dataOption = data?.cars?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.numberPlates,
+      otherData: {
+        carBrandId: item?.item,
+        carNameId: item?.carNameId,
+        carYearId: item?.carYearId,
+        numberPlates: item?.numberPlates,
+      },
+    }));
+    setCarOptions(dataOption);
+    setCarDetail(data?.cars[0]);
+    setCustomer(data);
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([getCustomer()]);
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className="shop-cart pt-60 pb-60">
           <div className="container">
             <Grid gutter={16}>
-              <InfoCustomer dataDetail={session?.user} />
+              <InfoCustomer dataDetail={customer} form={form} />
               <Suspense fallback={<p>loading...</p>}>
                 <InfoCar
-                  setCarId={setCarId}
-                  carDefault={carDefault}
-                  carOptions={carOptions}
-                  session={session}
                   visible={visible}
-                  carSelect={carSelect}
-                  selectCar={selectCar}
+                  form={form}
+                  carOptions={carOptions}
+                  carDetail={carDetail}
+                  setCarDetail={setCarDetail}
                 />
               </Suspense>
             </Grid>
@@ -198,6 +193,7 @@ export default function CartComponent({
               decrementQuantity={decrementQuantity}
               handleOpenModalDelete={handleOpenModalDelete}
               incrementQuantity={incrementQuantity}
+              form={form}
             />
           </Suspense>
         </div>

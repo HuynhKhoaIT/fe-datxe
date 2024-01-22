@@ -211,7 +211,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       return (
         <Table.Tr key={selectedRow.id}>
           <Table.Td>
-            {" "}
             {selectedRow.name || selectedRow?.product?.name || ""}
           </Table.Td>
           <Table.Td>{selectedRow.priceSale}đ</Table.Td>

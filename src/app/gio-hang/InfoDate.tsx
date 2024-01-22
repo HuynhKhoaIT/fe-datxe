@@ -1,25 +1,14 @@
 "use client";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { Grid, Modal, TextInput, Card, Avatar } from "@mantine/core";
-import { DateInput, TimeInput } from "@mantine/dates";
-import {
-  IconClock12,
-  IconTrash,
-  IconBan,
-  IconChevronRight,
-  IconMinus,
-  IconPlus,
-} from "@tabler/icons-react";
-import { ActionIcon, rem } from "@mantine/core";
+import React, { useRef } from "react";
+import { Grid, Card } from "@mantine/core";
+import { TimeInput } from "@mantine/dates";
+import { IconClock12 } from "@tabler/icons-react";
+import { ActionIcon } from "@mantine/core";
 import dayjs from "dayjs";
 import DateField from "../components/form/DateField";
 
 export default function InfoDate({ setDate, setTime }: any) {
   const ref = useRef<HTMLInputElement>(null);
-  function handleDateChange(date: any) {
-    const dateString = dayjs(date).format("YYYY-MM-DD");
-    setDate(dateString);
-  }
   function handleTimeChange(time: any) {
     setTime(time);
   }
