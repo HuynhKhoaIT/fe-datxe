@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .pagination {
+        display: flex;
+        height: 50px;
+        align-items: center;
+    }
+    .contents {
+        padding: 0 20px;
+        height: calc(100% - 90px);
+        margin-bottom: 20px;
+        .content {
+            background-color: var(--white-background);
+            height: 100%;
+            box-shadow: var(--box-shadow);
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+    }
+}

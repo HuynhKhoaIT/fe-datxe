@@ -11,6 +11,7 @@ import {
   Textarea,
   Image,
   Select,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
@@ -37,11 +38,24 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     },
     validate: {
       title: (value) => (value.length < 1 ? "Không được để trống" : null),
+      image: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
-    form.setInitialValues(dataDetail);
-    form.setValues(dataDetail);
+    handlers.open();
+
+    const fetchData = async () => {
+      try {
+        form.setInitialValues(dataDetail);
+        form.setValues(dataDetail);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        handlers.close();
+      }
+    };
+
+    if (isEditing) fetchData();
   }, [dataDetail]);
   const router = useRouter();
   function convertToSlug(str: string) {
@@ -96,98 +110,105 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Grid gutter={12}>
-        <Grid.Col span={12}>
-          <Card withBorder shadow="sm">
-            <Grid>
-              <Grid.Col span={12}>
-                <Text size={"16px"} c={"#999999"} mb={"6px"}>
-                  Hình ảnh
-                </Text>
-                <FileButton
-                  resetRef={resetRef}
-                  onChange={setFile}
-                  accept="image/png,image/jpeg"
-                >
-                  {(props) => (
-                    <Image
-                      {...props}
-                      radius="md"
-                      h={150}
-                      w={150}
-                      src={
-                        file
-                          ? URL.createObjectURL(file)
-                          : dataDetail
-                          ? dataDetail.image
-                          : null
-                      }
-                      fallbackSrc="https://placehold.co/600x400?text=Upload"
-                    />
-                  )}
-                </FileButton>
-              </Grid.Col>
-            </Grid>
-            <Grid gutter={10} mt={24}>
-              <Grid.Col span={8}>
-                <TextInput
-                  {...form.getInputProps("title")}
-                  label="Tên danh mục"
-                  type="text"
-                  placeholder="Tên danh mục"
-                />
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Select
-                  {...form.getInputProps("status")}
-                  label="Trạng thái"
-                  checkIconPosition="right"
-                  placeholder="Trạng thái"
-                  data={[
-                    { value: "PUBLIC", label: "Công khai" },
-                    { value: "DRAFT", label: "Nháp" },
-                    { value: "PENDING", label: "Đang duyệt" },
-                  ]}
-                />
-              </Grid.Col>
-            </Grid>
-            <Grid mt={24}>
-              <Grid.Col span={12}>
-                <Textarea
-                  label="Mô tả chi tiết"
-                  minRows={4}
-                  autosize={true}
-                  {...form.getInputProps("description")}
-                  placeholder="Mô tả"
-                />
-              </Grid.Col>
-            </Grid>
-          </Card>
-        </Grid.Col>
-      </Grid>
+    <Box pos="relative">
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Grid gutter={12}>
+          <Grid.Col span={12}>
+            <Card withBorder shadow="sm">
+              <Grid>
+                <Grid.Col span={12}>
+                  <Text size={"16px"} c={"#999999"} mb={"6px"}>
+                    Hình ảnh
+                  </Text>
+                  <FileButton
+                    resetRef={resetRef}
+                    onChange={setFile}
+                    accept="image/png,image/jpeg"
+                  >
+                    {(props) => (
+                      <Image
+                        {...props}
+                        radius="md"
+                        h={150}
+                        w={150}
+                        src={
+                          file
+                            ? URL.createObjectURL(file)
+                            : dataDetail
+                            ? dataDetail.image
+                            : null
+                        }
+                        fallbackSrc="https://placehold.co/600x400?text=Upload"
+                      />
+                    )}
+                  </FileButton>
+                </Grid.Col>
+              </Grid>
+              <Grid gutter={10} mt={24}>
+                <Grid.Col span={8}>
+                  <TextInput
+                    {...form.getInputProps("title")}
+                    label="Tên danh mục"
+                    type="text"
+                    placeholder="Tên danh mục"
+                  />
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Select
+                    {...form.getInputProps("status")}
+                    label="Trạng thái"
+                    checkIconPosition="right"
+                    placeholder="Trạng thái"
+                    data={[
+                      { value: "PUBLIC", label: "Công khai" },
+                      { value: "DRAFT", label: "Nháp" },
+                      { value: "PENDING", label: "Đang duyệt" },
+                    ]}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid mt={24}>
+                <Grid.Col span={12}>
+                  <Textarea
+                    label="Mô tả chi tiết"
+                    minRows={4}
+                    autosize={true}
+                    {...form.getInputProps("description")}
+                    placeholder="Mô tả"
+                  />
+                </Grid.Col>
+              </Grid>
+            </Card>
+          </Grid.Col>
+        </Grid>
 
-      <Group justify="end" style={{ marginTop: 60 }}>
-        <Button
-          variant="outline"
-          key="cancel"
-          color="red"
-          leftSection={<IconBan size={16} />}
-          onClick={() => router.back()}
-        >
-          Huỷ
-        </Button>
-        <Button
-          loading={loading}
-          style={{ marginLeft: "12px" }}
-          key="submit"
-          type="submit"
-          variant="filled"
-          leftSection={<IconPlus size={16} />}
-        >
-          Thêm
-        </Button>
-      </Group>
-    </form>
+        <Group justify="end" style={{ marginTop: 60 }}>
+          <Button
+            variant="outline"
+            key="cancel"
+            color="red"
+            leftSection={<IconBan size={16} />}
+            onClick={() => router.back()}
+          >
+            Huỷ
+          </Button>
+          <Button
+            loading={loading}
+            style={{ marginLeft: "12px" }}
+            key="submit"
+            type="submit"
+            variant="filled"
+            leftSection={<IconPlus size={16} />}
+          >
+            {isEditing ? "Cập nhật" : "Thêm"}
+          </Button>
+        </Group>
+      </form>
+    </Box>
   );
 }

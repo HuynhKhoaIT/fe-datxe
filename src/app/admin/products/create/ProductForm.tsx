@@ -215,7 +215,9 @@ export default function ProductForm({
       handlers.close();
     };
 
-    fetchData();
+    if (!isEditing) {
+      fetchData();
+    }
   }, []);
   return (
     <Box pos="relative">
@@ -429,7 +431,7 @@ export default function ProductForm({
             variant="filled"
             leftSection={<IconPlus size={16} />}
           >
-            {isEditing ? "Cập nhật" : "Thêm"}
+            {isEditing ? "Cập nhật" : isDirection ? "Điều hướng" : "Thêm"}
           </Button>
         </Group>
       </form>

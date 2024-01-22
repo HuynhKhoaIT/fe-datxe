@@ -4,28 +4,24 @@ import { Box } from "@mantine/core";
 import CarForm from "../create/CarForm";
 import axios from "axios";
 export const revalidate = 60;
-export default function UpdateCar({
-  params,
-}: {
-  params: { categoryId: number };
-}) {
-  const [category, setCategory] = useState(null);
+export default function UpdateCar({ params }: { params: { carId: number } }) {
+  const [car, setCar] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/car/${params?.categoryId}`);
-        setCategory(response.data);
+        const response = await axios.get(`/api/car/${params?.carId}`);
+        setCar(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [params?.categoryId]);
+  }, [params?.carId]);
   return (
     <Box maw={"100%"} mx="auto">
-      <CarForm isEditing={true} dataDetail={category} />
+      <CarForm isEditing={true} dataDetail={car} />
     </Box>
   );
 }

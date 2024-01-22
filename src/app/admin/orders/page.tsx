@@ -12,7 +12,7 @@ import { Space } from "@mantine/core";
 import { apiUrl } from "@/constants";
 export const revalidate = 0;
 
-import CalendarSchedulerGarage from "@/app/components/elements/calendar/CalendarGarage";
+import CalendarSchedulerGarage from "@/app/admin/orders/CalendarGarage";
 async function getDataOrder(garageId: number) {
   const res = await fetch(`${apiUrl}api/orders?garage=${garageId}`);
   if (!res.ok) {

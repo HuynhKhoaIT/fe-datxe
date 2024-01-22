@@ -28,10 +28,28 @@ const SidebarAdmin = () => {
       </li>
       <li>
         <Link
+          href="/admin/marketing-campaign"
+          className={`list-group-item ${
+            page == "marketing-campaign" && "active"
+          }`}
+        >
+          <i className="far fa-user"></i> Chương trình của chuyên gia
+        </Link>
+      </li>
+      <li>
+        <Link
           href="/admin/orders"
           className={`${page == "orders" && "active"}`}
         >
           <i className="far fa-plus-circle"></i> Đơn hàng
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/admin/order-manager"
+          className={`${page == "order-manager" && "active"}`}
+        >
+          <i className="far fa-plus-circle"></i> Quản lý đơn hàng
         </Link>
       </li>
       <li>

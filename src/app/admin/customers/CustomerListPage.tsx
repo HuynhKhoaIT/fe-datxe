@@ -10,6 +10,7 @@ import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
 import { sexOptions, statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
+import dayjs from "dayjs";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -49,6 +50,9 @@ export default function CustomerListPage({ dataSource }: any) {
       label: <span>Ngày sinh</span>,
       name: "dob",
       dataIndex: ["dob"],
+      render: (dob: any) => {
+        return <>{dob ? dayjs(dob).format("DD-MM-YYYY") : null}</>;
+      },
     },
     {
       label: <span>Giới tính</span>,

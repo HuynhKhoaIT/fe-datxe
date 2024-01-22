@@ -68,13 +68,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       setYearCarOptions(dataOption);
     }
   }
-  useEffect(() => {
-    getDataBrands();
-    if (dataDetail?.brandId && dataDetail?.nameId) {
-      getDataModels(dataDetail?.brandId);
-      getDataYearCar(dataDetail?.nameId);
-    }
-  }, [dataDetail]);
 
   const [loading, handlers] = useDisclosure();
   const form = useForm({
@@ -91,10 +84,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     },
     validate: {},
   });
-  useEffect(() => {
-    form.setInitialValues(dataDetail);
-    form.setValues(dataDetail);
-  }, [dataDetail]);
+
   const router = useRouter();
   const handleSubmit = async (values: any) => {
     handlers.open();
@@ -143,8 +133,45 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     setCustomerOptions(dataOption);
   };
   useEffect(() => {
-    getCustomers();
+    const fetchData = async () => {
+      handlers.open();
+      await Promise.all([getCustomers(), getDataBrands()]);
+      handlers.close();
+    };
+
+    if (!isEditing) {
+      fetchData();
+    }
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      handlers.open();
+
+      if (isEditing && dataDetail) {
+        try {
+          await Promise.all([
+            getCustomers(),
+            getDataBrands(),
+            getDataModels(dataDetail?.carBrandId),
+            getDataYearCar(dataDetail?.carNameId),
+          ]);
+
+          form.setInitialValues(dataDetail);
+          form.setValues(dataDetail);
+          form.setFieldValue("customerId", dataDetail?.customerId.toString());
+          form.setFieldValue("carBrandId", dataDetail?.carBrandId.toString());
+          form.setFieldValue("carNameId", dataDetail?.carNameId.toString());
+          form.setFieldValue("carYearId", dataDetail?.carYearId.toString());
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          handlers.close();
+        }
+      }
+    };
+
+    if (isEditing) fetchData();
+  }, [dataDetail]);
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -281,7 +308,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
             variant="filled"
             leftSection={<IconPlus size={16} />}
           >
-            Thêm
+            {isEditing ? "Cập nhật" : "Thêm"}
           </Button>
         </Group>
       </form>

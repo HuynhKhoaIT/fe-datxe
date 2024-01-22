@@ -83,7 +83,7 @@ export const getProductByGar = async (
   try {
     let url = `${GET_PRODUCTS_ENDPOINT}?${searchParams}&page=${page}&garage_id=${garageId}&limit=${limit}`;
     const res = await axios.get(url);
-    return res.data.data as Promise<IProduct[]>;
+    return res.data as Promise<IProduct[]>;
   } catch (error) {
     console.error(error);
     throw new Error("Lỗi trong quá trình lấy danh sách sản phẩm");

@@ -78,7 +78,7 @@ export default function SearchForm({
         (key) => `${encodeURIComponent(key)}=${encodeURIComponent(values[key])}`
       )
       .join("&");
-    router.push(`${pathname}?${queryString}`);
+    router.push(`${pathname}?${queryString}`, { scroll: false });
   };
   return (
     <Box>
