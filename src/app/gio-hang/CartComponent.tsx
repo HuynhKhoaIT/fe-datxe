@@ -103,22 +103,26 @@ export default function CartComponent() {
     form.setFieldValue("detail", cartData);
   }, [cartData]);
 
+  console.log("123");
+
   const handleSubmit = async (values: any) => {
-    console.log(values);
     setLoading(true);
     values.garageId = 1;
     values.dateTime = new Date();
+
     try {
       const res = await fetch(`/api/orders`, {
         method: "POST",
         body: JSON.stringify(values),
       });
+
       const data = await res.json();
       console.log("data", data);
+
       if (!data?.order) {
         notifications.show({
           title: "Thất bại",
-          message: "Đặt hàng thất bại",
+          message: "Đặt hàng thất bại: " + (data?.error || "Unknown error"),
         });
       } else {
         notifications.show({
@@ -129,6 +133,11 @@ export default function CartComponent() {
         router.push("./");
       }
     } catch (error) {
+      console.error("Error during API call:", error);
+      notifications.show({
+        title: "Lỗi",
+        message: "Đã xảy ra lỗi trong quá trình xử lý yêu cầu.",
+      });
     } finally {
       setLoading(false);
     }

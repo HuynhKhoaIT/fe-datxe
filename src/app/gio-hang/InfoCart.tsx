@@ -28,7 +28,7 @@ export default function InfoCart({
     };
 
     if (calculateSubTotal) fetchData();
-  }, [calculateSubTotal]);
+  }, []);
 
   const columns = [
     {
