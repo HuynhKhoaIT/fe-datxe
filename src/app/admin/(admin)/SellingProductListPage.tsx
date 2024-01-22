@@ -17,9 +17,12 @@ export default function SellingProductListPage() {
 
   const [page, setPage] = useState<number>(1);
   async function getData(searchParams: any, page: number) {
-    const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
-      method: "GET",
-    });
+    const res = await fetch(
+      `/api/products/best-seller?${searchParams}&page=${page}`,
+      {
+        method: "GET",
+      }
+    );
     const data = await res.json();
     setProducts(data);
   }

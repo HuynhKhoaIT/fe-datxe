@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import {
   Grid,
   TextInput,
@@ -19,15 +20,25 @@ export default function InfoCart({
   decrementQuantity,
   handleOpenModalDelete,
   incrementQuantity,
+  form,
 }: any) {
+  useEffect(() => {
+    const fetchData = async () => {
+      form.setFieldValue("subTotal", calculateSubTotal());
+    };
+
+    if (calculateSubTotal) fetchData();
+  }, [calculateSubTotal]);
+
   const columns = [
     {
       label: <span>Hình ảnh</span>,
       name: "image",
-      dataIndex: ["product", "thumbnail"],
+      dataIndex: ["images"],
       width: "90px",
       render: (data: any) => {
-        if (!data) {
+        const images = JSON.parse(data);
+        if (!images) {
           return (
             <Image
               radius="md"
@@ -38,18 +49,20 @@ export default function InfoCart({
             />
           );
         }
-        return <Image radius="md " h={40} w={80} fit="contain" src={data} />;
+        return (
+          <Image radius="md " h={40} w={80} fit="contain" src={images[0]} />
+        );
       },
     },
     {
       label: <span>Tên sản phẩm</span>,
       name: "title",
-      dataIndex: ["product", "title"],
+      dataIndex: ["name"],
     },
     {
       label: <span>Giá</span>,
       name: "price",
-      dataIndex: ["product", "price"],
+      dataIndex: ["priceSale"],
       width: "120px",
       textAlign: "right",
       render: (dataRow: number) => {
@@ -67,14 +80,14 @@ export default function InfoCart({
           <>
             <Button
               variant="transparent"
-              onClick={() => decrementQuantity(dataRow?.product?.id)}
+              onClick={() => decrementQuantity(dataRow?.productId)}
             >
               <IconMinus size={16} />
             </Button>
             <span style={{ padding: "10px" }}>{dataRow?.quantity}</span>
             <Button
               variant="transparent"
-              onClick={() => incrementQuantity(dataRow?.product?.id)}
+              onClick={() => incrementQuantity(dataRow?.productId)}
             >
               <IconPlus size={16} />
             </Button>
@@ -91,7 +104,7 @@ export default function InfoCart({
       render: (dataRow: any) => {
         return (
           <span>
-            {(dataRow?.product?.price * dataRow?.quantity).toLocaleString()}đ
+            {(dataRow?.priceSale * dataRow?.quantity).toLocaleString()}đ
           </span>
         );
       },

@@ -1,16 +1,38 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Grid, TextInput, Card, Avatar, Select } from "@mantine/core";
 import { LoadingOverlay } from "@mantine/core";
 export default function InfoCar({
-  setCarId,
-  carDefault: dataCarDefault,
-  carOptions,
-  session,
   visible,
-  carSelect,
-  selectCar,
+  form,
+  carOptions,
+  carDetail,
+  setCarDetail,
 }: any) {
-  const token = session?.user?.token;
+  useEffect(() => {
+    const fetchData = async () => {
+      form.setFieldValue("carId", carDetail?.id);
+      form.setFieldValue("carBrandId", carDetail?.carBrandId);
+      form.setFieldValue("carNameId", carDetail?.carNameId);
+      form.setFieldValue("carYearId", carDetail?.carYearId);
+      form.setFieldValue("numberPlates", carDetail?.id.toString());
+    };
+
+    if (carDetail) fetchData();
+  }, [carDetail]);
+
+  async function getCarDetail(carId: number) {
+    if (carId) {
+      const res = await fetch(`/api/car/${carId}`, { method: "GET" });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("Failed to fetch data");
+      }
+
+      console.log("car", data);
+      setCarDetail(data);
+    }
+  }
   return (
     <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
       <div className="checkout-widget">
@@ -25,38 +47,42 @@ export default function InfoCar({
           <Grid gutter={16}>
             <Grid.Col span={12}>
               <Select
+                {...form.getInputProps("numberPlates")}
                 label="Biển số"
                 checkIconPosition="right"
                 placeholder="Biển số"
                 data={carOptions}
-                value={carSelect?.id ?? dataCarDefault?.carId?.toString()}
                 allowDeselect={false}
                 onChange={(value) => {
-                  selectCar(value);
-                  setCarId(value);
+                  getCarDetail(Number(value));
+                  form.setFieldValue("numberPlates", value);
                 }}
               />
             </Grid.Col>
           </Grid>
           <Grid gutter={16}>
-            <Grid.Col span={6}>
+            <Grid.Col span={4}>
               <TextInput
                 label="Hãng Xe"
                 placeholder="Hãng Xe"
                 readOnly
-                value={
-                  carSelect?.brandCarName?.name ?? dataCarDefault?.brandName
-                }
+                {...form.getInputProps("carBrandId")}
               />
             </Grid.Col>
-            <Grid.Col span={6}>
+            <Grid.Col span={4}>
               <TextInput
+                {...form.getInputProps("carNameId")}
                 label="Dòng xe"
                 placeholder="Dòng xe"
                 readOnly
-                defaultValue={
-                  carSelect?.modelCarName?.name ?? dataCarDefault?.modelName
-                }
+              />
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <TextInput
+                {...form.getInputProps("carYearId")}
+                label="Năm sản xuất"
+                placeholder="Năm sản xuất"
+                readOnly
               />
             </Grid.Col>
           </Grid>

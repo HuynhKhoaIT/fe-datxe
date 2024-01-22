@@ -39,9 +39,16 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
     setIsModalOpen(false);
     const existingCartItems = JSON.parse("[]");
     existingCartItems.push({
-      garageId: ProductDetail.garageId,
-      product: ProductDetail,
+      productId: ProductDetail?.id,
       quantity: inputValue,
+      price: ProductDetail?.price,
+      priceSale: ProductDetail?.salePrice,
+      saleValue: 0,
+      images: ProductDetail?.images,
+      name: ProductDetail?.name,
+      garageId: ProductDetail.garageId,
+      // product: ProductDetail,
+      // quantity: inputValue,
     });
     localStorage.setItem("cartData", JSON.stringify(existingCartItems));
     notifications.show({
@@ -74,10 +81,10 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
         localStorage.getItem("cartData") || "[]"
       );
       const index = existingCartItems.findIndex(
-        (item: any) => item.product.id === productId
+        (item: any) => item.productId === productId
       );
       const idCar = existingCartItems.findIndex(
-        (item: any) => item.product.garageId === garageId
+        (item: any) => item.garageId === garageId
       );
 
       if (existingCartItems.length > 0 && idCar === -1) {
@@ -87,11 +94,17 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
           existingCartItems[index].quantity += inputValue;
         } else {
           existingCartItems.push({
-            garageId: garageId,
-            product: ProductDetail,
+            productId: ProductDetail?.id,
+            price: ProductDetail?.price,
+            priceSale: ProductDetail?.salePrice,
+            saleValue: 0,
+            images: ProductDetail?.images,
+            name: ProductDetail?.name,
+            garageId: ProductDetail.garageId,
             quantity: inputValue,
           });
         }
+        console.log("existingCartItems", existingCartItems);
 
         localStorage.setItem("cartData", JSON.stringify(existingCartItems));
         notifications.show({

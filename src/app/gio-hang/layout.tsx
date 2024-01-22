@@ -6,10 +6,10 @@ interface IProps {
 }
 export default function Layout({ children }: IProps) {
   return (
-    <>
+    <main>
       <Header />
       <main className="main">{children}</main>
       <MyFooter />
-    </>
+    </main>
   );
 }
