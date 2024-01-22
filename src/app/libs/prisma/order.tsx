@@ -55,7 +55,7 @@ export async function findOrders(id: Number,request: NextRequest){
                 serviceAdvisor: true,
                 car: true,
                 customer: true,
-                 orderDetails: {
+                orderDetails: {
                     select: {
                         productId:true,
                         note: true,
@@ -156,19 +156,19 @@ export async function createOrder(json: any) {
         const order = await prisma.order.create({
             data: {
                 code: (await codeGeneration(json.garageId)).toString(),
-                customerId: customerId,
+                customerId: Number(customerId),
                 carId: Number(carId),
-                dateTime: json.dateTime,
-                customerRequest: json.customerRequest,
-                customerNote: json.customerNote,
-                note: json.note,
-                priorityLevel: Number(json.priorityLevel),
-                orderCategoryId: Number(json.orderCategoryId),
+                dateTime: json.dateTime ?? new Date(),
+                customerRequest: json.customerRequest ?? '',
+                customerNote: json.customerNote ?? '',
+                note: json.note ?? '',
+                priorityLevel: Number(json.priorityLevel ?? 1),
+                orderCategoryId: Number(json.orderCategoryId ?? 1),
                 brandId: Number(json.carBrandId),
                 modelId: Number(json.carNameId),
                 yearId: Number(json.carYearId),
-                garageId: Number(json.garageId),
-                serviceAdvisorId: Number(json.serviceAdvisorId),
+                garageId: Number(json.garageId ?? 1),
+                serviceAdvisorId: Number(json.serviceAdvisorId ?? 1),
                 orderDetails: {
                     createMany : {
                         data:orderDetails

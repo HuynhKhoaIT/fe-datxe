@@ -24,8 +24,7 @@ export async function getMarketingCampaign(garage: Number,requestData: any) {
     } else {
         limit = 10;
     }
-    const skip = take * (currentPage - 1);
-    
+    const skip = take * (currentPage - 1);    
 
     const [data,total] = await prisma.$transaction([
         prisma.marketingCampaign.findMany({
