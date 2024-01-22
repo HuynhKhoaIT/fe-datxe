@@ -2,11 +2,11 @@
 import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
-import ProductForm from "./OrderForm";
 import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getProductDetail } from "@/utils/product";
 import { LoadingComponent } from "@/app/components/loading";
+import OrderForm from "../[orderId]/OrderForm";
 export default function ProductSave({ isDirection, brandOptions = [] }: any) {
   const searchParams = useSearchParams();
   const productId = searchParams.get("productId");
@@ -24,11 +24,9 @@ export default function ProductSave({ isDirection, brandOptions = [] }: any) {
   }, [isDirection]);
   return (
     <Box maw={"100%"} mx="auto">
-      <ProductForm
+      <OrderForm
         isEditing={false}
         dataDetail={isDirection ? productDetail : []}
-        isDirection={isDirection}
-        brandOptions={brandOptions}
       />
     </Box>
   );

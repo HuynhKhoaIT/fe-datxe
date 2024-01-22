@@ -32,11 +32,7 @@ const DynamicModalChooseProducts = dynamic(
     ssr: false,
   }
 );
-export default function OrderForm({
-  isEditing = false,
-  dataDetail,
-  isDirection = false,
-}: any) {
+export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const router = useRouter();
   const [selectedProducts, setSelectedProducts] = useState<any>(
@@ -420,7 +416,7 @@ export default function OrderForm({
             variant="filled"
             leftSection={<IconPlus size={16} />}
           >
-            {isEditing ? "Cập nhật" : isDirection ? "Điều hướng" : "Thêm"}
+            {isEditing ? "Cập nhật" : "Thêm"}
           </Button>
         </Group>
       </form>
