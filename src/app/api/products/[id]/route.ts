@@ -17,6 +17,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                 where: {
                     id: parseInt(id.toString()),
                 },
+
                 include: {
                     categories: true,
                     garage: true,
@@ -28,6 +29,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                                     {
                                         status: 'PUBLIC',
                                         dateTimeStart: {
+                                            lte: new Date(),
+                                        },
+                                        dateTimeEnd: {
                                             gte: new Date(),
                                         },
                                     },
