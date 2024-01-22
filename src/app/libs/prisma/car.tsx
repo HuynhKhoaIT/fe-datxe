@@ -1,7 +1,6 @@
 import prisma from "../prismadb";
 export async function createCar(json: any) {
     try {
-        // return json;
         const car = await prisma.car.create({
             data: {                
                 customerId: Number(json.customerId),

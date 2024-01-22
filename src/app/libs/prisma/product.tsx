@@ -1,22 +1,69 @@
 import { NextResponse } from "next/server";
-import { IProduct } from "../interfaces/product";
 import prisma from "../prismadb";
 
-export async function getProducts() {
+export async function getProducts(garage: Number,requestData:any) {
   try {
-    const products = await prisma.product.findMany({
-      take: 10,
-      where: {
-        AND: [
-          {
-            status: {
-              not: "DELETE",
-            },
-          },
-        ],
+    let titleFilter = '';
+    const searchText = requestData.s;
+    if (searchText) {
+        titleFilter = searchText;
+    }
+    let garageId = {};
+    if (garage) {
+        garageId = Number(garage);
+    }
+    let currentPage = 1;
+    let take = 10;
+    let limit = Number(requestData.limit);
+    let page = requestData.page;
+
+    if (page) {
+        currentPage = Number(page);
+    }
+    if (limit) {
+        take = Number(limit);
+    } else {
+        limit = 10;
+    }
+    const skip = take * (currentPage - 1);  
+    const [data,total] = await prisma.$transaction([
+      prisma.product.findMany({
+        take: take,
+        skip: skip,
+        orderBy: {
+            id: 'desc',
+        },
+        where: {
+          AND: [
+              {
+                OR:[
+                  {
+                    name: {
+                      contains: titleFilter
+                    },
+                    sku: {
+                      contains: titleFilter
+                    }
+                  }
+                ],
+                status: {
+                  not: 'DELETE',
+                },
+                garageId,
+              },
+          ]
       },
-    });
-    return { products };
+      }),
+      prisma.product.count()
+    ]);
+    return {
+      data: data,
+      total: total,
+      currentPage: currentPage,
+      limit: limit,
+      totalPage: Math.ceil(total / limit),
+      status: 201
+    };
   } catch (error) {
     return { error };
   }

@@ -8,7 +8,6 @@ export async function GET(request: Request) {
             garageId: 1,
             includeGarage: searchParams.get('includeGarage'),
         };
-        // return NextResponse.json(json);
         return await getProductsBestSeller('token', json);
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
