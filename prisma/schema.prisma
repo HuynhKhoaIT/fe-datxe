@@ -78,6 +78,7 @@ model Product {
   updatedAt       DateTime               @updatedAt
   marketingCampaignDetail MarketingCampaignDetail[]
   orderDetail     OrderDetail[]
+  reviews         ReviewsProduct[]
 }
 
 model CategoriesOnProducts {
@@ -144,6 +145,7 @@ model Order{
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt  
   orderDetails      OrderDetail[]
+  reviews         ReviewsProduct[]
 }
 model OrderCategory{
   id              Int @id @default(autoincrement())
@@ -317,6 +319,18 @@ model FinanceCard {
   garageId        Int @default(1)
   createdBy       Int @default(1)
   status          STATUS @default(PUBLIC)
+}
+
+model ReviewsProduct {
+  id                  Int @id @default(autoincrement())
+  product             Product @relation(fields: [productId],references: [id])
+  productId           Int
+  order               Order @relation(fields: [orderId],references: [id])
+  orderId             Int
+  star                Int @default(4)
+  message             String?
+  createdId           Int
+  status              STATUS @default(PUBLIC)
 }
 
 enum SALETYPE {

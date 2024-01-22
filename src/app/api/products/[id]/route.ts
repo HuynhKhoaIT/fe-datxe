@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { getProductById } from '@/app/libs/prisma/product';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -13,38 +14,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
         }
         const session = await getServerSession(authOptions);
         if (1) {
-            const products = await prisma.product.findUnique({
-                where: {
-                    id: parseInt(id.toString()),
-                },
-
-                include: {
-                    categories: true,
-                    garage: true,
-                    marketingCampaignDetail: {
-                        take: 1,
-                        where: {
-                            marketingCampaign: {
-                                AND: [
-                                    {
-                                        status: 'PUBLIC',
-                                        dateTimeStart: {
-                                            lte: new Date(),
-                                        },
-                                        dateTimeEnd: {
-                                            gte: new Date(),
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                        include: {
-                            marketingCampaign: true,
-                        },
-                    },
-                },
-            });
-            return NextResponse.json(products);
+            const product = await getProductById(id);
+            return NextResponse.json({ data: product });
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {

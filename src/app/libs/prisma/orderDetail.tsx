@@ -11,7 +11,7 @@ export async function createOrderDetail(orderId: Number,data: any) {
                 priceSale: Number(data.priceSale),
                 saleType: data.saleType,
                 quantity: Number(data.quantity),
-                subTotal: Number(data.subTotal),
+                subTotal: Number(data.subTotal ?? 0),
                 garageId: Number(data.garageId),
                 createdBy: data.createdBy,
                 status: data.status
