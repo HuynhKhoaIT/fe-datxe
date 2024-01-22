@@ -18,10 +18,9 @@ const TableDataProduct = () => {
         method: "GET",
       });
       const data = await res.json();
-
       const newProductData = await getProductsSearch(params, activePage, limit);
       if (activePage !== 1) {
-        let array = [...productData, ...data];
+        let array = [...productData, ...data.data];
         setProductData(array);
       } else {
         setProductData(data);

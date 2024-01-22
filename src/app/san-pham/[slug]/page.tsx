@@ -3,6 +3,7 @@ import ProductDetail from "../../components/elements/product/productDetail";
 import Product from "@/app/components/elements/product/ListProductHot";
 import { getProductById, getProducts } from "@/app/libs/prisma/product";
 import { LoadingComponent } from "@/app/components/loading";
+import { apiUrl } from "@/constants";
 export const revalidate = 0;
 async function getProduct(productId: number) {
   const { product } = await getProductById(productId);
@@ -13,11 +14,14 @@ async function getProduct(productId: number) {
   return product;
 }
 async function getListProduct() {
-  const { products } = await getProducts();
-  if (!products) {
+  const res = await fetch(`${apiUrl}/api/products`, {
+    method: "GET",
+  });
+  const data = await res.json();
+  if (!data) {
     throw new Error("Failed to fetch data");
   }
-  return products;
+  return data;
 }
 export default async function SingleShop({
   params,

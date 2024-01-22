@@ -11,9 +11,21 @@
         width: 100%;
     }
 }
+
 .wrapperAdmin {
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin-left: 20px;
+    .contents {
+        padding: 0 20px;
+        height: calc(100% - 50px);
+        margin-bottom: 20px;
+        .content {
+            background-color: var(--white-background);
+            height: 100%;
+            box-shadow: var(--box-shadow);
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+    }
 }
