@@ -63,6 +63,7 @@ export async function findOrders(id: Number,request: NextRequest){
                         price: true,
                         subTotal: true,
                         saleType: true,
+                        saleValue: true,
                         quantity: true,
                         product: {
                             select:{
