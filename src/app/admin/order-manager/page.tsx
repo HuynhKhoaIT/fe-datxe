@@ -84,7 +84,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>số điện thoại</span>,
+      label: <span>Số điện thoại</span>,
       name: "phoneNumber",
       dataIndex: ["customer"],
       render: (dataRow: any) => {
@@ -100,13 +100,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>Số lượng</span>,
-      name: "quantity",
-      dataIndex: ["quantity"],
-      textAlign: "center",
-    },
-    {
-      label: <span>Tổng tiền</span>,
+      label: <span>Tổng đơn hàng</span>,
       name: "total",
       dataIndex: ["total"],
       render: (dataRow: number) => {
@@ -179,19 +173,19 @@ export default function OrdersManaga() {
   const searchData = [
     {
       name: "s",
-      placeholder: "Tên sản phẩm",
+      placeholder: "Mã đơn hàng",
       type: "input",
     },
     {
-      name: "isProduct",
-      placeholder: "Loại",
+      name: "step",
+      placeholder: "Tình trạng",
       type: "select",
-      data: kindProductOptions,
+      data: stepOrderOptions,
     },
   ];
   const initialValuesSearch = {
     s: "",
-    categoryId: null,
+    step: null,
     brandId: null,
     nameId: null,
     yearId: null,
@@ -200,18 +194,18 @@ export default function OrdersManaga() {
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <ListPage
-        // searchForm={
-        //   <SearchForm
-        //     searchData={searchData}
-        //     brandFilter={true}
-        //     initialValues={initialValuesSearch}
-        //   />
-        // }
+        searchForm={
+          <SearchForm
+            searchData={searchData}
+            brandFilter={false}
+            initialValues={initialValuesSearch}
+          />
+        }
         actionBar={
           <Flex justify={"end"} align={"center"}>
             <Link
               href={{
-                pathname: `/admin/orders-manager/create`,
+                pathname: `/admin/order-manager/create`,
               }}
             >
               <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>

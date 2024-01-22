@@ -1,5 +1,12 @@
 "use client";
-import { Badge, Button, Group, Image, Modal } from "@mantine/core";
+import {
+  Badge,
+  Button,
+  Group,
+  Image,
+  LoadingOverlay,
+  Modal,
+} from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import ImageDefult from "../../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
@@ -8,22 +15,29 @@ import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { useSearchParams } from "next/navigation";
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 
 export default function ModalChooseProducts({
   openModal,
   close,
-  selectedRows,
-  setSelectedRows,
+  selectedProducts,
+  setSelectedProducts,
 }: any) {
+  const [selectedRows, setSelectedRows] = useState<any>(selectedProducts);
+
   const [products, setProducts] = useState<any>();
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
   const searchParams = useSearchParams();
   const [page, setPage] = useState<number>(1);
   async function getData(searchParams: any, page: number) {
+    handlers.open();
+
     const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
       method: "GET",
     });
     const data = await res.json();
+    handlers.close();
+
     setProducts(data);
   }
   async function getDataCategories() {
@@ -39,7 +53,7 @@ export default function ModalChooseProducts({
     setCategoryOptions(dataOption);
   }
   useEffect(() => {
-    if (openModal) {
+    if (openModal && !products) {
       getData(searchParams.toString(), page);
       getDataCategories();
     }
@@ -161,6 +175,9 @@ export default function ModalChooseProducts({
     nameId: null,
     yearId: null,
   };
+
+  const [loading, handlers] = useDisclosure();
+
   return (
     <Modal
       title="Chọn sản phẩm"
@@ -169,6 +186,11 @@ export default function ModalChooseProducts({
       lockScroll={false}
       size={"80%"}
     >
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
       <ListPage
         searchForm={
           <SearchForm
@@ -192,7 +214,7 @@ export default function ModalChooseProducts({
           />
         }
       />
-      {/* <Group justify="end" style={{ marginTop: 10 }}>
+      <Group justify="end" style={{ marginTop: 10 }}>
         <Button
           variant="outline"
           key="cancel"
@@ -204,13 +226,16 @@ export default function ModalChooseProducts({
         </Button>
         <Button
           style={{ marginLeft: "12px" }}
-          onClick={close}
+          onClick={() => {
+            setSelectedProducts(selectedRows);
+            close();
+          }}
           variant="filled"
           leftSection={<IconChevronRight size={16} />}
         >
-          Tiếp tục
+          Xác nhận
         </Button>
-      </Group> */}
+      </Group>
     </Modal>
   );
 }

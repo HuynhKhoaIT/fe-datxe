@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import styles from "./index.module.scss";
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
 import DateTimeField from "@/app/components/form/DateTimeField";
 import ListPage from "@/app/components/layout/ListPage";
@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { IconBan, IconPlus, IconTrash } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
+import Typo from "@/app/components/elements/Typo";
 const DynamicModalChooseProducts = dynamic(
   () => import("./ModalChooseProducts"),
   {
@@ -30,7 +31,7 @@ const DynamicModalChooseProducts = dynamic(
 
 export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
   const router = useRouter();
-  const [selectedRows, setSelectedRows] = useState<any>(
+  const [selectedProducts, setSelectedProducts] = useState<any>(
     dataDetail
       ? dataDetail?.detail.map((item: any) => ({ ...item, id: item.productId }))
       : []
@@ -42,7 +43,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
   ] = useDisclosure(false);
   useEffect(() => {
     if (!isEditing) {
-      let updatedProducts = selectedRows.map((detail: any) => ({
+      let updatedProducts = selectedProducts.map((detail: any) => ({
         name: detail.name,
         price: detail.price,
         productId: detail.id,
@@ -55,7 +56,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
       }));
       form.setFieldValue("detail", updatedProducts);
     } else {
-      let updatedProducts = selectedRows.map((detail: any) => ({
+      let updatedProducts = selectedProducts.map((detail: any) => ({
         name: detail?.product?.name || detail?.name,
         price: detail.price,
         productId: detail.productId !== 0 ? detail.productId : detail.id,
@@ -68,7 +69,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
       }));
       form.setFieldValue("detail", updatedProducts);
     }
-  }, [selectedRows]);
+  }, [selectedProducts]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,11 +99,15 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
   }, [dataDetail]);
   const form = useForm({
     initialValues: {
-      detail: selectedRows,
+      detail: selectedProducts,
       title: "",
     },
     validate: {
-      title: (value) => (value.length < 1 ? "Không được để trống" : null),
+      title: isNotEmpty("Vui lòng nhập..."),
+      detail: {
+        saleValue: isNotEmpty("Vui lòng nhập..."),
+        salePrice: (value) => (value < 0 ? "Không được để giá trị âm" : null),
+      },
     },
   });
 
@@ -128,12 +133,22 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         </Table.Td>
         <Table.Td>{selectedRow.price.toLocaleString()}đ</Table.Td>
         <Table.Td>
-          {form.values.detail[index].salePrice
+          <NumberInput
+            withAsterisk
+            readOnly
+            // label="Tên chương trình"
+            thousandSeparator=","
+            type="text"
+            placeholder="Giá sau giảm"
+            suffix="đ"
+            {...form.getInputProps(`detail.${index}.salePrice`)}
+          />
+          {/* {form.values.detail[index].salePrice
             ? Number(form.values.detail[index].salePrice).toLocaleString()
             : form.values.detail[index].salePrice == 0
             ? 0
             : selectedRow.price.toLocaleString()}
-          đ
+          đ */}
         </Table.Td>
         <Table.Td style={{ width: "350px" }}>
           <Grid>
@@ -144,6 +159,14 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                   { value: "FIXED", label: "Tiền" },
                   { value: "PERCENT", label: "Phần trăm" },
                 ]}
+                onChange={(value) => {
+                  form.setFieldValue(`detail.${index}.saleType`, value);
+                  form.setFieldValue(
+                    `detail.${index}.salePrice`,
+                    form.values.detail[index].price
+                  );
+                  form.setFieldValue(`detail.${index}.saleValue`, 0);
+                }}
               />
             </Grid.Col>
             <Grid.Col span={7}>
@@ -153,11 +176,13 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                   min={0}
                   placeholder="Giá sale"
                   thousandSeparator=","
+                  suffix="đ"
                   onChange={(value) => {
                     form.setFieldValue(
                       `detail.${index}.salePrice`,
                       form.values.detail[index].price - Number(value)
                     );
+
                     form.setFieldValue(`detail.${index}.saleValue`, value);
                   }}
                 />
@@ -198,8 +223,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                 variant="transparent"
                 color="red"
                 onClick={(e) => {
-                  setSelectedRows(
-                    selectedRows.filter(
+                  setSelectedProducts(
+                    selectedProducts.filter(
                       (selectedItem: any) =>
                         selectedItem.id !== selectedRow.id &&
                         selectedItem.id !== selectedRow.productId
@@ -244,8 +269,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         overlayProps={{ radius: "sm", blur: 2 }}
       />
       <form className={styles.form} onSubmit={form.onSubmit(handleSubmit)}>
-        <div>
-          {/* <Typo>Chuơng trình</Typo> */}
+        <div className={styles.marketingInfo}>
+          <Typo className={styles.title}>Thông tin chương trình</Typo>
           <Grid gutter={16}>
             <Grid.Col span={6}>
               <TextInput
@@ -272,76 +297,80 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             </Grid.Col>
           </Grid>
         </div>
-        <Grid mt={24}>
-          <Grid.Col span={12}>
-            <ListPage
-              title="Danh sách sản phẩm khuyến mãi"
-              style={{ height: "100%" }}
-              actionBar={
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "end",
-                    alignItems: "center",
-                  }}
-                >
-                  <Button
-                    onClick={(e) => {
-                      openModal();
+        <div className={styles.marketingInfo}>
+          <Grid>
+            <Grid.Col span={12}>
+              <ListPage
+                title="Danh sách sản phẩm khuyến mãi"
+                style={{ height: "100%" }}
+                actionBar={
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "end",
+                      alignItems: "center",
                     }}
-                    leftSection={<IconPlus size={14} />}
                   >
-                    Thêm sản phẩm
-                  </Button>
-                </div>
-              }
-              baseTable={
-                <Table>
-                  <Table.Thead>
-                    <Table.Tr>
-                      <Table.Th>Tên sản phẩm</Table.Th>
-                      <Table.Th>Giá gốc</Table.Th>
-                      <Table.Th>Giá sau giảm</Table.Th>
-                      <Table.Th>Giá sale</Table.Th>
-                      <Table.Th>Số lượng khuyến mãi</Table.Th>
-                      <Table.Th style={{ width: "120px", textAlign: "center" }}>
-                        hành động
-                      </Table.Th>
-                    </Table.Tr>
-                  </Table.Thead>
-                  <Table.Tbody>{rows}</Table.Tbody>
-                </Table>
-              }
-            />
-          </Grid.Col>
-        </Grid>
-        <Group justify="end" style={{ marginTop: 60 }}>
-          <Button
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
-            onClick={() => router.back()}
-          >
-            Huỷ bỏ
-          </Button>
-          <Button
-            loading={loading}
-            style={{ marginLeft: "12px" }}
-            key="submit"
-            type="submit"
-            variant="filled"
-            leftSection={<IconPlus size={16} />}
-          >
-            Xác nhận
-          </Button>
-        </Group>
+                    <Button
+                      onClick={(e) => {
+                        openModal();
+                      }}
+                      leftSection={<IconPlus size={14} />}
+                    >
+                      Thêm sản phẩm
+                    </Button>
+                  </div>
+                }
+                baseTable={
+                  <Table>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th>Tên sản phẩm</Table.Th>
+                        <Table.Th>Giá gốc</Table.Th>
+                        <Table.Th>Giá sau giảm</Table.Th>
+                        <Table.Th>Giá sale</Table.Th>
+                        <Table.Th>Số lượng khuyến mãi</Table.Th>
+                        <Table.Th
+                          style={{ width: "120px", textAlign: "center" }}
+                        >
+                          hành động
+                        </Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>{rows}</Table.Tbody>
+                  </Table>
+                }
+              />
+            </Grid.Col>
+          </Grid>
+          <Group justify="end" style={{ marginTop: 60 }}>
+            <Button
+              variant="outline"
+              key="cancel"
+              color="red"
+              leftSection={<IconBan size={16} />}
+              onClick={() => router.back()}
+            >
+              Huỷ bỏ
+            </Button>
+            <Button
+              loading={loading}
+              style={{ marginLeft: "12px" }}
+              key="submit"
+              type="submit"
+              variant="filled"
+              leftSection={<IconPlus size={16} />}
+            >
+              Xác nhận
+            </Button>
+          </Group>
+        </div>
       </form>
       <DynamicModalChooseProducts
         openModal={openModalChoose}
         close={closeModal}
-        setSelectedRows={setSelectedRows}
-        selectedRows={selectedRows}
+        setSelectedProducts={setSelectedProducts}
+        selectedProducts={selectedProducts}
       />
     </Box>
   );

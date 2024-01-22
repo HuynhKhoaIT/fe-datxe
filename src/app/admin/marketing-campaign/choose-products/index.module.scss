@@ -9,8 +9,8 @@
         align-items: center;
     }
     .content {
-        box-shadow: var(--box-shadow);
-        background-color: var(--white-background);
+        // box-shadow: var(--box-shadow);
+        // background-color: var(--white-background);
         border-radius: 8px;
         height: calc(100% - 50px);
         overflow-y: auto;
@@ -19,8 +19,8 @@
 }
 
 .listPage {
-    box-shadow: var(--box-shadow);
-    background-color: var(--white-background);
+    // box-shadow: var(--box-shadow);
+    // background-color: var(--white-background);
     border-radius: 8px;
     height: 100%;
     overflow-y: auto;
@@ -28,5 +28,17 @@
 }
 
 .form {
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    .marketingInfo {
+        padding: 20px;
+        border-radius: 8px;
+        background-color: var(--white-background);
+        box-shadow: var(--box-shadow);
+        .title {
+            font-size: 20px !important;
+            font-weight: 500 !important;
+        }
+    }
 }

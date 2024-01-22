@@ -1,11 +1,10 @@
-import { Box, Space } from "@mantine/core";
-import React, { useEffect, useState } from "react";
-import ProductSave from "./ProductSave";
-export default function CreateProduct() {
+export const revalidate = 0;
+import React from "react";
+import OrderForm from "../[orderId]/OrderForm";
+export default function ChooseProducts() {
   return (
-    <Box maw={"100%"} mx="auto">
-      <Space h="md" />
-      <ProductSave isDirection={false} />
-    </Box>
+    <div>
+      <OrderForm />
+    </div>
   );
 }

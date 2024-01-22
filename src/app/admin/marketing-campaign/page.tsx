@@ -21,25 +21,22 @@ import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dayjs from "dayjs";
-const DynamicModalDeleteProduct = dynamic(
+const DynamicModalDelete = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
     ssr: false,
   }
 );
+const Breadcrumbs = [
+  { title: "Tổng quan", href: "/admin" },
+  { title: "Danh sách chương trình" },
+];
 export default function Discounts() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [products, setProducts] = useState<any>();
-  const [categoryOptions, setCategoryOptions] = useState<any>([]);
-
+  const [marketing, setMarketing] = useState<any>();
   const [page, setPage] = useState<number>(1);
-
-  const Breadcrumbs = [
-    { title: "Tổng quan", href: "/admin" },
-    { title: "Danh sách chương trình" },
-  ];
   async function getData(searchParams: any, page: number) {
     const res = await fetch(
       `/api/marketing-campaign?${searchParams}&page=${page}`,
@@ -48,36 +45,21 @@ export default function Discounts() {
       }
     );
     const data = await res.json();
-    setProducts(data);
+    setMarketing(data);
   }
-  async function getDataCategories() {
-    const res = await fetch(`/api/product-category`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setCategoryOptions(dataOption);
-  }
+
   useEffect(() => {
     getData(searchParams.toString(), page);
-    getDataCategories();
   }, [searchParams, page]);
 
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteProduct = async (idProduct: any) => {
-    await fetch(`/api/products/${idProduct}`, {
-      method: "DELETE",
-    });
-    const deleteProduct = fetch(`/api/products/${idProduct}`, {
+  const handleDeleteMarketing = async (marketingId: any) => {
+    await fetch(`/api/marketing-campaign/${marketingId}`, {
       method: "DELETE",
     });
     notifications.show({
       title: "Thành công",
-      message: "Xoá sản phẩm thành công",
+      message: "Xoá chương trình thành công",
     });
     getData(searchParams, page);
     router.refresh();
@@ -233,19 +215,19 @@ export default function Discounts() {
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
-            data={products?.data}
+            data={marketing?.data}
             columns={columns}
             loading={true}
-            totalPage={products?.totalPage}
+            totalPage={marketing?.totalPage}
             setPage={setPage}
             activePage={page}
           />
         }
       />
-      <DynamicModalDeleteProduct
+      <DynamicModalDelete
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteProduct}
+        handleDeleteProduct={handleDeleteMarketing}
         deleteRow={deleteRow}
       />
       <FooterAdmin />

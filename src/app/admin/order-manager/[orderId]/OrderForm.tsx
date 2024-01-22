@@ -14,39 +14,62 @@ import {
   Text,
   TextInput,
   Textarea,
+  Tooltip,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan } from "@tabler/icons-react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { IconPlus, IconBan, IconTrash } from "@tabler/icons-react";
+
 import { useEffect, useState } from "react";
-import { BasicDropzone } from "@/app/components/form/DropZone";
-import InfoCar from "../[orderId]/InfoCar";
-import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
-import DateTimeField from "@/app/components/form/DateTimeField";
-import axios, { AxiosRequestConfig } from "axios";
 import { stepOrderOptions } from "@/constants/masterData";
-
+import dynamic from "next/dynamic";
+import ListPage from "@/app/components/layout/ListPage";
+const DynamicModalChooseProducts = dynamic(
+  () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
+  {
+    ssr: false,
+  }
+);
 export default function OrderForm({
   isEditing = false,
   dataDetail,
   isDirection = false,
 }: any) {
-  console.log(dataDetail);
   const [loading, handlers] = useDisclosure();
   const router = useRouter();
+  const [selectedProducts, setSelectedProducts] = useState<any>(
+    dataDetail
+      ? dataDetail?.orderDetails.map((item: any) => ({
+          ...item,
+          id: item.productId,
+        }))
+      : []
+  );
+  console.log("selectedProducts", selectedProducts);
 
+  const [
+    openModalChoose,
+    { open: openModal, close: closeModal },
+  ] = useDisclosure(false);
   const form = useForm({
-    initialValues: {},
+    initialValues: {
+      orderDetails: selectedProducts,
+      car: {
+        carBrandid: "",
+        carNameId: "",
+        carYearId: "",
+      },
+    },
     validate: {},
   });
 
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
+  const [customerOptions, setCustomerOptions] = useState();
+
   async function getDataBrands() {
     const res = await fetch(`/api/car-model`, { method: "GET" });
     const data = await res.json();
@@ -89,6 +112,59 @@ export default function OrderForm({
       setYearCarOptions(dataOption);
     }
   }
+
+  async function getCustomers() {
+    const res = await fetch(`/api/customer`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.fullName,
+    }));
+    setCustomerOptions(dataOption);
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      handlers.open();
+      await Promise.all([getCustomers(), getDataBrands()]);
+      handlers.close();
+    };
+
+    if (!isEditing) {
+      fetchData();
+    }
+  }, []);
+  useEffect(() => {
+    if (!isEditing) {
+      let updatedProducts = selectedProducts.map((detail: any) => ({
+        name: detail.name,
+        price: detail.price,
+        productId: detail.id,
+        quantity: 1,
+        priceSale: detail.price,
+        subTotal: 1,
+        status: "PUBLIC",
+        saleType: "FIXED",
+        saleValue: 0,
+      }));
+      form.setFieldValue("orderDetails", updatedProducts);
+    } else {
+      let updatedProducts = selectedProducts.map((detail: any) => ({
+        name: detail?.product?.name || detail?.name,
+        price: detail.price,
+        productId: detail.productId !== 0 ? detail.productId : detail.id,
+        quantity: detail?.quantity || 1,
+        priceSale: detail?.priceSale,
+        subTotal: detail.subTotal,
+        status: detail?.status,
+        saleType: detail?.saleType || "FIXED",
+        saleValue: detail?.saleValue || 0,
+      }));
+      form.setFieldValue("orderDetails", updatedProducts);
+    }
+  }, [selectedProducts]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,14 +209,40 @@ export default function OrderForm({
     console.log(values);
   };
 
-  const rows = dataDetail.orderDetails.map(
+  const rows = form.values.orderDetails.map(
     (selectedRow: any, index: number) => {
       // const images = JSON.parse(selectedRow.images);
       return (
         <Table.Tr key={selectedRow.id}>
-          <Table.Td>{selectedRow.product.name}</Table.Td>
-          <Table.Td>{selectedRow.priceSale}</Table.Td>
+          <Table.Td>
+            {" "}
+            {selectedRow.name || selectedRow?.product?.name || ""}
+          </Table.Td>
+          <Table.Td>{selectedRow.priceSale}đ</Table.Td>
           <Table.Td>{selectedRow.quantity}</Table.Td>
+          <Table.Td style={{ width: "120px", textAlign: "center" }}>
+            <>
+              <Tooltip label="Xoá" withArrow position="bottom">
+                <Button
+                  size="xs"
+                  p={5}
+                  variant="transparent"
+                  color="red"
+                  onClick={(e) => {
+                    setSelectedProducts(
+                      selectedProducts.filter(
+                        (selectedItem: any) =>
+                          selectedItem.id !== selectedRow.id &&
+                          selectedItem.id !== selectedRow.productId
+                      )
+                    );
+                  }}
+                >
+                  <IconTrash size={16} color="red" />
+                </Button>
+              </Tooltip>
+            </>
+          </Table.Td>
         </Table.Tr>
       );
     }
@@ -201,6 +303,10 @@ export default function OrderForm({
                   type="text"
                   data={brandOptions}
                   placeholder="Hãng xe"
+                  onChange={(value) => {
+                    getDataModels(Number(value));
+                    form.setFieldValue("car.carBrandId", value);
+                  }}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -210,6 +316,10 @@ export default function OrderForm({
                   type="text"
                   data={modelOptions}
                   placeholder="Dòng xe"
+                  onChange={(value) => {
+                    getDataYearCar(Number(value));
+                    form.setFieldValue("car.carNameId", value);
+                  }}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -219,6 +329,9 @@ export default function OrderForm({
                   data={yearCarOptions}
                   type="text"
                   placeholder="Năm sản xuất"
+                  onChange={(value) => {
+                    form.setFieldValue("car.carYearId", value);
+                  }}
                 />
               </Grid.Col>
             </Grid>
@@ -226,17 +339,41 @@ export default function OrderForm({
         </Grid>
         <Grid mt={24}>
           <Grid.Col span={12}>
-            Chi tiết đơn hàng
-            <Table>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Tên sản phẩm</Table.Th>
-                  <Table.Th>Giá</Table.Th>
-                  <Table.Th>Số lượng</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
+            <ListPage
+              title="Chi tiết đơn hàng"
+              style={{ height: "100%" }}
+              actionBar={
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "end",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    onClick={(e) => {
+                      openModal();
+                    }}
+                    leftSection={<IconPlus size={14} />}
+                  >
+                    Thêm sản phẩm
+                  </Button>
+                </div>
+              }
+              baseTable={
+                <Table>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>Tên sản phẩm</Table.Th>
+                      <Table.Th>Giá</Table.Th>
+                      <Table.Th>Số lượng</Table.Th>
+                      <Table.Th>Hành động</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>{rows}</Table.Tbody>
+                </Table>
+              }
+            />
           </Grid.Col>
         </Grid>
         <Grid gutter={12} mt={24}>
@@ -287,6 +424,12 @@ export default function OrderForm({
           </Button>
         </Group>
       </form>
+      <DynamicModalChooseProducts
+        openModal={openModalChoose}
+        close={closeModal}
+        setSelectedProducts={setSelectedProducts}
+        selectedProducts={selectedProducts}
+      />
     </Box>
   );
 }
