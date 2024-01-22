@@ -114,7 +114,8 @@ export default function CartComponent() {
         body: JSON.stringify(values),
       });
       const data = await res.json();
-      if (!data) {
+      console.log("data", data);
+      if (!data?.order) {
         notifications.show({
           title: "Thất bại",
           message: "Đặt hàng thất bại",
@@ -124,9 +125,8 @@ export default function CartComponent() {
           title: "Thành công",
           message: "Đặt hàng thành công",
         });
-        router.refresh();
-
-        // localStorage.setItem("cartData", JSON.stringify([]));
+        localStorage.setItem("cartData", JSON.stringify([]));
+        router.push("./");
       }
     } catch (error) {
     } finally {
