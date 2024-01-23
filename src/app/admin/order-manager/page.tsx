@@ -172,7 +172,7 @@ export default function OrdersManaga() {
   ];
   const searchData = [
     {
-      name: "s",
+      name: "code",
       placeholder: "Mã đơn hàng",
       type: "input",
     },
@@ -184,7 +184,7 @@ export default function OrdersManaga() {
     },
   ];
   const initialValuesSearch = {
-    s: "",
+    code: "",
     step: null,
     brandId: null,
     nameId: null,
