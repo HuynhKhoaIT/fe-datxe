@@ -103,8 +103,6 @@ export default function CartComponent() {
     form.setFieldValue("detail", cartData);
   }, [cartData]);
 
-  console.log("123");
-
   const handleSubmit = async (values: any) => {
     setLoading(true);
     values.garageId = 1;

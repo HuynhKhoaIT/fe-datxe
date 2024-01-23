@@ -25,6 +25,9 @@ export default function ModalChooseProducts({
 }: any) {
   const [selectedRows, setSelectedRows] = useState<any>(selectedProducts);
 
+  useEffect(() => {
+    if (selectedProducts) setSelectedRows(selectedProducts);
+  }, [selectedProducts]);
   const [products, setProducts] = useState<any>();
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
   const searchParams = useSearchParams();
