@@ -215,7 +215,7 @@ export default function OrdersManaga() {
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
-            data={orders?.orders}
+            data={orders?.data}
             columns={columns}
             loading={true}
             totalPage={orders?.totalPage}
