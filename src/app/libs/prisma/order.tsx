@@ -64,13 +64,17 @@ export async function getOrders(garage: Number,requestData: any){
                     }
                 },
             },
-            orderBy: {
-                id: 'desc',
-            },
         }),
         prisma.order.count()
     ]);
-        return {data};
+    return {
+        data: data,
+        total: total,
+        currentPage: currentPage,
+        limit: limit,
+        totalPage: Math.ceil(total / limit),
+        status: 200
+    };
     } catch (error) {
         return { error };
     }
