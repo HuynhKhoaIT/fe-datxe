@@ -169,22 +169,23 @@ export async function getProductById(id: number) {
                     marketingCampaign: true,
                 },
             },
-            reviews:{
+            // reviews:{
               
-              where:{
-                AND:[
-                  {
-                    status: "PUBLIC"
-                  }
-                ]
-              },
-            }
+            //   where:{
+            //     AND:[
+            //       {
+            //         status: "PUBLIC"
+            //       }
+            //     ]
+            //   },
+            // }
         },
       }),
       prisma.reviewsProduct.aggregate({
         _avg: {
           star: true
         },
+        _count: true,
         where:{
           productId: Number(id),
         },
