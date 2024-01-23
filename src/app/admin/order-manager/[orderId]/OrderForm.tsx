@@ -26,6 +26,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { stepOrderOptions } from "@/constants/masterData";
 import dynamic from "next/dynamic";
 import ListPage from "@/app/components/layout/ListPage";
+import { notifications } from "@mantine/notifications";
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
   {
@@ -34,6 +35,8 @@ const DynamicModalChooseProducts = dynamic(
 );
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
+  const [loadingButton, handlersButton] = useDisclosure();
+
   const router = useRouter();
   const [selectedProducts, setSelectedProducts] = useState<any>(
     dataDetail
@@ -43,7 +46,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         }))
       : []
   );
-  console.log("selectedProducts", selectedProducts);
 
   const [
     openModalChoose,
@@ -51,12 +53,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   ] = useDisclosure(false);
   const form = useForm({
     initialValues: {
-      orderDetails: selectedProducts,
-      car: {
-        carBrandid: "",
-        carNameId: "",
-        carYearId: "",
-      },
+      detail: selectedProducts,
     },
     validate: {},
   });
@@ -139,26 +136,26 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         price: detail.price,
         productId: detail.id,
         quantity: 1,
-        priceSale: detail.price,
-        subTotal: 1,
+        priceSale: detail.salePrice,
+        subTotal: detail?.salePrice,
         status: "PUBLIC",
         saleType: "FIXED",
         saleValue: 0,
       }));
-      form.setFieldValue("orderDetails", updatedProducts);
+      form.setFieldValue("detail", updatedProducts);
     } else {
       let updatedProducts = selectedProducts.map((detail: any) => ({
         name: detail?.product?.name || detail?.name,
         price: detail.price,
         productId: detail.productId !== 0 ? detail.productId : detail.id,
-        quantity: detail?.quantity || 1,
-        priceSale: detail?.priceSale,
-        subTotal: detail.subTotal,
+        quantity: 1,
+        priceSale: detail?.priceSale || detail?.salePrice,
+        subTotal: detail?.priceSale || detail?.salePrice,
         status: detail?.status,
         saleType: detail?.saleType || "FIXED",
         saleValue: detail?.saleValue || 0,
       }));
-      form.setFieldValue("orderDetails", updatedProducts);
+      form.setFieldValue("detail", updatedProducts);
     }
   }, [selectedProducts]);
 
@@ -178,15 +175,15 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           form.setValues(dataDetail);
           form.setFieldValue("customerId", dataDetail?.customerId.toString());
           form.setFieldValue(
-            "car.carBrandId",
+            "carBrandId",
             dataDetail?.car?.carBrandId.toString()
           );
           form.setFieldValue(
-            "car.carNameId",
+            "carNameId",
             dataDetail?.car?.carNameId.toString()
           );
           form.setFieldValue(
-            "car.carYearId",
+            "carYearId",
             dataDetail?.car?.carYearId.toString()
           );
           form.setFieldValue("step", dataDetail?.step.toString());
@@ -199,49 +196,134 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     };
 
     if (isEditing) fetchData();
+    console.log("dataDetail", dataDetail);
   }, [dataDetail]);
 
+  // Tính tổng tiền
+  const calculateSubTotal = () => {
+    let subTotal = 0;
+    console.log(form.values?.detail);
+    form.values?.detail?.forEach((item: any) => {
+      subTotal += item.priceSale * item.quantity;
+    });
+    return subTotal;
+    // form.setFieldValue("total", subTotal);
+  };
   const handleSubmit = async (values: any) => {
+    values.total = calculateSubTotal();
     console.log(values);
+    values.garageId = 1;
+    values.dateTime = new Date();
+    handlersButton.open();
+    try {
+      const url = isEditing ? `/api/orders/${dataDetail?.id}` : `/api/orders`;
+      const res = await fetch(url, {
+        method: isEditing ? "PUT" : "POST",
+        body: JSON.stringify(values),
+      });
+
+      const data = await res.json();
+
+      if (!data?.order) {
+        notifications.show({
+          title: "Thất bại",
+          message: "Đặt hàng thất bại: ",
+        });
+      } else {
+        notifications.show({
+          title: "Thành công",
+          message: "Đặt hàng thành công",
+        });
+        router.back();
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Error during API call:", error);
+      notifications.show({
+        title: "Lỗi",
+        message: "Đã xảy ra lỗi trong quá trình xử lý yêu cầu.",
+      });
+    } finally {
+      handlersButton.close();
+    }
   };
 
-  const rows = form.values.orderDetails.map(
-    (selectedRow: any, index: number) => {
-      // const images = JSON.parse(selectedRow.images);
-      return (
-        <Table.Tr key={selectedRow.id}>
-          <Table.Td>
-            {selectedRow.name || selectedRow?.product?.name || ""}
-          </Table.Td>
-          <Table.Td>{selectedRow.priceSale}đ</Table.Td>
-          <Table.Td>{selectedRow.quantity}</Table.Td>
-          <Table.Td style={{ width: "120px", textAlign: "center" }}>
-            <>
-              <Tooltip label="Xoá" withArrow position="bottom">
-                <Button
-                  size="xs"
-                  p={5}
-                  variant="transparent"
-                  color="red"
-                  onClick={(e) => {
-                    setSelectedProducts(
-                      selectedProducts.filter(
-                        (selectedItem: any) =>
-                          selectedItem.id !== selectedRow.id &&
-                          selectedItem.id !== selectedRow.productId
-                      )
-                    );
-                  }}
-                >
-                  <IconTrash size={16} color="red" />
-                </Button>
-              </Tooltip>
-            </>
-          </Table.Td>
-        </Table.Tr>
-      );
-    }
-  );
+  const rows = form.values.detail.map((selectedRow: any, index: number) => {
+    // const images = JSON.parse(selectedRow.images);
+    return (
+      <Table.Tr key={selectedRow.id}>
+        <Table.Td>
+          {selectedRow.name || selectedRow?.product?.name || ""}
+        </Table.Td>
+        <Table.Td style={{ width: "200px" }}>
+          <NumberInput
+            {...form.getInputProps(`detail.${index}.priceSale`)}
+            min={0}
+            placeholder="Giá sale"
+            suffix="đ"
+            thousandSeparator=","
+            onChange={(value: any) => {
+              console.log("value", value);
+              form.setFieldValue(
+                `detail.${index}.subTotal`,
+                form.values.detail[index].quantity * Number(value)
+              );
+              form.setFieldValue(`detail.${index}.priceSale`, value);
+            }}
+          />
+        </Table.Td>
+        <Table.Td style={{ width: "150px" }}>
+          <NumberInput
+            {...form.getInputProps(`detail.${index}.quantity`)}
+            min={0}
+            placeholder="Số lượng"
+            thousandSeparator=","
+            onChange={(value: any) => {
+              console.log(form.values.detail[index].priceSale * Number(value));
+              form.setFieldValue(`detail.${index}.quantity`, value);
+              form.setFieldValue(
+                `detail.${index}.subTotal`,
+                form.values.detail[index].priceSale * Number(value)
+              );
+            }}
+          />
+        </Table.Td>
+        <Table.Td style={{ width: "150px" }}>
+          <NumberInput
+            {...form.getInputProps(`detail.${index}.subTotal`)}
+            min={0}
+            readOnly
+            placeholder="Số lượng"
+            thousandSeparator=","
+            suffix="đ"
+          />
+        </Table.Td>
+        <Table.Td style={{ width: "120px", textAlign: "center" }}>
+          <>
+            <Tooltip label="Xoá" withArrow position="bottom">
+              <Button
+                size="xs"
+                p={5}
+                variant="transparent"
+                color="red"
+                onClick={(e) => {
+                  setSelectedProducts(
+                    selectedProducts.filter(
+                      (selectedItem: any) =>
+                        selectedItem.id !== selectedRow.id &&
+                        selectedItem.id !== selectedRow.productId
+                    )
+                  );
+                }}
+              >
+                <IconTrash size={16} color="red" />
+              </Button>
+            </Tooltip>
+          </>
+        </Table.Td>
+      </Table.Tr>
+    );
+  });
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -285,7 +367,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             <Grid gutter={12}>
               <Grid.Col span={6}>
                 <TextInput
-                  {...form.getInputProps("car.numberPlates")}
+                  {...form.getInputProps("numberPlates")}
                   label="Biển số xe"
                   type="text"
                   placeholder="Biển số xe"
@@ -293,39 +375,39 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               </Grid.Col>
               <Grid.Col span={6}>
                 <Select
-                  {...form.getInputProps("car.carBrandId")}
+                  {...form.getInputProps("carBrandId")}
                   label="Hãng xe"
                   type="text"
                   data={brandOptions}
                   placeholder="Hãng xe"
                   onChange={(value) => {
                     getDataModels(Number(value));
-                    form.setFieldValue("car.carBrandId", value);
+                    form.setFieldValue("carBrandId", value);
                   }}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
                 <Select
-                  {...form.getInputProps("car.carNameId")}
+                  {...form.getInputProps("carNameId")}
                   label="Dòng xe"
                   type="text"
                   data={modelOptions}
                   placeholder="Dòng xe"
                   onChange={(value) => {
                     getDataYearCar(Number(value));
-                    form.setFieldValue("car.carNameId", value);
+                    form.setFieldValue("carNameId", value);
                   }}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
                 <Select
-                  {...form.getInputProps("car.carYearId")}
+                  {...form.getInputProps("carYearId")}
                   label="Năm sản xuất"
                   data={yearCarOptions}
                   type="text"
                   placeholder="Năm sản xuất"
                   onChange={(value) => {
-                    form.setFieldValue("car.carYearId", value);
+                    form.setFieldValue("carYearId", value);
                   }}
                 />
               </Grid.Col>
@@ -362,6 +444,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       <Table.Th>Tên sản phẩm</Table.Th>
                       <Table.Th>Giá</Table.Th>
                       <Table.Th>Số lượng</Table.Th>
+                      <Table.Th>Tổng tiền</Table.Th>
                       <Table.Th>Hành động</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
@@ -376,7 +459,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             <NumberInput
               label="Tổng đơn hàng"
               placeholder="Tổng đơn hàng"
-              {...form.getInputProps("total")}
+              suffix="đ"
+              readOnly
+              thousandSeparator=","
+              value={calculateSubTotal()}
             />
           </Grid.Col>
           <Grid.Col span={6}>
@@ -408,7 +494,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             Huỷ bỏ
           </Button>
           <Button
-            loading={loading}
+            loading={loadingButton}
             style={{ marginLeft: "12px" }}
             key="submit"
             type="submit"
