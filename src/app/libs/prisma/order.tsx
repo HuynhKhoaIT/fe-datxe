@@ -4,9 +4,38 @@ import { createCar } from "./car";
 import { createCustomer } from "./customer";
 
 
-export async function getOrders(request: NextRequest){
+export async function getOrders(garage: Number,requestData: any){
     try {
-        const orders = await prisma.order.findMany({
+        let titleFilter = '';
+    const searchText = requestData.s;
+    if (searchText) {
+        titleFilter = searchText;
+    }
+    let garageId = {};
+    if (garage) {
+        garageId = Number(garage);
+    }
+    let currentPage = 1;
+    let take = 10;
+    let limit = Number(requestData.limit);
+    let page = requestData.page;
+
+    if (page) {
+        currentPage = Number(page);
+    }
+    if (limit) {
+        take = Number(limit);
+    } else {
+        limit = 10;
+    }
+    const skip = take * (currentPage - 1); 
+    const [data,total] = await prisma.$transaction([   
+        prisma.order.findMany({
+            take: take,
+            skip: skip,
+            orderBy: {
+                id: 'desc',
+            },
             where: {
                 status: {
                     not: 'DELETE',
@@ -35,11 +64,17 @@ export async function getOrders(request: NextRequest){
                     }
                 },
             },
-            orderBy: {
-                id: 'desc',
-            },
-        });
-        return {orders};
+        }),
+        prisma.order.count()
+    ]);
+    return {
+        data: data,
+        total: total,
+        currentPage: currentPage,
+        limit: limit,
+        totalPage: Math.ceil(total / limit),
+        status: 200
+    };
     } catch (error) {
         return { error };
     }
@@ -295,6 +330,9 @@ export async function updateOrder(id: Number,json: any) {
                 brandId: Number(json.carBrandId),
                 modelId: Number(json.carNameId),
                 yearId: Number(json.carYearId),
+                step: Number(json.step),
+                subTotal: Number(json.subTotal),
+                total: Number(json.total),
                 garage: {
                     connect: {
                         id: Number(json.garageId)
