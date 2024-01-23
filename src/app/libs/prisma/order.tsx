@@ -16,7 +16,7 @@ export async function getOrders(request: NextRequest){
                 serviceAdvisor: true,
                 car: true,
                 customer: true,
-                 orderDetails: {
+                orderDetails: {
                     select: {
                         productId:true,
                         note: true,
