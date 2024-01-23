@@ -295,6 +295,9 @@ export async function updateOrder(id: Number,json: any) {
                 brandId: Number(json.carBrandId),
                 modelId: Number(json.carNameId),
                 yearId: Number(json.carYearId),
+                step: Number(json.step),
+                subTotal: Number(json.subTotal),
+                total: Number(json.total),
                 garage: {
                     connect: {
                         id: Number(json.garageId)
