@@ -37,6 +37,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
 
+  console.log(dataDetail);
   const router = useRouter();
   const [selectedProducts, setSelectedProducts] = useState<any>(
     dataDetail

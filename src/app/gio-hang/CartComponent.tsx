@@ -107,7 +107,7 @@ export default function CartComponent() {
     setLoading(true);
     values.garageId = 1;
     values.dateTime = new Date();
-
+    values.total = calculateSubTotal();
     try {
       const res = await fetch(`/api/orders`, {
         method: "POST",
