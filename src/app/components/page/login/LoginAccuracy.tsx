@@ -1,23 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Avatar, Grid, Input, Button, PinInput } from "@mantine/core";
-import { IconChevronLeft, IconBrandGoogle } from "@tabler/icons-react";
-import IconGoogle from "../../assets/images/google.svg";
+import { Avatar, Button, PinInput } from "@mantine/core";
+import { IconChevronLeft } from "@tabler/icons-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import {
-  useForm,
-  isNotEmpty,
-  isEmail,
-  isInRange,
-  hasLength,
-  matches,
-} from "@mantine/form";
-import { CheckOtp, CheckPhone, login } from "@/utils/user";
+import { useForm, hasLength } from "@mantine/form";
+import { CheckOtp } from "@/utils/user";
 import { notifications } from "@mantine/notifications";
 import { signIn } from "next-auth/react";
-import { preventDefault } from "@fullcalendar/core/internal";
-
 export function LoginFormAccuracy() {
   const [countdown, setCountdown] = useState<number>(59);
   const searchParams = useSearchParams();
@@ -49,35 +39,6 @@ export function LoginFormAccuracy() {
   const onLogin = async () => {
     const { phone, pin } = form.values;
     let password = phone + "@@Datxe.com@@";
-    // try {
-    //     setLoading(true);
-    //     await CheckOtp(phone, pin, 'login');
-    //     try {
-    //         signIn('credentials', {
-    //             phone: phone,
-    //             password: password,
-    //             callbackUrl: callbackUrl || '/dashboard',
-    //         });
-    //         notifications.show({
-    //             title: 'Thành công',
-    //             message: 'Đăng nhập thành công',
-    //         });
-    //         setLoading(false);
-    //     } catch (error) {
-    //         notifications.show({
-    //             title: 'Thất bại',
-    //             message: 'Đăng nhập thất bại',
-    //         });
-    //         setLoading(false);
-    //     }
-    // } catch (error) {
-    //     notifications.show({
-    //         title: 'Error',
-    //         message: 'Xác thực thất bại',
-    //     });
-    //     setLoading(false);
-    //     form.setErrors({ pin: 'Mã Otp không hợp lệ!' });
-    // }
     try {
       setLoading(true);
       const checkRs = await CheckOtp(phone, pin, "login");

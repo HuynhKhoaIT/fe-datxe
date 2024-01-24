@@ -1,0 +1,83 @@
+* {
+    --color-primary: #3a6ad4;
+    --color-course: rgb(9, 12, 15);
+    --color-item: rgb(32, 36, 40);
+    --color-feedback: rgb(174, 174, 174);
+    font-family: 'SFPro', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    // scroll-behavior: smooth;
+    overflow: auto;
+    height: unset !important;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    height: unset !important;
+}
+
+html::-webkit-scrollbar {
+    width: 0.2rem;
+    /* width of the entire scrollbar */
+}
+
+html::-webkit-scrollbar-track {
+    background: var(--color-feedback);
+    /* color of the tracking area */
+}
+
+html::-webkit-scrollbar-thumb {
+    background-color: var(--color-course);
+    /* color of the scroll thumb */
+    border-radius: 1.25rem;
+    /* roundness of the scroll thumb */
+    border: 0.1875rem solid var(--color-course);
+    /* creates padding around scroll thumb */
+}
+
+li {
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    margin: auto;
+    max-width: 1620px;
+}
+
+@media (max-width: 3000px) {
+    .container {
+        max-width: 1620px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 1920px) {
+    .container {
+        max-width: 1620px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 1536px) {
+    .container {
+        max-width: 1440px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 934px) {
+    .container {
+        max-width: calc(100vw - 40px);
+        margin: auto;
+    }
+}

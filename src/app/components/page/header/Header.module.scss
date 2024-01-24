@@ -1,113 +1,68 @@
-#tippy-1 {
-    width: 100%;
+.header {
+    height: var(--header-height);
 }
-.search {
-    position: relative;
-    min-width: 200px;
-    height: 40px;
-    background: var(--color-white);
+.headerTop {
+    background-color: var(--primary-color);
+    height: var(--header-height-top);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    position: relative;
-    border-radius: 2px;
-    outline: 1.5px solid #000;
-
-    .input-search {
-        border: none;
-        flex: 1;
+    .topWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         height: 100%;
-        padding: 6px 12px;
-        &:focus-visible {
-            border: none;
-            outline: none;
+        .topLeft {
+            display: flex;
+            gap: 1.25rem;
+        }
+        .topRight {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            .title {
+                color: var(--text-color-light);
+                font-size: var(--primary-font-size);
+                font-weight: var(--font-bold);
+            }
         }
     }
-    .btn-search {
+}
+
+.headerContent {
+    .headerSearch {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--theme-color) !important;
-        height: 34px;
-        margin-right: 5px;
-        min-width: 60px;
-        max-width: 190px;
-        border-radius: none !important;
-        &:hover {
-            background-color: var(--theme-color) !important;
+        padding-top: 18px;
+        justify-content: space-between;
+        .search {
+            height: 3.75rem;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            .btnAdd {
+                height: 3.75rem;
+                .innerAdd {
+                    color: #3761bf;
+                    font-size: var(--primary-font-size);
+                    font-weight: var(--font-big);
+                    padding: 0 1.5rem;
+                }
+            }
+            .btnBook {
+                height: 3.75rem;
+
+                .innerBook {
+                    color: var(--title-white);
+                    font-size: var(--primary-font-size);
+                    font-weight: var(--font-big);
+                    padding: 0 1.5rem;
+                }
+            }
         }
     }
-    .clear-btn {
-        border: none;
-        background-color: transparent;
-        position: absolute;
-        right: 80px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: rgba(22, 24, 35, 0.34);
-    }
-
-    .loading {
-        animation: spinner 0.8s linear infinite;
-    }
-    .icon-search {
-        font-size: 14px;
-    }
 }
-.search-title {
-    height: 30px;
-    padding: 5px 12px;
-    font-size: 1.6rem;
-    line-height: 2rem;
-    font-weight: 600;
-    color: rgba(22, 24, 35, 0.5);
-}
-
-.search-result {
-    width: 100%;
-}
-.account {
-    cursor: pointer;
-    color: var(--color-white);
-    .nav__text {
-        margin-left: 8px;
-        font-weight: 700;
-        .icon-down {
-            margin-left: 6px;
-        }
-    }
-    .nav__text-login {
-        color: var(--color-white);
-    }
-}
-
-.accout-result {
-    position: relative;
+.buttonLogin {
     display: flex;
-    flex-direction: column;
-    padding: 8px 0px;
-    background-color: var(--color-white);
-    color: var(--color-dark);
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    width: 180px;
-    a {
-        display: flex;
-        align-items: center;
-        padding: 10px 8px 10px 16px;
-        font-size: 16px;
-        p {
-            margin-left: 8px;
-        }
-        &:hover {
-            background-color: var(--grey-background);
-        }
-    }
 }
-
-/* Styles cho điện thoại */
-@media screen and (max-width: 576px) {
-    .search {
-        height: 32px;
-    }
+.actionLogin {
+    display: flex;
 }
