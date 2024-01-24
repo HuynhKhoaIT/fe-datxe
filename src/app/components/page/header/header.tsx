@@ -11,7 +11,48 @@ import instagram from "@/assets/icons/instagram.svg";
 import logo from "@/assets/images/logo.png";
 import SearchFormName from "../../elements/search/SearchFormName";
 import { Button } from "@mantine/core";
+import car from "@/assets/icons/car.svg";
+import HeaderTop from "./HeaderTop";
+
 export default function Header() {
+  const brandData = [
+    {
+      id: "1",
+      name: "VinFast",
+    },
+    {
+      id: "2",
+      name: "Toyota",
+    },
+    {
+      id: "3",
+      name: "BMW",
+    },
+    {
+      id: "4",
+      name: "Meceder",
+    },
+    {
+      id: "5",
+      name: "Audi",
+    },
+    {
+      id: "6",
+      name: "Fort",
+    },
+    {
+      id: "7",
+      name: "Honda",
+    },
+    {
+      id: "8",
+      name: "Mazda",
+    },
+    {
+      id: "9",
+      name: "KIA",
+    },
+  ];
   return (
     // <header className="header">
     //   <div className="header-top">
@@ -78,29 +119,7 @@ export default function Header() {
     //   </div>
     // </header>
     <header className={styles.header}>
-      <div className={styles.headerTop}>
-        <Container>
-          <div className={styles.topWrapper}>
-            <div className={styles.topLeft}>
-              <Link href={""}>
-                <img src={facebook.src} alt="Facebook Icon" />
-              </Link>
-              <Link href={""}>
-                <img src={pintest.src} alt="Facebook Icon" />
-              </Link>
-              <Link href={""}>
-                <img src={instagram.src} alt="Facebook Icon" />
-              </Link>
-            </div>
-            <div className={styles.topRight}>
-              <Link href="" className={styles.title}>
-                Kiểm tra lịch hẹn
-              </Link>
-              <SigninButton />
-            </div>
-          </div>
-        </Container>
-      </div>
+      <HeaderTop />
       <div className={styles.headerContent}>
         <Container>
           <div className={styles.headerSearch}>
@@ -111,6 +130,7 @@ export default function Header() {
               <SearchFormName />
               <Button
                 color="#EEF1F9"
+                leftSection={<img src={car.src} alt="Car Icon" />}
                 classNames={{ root: styles.btnAdd, inner: styles.innerAdd }}
               >
                 Thêm xe
@@ -123,7 +143,15 @@ export default function Header() {
               </Button>
             </div>
           </div>
-          <div className={styles.headerNav}></div>
+          <div className={styles.headerNav}>
+            {brandData?.map((item, index) => {
+              return (
+                <Link href="" key={index} className={styles.itemNav}>
+                  {item?.name}
+                </Link>
+              );
+            })}
+          </div>
         </Container>
       </div>
     </header>

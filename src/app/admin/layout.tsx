@@ -4,6 +4,7 @@ import HeaderAdmin from "../components/page/header/header-admin";
 import { MyFooter } from "../components/page/footer/footer";
 import styles from "./index.module.scss";
 import { LoadingComponent } from "../components/loading";
+import HeaderTop from "../components/page/header/HeaderTop";
 interface IProps {
   children: ReactNode;
 }
@@ -11,7 +12,7 @@ interface IProps {
 export default function AdminLayout({ children }: IProps) {
   return (
     <main>
-      <HeaderAdmin />
+      <HeaderTop />
       <div className={styles.wrapper}>
         <div className={styles.navBar}>
           <Menu />
