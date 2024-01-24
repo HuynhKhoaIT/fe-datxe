@@ -6,7 +6,7 @@ import { createCustomer } from "./customer";
 
 export async function getOrders(garage: Number,requestData: any){
     try {
-        let titleFilter = '';
+    let titleFilter = '';
     const searchText = requestData.s;
     if (searchText) {
         titleFilter = searchText;
@@ -202,6 +202,8 @@ export async function createOrder(json: any) {
                 brandId: Number(json.carBrandId),
                 modelId: Number(json.carNameId),
                 yearId: Number(json.carYearId),
+                subTotal: Number(json.subTotal),
+                total: Number(json.total),
                 garageId: Number(json.garageId ?? 1),
                 serviceAdvisorId: Number(json.serviceAdvisorId ?? 1),
                 orderDetails: {
