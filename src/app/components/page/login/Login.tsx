@@ -33,32 +33,42 @@ export default function LoginFormInput() {
     },
   });
   const onSubmit = async () => {
-    const { phone } = form.values;
-    const res = await CheckPhone(phone);
-    if (res) {
-      const genRs = await GenOTP(phone);
-      if (genRs == 100) {
-        if (callbackUrl) {
-          router.push(
-            `./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`
-          );
+    try {
+      const { phone } = form.values;
+      const res = await CheckPhone(phone);
+
+      if (res) {
+        const genRs = await GenOTP(phone);
+
+        if (genRs.CodeResult === 100) {
+          if (callbackUrl) {
+            router.push(
+              `./dang-nhap/xac-thuc?phone=${phone}&callbackUrl=${callbackUrl}`
+            );
+          } else {
+            router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
+          }
         } else {
-          router.push(`./dang-nhap/xac-thuc?phone=${phone}`);
+          notifications.show({
+            title: "Error",
+            message: "Lỗi tạo OTP, Vui lòng thử lại sau!",
+          });
         }
       } else {
         notifications.show({
           title: "Error",
-          message: "Lỗi tạo OTP, Vui lòng thử lại sau!",
+          message: "Số điện thoại chưa được đăng ký vui lòng đăng ký!",
         });
+        form.setErrors({ phone: "Số điện thoại chưa được đăng ký!" });
       }
-    } else {
+    } catch (error) {
       notifications.show({
         title: "Error",
-        message: "Số điện thoại chưa được đăng ký vui lòng đăng ký!",
+        message: "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau!",
       });
-      form.setErrors({ phone: "Số điện thoại chưa được đăng ký!" });
     }
   };
+
   return (
     <div className="login-form">
       <div className="d-flex justify-content-center flex-column align-items-center ">

@@ -3,7 +3,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import styles from "./Header.module.scss";
-import classNames from "classnames/bind";
 import { Menu, Button, rem } from "@mantine/core";
 import {
   IconExternalLink,
@@ -12,9 +11,7 @@ import {
   IconCaretDownFilled,
   IconUserCircle,
 } from "@tabler/icons-react";
-const cx = classNames.bind(styles);
 import { useRouter } from "next/navigation";
-
 const SigninButton = () => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -32,17 +29,17 @@ const SigninButton = () => {
   };
   return (
     <>
-      <div className={cx("account", "d-flex align-items-center")}>
-        <IconUserCircle />
-        <div className={cx("nav__text", "d-none d-lg-block")}>
+      <div className={styles.buttonLogin}>
+        <IconUserCircle color="#fff" />
+        <div className={styles.actionLogin}>
           {!session?.user ? (
-            <Link href="/dang-nhap" className={cx("nav__text-login")}>
-              Đăng nhập
+            <Link href="/dang-nhap" className={styles.title}>
+              Đăng nhập / Đăng ký
             </Link>
           ) : (
             <Menu width={200} shadow="md">
               <Menu.Target>
-                <span>
+                <span className={styles.title}>
                   {session?.user.name}
                   <IconCaretDownFilled />
                 </span>
