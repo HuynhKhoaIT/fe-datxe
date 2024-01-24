@@ -19,7 +19,7 @@ const Carousel = ({ slideshowData }: any) => {
 
   return (
     <div className="carousel_landing" style={{ height: "720px" }}>
-      <Slider ref={slider} {...settings}>
+      <Slider  {...settings}>
         {slideshowData?.map((item: any) => {
           return <CarouselItem item={item} key={item.id} />;
         })}
