@@ -261,14 +261,14 @@ export async function getProductsBestSeller(token: String,json: any) {
 
   const totalPage = Math.ceil(total / limit);
 
-  return NextResponse.json({
-      data: products,
-      total: total,
-      currentPage: currentPage,
-      limit: limit,
-      totalPage: totalPage,
-      status: 200,
-  });
+  return new NextResponse(JSON.stringify({
+    data: products,
+    total: total,
+    currentPage: currentPage,
+    limit: limit,
+    totalPage: totalPage,
+    status: 200,
+}));
   } catch (error) {
     return { error };
   }
