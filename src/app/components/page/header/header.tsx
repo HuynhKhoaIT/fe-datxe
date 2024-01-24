@@ -8,7 +8,7 @@ import Container from "../../common/Container";
 import facebook from "@/assets/icons/faceBook.svg";
 import pintest from "@/assets/icons/pinterest.svg";
 import instagram from "@/assets/icons/instagram.svg";
-import logo from "@/assets/images/logo.png";
+import logo from "@/assets/images/banner.png";
 import SearchFormName from "../../elements/search/SearchFormName";
 import { Button } from "@mantine/core";
 export default function Header() {
