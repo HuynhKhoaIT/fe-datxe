@@ -1,5 +1,5 @@
 .header {
-    height: var(--header-height);
+    // height: var(--header-height);
 }
 .headerTop {
     background-color: var(--primary-color);
@@ -29,6 +29,8 @@
 }
 
 .headerContent {
+    height: var(--header-content);
+
     .headerSearch {
         display: flex;
         padding-top: 18px;
@@ -57,6 +59,18 @@
                     padding: 0 1.5rem;
                 }
             }
+        }
+    }
+    .headerNav {
+        width: 100%;
+        margin-top: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .itemNav {
+            color: var(--nav-color);
+            font-weight: var(--font-semi-bold);
+            font-size: var(--small-font-size);
         }
     }
 }

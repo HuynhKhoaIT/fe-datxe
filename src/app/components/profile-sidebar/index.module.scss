@@ -1,0 +1,29 @@
+.listMenu {
+    display: flex;
+    flex-direction: column;
+    li {
+        margin: 5px 0;
+        a {
+            color: var(--color-dark);
+            padding: 6px 6px 6px 15px;
+            display: block;
+            font-weight: 500;
+            transition: var(--transition);
+            :hover {
+                padding-left: 20px;
+            }
+            i {
+                margin-right: 5px;
+                color: var(--theme-color);
+            }
+        }
+    }
+    .active i {
+        color: var(--color-white);
+    }
+    .active {
+        background: var(--theme-color);
+        color: var(--color-white);
+        border-radius: 8px;
+    }
+}
