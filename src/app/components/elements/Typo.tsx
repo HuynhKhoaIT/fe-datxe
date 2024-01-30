@@ -41,6 +41,7 @@ const Typo: React.FC<TypoProps> = ({
   };
 
   const weightType: WeightType = {
+    big: "var(--font-big)",
     bold: "var(--font-bold)",
     normal: "var(--font-normal)",
     "semi-bold": "var(--font-semi-bold)",

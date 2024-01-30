@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Product from "../components/elements/product/ListProductHot";
 import styles from "./index.module.scss";
 import OverviewPanel from "../components/layout/OverviewPanel";
-import ProductItem from "../components/elements/product/ProductItem";
+import ProductItem from "../components/elements/product/ProductItem1";
 import { Box, Grid } from "@mantine/core";
 import { IProduct } from "@/interfaces/product";
 export default function ServicesHot({ garageId = 9 }: any) {
@@ -36,10 +36,11 @@ export default function ServicesHot({ garageId = 9 }: any) {
   }, []);
   return (
     <OverviewPanel
-      stylesProps={{ marginBottom: "1rem" }}
-      title="Dịch vụ hot"
+      stylesProps={{ padding: "30px 0" }}
+      title="Dịch vụ khuyến mãi"
+      subTitle="Các dịch vụ dành cho xe bạn"
       linkToList={"/dich-vu"}
-      id="products"
+      id="services"
     >
       <div className={styles.rowItem}>
         {services?.map((product: IProduct, index: number) => (
