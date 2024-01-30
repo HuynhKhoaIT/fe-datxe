@@ -1,19 +1,29 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const allowedOrigins =
     process.env.NODE_ENV === 'production'
         ? ['https://up-image.dlbd.vn', 'https://oga.datxe.com']
         : ['http://localhost:3000'];
-export function middleware(request: Request) {
+export function middleware(request: NextRequest) {
+    const login = request.cookies.get('login');
+    const check_login = !login?.value ? false : true;
+    const access_token = request.cookies.get('access_token');
+    const check_token = !access_token?.value ? false : true;
     const origin = request.headers.get('origin');
+
+    const res_404 = new NextResponse(null, {
+        status: 404,
+        statusText: 'Bad request',
+        headers: {
+            'Content-Type': 'text/plain',
+        },
+    });
+
     if (origin && !allowedOrigins.includes(origin)) {
-        return new NextResponse(null, {
-            status: 400,
-            statusText: 'Bad Request',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-        });
+        return res_404;
+    }
+    if (!check_login && !check_token) {
+        return res_404;
     }
     // retrieve the current response
     const res = NextResponse.next();
