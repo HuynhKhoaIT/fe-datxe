@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Body from "../components/layout/Body";
 import { IProduct } from "@/interfaces/product";
-import ProductItem from "../components/elements/product/ProductItem";
+import ProductItem from "../components/elements/product/ProductItem1";
 import { Sort } from "../components/elements/shop-sort";
 import { FilterCheckBox } from "../components/elements/filterCheckBox";
 

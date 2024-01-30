@@ -12,11 +12,17 @@
         margin-bottom: 12px;
         align-items: center;
         .title {
-            font-weight: 600;
-            font-size: 28px;
-            color: var(--theme-color);
+            color: var(--title-color);
+            font-size: var(--h2-font-size);
+            font-weight: var(--font-big);
+            line-height: 40px;
         }
-
+        .subTitle {
+            color: var(--title-color-sub);
+            font-size: var(--small-font-size);
+            font-weight: var(--font-semi-bold);
+            line-height: 20px;
+        }
         .showMore {
             color: var(--theme-color);
             font-size: 13px;

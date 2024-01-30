@@ -4,7 +4,7 @@ import styles from "./ImageField.module.scss";
 import imageDefault from "../../../../public/assets/images/no_image.png";
 export default function ImageField({
   src,
-  classNames,
+  className,
   fallbackSrc = imageDefault.src,
   radius,
   width,
@@ -15,7 +15,7 @@ export default function ImageField({
   return (
     <Image
       src={src}
-      classNames={classNames}
+      classNames={className}
       fallbackSrc={fallbackSrc}
       radius={radius}
       w={width}
