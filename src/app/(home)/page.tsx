@@ -5,7 +5,11 @@ import ProductsHot from "../landing/ProductsHot";
 import ServicesHot from "../landing/ServiceHot";
 import { Space } from "@mantine/core";
 import { apiUrl } from "@/constants";
-import Carousel from "./Carousel";
+import Carousel from "../landing/Carousel/Carousel";
+import Category from "../landing/Category/Category";
+import RenderContext from "../components/elements/RenderContext";
+import LandingPageDesktop from "./LandingPageDesktop";
+import LandingPageMobile from "./LandingPageMobile";
 export const revalidate = 0;
 
 async function getData() {
@@ -20,20 +24,22 @@ async function getData() {
 export default async function Home() {
   let categories = await getData();
   return (
-    <div className="bg-white">
-      <Carousel />
-      <ProductListItem
-        label="Danh mục"
-        title="Dịch vụ"
-        subTitle="Nổi bật"
-        dataSource={categories}
-        isCategory={true}
-        style={{ background: "white" }}
-      />
-      <ProductsHot />
-      {/* <Space h={30} /> */}
-      <ServicesHot />
-      {/* <Space h={30} /> */}
-    </div>
+    <RenderContext
+      components={{
+        desktop: {
+          defaultTheme: LandingPageDesktop,
+        },
+        mobile: {
+          defaultTheme: LandingPageMobile,
+        },
+      }}
+      categories={categories}
+      // slideShowData={slideShowData || []}
+      // expertList={expertList || []}
+      // categoryCourseList={categoryCourseList}
+      // categoryCourseFree={categoryCourseFree}
+      // categoryCourseTop={categoryCourseTop}
+      // categoryCourseNew={categoryCourseNew}
+    />
   );
 }

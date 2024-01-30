@@ -81,3 +81,46 @@ a {
         margin: auto;
     }
 }
+
+.slick-track {
+    display: flex;
+    margin: 0;
+    // .slick-slide {
+    //     height: inherit !important;
+
+    //     &>div {
+    //         height: 100%;
+
+    //         &>* {
+    //             height: 100%;
+    //         }
+    //     }
+    // }
+}
+
+.slick-list {
+    margin: 0 calc(-1 * var(--slide-gap));
+    // overflow: visible;
+    // height: auto;
+    // clip-path: inset(-100vw -100vw -100vw -1vw);
+}
+
+.slick-slide > div {
+    padding: 0 var(--slide-gap);
+}
+
+.slick-arrow {
+    z-index: 1;
+}
+
+.slick-prev,
+.slick-next {
+    &.slick-disabled {
+        display: none !important;
+    }
+}
+
+.slick-prev:before,
+.slick-next:before {
+    font-size: 0 !important;
+}

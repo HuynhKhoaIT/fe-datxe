@@ -3,6 +3,8 @@ import Box from "../common/Box";
 import classNames from "classnames";
 import styles from "./OverviewPannel.module.scss";
 import Link from "next/link";
+import { Button } from "@mantine/core";
+import ArrowRight from "@/assets/icons/arrow-right.svg";
 function OverviewPanel({
   title,
   linkToList,
@@ -11,6 +13,7 @@ function OverviewPanel({
   className,
   hiddenShowMore = false,
   stylesProps,
+  subTitle,
 }: any) {
   return (
     <Box
@@ -20,10 +23,19 @@ function OverviewPanel({
       {showHeader && (
         <>
           <div className={styles.head}>
-            <div className={styles.title}>{title}</div>
+            <div className={styles.left}>
+              <div className={styles.title}>{title}</div>
+              <div className={styles.subTitle}>{subTitle}</div>
+            </div>
             {!hiddenShowMore && (
               <Link className={styles.showMore} href={linkToList}>
-                Xem thêm
+                <Button
+                  variant="outline"
+                  color={"var(--blue-color)"}
+                  rightSection={<img src={ArrowRight.src} />}
+                >
+                  Xem thêm
+                </Button>
               </Link>
             )}
           </div>

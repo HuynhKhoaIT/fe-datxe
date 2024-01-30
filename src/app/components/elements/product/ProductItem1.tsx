@@ -4,6 +4,7 @@ import { Card, Image, Badge, Group, Flex, Box } from "@mantine/core";
 import styles from "./ProductItem.module.scss";
 import Typo from "../Typo";
 import ImageField from "../../form/ImageField";
+import Star from "@/assets/icons/star.svg";
 export default function ProductItem({
   product,
 }: {
@@ -13,31 +14,40 @@ export default function ProductItem({
   const images = JSON.parse(product.images);
   return (
     <Box w={"100%"}>
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Card shadow="sm" radius="md">
         <Card.Section>
           <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>
             <ImageField src={images ? images[0] : null} height={"160"} />
           </Link>
         </Card.Section>
 
-        <Group justify="space-between" mt="md" mb="xs">
+        <div className={styles.infoCard}>
+          <div className={styles.star}>
+            <img src={Star.src} alt="start" />
+            <Typo
+              style={{
+                fontSize: "12px",
+                fontWeight: "500",
+                lineHeight: "1rem",
+                color: "var(--title-color-sub)",
+              }}
+            >
+              4.6(280)
+            </Typo>
+          </div>
           <Link href={`/san-pham/${product.id}`}>
-            <Typo size="sub" type="bold" className={styles.productName}>
+            <Typo size="primary" className={styles.productName}>
               {product.name}
             </Typo>
           </Link>
-          <Badge classNames={{ root: styles.productOnSale }}>On Sale</Badge>
-        </Group>
-
-        <Flex justify={"center"} gap={10}>
-          <Typo
-            size="sub"
-            type="bold"
-            style={{ color: "var(--color-text-del)" }}
-          >
-            <del>{product.price?.toLocaleString()}đ</del>
+          <Typo size="tiny" className={styles.address}>
+            Hồ Chí Minh
           </Typo>
-          <Typo size="sub" type="bold" style={{ color: "var(--theme-color)" }}>
+          <Badge classNames={{ root: styles.productOnSale }}>On Sale</Badge>
+        </div>
+
+        <Flex gap={10}>
+          <Typo size="sub" type="big" style={{ color: "var(--blue-color)" }}>
             {product?.salePrice?.toLocaleString()}đ{" "}
           </Typo>
         </Flex>

@@ -6,7 +6,8 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 import "@/assets/scss/index.scss";
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Notifications } from "@mantine/notifications";
 import Provider from "./Provider";
 import { ReactNode } from "react";

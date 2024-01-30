@@ -1,0 +1,73 @@
+.footerArea {
+    background-color: var(--primary-color);
+}
+.footerWidget {
+    padding: 1rem 0;
+}
+.copyright {
+    background: rgba(22, 21, 21, 0.25);
+    height: 70px;
+    width: 100%;
+    line-height: 70px;
+}
+.row {
+    display: flex;
+    width: 100%;
+    .left {
+        width: 50%;
+        .copyrightText {
+            font-size: var(--primary-font-size);
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .datxe {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+    }
+    .right {
+        width: 50%;
+        .footerApp {
+            display: flex;
+            justify-content: end;
+            gap: 1rem;
+        }
+    }
+}
+
+.listSocial {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    .itemSocial {
+        height: 38px;
+        width: 38px;
+        border-radius: 50%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.introduceTitle,
+.introduceContent {
+    color: var(--text-color-light);
+}
+.introduceContent {
+    min-height: 70px;
+}
+
+.input {
+    height: 53px;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-size: var(--sub-font-size);
+}
+.listItem {
+    display: flex;
+    height: 46px;
+    padding: 0 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
