@@ -21,7 +21,6 @@
 }
 
 .button__image {
-   
     max-width: 30px;
     margin-right: 5px;
     object-fit: contain;
@@ -30,9 +29,8 @@
 
 @media (max-width: 500px) {
     .button__image {
-        max-width: 10px;
+        max-width: 25px;
         margin-right: 5px;
         object-fit: contain;
-        transform: translateX(-20%);
     }
 }

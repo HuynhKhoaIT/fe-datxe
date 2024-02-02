@@ -8,31 +8,33 @@
     margin-left: auto;
 }
 
-@media (min-width: 576px) {
+@media only screen and (max-width: 567px) {
     .container {
+        width: 100%;
         max-width: 540px;
     }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
     .container {
+        width: 100%;
         max-width: 720px;
     }
 }
 
-@media (min-width: 992px) {
+@media (max-width: 992px) {
     .container {
         max-width: 960px;
     }
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 1200px) {
     .container {
         max-width: 1140px;
     }
 }
 
-@media (min-width: 1400px) {
+@media (max-width: 1400px) {
     .container {
         max-width: 1320px;
     }

@@ -15,6 +15,7 @@ export default function ProductItem2({
   key: number;
   product: IProduct;
 }) {
+  console.log(product);
   const images = JSON.parse(product.images);
   return (
     <Box w={"100%"}>
@@ -27,7 +28,9 @@ export default function ProductItem2({
 
         <div className={styles.infoCard2}>
           <Link href={`/san-pham/${product.id}`}>
-            <Typo className={styles.productName}>{product.name}</Typo>
+            <Typo size="sub" type="semi-bold" className={styles.productName}>
+              {product.name}
+            </Typo>
           </Link>
           <div className={styles.star}>
             <img src={Star.src} alt="start" />
@@ -45,7 +48,7 @@ export default function ProductItem2({
           <Badge classNames={{ root: styles.productOnSale }}>On Sale</Badge>
         </div>
 
-        <Flex gap={10} mt={6}>
+        <Flex gap={10} mt={6} align={"center"}>
           <Typo size="sub" type="big" style={{ color: "var(--blue-color)" }}>
             {product?.salePrice?.toLocaleString()}đ{" "}
           </Typo>

@@ -35,6 +35,7 @@
     height: 1.5rem;
     display: flex;
     gap: 4px;
+    flex-shrink: 0;
     align-items: center;
 }
 

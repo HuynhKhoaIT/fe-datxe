@@ -3,7 +3,7 @@ import { ICategory } from "@/interfaces/category";
 import { Group } from "@mantine/core";
 import ImageField from "@/app/components/form/ImageField";
 import Typo from "@/app/components/elements/Typo";
-import styles from "./CartCategory.module.scss";
+import styles from "./CardCategory.module.scss";
 const CardCategory = ({
   key,
   category,

@@ -5,6 +5,7 @@ import styles from "./OverviewPannel.module.scss";
 import Link from "next/link";
 import { Button } from "@mantine/core";
 import ArrowRight from "@/assets/icons/arrow-right.svg";
+import Typo from "../elements/Typo";
 function OverviewPanel({
   title,
   linkToList,
@@ -23,7 +24,13 @@ function OverviewPanel({
           <Box>
             <div className={styles.head}>
               <div className={styles.left}>
-                <div className={styles.title}>{title}</div>
+                <Typo
+                  size="small"
+                  type="bold"
+                  style={{ color: "var(--title-color)" }}
+                >
+                  {title}
+                </Typo>
                 <div className={styles.subTitle}>{subTitle}</div>
               </div>
               {!hiddenShowMore && (
