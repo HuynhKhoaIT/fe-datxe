@@ -1,0 +1,17 @@
+.container {
+    height: 180px;
+    position: relative;
+    max-width: 1920px;
+    margin: auto;
+    position: relative;
+}
+
+.banner {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(50%);
+    z-index: 0;
+    position: absolute;
+    top: 0;
+}

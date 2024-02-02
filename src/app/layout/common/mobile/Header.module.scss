@@ -1,0 +1,31 @@
+.wrapper {
+    height: 67px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    gap: 10px;
+    background-color: var(--white-bg);
+    .logo {
+        display: block;
+        width: 42px;
+        height: 42px;
+        img {
+            object-fit: fill;
+        }
+    }
+    .headerNav {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        .avatar {
+            display: block;
+            width: 32px;
+            height: 32px;
+            img {
+                object-fit: fill;
+                border-radius: 50%;
+            }
+        }
+    }
+}

@@ -4,6 +4,7 @@
     --header-content: 9.75rem;
     --header-height-top: 2.5rem;
     --banner-cart-height: 24.75rem;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
     /* ======== Colors ======== */
     /* Color mode HSL (hue, saturation, lightness) */
@@ -64,29 +65,29 @@
     --sub-font-size-mb: 8px;
     --small-font-size-mb: 7px;
 
-    --box-shadow: 0px -2px 15px 0px rgba(0, 172, 193, 0.2);
+    // --box-shadow: 0px -2px 15px 0px rgba(0, 172, 193, 0.2);
 }
 
-@media (max-width: 768px) {
+@media only screen and (max-width: 768px) {
     :root {
         --header-height: 4.4rem;
         --big-font-size: 20px;
-        --h1-font-size: 28px; // 25px
-        --h2-font-size: 26px;
-        --h3-font-size: 24px;
+        --h1-font-size: 26px; // 25px
+        --h2-font-size: 24px;
+        --h3-font-size: 22px;
         --primary-font-size: 16px;
         --sub-font-size: 14px;
         --small-font-size: 10px;
     }
 }
 
-@media (max-width: 960px) {
+@media only screen and (max-width: 960px) {
     :root {
         --header-height: 4.4rem;
         --big-font-size: 20px;
-        --h1-font-size: 28px; // 25px
-        --h2-font-size: 26px;
-        --h3-font-size: 24px;
+        --h1-font-size: 26px; // 25px
+        --h2-font-size: 24px;
+        --h3-font-size: 22px;
         --primary-font-size: 16px;
         --sub-font-size: 14px;
         --small-font-size: 10px;

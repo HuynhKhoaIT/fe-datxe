@@ -53,6 +53,9 @@ a {
     margin: auto;
     max-width: 1620px;
 }
+img {
+    max-width: 100%;
+}
 
 @media (max-width: 3000px) {
     .container {
@@ -147,4 +150,21 @@ a {
     height: 0.875rem;
     width: 0.875rem;
     margin: 0 0.4063rem;
+}
+
+.slick-mobile {
+    .slick-prev {
+        left: -15px;
+        z-index: 1;
+        &:before {
+            display: none;
+        }
+    }
+    .slick-next {
+        right: -15px;
+        z-index: 1;
+        &:before {
+            display: none;
+        }
+    }
 }

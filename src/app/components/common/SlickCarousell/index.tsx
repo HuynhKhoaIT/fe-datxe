@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Slider, { Settings } from "react-slick";
 import ImgButton from "./Button";
@@ -29,55 +30,6 @@ const SlickCarousel = ({
     autoplaySpeed: autoplaySpeed,
     nextArrow: nextArrow,
     prevArrow: prevArrow,
-    responsive: responsive
-      ? [
-          {
-            breakpoint: 1536,
-            settings: {
-              slidesToShow: column - 1,
-              slidesToScroll: 1,
-              variableWidth: false,
-            },
-          },
-          {
-            breakpoint: 1536,
-            settings: {
-              slidesToShow: column - 1,
-              slidesToScroll: 1,
-              variableWidth: false,
-            },
-          },
-          {
-            breakpoint: 1536,
-            settings: {
-              slidesToShow: column,
-              slidesToScroll: 1,
-              variableWidth: false,
-            },
-          },
-          {
-            breakpoint: 1400,
-            settings: {
-              slidesToShow: column,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 1200,
-            settings: {
-              slidesToShow: column - 1,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 1008,
-            settings: {
-              slidesToShow: column - 1,
-              slidesToScroll: 1,
-            },
-          },
-        ]
-      : [],
   };
   const style = { "--slide-gap": `${gap}px`, height } as React.CSSProperties;
 

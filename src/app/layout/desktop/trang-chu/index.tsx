@@ -14,7 +14,14 @@ import Blogs from "./Blogs/Blogs";
 import ProductSuggestions from "./ProductSuggestions/ProductSuggestions";
 import Reassons from "./Reasons/Reasons";
 
-const LandingPageDesktop = ({ categories }: any) => {
+const LandingPageDesktop = ({
+  categories,
+  reassons,
+  productsRelate,
+  servicesHot,
+  productsHot,
+  blogs,
+}: any) => {
   const slideshowData = [
     {
       image: image1.src,
@@ -25,7 +32,6 @@ const LandingPageDesktop = ({ categories }: any) => {
   ];
   return (
     <div className="bg-white">
-      {/* <Carousel /> */}
       <CarouselDesktop slideshowData={slideshowData} />
       <BookForm />
       <div className={styles.categoryBox}>
@@ -35,7 +41,7 @@ const LandingPageDesktop = ({ categories }: any) => {
         <Advertisement />
       </Container>
       <div className={styles.servicesBox}>
-        <ServicesHot />
+        <ServicesHot data={servicesHot?.data} />
       </div>
       <div
         className={styles.productsBox}
@@ -44,12 +50,12 @@ const LandingPageDesktop = ({ categories }: any) => {
           backgroundSize: "cover",
         }}
       >
-        <ProductsHot />
+        <ProductsHot data={productsHot?.data} />
       </div>
       <div style={{ backgroundColor: "var(--background-color-light)" }}>
-        <Blogs />
+        <Blogs blogs={blogs} />
       </div>
-      <ProductSuggestions />
+      <ProductSuggestions data={productsRelate?.data} />
       <div
         className={styles.productsBox}
         style={{
@@ -57,7 +63,7 @@ const LandingPageDesktop = ({ categories }: any) => {
           backgroundSize: "cover",
         }}
       >
-        <Reassons />
+        <Reassons data={reassons} />
       </div>
     </div>
   );
