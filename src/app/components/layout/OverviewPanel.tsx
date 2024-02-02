@@ -14,7 +14,36 @@ function OverviewPanel({
   hiddenShowMore = false,
   stylesProps,
   subTitle,
+  fullWidth,
 }: any) {
+  if (fullWidth) {
+    return (
+      <div className={classNames(styles.panel, className)}>
+        {showHeader && (
+          <Box>
+            <div className={styles.head}>
+              <div className={styles.left}>
+                <div className={styles.title}>{title}</div>
+                <div className={styles.subTitle}>{subTitle}</div>
+              </div>
+              {!hiddenShowMore && (
+                <Link className={styles.showMore} href={linkToList}>
+                  <Button
+                    variant="outline"
+                    color={"var(--blue-color)"}
+                    rightSection={<img src={ArrowRight.src} />}
+                  >
+                    Xem thêm
+                  </Button>
+                </Link>
+              )}
+            </div>
+          </Box>
+        )}
+        <div className={styles.content}>{children}</div>
+      </div>
+    );
+  }
   return (
     <Box
       className={classNames(styles.panel, className)}

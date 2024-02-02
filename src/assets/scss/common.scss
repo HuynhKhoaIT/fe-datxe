@@ -124,3 +124,27 @@ a {
 .slick-next:before {
     font-size: 0 !important;
 }
+
+.slick-dots li.slick-active button:before {
+    height: 0.875rem;
+    width: 0.875rem;
+    margin: 0 0.4063rem;
+    opacity: 1;
+    font-size: 1rem;
+    color: var(--primary-color) !important;
+}
+
+.slick-dots li button:before {
+    color: white;
+    opacity: 1;
+    // :hover{
+    //     color: var(--dots-color) !important;
+    // }
+}
+
+.slick-dots li button:before {
+    font-size: 1rem !important;
+    height: 0.875rem;
+    width: 0.875rem;
+    margin: 0 0.4063rem;
+}

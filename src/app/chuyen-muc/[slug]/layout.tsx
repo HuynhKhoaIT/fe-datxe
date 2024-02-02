@@ -10,23 +10,7 @@ export default async function SearchLayout({ children }: IProps) {
   const categorys = await getCategories();
   return (
     <>
-      <main className="main">
-        <div className="shop-area bg pt-40">
-          <div className="container">
-            {/* <Breadcrumbs style={{ padding: "16px 0" }}>{items}</Breadcrumbs> */}
-            <div className="row pb-60">
-              <div className="col-lg-3">
-                <FilterRadio
-                  data={categorys}
-                  filterName="Danh mục"
-                  keyName="cat_id"
-                />
-              </div>
-              <div className="col-lg-9">{children}</div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <main className="main">{children}</main>
     </>
   );
 }

@@ -2,6 +2,7 @@
 import { Radio } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
 import { ItemRadio } from "./ItemRadio";
+import styles from "./index.module.scss";
 export function FilterRadio({
   data = [],
   filterName = "Filter",
@@ -14,16 +15,17 @@ export function FilterRadio({
     valueRadio = params.get(keyName);
   }
   return (
-    <div className="shop-sidebar">
-      <div className="shop-widget">
-        <h4 className="shop-widget-title">{filterName}</h4>
-        <ul>
-          <Radio.Group defaultValue={String(valueRadio)}>
-            {data?.map((item: any, index: number) => (
-              <ItemRadio dataDetail={item} key={index} keyName={keyName} />
-            ))}
-          </Radio.Group>
-        </ul>
+    <div className={styles.shopSidebar}>
+      <div className={styles.shopWidgets}>
+        <h4 className={styles.shopWidgetTitle}>{filterName}</h4>
+        <Radio.Group
+          defaultValue={String(valueRadio)}
+          classNames={{ root: styles.root }}
+        >
+          {data?.map((item: any, index: number) => (
+            <ItemRadio dataDetail={item} key={index} keyName={keyName} />
+          ))}
+        </Radio.Group>
       </div>
     </div>
   );
