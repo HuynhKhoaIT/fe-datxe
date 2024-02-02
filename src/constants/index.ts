@@ -1,4 +1,5 @@
 export const apiUrl = process.env.REACT_APP_API;
+export const envGoogleMapAPIKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 export const DATE_DISPLAY_FORMAT = 'hh:mm A DD/MM/YYYY';
 export const DATE_SHORT_MONTH_FORMAT = 'DD MMM YYYY';

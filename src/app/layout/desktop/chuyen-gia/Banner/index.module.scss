@@ -1,0 +1,12 @@
+.wrapper {
+    position: relative;
+}
+.bg {
+    height: 95px;
+    width: 100%;
+    background: rgba(17, 17, 17, 0.4);
+    filter: blur(2px);
+    backdrop-filter: blur(5.5px);
+    position: absolute;
+    bottom: 0;
+}

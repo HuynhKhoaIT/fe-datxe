@@ -23,7 +23,7 @@ export default function ListProducts({ fillter }: any) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
     const data = await res.json();
-    return data;
+    return data.data;
   }
 
   useEffect(() => {

@@ -1,0 +1,9 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    .imagesShowRoom {
+        padding-top: 80px;
+    }
+}

@@ -8,7 +8,7 @@ export default function Layout({ children }: IProps) {
   return (
     <>
       <Header />
-      <div className="container">{children}</div>
+      {children}
       <MyFooter />
     </>
   );

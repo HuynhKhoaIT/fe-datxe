@@ -1,10 +1,8 @@
-import React, { Suspense } from "react";
-import ProductDetail from "../../components/elements/product/productDetail";
-import Product from "@/app/components/elements/product/ListProductHot";
-import { getProductById, getProducts } from "@/app/libs/prisma/product";
-import { LoadingComponent } from "@/app/components/loading";
+import RenderContext from "@/app/components/elements/RenderContext";
+import ProductDetailPageDesktop from "@/app/layout/desktop/san-pham/ProductDetailPage";
+import ProductDetailPageMobile from "@/app/layout/mobile/san-pham/ProductDetailPage";
+import { getProductById } from "@/app/libs/prisma/product";
 import { apiUrl } from "@/constants";
-export const revalidate = 0;
 async function getProduct(productId: number) {
   const { product } = await getProductById(productId);
   if (!product) {
@@ -13,57 +11,39 @@ async function getProduct(productId: number) {
 
   return product;
 }
-async function getListProduct() {
-  const res = await fetch(`${apiUrl}/api/products`, {
-    method: "GET",
-  });
-  const data = await res.json();
-  if (!data) {
-    throw new Error("Failed to fetch data");
+async function getProductsHot(garageId: number) {
+  const res = await fetch(
+    `${apiUrl}/api/products?isProduct=1&garageId=${garageId}&limit=8`,
+    {
+      method: "GET",
+    }
+  );
+  if (!res.ok) {
+    throw new Error(`HTTP error! Status: ${res.status}`);
   }
-  return data;
+  const data = await res.json();
+  return data.data;
 }
-export default async function SingleShop({
+export default async function DetailProduct({
   params,
 }: {
   params: { slug: number };
 }) {
   const product: any = await getProduct(params?.slug);
-  const products = await getListProduct();
+  const productRelate: any = await getProductsHot(9);
 
-  // const related: IProduct[] = await getProductsRelated(
-  //   data.categoryId?.toString(),
-  //   data.garageId?.toString(),
-  //   8
-  // );
   return (
-    <main className="main">
-      <div className="shop-item-single  ">
-        <div className="container position-relative pd-50">
-          <Suspense fallback={<LoadingComponent />}>
-            <ProductDetail ProductDetail={product} />
-          </Suspense>
-          <div className="related-item">
-            <div className="row">
-              <div className="col-12 mx-auto">
-                <div className="site-heading">
-                  <h2 className="site-title">Sản phẩm liên quan</h2>
-                </div>
-              </div>
-            </div>
-            <div className="shop-item-wrapper">
-              <div className="row">
-                <Suspense fallback={<LoadingComponent />}>
-                  <Product
-                    initialProductData={products}
-                    garageId={product.garageId}
-                  />
-                </Suspense>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+    <RenderContext
+      components={{
+        desktop: {
+          defaultTheme: ProductDetailPageDesktop,
+        },
+        mobile: {
+          defaultTheme: ProductDetailPageMobile,
+        },
+      }}
+      product={product}
+      productRelate={productRelate}
+    />
   );
 }

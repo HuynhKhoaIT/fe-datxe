@@ -1,6 +1,7 @@
 "use client";
 import { Checkbox, Radio } from "@mantine/core";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import styles from "./index.module.scss";
 export function ItemRadio({ dataDetail, keyName }: any) {
   const router = useRouter();
   const itemId = dataDetail?.id.toString();
@@ -19,12 +20,12 @@ export function ItemRadio({ dataDetail, keyName }: any) {
   }
 
   return (
-    <li>
+    <div className={styles.filterItem}>
       <Radio
         value={itemId}
         onClick={(e) => handleClick(e.target as HTMLInputElement)}
         label={name}
       />
-    </li>
+    </div>
   );
 }

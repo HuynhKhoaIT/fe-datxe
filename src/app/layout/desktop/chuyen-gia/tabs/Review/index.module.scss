@@ -1,0 +1,20 @@
+.wrapper {
+    display: block;
+    margin: auto;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 27px;
+}
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.average {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 27px;
+}
