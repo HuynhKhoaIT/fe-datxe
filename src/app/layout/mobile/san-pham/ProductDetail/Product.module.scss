@@ -1,0 +1,70 @@
+.product-detail,
+.product-description,
+.garageItem {
+    background-color: #fff;
+    padding: 25px;
+    margin-bottom: 15px;
+}
+
+.garageItem {
+    display: flex;
+    .garage-info {
+        display: flex;
+        flex-wrap: nowrap;
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+        padding-right: 25px;
+        .info-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+    }
+}
+.garage-name {
+    font-size: 16px;
+}
+
+.garage-right {
+    margin: auto;
+    padding-left: 16px;
+    .garage-right__info {
+        .garage-right__title {
+            text-transform: capitalize;
+            color: rgba(0, 0, 0, 0.4);
+            padding: 4px 0;
+        }
+        .garage-right__qtt {
+            color: var(--theme-color);
+            padding: 4px 0;
+        }
+    }
+}
+.garageRow {
+    width: 100%;
+}
+
+.category {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    .starBox {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+}
+.salePrice {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.boxText {
+    margin-top: 1rem;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 6px;
+    background: rgba(255, 190, 23, 0.18);
+}

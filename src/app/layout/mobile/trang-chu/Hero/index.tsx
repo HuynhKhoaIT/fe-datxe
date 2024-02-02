@@ -16,7 +16,10 @@ const Hero = ({ slideshowData }: any) => {
   };
 
   return (
-    <div className="carousel_landing">
+    <div
+      className="carousel_landing"
+      style={{ backgroundColor: "var(--background-color-light)" }}
+    >
       <Slider {...settings}>
         {slideshowData?.map((item: any) => {
           return (

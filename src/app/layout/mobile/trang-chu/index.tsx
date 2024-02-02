@@ -14,6 +14,7 @@ import ServicesHot from "./ServicesHot";
 import Advertisement from "../../desktop/trang-chu/Advertisement";
 import ProductsHot from "./ProductsHot";
 import Blogs from "./Blogs";
+import Book from "./Book";
 
 const LandingPageMobile = ({
   categories,
@@ -36,9 +37,10 @@ const LandingPageMobile = ({
   return (
     <div>
       <Hero slideshowData={slideshowData} />
+      <Book />
       <div
         style={{
-          padding: "30px 0",
+          padding: "340px 0 30px 0",
           backgroundColor: "var(--background-color-light)",
         }}
       >

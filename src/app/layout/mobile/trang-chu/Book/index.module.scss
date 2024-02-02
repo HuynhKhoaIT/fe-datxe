@@ -1,0 +1,29 @@
+.wrapper {
+    width: 80%;
+    padding: 10px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    position: absolute;
+    top: 220px;
+    left: 50%;
+    transform: translateX(-50%);
+    .listItem {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        background-color: var(--white-bg);
+        .item {
+            border-radius: 8px;
+            border: 1px solid#ddd;
+            padding: 4px 8px;
+            .label {
+                font-size: var(--sub-font-size);
+                color: var(--nav-color);
+                font-weight: 600;
+            }
+        }
+    }
+}
