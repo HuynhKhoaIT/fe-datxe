@@ -12,7 +12,7 @@ export default function Breadcrumb({ breadcrumbs }: any) {
         </Link>
       );
     } else {
-      return <span>{item.title}</span>;
+      return <span key={index}>{item.title}</span>;
     }
   });
 
