@@ -13,3 +13,20 @@
 .list::before {
     display: none;
 }
+@media only screen and (max-width: 600px) {
+    .list {
+        // justify-content: center;
+        .tabLabel {
+            font-size: 22px;
+            font-weight: var(--font-big);
+        }
+    }
+    .list button[data-active] {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+        // padding-left: 0;
+    }
+    .list::before {
+        display: none;
+    }
+}

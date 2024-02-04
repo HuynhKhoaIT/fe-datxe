@@ -9,15 +9,6 @@ import classNames from "classnames";
 const ImagesShowRoom = ({ className }: any) => {
   return (
     <div className={classNames(styles.wrapper, className)}>
-      {/* <div className={styles.title}>
-        <Typo
-          size="small"
-          type="bold"
-          style={{ color: "var(--category-name)" }}
-        >
-          Hình ảnh Showroom
-        </Typo>
-      </div> */}
       <div className={styles.body}>
         <div className={styles.left}>
           <img src={Image1.src} />

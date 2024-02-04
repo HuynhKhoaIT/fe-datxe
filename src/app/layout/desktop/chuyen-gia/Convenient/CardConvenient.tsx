@@ -4,7 +4,7 @@ import styles from "./Convenient.module.scss";
 import Link from "next/link";
 import ImageField from "@/app/components/form/ImageField";
 import Typo from "@/app/components/elements/Typo";
-const ConvenientItem = ({ convenient }: any) => {
+const CardConvenient = ({ convenient }: any) => {
   return (
     <div className={styles.wrapper}>
       <Box w={"100%"}>
@@ -43,4 +43,4 @@ const ConvenientItem = ({ convenient }: any) => {
     </div>
   );
 };
-export default ConvenientItem;
+export default CardConvenient;

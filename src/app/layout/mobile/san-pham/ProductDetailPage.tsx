@@ -1,12 +1,12 @@
 import Container from "@/app/components/common/Container";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import ProductDetail from "./ProductDetail/ProductDetail";
-import ProductTabsDes from "./ProductDetail/ProductTabsDes";
 import ExpertBox from "./ExpertBox";
 import ImagesShowRoom from "./ImagesShowRoom";
 import ProductsRelate from "./ProductRelate";
 import styles from "./ProductDetailPage.module.scss";
 import { Flex } from "@mantine/core";
+import ProductTabsDes from "../../desktop/san-pham/ProductDetail/ProductTabsDes";
 const Breadcrumbs = [
   { title: "Trang Chủ", href: "../" },
   { title: "Danh sách sản phẩm", href: "/san-pham" },

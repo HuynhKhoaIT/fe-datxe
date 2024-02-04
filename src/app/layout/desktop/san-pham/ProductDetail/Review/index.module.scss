@@ -14,3 +14,22 @@
     flex-direction: column;
     gap: 30px;
 }
+
+@media only screen and (max-width: 600px) {
+    .wrapper {
+        display: block;
+        margin: auto;
+        width: 100%;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+}

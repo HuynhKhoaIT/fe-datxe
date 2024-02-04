@@ -1,11 +1,11 @@
 import { BackgroundImage } from "@mantine/core";
 import styles from "./index.module.scss";
 import BannerImg from "@/assets/images/bannerExpert.png";
-const Banner = () => {
+const Banner = ({ heigth = 295 }: any) => {
   return (
     <div className={styles.wrapper}>
       <BackgroundImage
-        h={295}
+        h={heigth}
         src={BannerImg.src}
         radius="sm"
       ></BackgroundImage>

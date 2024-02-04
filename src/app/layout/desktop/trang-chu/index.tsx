@@ -21,6 +21,8 @@ const LandingPageDesktop = ({
   servicesHot,
   productsHot,
   blogs,
+  carsOption,
+  provinceData,
 }: any) => {
   const slideshowData = [
     {
@@ -33,7 +35,7 @@ const LandingPageDesktop = ({
   return (
     <div className="bg-white">
       <CarouselDesktop slideshowData={slideshowData} />
-      <BookForm />
+      <BookForm provinceData={provinceData} carsOption={carsOption} />
       <div className={styles.categoryBox}>
         <Category categories={categories} />
       </div>

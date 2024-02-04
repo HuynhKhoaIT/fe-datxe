@@ -4,3 +4,11 @@
     justify-content: space-between;
     gap: 13px;
 }
+.wrapper {
+    padding: 30px 0;
+}
+@media only screen and (max-width: 600px) {
+    .wrapper {
+        padding: 10px 0;
+    }
+}

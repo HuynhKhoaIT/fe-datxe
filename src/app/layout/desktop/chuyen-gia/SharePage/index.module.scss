@@ -1,3 +1,6 @@
+.wrapper {
+    padding: 30px 0;
+}
 .socialItem {
     height: 70px;
     display: flex;
@@ -25,4 +28,38 @@
     grid-template-columns: 33% 33% 33%;
     justify-content: space-between;
     gap: 13px;
+}
+
+@media only screen and (max-width: 600px) {
+    .wrapper {
+        padding: 10px 0;
+    }
+    .socialItem {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        background-color: var(--white-bg);
+        border-radius: 12px;
+        .avatar {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: blue;
+            border-radius: 12px 0 0 12px;
+        }
+        .name {
+            font-size: 20px;
+            color: #929292;
+            margin-left: 2rem;
+            font-weight: 500;
+        }
+    }
+    .rowItem {
+        display: grid;
+        grid-template-columns: 100%;
+        justify-content: space-between;
+        gap: 13px;
+    }
 }

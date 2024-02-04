@@ -36,7 +36,7 @@ async function getServices(garageId: number) {
     throw new Error("Failed to fetch data");
   }
   const data = await res.json();
-  return data?.data;
+  return data;
 }
 async function getProducts(garageId: number) {
   const res = await fetch(
@@ -46,7 +46,7 @@ async function getProducts(garageId: number) {
     throw new Error("Failed to fetch data");
   }
   const data = await res.json();
-  return data?.data;
+  return data;
 }
 
 const blogs = [

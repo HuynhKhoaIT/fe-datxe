@@ -12,8 +12,10 @@ import "swiper/css/thumbs";
 
 // import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import ImageField from "@/app/components/form/ImageField";
 
 export default function ProductSlider({ images }: any) {
+  console.log("images", images);
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   return (
     <>
@@ -34,10 +36,15 @@ export default function ProductSlider({ images }: any) {
         {images?.map((image: any, index: number) => {
           return (
             <SwiperSlide key={index}>
-              <img src={image} alt={`Image ${index}`} />
+              <ImageField radius={10} src={image || null} />
             </SwiperSlide>
           );
         })}
+        {!images && (
+          <SwiperSlide>
+            <ImageField radius={10} src={null} />
+          </SwiperSlide>
+        )}
       </Swiper>
       <Swiper
         onSwiper={(swiper) => setThumbsSwiper(swiper)}
@@ -52,10 +59,15 @@ export default function ProductSlider({ images }: any) {
         {images?.map((image: any, index: number) => {
           return (
             <SwiperSlide key={index}>
-              <img src={image} alt={`Image ${index}`} />
+              <ImageField radius={10} src={image || null} />
             </SwiperSlide>
           );
         })}
+        {!images && (
+          <SwiperSlide>
+            <ImageField radius={10} src={null} />
+          </SwiperSlide>
+        )}
       </Swiper>
     </>
   );

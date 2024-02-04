@@ -1,0 +1,13 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    .imagesShowRoom {
+        padding-top: 160px;
+    }
+}
+.categoryBox {
+    background-color: var(--background-color-light);
+    padding-top: 140px;
+    padding-bottom: 45px;
+}

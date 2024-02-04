@@ -6,7 +6,7 @@ const SharePage = ({ socials }: any) => {
   return (
     <div className={styles.wrapper}>
       <OverviewPanel
-        stylesProps={{ padding: "30px 0" }}
+        // stylesProps={{ padding: "30px 0" }}
         title="Chia sẽ kinh nghiệm"
         // linkToList={"/dich-vu"}
         hiddenShowMore={true}
