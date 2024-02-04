@@ -10,3 +10,9 @@
     position: absolute;
     bottom: 0;
 }
+
+@media only screen and (max-width: 600px) {
+    .bg {
+        height: 67px;
+    }
+}

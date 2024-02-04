@@ -5,12 +5,11 @@ import { signIn, useSession } from "next-auth/react";
 import { Grid, Modal, Button, Group } from "@mantine/core";
 import styles from "./Product.module.scss";
 import { notifications } from "@mantine/notifications";
-import ProductSlider from "./ProductSlider";
 import Typo from "@/app/components/elements/Typo";
 import Star from "@/assets/icons/star.svg";
 import Book from "@/assets/icons/book.svg";
-
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
+import ProductSlider from "@/app/layout/desktop/san-pham/ProductDetail/ProductSlider";
 function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -15,6 +15,7 @@ const CategoryDetailPageDesktop = ({
   products,
   productRelate,
   blogs,
+  reassons,
 }: any) => {
   return (
     <div className={styles.wrapper}>
@@ -47,7 +48,7 @@ const CategoryDetailPageDesktop = ({
           backgroundSize: "cover",
         }}
       >
-        <Reassons />
+        <Reassons data={reassons} />
       </div>
     </div>
   );

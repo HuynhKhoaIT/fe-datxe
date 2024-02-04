@@ -25,7 +25,7 @@ const CardCategory = ({
             <ImageField src={category.image} width={"60px"} />
           </div>
           <Typo
-            size="sub"
+            size="primary"
             className={styles.titleItem}
             style={{ transition: "var(--transition)" }}
           >
@@ -47,7 +47,7 @@ const CardCategory = ({
             />
           </div>
           <Typo
-            size="sub"
+            size="primary"
             className={styles.titleItem}
             style={{ transition: "var(--transition)" }}
           >

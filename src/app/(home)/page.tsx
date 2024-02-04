@@ -11,6 +11,19 @@ import blog4 from "@/assets/images/blog4.png";
 import Reasons1 from "@/assets/images/reasson1.png";
 import Reasons2 from "@/assets/images/reasson2.png";
 import Reasons3 from "@/assets/images/reasson3.png";
+import { getProvinces } from "@/utils/notion";
+async function getCarData() {
+  const res = await fetch(`${apiUrl}api/car-model`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const data = await res.json();
+  const carsOption = data?.map((item: any) => ({
+    value: item.id.toString(),
+    label: item.title,
+  }));
+  return carsOption;
+}
 async function getData() {
   const garageId = 9;
   const res = await fetch(`${apiUrl}api/product-category?gara=${garageId}`);
@@ -101,6 +114,12 @@ export default async function Home() {
   const productsRelate = await getProductsRelate();
   const servicesHot = await getServicesHot();
   const productsHot = await getProductsHot();
+  const carsOption = await getCarData();
+  const province: any = await getProvinces();
+  const provinceData = province.map((item: any) => ({
+    value: item.id.toString(),
+    label: item.name,
+  }));
   return (
     <RenderContext
       components={{
@@ -117,6 +136,8 @@ export default async function Home() {
       servicesHot={servicesHot}
       productsHot={productsHot}
       blogs={blogs}
+      carsOption={carsOption}
+      provinceData={provinceData}
     />
   );
 }

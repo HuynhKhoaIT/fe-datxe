@@ -28,9 +28,9 @@ const ExpertDetailPageDesktop = ({
       </Container>
       <div style={{ backgroundColor: "var(--background-color-light)" }}>
         <Category categories={categories} />
-        <Service services={services} />
+        <Service data={services?.data} />
       </div>
-      <Products products={products} />
+      <Products data={products?.data} />
       <Convenients convenients={convenients} />
       <div style={{ backgroundColor: "var(--background-color-light)" }}>
         <Container>

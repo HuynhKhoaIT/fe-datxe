@@ -14,6 +14,7 @@ const BlogItem = ({ blog }: any) => {
               <ImageField
                 src={blog?.image ? blog?.image : null}
                 height={"160"}
+                radius={8}
               />
             </Link>
           </div>

@@ -144,6 +144,9 @@ img {
     //     color: var(--dots-color) !important;
     // }
 }
+.slick-dots li button:before {
+    color: #fff !important;
+}
 
 .slick-dots li button:before {
     font-size: 1rem !important;
@@ -166,5 +169,10 @@ img {
         &:before {
             display: none;
         }
+    }
+}
+.carousel_landing {
+    .slick-dots {
+        bottom: 15px;
     }
 }

@@ -1,10 +1,8 @@
 "use client";
 import OverviewPanel from "@/app/components/layout/OverviewPanel";
 import styles from "./index.module.scss";
-import { IProduct } from "@/interfaces/product";
-import ProductItem from "@/app/components/elements/product/ProductItem1";
-import Convenient from "./Convenient";
 import SlickCarousel from "@/app/components/common/SlickCarousell";
+import CardConvenient from "./CardConvenient";
 const Convenients = ({ convenients }: any) => {
   return (
     <div className={styles.wrapper}>
@@ -17,7 +15,7 @@ const Convenients = ({ convenients }: any) => {
       >
         <SlickCarousel column={4} gap={8} dots={true}>
           {convenients?.map((convenient: any, index: number) => (
-            <Convenient convenient={convenient} key={index} />
+            <CardConvenient convenient={convenient} key={index} />
           ))}
         </SlickCarousel>
       </OverviewPanel>

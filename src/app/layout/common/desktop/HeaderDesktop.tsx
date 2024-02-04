@@ -52,7 +52,7 @@ export default function Header() {
       <div className={styles.headerContent}>
         <Container>
           <div className={styles.headerSearch}>
-            <Link href={"./"}>
+            <Link href={"/"}>
               <img style={{ cursor: "pointer" }} src={logo.src} alt="" />
             </Link>
             <div className={styles.search}>
@@ -64,12 +64,14 @@ export default function Header() {
               >
                 Thêm xe
               </Button>
-              <Button
-                color="#3450E7"
-                classNames={{ root: styles.btnBook, inner: styles.innerBook }}
-              >
-                Book Lịch
-              </Button>
+              <Link href={"/dat-lich"}>
+                <Button
+                  color="#3450E7"
+                  classNames={{ root: styles.btnBook, inner: styles.innerBook }}
+                >
+                  Book Lịch
+                </Button>
+              </Link>
             </div>
           </div>
           <div className={styles.headerNav}>

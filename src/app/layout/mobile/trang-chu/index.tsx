@@ -23,6 +23,8 @@ const LandingPageMobile = ({
   productsRelate,
   productsHot,
   blogs,
+  carsOption,
+  provinceData,
 }: any) => {
   const slideshowData = [
     {
@@ -37,7 +39,7 @@ const LandingPageMobile = ({
   return (
     <div>
       <Hero slideshowData={slideshowData} />
-      <Book />
+      <Book provinceData={provinceData} carsOption={carsOption} />
       <div
         style={{
           padding: "340px 0 30px 0",

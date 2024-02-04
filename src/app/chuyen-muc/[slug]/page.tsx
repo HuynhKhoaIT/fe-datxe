@@ -8,6 +8,10 @@ import CategoryDetailPageDesktop from "@/app/layout/desktop/danh-muc/CategoryDet
 import CategoryDetailPageMobile from "@/app/layout/mobile/danh-muc/CategoryDetailPage";
 import Banner1 from "@/assets/images/banner.png";
 import Banner2 from "@/assets/images/bannerExpert.png";
+
+import Reasons1 from "@/assets/images/reasson1.png";
+import Reasons2 from "@/assets/images/reasson2.png";
+import Reasons3 from "@/assets/images/reasson3.png";
 async function getCategoryDetail(garageId: number) {
   const res = await fetch(`${apiUrl}/api/garage/${garageId}`, {
     method: "GET",
@@ -144,7 +148,31 @@ const blogs = [
       "Mitsubishi Grandis chính hãng khi gặp hiện tượng động cơ bị ngừng hoạt động, xe chết máy giữa đường",
   },
 ];
-
+const reassons = [
+  {
+    image: Reasons2.src,
+    title: "Đáp ứng mọi nhu cầu của bạn",
+    content:
+      "Từ dịch vụ rửa xe, mâm & lốp, chăm sóc toàn diện, ắc quy, phụ tùng và cả việc bảo dưỡng định kỳ nữa. Ban có thể so sánh và tìm kiếm hệ thống Chuyên gia trên cả nước.",
+  },
+  {
+    image: Reasons3.src,
+    title: "Tùy chọn đặt lịch linh hoạt",
+    content:
+      "Chuyên gia trải dài trên 63 tỉnh thành, sẵn sàng hỗ trợ mõi khi bạn cần. Đổi lịch hoàn tiền dễ dàng.",
+  },
+  {
+    image: Reasons1.src,
+    title: "Thanh toán an toàn và thuận tiện",
+    content: "Thanh toán một chạm, an toàn khi giao dịch.",
+  },
+  {
+    image: Reasons2.src,
+    title: "Đáp ứng mọi nhu cầu của bạn",
+    content:
+      "Từ dịch vụ rửa xe, mâm & lốp, chăm sóc toàn diện, ắc quy, phụ tùng và cả việc bảo dưỡng định kỳ nữa. Ban có thể so sánh và tìm kiếm hệ thống Chuyên gia trên cả nước.",
+  },
+];
 const kindProduct = [
   {
     id: "1",
@@ -206,6 +234,7 @@ export default async function DetailCategory({
       kindProduct={kindProduct}
       slideshowData={slideshowData}
       productRelate={productRelate}
+      reassons={reassons}
     />
   );
 }

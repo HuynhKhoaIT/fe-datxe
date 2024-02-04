@@ -5,9 +5,61 @@ import Call from "@/assets/icons/call.svg";
 import Container from "@/app/components/common/Container";
 import styles from "./index.module.scss";
 import ArrowDown from "@/assets/icons/arrow-down.svg";
-export default function BookForm() {
+import { useState } from "react";
+import { useForm } from "@mantine/form";
+import { useRouter } from "next/navigation";
+export default function BookForm({ carsOption, provinceData }: any) {
+  const router = useRouter();
   const icon = <img src={ArrowDown.src} />;
-
+  const form = useForm({
+    initialValues: {},
+    validate: {},
+  });
+  const [modelOptions, setModelOptions] = useState<any>([]);
+  const [yearCarOptions, setYearCarOptions] = useState<any>([]);
+  async function getDataModels(brandId: number) {
+    if (brandId) {
+      const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("Failed to fetch data");
+      }
+      const dataOption = data?.map((item: any) => ({
+        value: item.id.toString(),
+        label: item.title,
+      }));
+      setModelOptions(dataOption);
+    }
+  }
+  async function getDataYearCar(modelId: number) {
+    if (modelId) {
+      const res = await fetch(`/api/car-model/${modelId}`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("Failed to fetch data");
+      }
+      const dataOption = data?.map((item: any) => ({
+        value: item.id.toString(),
+        label: item.title,
+      }));
+      setYearCarOptions(dataOption);
+    }
+  }
+  const handleSubmit = async (values: any) => {
+    let queryString = "";
+    if (values?.carBrandId) {
+      queryString = "brand" + "=" + values?.carBrandId;
+    }
+    if (values?.carNameId) queryString = "brand" + "=" + values?.carNameId;
+    if (values?.carYearId) queryString = "brand" + "=" + values?.carYearId;
+    try {
+      router.push(`/tim-kiem?${queryString}`);
+    } catch (error) {
+      console.error("Search error:", error);
+    }
+  };
   return (
     <div className={styles.wrapper}>
       <Container className={styles.container}>
@@ -22,6 +74,81 @@ export default function BookForm() {
           </Tabs.List>
 
           <Tabs.Panel value="search">
+            <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+              <Grid gutter={16}>
+                <Grid.Col span={10}>
+                  <Flex mt={16}>
+                    <Select
+                      classNames={{ input: styles.input1 }}
+                      variant="unstyled"
+                      leftSection={icon}
+                      leftSectionPointerEvents="none"
+                      rightSection={<></>}
+                      placeholder="Vị trí"
+                      data={provinceData}
+                    />
+                    <Select
+                      {...form.getInputProps("carBrandId")}
+                      classNames={{ input: styles.input2 }}
+                      leftSection={icon}
+                      variant="unstyled"
+                      leftSectionPointerEvents="none"
+                      rightSection={<></>}
+                      placeholder="Hãng xe"
+                      data={carsOption}
+                      onChange={(value) => {
+                        getDataModels(Number(value));
+                        form.setFieldValue("carBrandId", value);
+                        form.setFieldValue("carNameId", null);
+                        form.setFieldValue("carYearId", null);
+                      }}
+                    />
+                    <Select
+                      {...form.getInputProps("carNameId")}
+                      classNames={{ input: styles.input3 }}
+                      leftSection={icon}
+                      variant="unstyled"
+                      leftSectionPointerEvents="none"
+                      rightSection={<></>}
+                      placeholder="Dòng xe"
+                      data={modelOptions}
+                      onChange={(value) => {
+                        getDataYearCar(Number(value));
+                        form.setFieldValue("carNameId", value);
+                        form.setFieldValue("carYearId", null);
+                      }}
+                    />
+                    <Select
+                      {...form.getInputProps("carYearId")}
+                      classNames={{ input: styles.input4 }}
+                      leftSection={icon}
+                      variant="unstyled"
+                      leftSectionPointerEvents="none"
+                      rightSection={<></>}
+                      placeholder="Năm sản xuất"
+                      data={yearCarOptions}
+                      onChange={(value) => {
+                        form.setFieldValue("carYearId", value);
+                      }}
+                    />
+                  </Flex>
+                </Grid.Col>
+                <Grid.Col span={2} mt={16}>
+                  <Button
+                    h={54}
+                    style={{ width: "100%" }}
+                    radius={8}
+                    color={"var(--yellow-btn)"}
+                    type="submit"
+                  >
+                    Tìm kiếm
+                  </Button>
+                </Grid.Col>
+              </Grid>
+            </form>
+          </Tabs.Panel>
+
+          <Tabs.Panel value="appointment">
             <form>
               <Grid gutter={16}>
                 <Grid.Col span={10}>
@@ -51,7 +178,11 @@ export default function BookForm() {
                       leftSectionPointerEvents="none"
                       rightSection={<></>}
                       placeholder="Dòng xe"
-                      data={["React", "Angular", "Vue", "Svelte"]}
+                      data={modelOptions}
+                      onChange={(value) => {
+                        getDataYearCar(Number(value));
+                        form.setFieldValue("carNameId", value);
+                      }}
                     />
                     <Select
                       classNames={{ input: styles.input4 }}
@@ -60,7 +191,10 @@ export default function BookForm() {
                       leftSectionPointerEvents="none"
                       rightSection={<></>}
                       placeholder="Năm sản xuất"
-                      data={["React", "Angular", "Vue", "Svelte"]}
+                      data={yearCarOptions}
+                      onChange={(value) => {
+                        form.setFieldValue("carYearId", value);
+                      }}
                     />
                   </Flex>
                 </Grid.Col>
@@ -77,8 +211,6 @@ export default function BookForm() {
               </Grid>
             </form>
           </Tabs.Panel>
-
-          <Tabs.Panel value="appointment">Messages tab content</Tabs.Panel>
         </Tabs>
       </Container>
     </div>

@@ -4,7 +4,7 @@ import { BackgroundImage, Image } from "@mantine/core";
 import Slider, { Settings } from "react-slick";
 import image from "@/assets/images/carousel1.png";
 
-const Hero = ({ slideshowData }: any) => {
+const Hero = ({ slideshowData, height = 220 }: any) => {
   const settings: Settings = {
     dots: true,
     infinite: true,
@@ -18,14 +18,16 @@ const Hero = ({ slideshowData }: any) => {
   return (
     <div
       className="carousel_landing"
-      style={{ backgroundColor: "var(--background-color-light)" }}
+      style={{
+        backgroundColor: "var(--background-color-light)",
+      }}
     >
       <Slider {...settings}>
         {slideshowData?.map((item: any) => {
           return (
             <BackgroundImage
               src={item?.image ? item?.image : image}
-              h={220}
+              h={height}
             ></BackgroundImage>
           );
         })}
