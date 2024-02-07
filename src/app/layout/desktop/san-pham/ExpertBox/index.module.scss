@@ -1,0 +1,41 @@
+.wrapper {
+    display: flex;
+    padding: 2rem 1rem;
+    gap: 1rem;
+    border-radius: 30px;
+    border: 1px solid var(--Neutral-300, #eff0f6);
+    background: var(--Neutral-100, #fff);
+    box-shadow: 0px 5px 14px 0px rgba(8, 15, 52, 0.04);
+    .avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        img {
+            width: 186px;
+            height: 186px;
+            border-radius: 50%;
+            box-shadow: 0px 5px 14px 0px rgba(8, 15, 52, 0.04);
+            flex-shrink: 0;
+            object-fit: fill;
+        }
+    }
+    .toExpert {
+        font-size: var(--sub-font-size);
+        font-weight: var(--font-big);
+        line-height: 20px;
+        color: var(--blue-color);
+        letter-spacing: 1.8px;
+        margin-bottom: 1rem;
+        margin-top: 10px;
+    }
+}
+.headerInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .social {
+        display: flex;
+        gap: 0.5rem;
+    }
+}

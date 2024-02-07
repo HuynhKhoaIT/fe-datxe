@@ -1,0 +1,43 @@
+.scrollMobile {
+    display: flex;
+    gap: 8px;
+    -webkit-scrollbar: hidden;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    background-color: #fff !important;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    z-index: 5;
+    border-radius: 50% !important;
+}
+.button.pre {
+    left: 0;
+}
+.button.next {
+    right: 0;
+}
+.scrollMobile::-webkit-scrollbar {
+    display: none;
+}
+.wrapper {
+    position: relative;
+    // max-width: 940px;
+    width: 100%;
+}

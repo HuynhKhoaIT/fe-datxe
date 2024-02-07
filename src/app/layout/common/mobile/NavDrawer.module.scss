@@ -1,0 +1,25 @@
+.drawer {
+    background-color: var(--body-color) !important;
+    z-index: 999 !important;
+}
+
+.header {
+    height: var(--header-height);
+    background-color: var(--body-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    color: var(--content-color);
+    gap: 0.8rem;
+}
+
+.close {
+    cursor: pointer;
+}

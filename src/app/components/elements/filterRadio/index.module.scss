@@ -1,0 +1,42 @@
+.shop-sidebar {
+    margin-bottom: 30px;
+}
+
+.shop-widget {
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--color-white);
+    margin-bottom: 30px;
+}
+
+.shop-widget-title {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    position: relative;
+    color: var(--color-dark);
+}
+
+.shop-widget-title::before {
+    position: absolute;
+    content: '';
+    width: 30px;
+    border-bottom: 3px solid var(--theme-color);
+    bottom: 0;
+    left: 0;
+}
+
+.shop-widget-title::after {
+    position: absolute;
+    content: '';
+    width: 5px;
+    border-bottom: 3px solid var(--theme-color);
+    bottom: 0;
+    left: 35px;
+}
+.root {
+    padding: 1rem 12px;
+}
+.filterItem {
+    margin-bottom: 6px;
+}

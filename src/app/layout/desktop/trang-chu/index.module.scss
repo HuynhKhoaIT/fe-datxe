@@ -1,0 +1,14 @@
+.rowItem {
+    display: grid;
+    grid-template-columns: 24% 24% 24% 24%;
+    justify-content: space-between;
+    gap: 13px;
+}
+.categoryBox {
+    background-color: var(--background-color-light);
+    padding-top: 140px;
+    padding-bottom: 45px;
+}
+.AdvertisementBox {
+    padding: 24px 0;
+}

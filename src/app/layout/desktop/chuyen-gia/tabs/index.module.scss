@@ -1,0 +1,14 @@
+.list {
+    margin-bottom: 21px;
+    .tabLabel {
+        font-size: var(--sub-font-size);
+        font-weight: 500;
+        color: var(--title-color);
+        padding-bottom: 1rem;
+    }
+}
+.list button[data-active] {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    // padding-left: 0;
+}

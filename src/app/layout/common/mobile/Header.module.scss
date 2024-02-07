@@ -1,0 +1,47 @@
+.wrapper {
+    height: 67px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    gap: 10px;
+    background-color: var(--white-bg);
+    .cart,
+    .menu {
+        width: 22px;
+        flex-shrink: 0;
+        img {
+            width: 22px;
+        }
+    }
+    .logo {
+        display: block;
+        width: 42px;
+        flex-shrink: 0;
+        img {
+            object-fit: fill;
+        }
+    }
+    .headerNav {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        .avatar {
+            display: block;
+            width: 32px;
+            flex-shrink: 0;
+            img {
+                object-fit: fill;
+                border-radius: 50%;
+            }
+        }
+    }
+}
+.nav {
+    display: flex;
+    flex-direction: column;
+    .navItem,
+    .navLogot {
+        color: var(--title-color);
+    }
+}
