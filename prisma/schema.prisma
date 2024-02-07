@@ -30,10 +30,26 @@ model Garage {
   carStyle            CarStyle[]
   customerGroups      CustomerGroup[]
   suppilers           Suppiler[]
-  financeCards      FinanceCard[]
-  MarketingCampaigns MarketingCampaign[]
+  financeCards        FinanceCard[]
+  MarketingCampaigns  MarketingCampaign[]
   marketingCampaignDetails MarketingCampaignDetail[]
-  orderDetails OrderDetail[]
+  orderDetails        OrderDetail[]
+  amenities           GaragesOnAmenities[]
+}
+model Amenities {
+  id                  Int @id @default(autoincrement())
+  title               String
+  garagesOnAmenities  GaragesOnAmenities[]
+}
+model GaragesOnAmenities {
+  garage            Garage         @relation(fields: [garageId], references: [id])
+  garageId          Int // relation scalar field (used in the `@relation` attribute above)
+  amenities         Amenities @relation(fields: [amenityId], references: [id])
+  amenityId         Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt        DateTime        @default(now())
+  assignedBy        String
+
+  @@id([garageId, amenityId])
 }
 model ProductCategory {
   id          Int   @id @default(autoincrement())

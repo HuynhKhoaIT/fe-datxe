@@ -11,6 +11,13 @@ export async function getGarages(data: any) {
                         },
                     },
                 ],
+            },
+            include:{
+                amenities:{
+                    include: {
+                        amenities: true
+                    }
+                }
             }
         });
         return garages;
@@ -21,6 +28,21 @@ export async function getGarages(data: any) {
 
 export async function createGarage(data: any) {
     try {
+        let amenitiesArr: any = [];
+        if (data.amenities) {
+            data.amenities.forEach(function (id: number) {
+                amenitiesArr.push({
+                    assignedBy: 'Admin',
+                    assignedAt: new Date(),
+                    amenities:{
+                        connect: {
+                            id: Number(id.toString()),
+                        }
+                    }
+                    
+                });
+            });
+        } 
         const garage = await prisma.garage.create({
             data: {
                 routeId: Number(data.routeId),
@@ -33,9 +55,14 @@ export async function createGarage(data: any) {
                 website: data.website,
                 address: data.address,
                 status: data.status,
+                description: data.description,
+                amenities: {
+                    create: amenitiesArr
+                },
             },
             include: {
                 cars: true,
+                amenities:true
             },
         });
         return garage;
