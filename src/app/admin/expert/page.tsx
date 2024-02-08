@@ -196,7 +196,7 @@ const Expert = () => {
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
-            data={experts}
+            data={experts?.data}
             columns={columns}
             loading={true}
             totalPage={experts?.totalPage}
