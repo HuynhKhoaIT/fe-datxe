@@ -40,8 +40,11 @@
 .nav {
     display: flex;
     flex-direction: column;
-    .navItem,
-    .navLogot {
-        color: var(--title-color);
+    padding: 10px;
+    .navItem {
+        color: var(--nav-color);
+        font-size: var(--primary-font-size);
+        font-weight: 500;
+        border-bottom: 1px solid #ddd;
     }
 }

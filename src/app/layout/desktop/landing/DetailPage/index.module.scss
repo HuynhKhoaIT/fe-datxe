@@ -1,0 +1,37 @@
+.wrapper {
+    padding: 30px 0;
+}
+.box {
+    display: flex;
+    border-top: 1px solid #ddd;
+
+    gap: 1rem;
+    .left {
+        width: 200px;
+    }
+    .itemRight {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 200px);
+    }
+    .right {
+        display: flex;
+        align-items: center;
+        padding: 1.2rem 1rem;
+        border-top: 1px solid #ddd;
+        .item {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            .logo {
+                background-color: #180c49;
+                width: 72px;
+                height: 72px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}

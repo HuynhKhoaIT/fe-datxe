@@ -3,12 +3,13 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { IconLogout } from "@tabler/icons-react";
+import styles from "./index.module.scss";
 const SidebarClient = () => {
   const pathname = usePathname();
   const parts = pathname.split("/");
   let page = parts[parts.length - 1];
   return (
-    <ul className="user-profile-sidebar-list">
+    <ul className={styles.listMenu}>
       <li>
         <Link
           href="/dashboard"
