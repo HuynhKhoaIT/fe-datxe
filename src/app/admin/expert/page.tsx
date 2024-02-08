@@ -7,7 +7,7 @@ import { kindProductOptions, statusOptions } from "@/constants/masterData";
 import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-
+import styles from "./index.module.scss";
 import Link from "next/link";
 import { useState } from "react";
 const Breadcrumbs = [
@@ -119,7 +119,7 @@ const Expert = () => {
           <>
             <Link
               href={{
-                pathname: `/admin/products/${record.id}`,
+                pathname: `/admin/expert/${record.id}`,
               }}
             >
               <Tooltip label="Cập nhật" withArrow position="bottom">
@@ -166,7 +166,7 @@ const Expert = () => {
     s: "",
   };
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <ListPage
         searchForm={
@@ -180,7 +180,7 @@ const Expert = () => {
           <Flex justify={"end"} align={"center"}>
             <Link
               href={{
-                pathname: `/admin/products/create`,
+                pathname: `/admin/expert/create`,
               }}
             >
               <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
