@@ -10,7 +10,11 @@ const ExpertBox = ({ ProductDetail }: { ProductDetail: IProduct }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.avatar}>
-        <img className={styles.avatarImg} src={avatar.src} alt="avatar" />
+        <img
+          className={styles.avatarImg}
+          src={ProductDetail?.garage?.logo || avatar.src}
+          alt="avatar"
+        />
       </div>
       <div>
         <div className={styles.headerInfo}>

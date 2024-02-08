@@ -14,7 +14,7 @@ const ProfileSidebar = ({ myAccount }: any) => {
   return (
     <div
       className="user-profile-sidebar"
-      style={{ height: "calc(100vh  - 110px)", overflowY: "auto" }}
+      style={{ height: "calc(100vh  - 40px)", overflowY: "auto" }}
     >
       <div className="user-profile-sidebar-top">
         <div className="user-profile-img">

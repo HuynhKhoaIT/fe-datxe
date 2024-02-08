@@ -15,7 +15,6 @@ import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import ImageField from "@/app/components/form/ImageField";
 
 export default function ProductSlider({ images }: any) {
-  console.log("images", images);
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   return (
     <>

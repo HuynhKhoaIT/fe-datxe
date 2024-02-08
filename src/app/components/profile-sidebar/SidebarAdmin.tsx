@@ -2,7 +2,24 @@
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { IconLogout } from "@tabler/icons-react";
+import {
+  IconBrandProducthunt,
+  IconCar,
+  IconCategory,
+  IconClipboardData,
+  IconClipboardText,
+  IconHome,
+  IconHotelService,
+  IconLogout,
+  IconReportMoney,
+  IconSquareLetterA,
+  IconSquareLetterB,
+  IconSquareLetterG,
+  IconSquareLetterS,
+  IconUserCircle,
+  IconUsers,
+  IconUsersGroup,
+} from "@tabler/icons-react";
 import styles from "./index.module.scss";
 const SidebarAdmin = () => {
   const pathname = usePathname();
@@ -16,7 +33,7 @@ const SidebarAdmin = () => {
           href="/admin"
           className={`list-group-item ${page == "admin" && styles.active}`}
         >
-          <i className="far fa-gauge-high"></i> Tổng quan
+          <IconHome /> Tổng quan
         </Link>
       </li>
       <li>
@@ -24,7 +41,23 @@ const SidebarAdmin = () => {
           href="/admin/profile"
           className={`list-group-item ${page == "profile" && styles.active}`}
         >
-          <i className="far fa-user"></i> Hồ sơ của tôi
+          <IconUserCircle /> Hồ sơ của tôi
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/admin/expert"
+          className={`list-group-item ${page == "expert" && styles.active}`}
+        >
+          <IconUsers /> Quản lý chuyên gia
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/admin/utilities"
+          className={`list-group-item ${page == "utilities" && styles.active}`}
+        >
+          <IconHotelService /> Tiện ích lân cận
         </Link>
       </li>
       <li>
@@ -34,7 +67,7 @@ const SidebarAdmin = () => {
             page == "marketing-campaign" && styles.active
           }`}
         >
-          <i className="far fa-user"></i> Chương trình của chuyên gia
+          <IconReportMoney /> Chương trình của chuyên gia
         </Link>
       </li>
       <li>
@@ -42,7 +75,7 @@ const SidebarAdmin = () => {
           href="/admin/orders"
           className={`${page == "orders" && styles.active}`}
         >
-          <i className="far fa-plus-circle"></i> Đơn hàng
+          <IconClipboardText /> Đơn hàng
         </Link>
       </li>
       <li>
@@ -50,7 +83,7 @@ const SidebarAdmin = () => {
           href="/admin/order-manager"
           className={`${page == "order-manager" && styles.active}`}
         >
-          <i className="far fa-plus-circle"></i> Quản lý đơn hàng
+          <IconClipboardData /> Quản lý đơn hàng
         </Link>
       </li>
       <li>
@@ -60,7 +93,7 @@ const SidebarAdmin = () => {
             (page == "products" || pageUpdate == "products") && styles.active
           }`}
         >
-          <i className="far fa-layer-group"></i>Sản phẩm trên sàn
+          <IconBrandProducthunt /> Sản phẩm trên sàn
         </Link>
       </li>
       <li>
@@ -71,7 +104,7 @@ const SidebarAdmin = () => {
             styles.active
           }`}
         >
-          <i className="far fa-layer-group"></i>Sản phẩm trong kho
+          <IconCar /> Sản phẩm trong kho
         </Link>
       </li>
       <li>
@@ -82,7 +115,7 @@ const SidebarAdmin = () => {
             styles.active
           }`}
         >
-          <i className="far fa-layer-group"></i>Danh mục sản phẩm
+          <IconCategory /> Danh mục sản phẩm
         </Link>
       </li>
       <li>
@@ -92,7 +125,7 @@ const SidebarAdmin = () => {
             (page == "suppliers" || pageUpdate == "suppliers") && styles.active
           }`}
         >
-          <i className="far fa-layer-group"></i>Nhà cung cấp
+          <IconSquareLetterS /> Nhà cung cấp
         </Link>
       </li>
       <li>
@@ -103,7 +136,7 @@ const SidebarAdmin = () => {
             styles.active
           }`}
         >
-          <i className="far fa-layer-group"></i>Thương hiệu
+          <IconSquareLetterB /> Thương hiệu
         </Link>
       </li>
       <li>
@@ -113,7 +146,7 @@ const SidebarAdmin = () => {
             (page == "cars" || pageUpdate == "cars") && styles.active
           }`}
         >
-          <i className="far fa-layer-group"></i>Quản lý xe
+          <IconCar /> Quản lý xe
         </Link>
       </li>
       <li>
@@ -123,7 +156,7 @@ const SidebarAdmin = () => {
             (page == "customers" || pageUpdate == "customers") && styles.active
           }`}
         >
-          <i className="far fa-layer-group"></i>Quản lý khách hàng
+          <IconUsersGroup /> Quản lý khách hàng
         </Link>
       </li>
       <li>

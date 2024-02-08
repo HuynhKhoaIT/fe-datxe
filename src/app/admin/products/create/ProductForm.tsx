@@ -66,18 +66,7 @@ export default function ProductForm({
         form.setFieldValue("brands", JSON?.parse(dataDetail?.brandDetail));
         setCar(JSON?.parse(dataDetail?.brandDetail));
       }
-      if (dataDetail?.timeSaleEnd) {
-        form.setFieldValue(
-          "timeSaleEnd",
-          dayjs(dataDetail?.timeSaleEnd).toDate()
-        );
-      }
-      if (dataDetail?.timeSaleStart) {
-        form.setFieldValue(
-          "timeSaleStart",
-          dayjs(dataDetail?.timeSaleStart).toDate()
-        );
-      }
+
       if (dataDetail?.isProduct) {
         form.setFieldValue("isProduct", dataDetail?.isProduct.toString());
       }
@@ -291,20 +280,7 @@ export default function ProductForm({
                     thousandSeparator=","
                   />
                 </Grid.Col>
-                <Grid.Col span={6}>
-                  <DateTimeField
-                    {...form.getInputProps("timeSaleStart")}
-                    label="Thời gian bắt đầu"
-                    placeholder="Thời gian bắt đầu"
-                  />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <DateTimeField
-                    {...form.getInputProps("timeSaleEnd")}
-                    label="Thời gian kết thúc"
-                    placeholder="Thời giankết thúc"
-                  />
-                </Grid.Col>
+
                 <Grid.Col span={6}>
                   <MultiSelect
                     withAsterisk
