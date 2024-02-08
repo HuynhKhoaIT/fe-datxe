@@ -13,11 +13,7 @@ export default function Breadcrumb({ breadcrumbs }: any) {
         </Link>
       );
     } else {
-      return (
-        <span key={index} style={{ color: "#919191" }}>
-          {item.title}
-        </span>
-      );
+      return <span key={index}>{item.title}</span>;
     }
   });
 

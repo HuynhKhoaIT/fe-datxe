@@ -1,11 +1,16 @@
 import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { slugify } from '@/utils/index';
-
-export async function GET(request: Request) {
+import { getUserByValidSessionToken } from '@/utils/user';
+type ResponseBody = { errors: { message: string }[] } | { username: string };
+import { getToken } from 'next-auth/jwt';
+import { getProducts } from '@/app/libs/prisma/product';
+export async function GET(request: NextRequest) {
     try {
+        // const token = await getToken({ request })
+
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
         const brandIdFilter = searchParams.get('brand');
@@ -65,50 +70,48 @@ export async function GET(request: Request) {
             isProduct = searchParams.get('isProduct') == '1' ? true : false;
         }
 
-        if (1) {
-            const [products, total] = await prisma.$transaction([
-                prisma.product.findMany({
-                    take: take,
-                    skip: skip,
-                    orderBy: {
-                        id: 'desc',
-                    },
-                    where: {
-                        AND: [
-                            {
-                                categories,
-                                name: {
-                                    contains: titleFilter!,
-                                },
-                                brands,
-                                status: {
-                                    not: 'DELETE',
-                                },
-                                garageId,
-                                isProduct,
+        const [products, total] = await prisma.$transaction([
+            prisma.product.findMany({
+                take: take,
+                skip: skip,
+                orderBy: {
+                    id: 'desc',
+                },
+                where: {
+                    AND: [
+                        {
+                            categories,
+                            name: {
+                                contains: titleFilter!,
                             },
-                        ],
-                    },
-                    include: {
-                        categories: true,
-                        garage: true,
-                    },
-                }),
-                prisma.product.count(),
-            ]);
+                            brands,
+                            status: {
+                                not: 'DELETE',
+                            },
+                            garageId,
+                            isProduct,
+                        },
+                    ],
+                },
+                include: {
+                    reviews: true,
+                    categories: true,
+                    garage: true,
+                },
+            }),
+            prisma.product.count(),
+        ]);
 
-            const totalPage = Math.ceil(total / limit);
+        const totalPage = Math.ceil(total / limit);
 
-            return NextResponse.json({
-                data: products,
-                total: total,
-                currentPage: currentPage,
-                limit: limit,
-                totalPage: totalPage,
-                status: 200,
-            });
-        }
-        throw new Error('Chua dang nhap');
+        return NextResponse.json({
+            data: products,
+            total: total,
+            currentPage: currentPage,
+            limit: limit,
+            totalPage: totalPage,
+            status: 200,
+        });
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }

@@ -25,6 +25,22 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
  * @return {Promise<void>}
  */
 
+
+export async function getUserByValidSessionToken(token : string){
+
+  const res = await fetch(GET_PROFILE_ENDPOINT,{
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+token
+    },
+  });
+
+  const data = await res.json();
+  return {
+    username: data.name
+  }
+}
+
 export const getMyAccount = async () => {
   const session = await getServerSession(authOptions);
   if (session?.user?.token) {
