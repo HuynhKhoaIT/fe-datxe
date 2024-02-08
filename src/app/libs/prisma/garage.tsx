@@ -70,3 +70,54 @@ export async function createGarage(data: any) {
     return { error };
   }
 }
+
+export async function updateGarage(id: number, data: any) {
+    try {
+        
+        let updateData = {
+            routeId: Number(data.routeId),
+            code: data.code,
+            name: data.name,
+            shortName: data.shortName,
+            logo: data.logo,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            website: data.website,
+            address: data.address,
+            status: data.status,
+            description: data.description,
+            amenities: {
+                deleteMany: {},
+                    create: data.amenities.map((id: number) => ({
+                        assignedBy:  'Admin',
+                        assignedAt: new Date(),
+                        amenities: {
+                            connect: {
+                                id: Number(id),
+                            },
+                        },
+                    })),
+            },
+        };
+        const updatedPost = await prisma.garage.update({
+            where: {
+                id: Number(id),
+            },
+            data: updateData,
+        });
+        return { data: updatedPost };
+    } catch (error) {
+        return { error };
+    }
+}
+
+export async function deleteGarage(id: number) {
+    try {
+      const garage = await prisma.garage.delete({
+        where: { id: Number(id) },
+      });
+      return { garage };
+    } catch (error) {
+      return { error };
+    }
+  }

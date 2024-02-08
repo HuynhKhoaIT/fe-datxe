@@ -35,7 +35,34 @@ model Garage {
   marketingCampaignDetails MarketingCampaignDetail[]
   orderDetails        OrderDetail[]
   amenities           GaragesOnAmenities[]
+  province            Provinces @relation(fields: [provinceId], references: [id])
+  provinceId          Int @default(1)
+  district            Districts @relation(fields: [districtId], references: [id])
+  districtId          Int @default(1)
+  ward                Wards @relation(fields: [wardId], references: [id])
+  wardId              Int @default(1)
 }
+model Provinces{
+  id Int @id @default(autoincrement())
+  name               String
+  type               String
+  garage             Garage[]
+}
+model Districts{
+  id Int @id @default(autoincrement())
+  name               String
+  type               String
+  province_id        Int
+  garage             Garage[]
+}
+model Wards{
+  id Int @id @default(autoincrement())
+  name               String
+  type               String
+  district_id        Int
+  garage             Garage[]
+}
+
 model Amenities {
   id                  Int @id @default(autoincrement())
   title               String
