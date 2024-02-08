@@ -178,7 +178,7 @@ const Expert = () => {
         searchForm={
           <SearchForm
             searchData={searchData}
-            brandFilter={true}
+            brandFilter={false}
             initialValues={initialValuesSearch}
           />
         }
@@ -196,7 +196,7 @@ const Expert = () => {
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
-            data={experts?.data}
+            data={experts}
             columns={columns}
             loading={true}
             totalPage={experts?.totalPage}
