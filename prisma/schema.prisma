@@ -35,6 +35,8 @@ model Garage {
   marketingCampaignDetails MarketingCampaignDetail[]
   orderDetails        OrderDetail[]
   amenities           GaragesOnAmenities[]
+  posts               Post[]
+  postCategories      PostCategory[]
   province            Provinces @relation(fields: [provinceId], references: [id])
   provinceId          Int @default(1)
   district            Districts @relation(fields: [districtId], references: [id])
@@ -375,6 +377,44 @@ model ReviewsProduct {
   message             String?
   createdId           Int
   status              STATUS @default(PUBLIC)
+}
+
+model Post{
+  id  Int  @id @default(autoincrement())
+  slug            String?
+  title String
+  description String
+  shortDescription String?
+  thumbnail String
+  categories      CategoriesOnPosts[]
+  status          STATUS @default(DRAFT)
+  createdBy       Int @default(1)
+  garage          Garage @relation(fields: [garageId], references: [id])
+  garageId        Int @default(1)
+}
+
+model PostCategory{
+  id              Int  @id @default(autoincrement())
+  slug            String?
+  title           String
+  description     String
+  thumbnail       String?
+  status          STATUS @default(DRAFT)
+  createdBy       Int @default(1)
+  garage          Garage @relation(fields: [garageId], references: [id])
+  garageId        Int @default(1)
+  posts           CategoriesOnPosts[]
+}
+
+model CategoriesOnPosts {
+  post    Post         @relation(fields: [postId], references: [id])
+  postId  Int // relation scalar field (used in the `@relation` attribute above)
+  category   PostCategory @relation(fields: [categoryId], references: [id])
+  categoryId Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime        @default(now())
+  assignedBy String
+
+  @@id([postId, categoryId])
 }
 
 enum SALETYPE {

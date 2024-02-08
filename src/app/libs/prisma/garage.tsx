@@ -1,26 +1,55 @@
 import prisma from "../prismadb";
 
-export async function getGarages(data: any) {
+export async function getGarages(requestData: any) {
     try {
-        const garages = await prisma.garage.findMany({
-            where: {
-                AND: [
-                    {
-                        status: {
-                            not: 'DELETE',
+        let currentPage = 1;
+        let take = 10;
+        let limit = Number(requestData.limit);
+        let page = requestData.page;
+        
+        if (page) {
+            currentPage = Number(page);
+        }
+        if (limit) {
+            take = Number(limit);
+        } else {
+            limit = 10;
+        }
+        const skip = take * (currentPage - 1); 
+        const [data,total] = await prisma.$transaction([
+            prisma.garage.findMany({
+                take: take,
+                skip: skip,
+                orderBy: {
+                    id: 'desc',
+                },
+                where: {
+                    AND: [
+                        {
+                            status: {
+                                not: 'DELETE',
+                            },
                         },
-                    },
-                ],
-            },
-            include:{
-                amenities:{
-                    include: {
-                        amenities: true
+                    ],
+                },
+                include:{
+                    amenities:{
+                        include: {
+                            amenities: true
+                        }
                     }
                 }
-            }
-        });
-        return garages;
+            }),
+            prisma.garage.count()
+        ]);
+        return {
+            data: data,
+            total: total,
+            currentPage: currentPage,
+            limit: limit,
+            totalPage: Math.ceil(total / limit),
+            status: 201
+          };
     }catch(error){
         return {error}
     }
