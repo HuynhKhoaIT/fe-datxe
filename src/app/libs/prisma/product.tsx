@@ -53,6 +53,9 @@ export async function getProducts(garage: Number,requestData:any) {
               },
           ]
       },
+      // include:{
+      //   reviews: true
+      // },
       }),
       prisma.product.count()
     ]);

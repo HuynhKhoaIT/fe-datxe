@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 export default function Login() {
   const { data: session } = useSession();
+  console.log({session});
   if (session && session.user) {
     redirect("/dashboard");
   }

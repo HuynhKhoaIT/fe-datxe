@@ -6,6 +6,7 @@ import { authOptions } from '../auth/[...nextauth]/route';
 export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
+        console.log({ session });
         const { searchParams } = new URL(request.url);
         let garageId = {};
         if (searchParams.get('garage')) {
@@ -23,6 +24,7 @@ export async function GET(request: Request) {
                 ],
             },
         });
+        console.log(productCategory);
         return NextResponse.json(productCategory);
         throw new Error('Chua dang nhap');
     } catch (error: any) {
