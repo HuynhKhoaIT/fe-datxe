@@ -102,7 +102,7 @@ export default function ExpertForm({
         formData.append("image", file);
       }
       const response = await axios.post(baseURL, formData, options);
-      values.image = response.data;
+      values.logo = response.data;
     } catch (error) {
       console.error("Error:", error);
     }

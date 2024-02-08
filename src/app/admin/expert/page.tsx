@@ -9,13 +9,16 @@ import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import styles from "./index.module.scss";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Chuyên gia" },
 ];
 const Expert = () => {
-  const [products, setProducts] = useState<any>();
+  const searchParams = useSearchParams();
+
+  const [experts, setExperts] = useState<any>();
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
 
   const [page, setPage] = useState<number>(1);
@@ -45,7 +48,15 @@ const Expert = () => {
       },
     },
     {
-      label: <span>Tên sản phẩm</span>,
+      label: <span>Mã chuyên gia</span>,
+      name: "code",
+      dataIndex: ["code"],
+      render: (dataRow: any) => {
+        return <span>{dataRow}</span>;
+      },
+    },
+    {
+      label: <span>Tên chuyên gia</span>,
       name: "name",
       dataIndex: ["name"],
       render: (dataRow: any) => {
@@ -53,45 +64,30 @@ const Expert = () => {
       },
     },
     {
-      label: <span>Số lượng</span>,
-      name: "quantity",
-      dataIndex: ["quantity"],
+      label: <span>Tên rút gọn</span>,
+      name: "sortName",
+      dataIndex: ["sortName"],
+      render: (dataRow: any) => {
+        return <span>{dataRow}</span>;
+      },
+    },
+    {
+      label: <span>Số điện thoại</span>,
+      name: "phoneNumber",
+      dataIndex: ["phoneNumber"],
       textAlign: "center",
     },
     {
-      label: <span>Giá bán</span>,
-      name: "price",
-      dataIndex: ["price"],
-      render: (dataRow: number) => {
-        return <span>{dataRow?.toLocaleString()}đ</span>;
-      },
+      label: <span>Email</span>,
+      name: "email",
+      dataIndex: ["email"],
     },
     {
-      label: <span>Giá sale</span>,
-      name: "priceSale",
-      dataIndex: ["salePrice"],
-      render: (dataRow: number) => {
-        return <span>{dataRow?.toLocaleString()}đ</span>;
-      },
+      label: <span>Địa chỉ</span>,
+      name: "address",
+      dataIndex: ["address"],
     },
-    {
-      label: <span>Loại</span>,
-      name: "kind",
-      dataIndex: ["isProduct"],
-      width: "100px",
-      render: (record: any, index: number) => {
-        const matchedStatus = kindProductOptions.find(
-          (item) => item.value === record.toString()
-        );
-        if (matchedStatus) {
-          return (
-            <Badge color={matchedStatus.color} key={index}>
-              {matchedStatus.label}
-            </Badge>
-          );
-        }
-      },
-    },
+
     {
       label: <span>Trạng thái</span>,
       name: "status",
@@ -155,6 +151,13 @@ const Expert = () => {
       },
     },
   ];
+  async function getData(searchParams: any, page: number) {
+    const res = await fetch(`/api/garage?${searchParams}&page=${page}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    setExperts(data);
+  }
   const searchData = [
     {
       name: "s",
@@ -162,6 +165,9 @@ const Expert = () => {
       type: "input",
     },
   ];
+  useEffect(() => {
+    getData(searchParams.toString(), page);
+  }, [searchParams, page]);
   const initialValuesSearch = {
     s: "",
   };
@@ -190,10 +196,10 @@ const Expert = () => {
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
-            data={products?.data}
+            data={experts?.data}
             columns={columns}
             loading={true}
-            totalPage={products?.totalPage}
+            totalPage={experts?.totalPage}
             setPage={setPage}
             activePage={page}
           />
