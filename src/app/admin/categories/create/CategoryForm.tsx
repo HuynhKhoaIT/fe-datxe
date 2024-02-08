@@ -42,8 +42,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     },
   });
   useEffect(() => {
-    handlers.open();
-
     const fetchData = async () => {
       try {
         form.setInitialValues(dataDetail);
@@ -55,7 +53,10 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       }
     };
 
-    if (isEditing) fetchData();
+    if (isEditing) {
+      handlers.open();
+      fetchData();
+    }
   }, [dataDetail]);
   const router = useRouter();
   function convertToSlug(str: string) {
