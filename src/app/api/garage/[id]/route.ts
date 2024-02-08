@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { updateGarage } from '@/app/libs/prisma/garage';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -17,7 +18,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                     id: parseInt(id.toString()),
                 },
                 include: {
-                    cars: true,
+                    amenities: {
+                        include: {
+                            amenities: true,
+                        },
+                    },
                 },
             });
             return NextResponse.json(garage);
@@ -42,24 +47,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
             if (session?.user?.id) {
                 createdBy = Number(session.user.id);
             }
-            let updateData = {
-                routeId: Number(json.routeId),
-                code: json.code,
-                name: json.name,
-                shortName: json.shortName,
-                logo: json.logo,
-                email: json.email,
-                phoneNumber: json.phoneNumber,
-                website: json.website,
-                address: json.address,
-                status: json.status,
-            };
-            const updatedData = await prisma.customer.update({
-                where: {
-                    id: Number(id),
-                },
-                data: updateData,
-            });
+            const updatedData = await updateGarage(id, json);
 
             return new NextResponse(JSON.stringify(updatedData), {
                 status: 201,

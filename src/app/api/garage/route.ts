@@ -3,7 +3,20 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const garages = await getGarages(request);
+        const { searchParams } = new URL(request.url);
+        let requestData = {
+            limit: 10,
+            page: 1,
+        };
+        if (searchParams.get('limit')) {
+            requestData.limit = Number(searchParams.get('limit'));
+        }
+        if (searchParams.get('page')) {
+            requestData.page = Number(searchParams.get('page'));
+        }
+
+        const garages = await getGarages(requestData);
+
         return NextResponse.json(garages);
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
