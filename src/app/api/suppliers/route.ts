@@ -32,11 +32,15 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
+        let garageId = Number(process.env.GARAGE_DEFAULT);
+        if (json.garageId) {
+            garageId = Number(json.garageId);
+        }
         const suppiler = await prisma.suppiler.create({
             data: {
                 title: json.title,
                 description: json.description,
-                garageId: json.garageId,
+                garageId: garageId,
                 status: json.status,
             },
         });
