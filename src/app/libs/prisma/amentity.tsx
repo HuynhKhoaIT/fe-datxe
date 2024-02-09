@@ -9,7 +9,7 @@ export async function createAmentity(data: any) {
     return NextResponse.json(rs)
 }
 
-export async function getAmentity(request: any){
+export async function getAmentity(){
     const rs = await prisma.amenities.findMany();
-    return NextResponse.json(rs)
+    return rs;
 }

@@ -1,10 +1,10 @@
 import { createAmentity, getAmentity } from '@/app/libs/prisma/amentity';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
-        const garages = await getAmentity(request);
-        return NextResponse.json(garages);
+        const rs = await getAmentity();
+        return NextResponse.json(rs);
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
