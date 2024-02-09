@@ -6,6 +6,7 @@ import Qr from "@/assets/icons/qr.svg";
 import Check from "@/assets/icons/checkExpert.svg";
 import { ActionIcon, Button } from "@mantine/core";
 import Container from "@/app/components/common/Container";
+import Link from "next/link";
 const Info = ({ detailData }: any) => {
   return (
     <div className={styles.wrapper}>
@@ -59,12 +60,16 @@ const Info = ({ detailData }: any) => {
             </div>
           </div>
           <div className={styles.contact}>
-            <Button color="var(--primary-color)" h={56}>
-              Đặt lịch
-            </Button>
-            <Button variant="outline" color="#000" h={56}>
-              Liên hệ
-            </Button>
+            <Link href={`/dat-lich?garageId=${detailData?.id}`}>
+              <Button color="var(--primary-color)" h={56}>
+                Đặt lịch
+              </Button>
+            </Link>
+            <a href="tel:555-555-5555">
+              <Button variant="outline" color="#000" h={56}>
+                Liên hệ
+              </Button>
+            </a>
             <ActionIcon w={56} h={56} variant="outline" color="#000">
               <img src={Qr.src} />
             </ActionIcon>
