@@ -77,6 +77,14 @@ export default function ExpertForm({
       try {
         form.setInitialValues(dataDetail);
         form.setValues(dataDetail);
+        if (isEditing && dataDetail) {
+          if (dataDetail?.amenities?.length > 0) {
+            const dataOption = dataDetail?.amenities?.map((item: any) =>
+              item.amenityId.toString()
+            );
+            form.setFieldValue("amenities", dataOption);
+          }
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -133,7 +141,7 @@ export default function ExpertForm({
   };
 
   const getUltilities = async () => {
-    const res = await fetch(`/api/product-category`, { method: "GET" });
+    const res = await fetch(`/api/amentity`, { method: "GET" });
     const data = await res.json();
     if (!data) {
       throw new Error("Failed to fetch data");
@@ -152,9 +160,7 @@ export default function ExpertForm({
       handlers.close();
     };
 
-    if (!isEditing) {
-      fetchData();
-    }
+    fetchData();
   }, []);
 
   return (
@@ -249,7 +255,7 @@ export default function ExpertForm({
                 <Grid.Col span={4}>
                   <MultiSelect
                     withAsterisk
-                    {...form.getInputProps("categories")}
+                    {...form.getInputProps("amenities")}
                     label="Tiện ích lân cận"
                     checkIconPosition="right"
                     placeholder="Tiện ích lân cận"

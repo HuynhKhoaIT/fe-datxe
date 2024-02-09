@@ -10,19 +10,44 @@ import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import styles from "./index.module.scss";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import dynamic from "next/dynamic";
+
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Chuyên gia" },
 ];
+const DynamicModalDeleteProduct = dynamic(
+  () => import("../board/ModalDeleteProduct"),
+  {
+    ssr: false,
+  }
+);
 const Expert = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const [deleteRow, setDeleteRow] = useState();
 
   const [experts, setExperts] = useState<any>();
-  const [categoryOptions, setCategoryOptions] = useState<any>([]);
 
   const [page, setPage] = useState<number>(1);
-
+  const handleDeleteProduct = async (idProduct: any) => {
+    await fetch(`/api/garage/${idProduct}`, {
+      method: "DELETE",
+    });
+    notifications.show({
+      title: "Thành công",
+      message: "Xoá sản phẩm thành công",
+    });
+    getData(searchParams, page);
+    router.refresh();
+  };
+  const [
+    openedDeleteProduct,
+    { open: openDeleteProduct, close: closeDeleteProduct },
+  ] = useDisclosure(false);
   const columns = [
     {
       label: <span>Hình ảnh</span>,
@@ -136,10 +161,10 @@ const Expert = () => {
                 p={5}
                 variant="transparent"
                 color="red"
-                // onClick={(e) => {
-                //   openDeleteProduct();
-                //   setDeleteRow(record.id);
-                // }}
+                onClick={(e) => {
+                  openDeleteProduct();
+                  setDeleteRow(record.id);
+                }}
               >
                 <IconTrash size={16} color="red" />
               </Button>
@@ -202,6 +227,12 @@ const Expert = () => {
             activePage={page}
           />
         }
+      />
+      <DynamicModalDeleteProduct
+        openedDeleteProduct={openedDeleteProduct}
+        closeDeleteProduct={closeDeleteProduct}
+        handleDeleteProduct={handleDeleteProduct}
+        deleteRow={deleteRow}
       />
     </div>
   );
