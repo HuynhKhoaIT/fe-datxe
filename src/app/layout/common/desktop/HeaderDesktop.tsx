@@ -2,11 +2,12 @@ import Link from "next/link";
 import React from "react";
 import styles from "./Header.module.scss";
 import logo from "@/assets/images/logo.png";
-import { Button } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import car from "@/assets/icons/car.svg";
 import HeaderTop from "./HeaderTop";
 import Container from "@/app/components/common/Container";
 import SearchFormName from "@/app/components/elements/search/SearchFormName";
+import { IconShoppingCart } from "@tabler/icons-react";
 export default function Header() {
   const brandData = [
     {
@@ -57,6 +58,11 @@ export default function Header() {
             </Link>
             <div className={styles.search}>
               <SearchFormName />
+              <Link href={"/gio-hang"}>
+                <ActionIcon color="#EEF1F9" size={56}>
+                  <IconShoppingCart size={28} color="#3450E7" />
+                </ActionIcon>
+              </Link>
               <Button
                 color="#EEF1F9"
                 leftSection={<img src={car.src} alt="Car Icon" />}

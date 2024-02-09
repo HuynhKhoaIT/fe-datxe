@@ -5,6 +5,8 @@ import HeaderMobile from "@/app/layout/common/mobile/HeaderMobile";
 import FooterMobile from "@/app/layout/common/mobile/Footer/FooterMobile";
 import Header from "@/app/layout/common/desktop/HeaderDesktop";
 import { MyFooter } from "@/app/layout/common/desktop/Footer/FooterDesktop";
+import HeaderTop from "../layout/common/desktop/HeaderTop";
+import HeaderLanding from "../layout/common/desktop/HeaderLanding";
 interface IProps {
   children: ReactNode;
 }
@@ -23,7 +25,8 @@ export default function Layout({ children }: IProps) {
         </main>
       ) : (
         <main>
-          <Header />
+          <HeaderTop />
+          <HeaderLanding />
           <div>{children}</div>
           <MyFooter />
         </main>

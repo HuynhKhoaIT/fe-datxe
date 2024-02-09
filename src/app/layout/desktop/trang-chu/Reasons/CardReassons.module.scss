@@ -1,6 +1,12 @@
 .card {
     display: flex;
     align-items: center;
+    height: 140px;
+    background-color: var(--white-background);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    margin: 10px 0;
+    padding: 10px;
     .image {
         width: 20%;
     }

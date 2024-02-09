@@ -12,6 +12,7 @@ import {
   Image,
   Select,
   LoadingOverlay,
+  MultiSelect,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
@@ -29,11 +30,14 @@ export default function ExpertForm({
   districtData: dtData,
   wardData: wData,
 }: any) {
+  console.log("provinceData", provinceData);
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
   const [districtData, setDistrictData] = useState<any>(dtData);
   const [wardData, setWardData] = useState<any>(wData);
+  const [UltilitiesOptions, setUltilitiesOptions] = useState<any>([]);
+
   const handleProvince = async (value: any) => {
     try {
       const district: any = await getDistricts(value);
@@ -60,14 +64,11 @@ export default function ExpertForm({
   };
   const form = useForm({
     initialValues: {
-      image: "",
-      title: "",
+      logo: "",
+
       description: "",
     },
-    validate: {
-      title: (value) => (value.length < 1 ? "Không được để trống" : null),
-      image: (value) => (value.length < 1 ? "Không được để trống" : null),
-    },
+    validate: {},
   });
   useEffect(() => {
     // handlers.open();
@@ -86,12 +87,7 @@ export default function ExpertForm({
     if (isEditing) fetchData();
   }, [dataDetail]);
   const router = useRouter();
-  function convertToSlug(str: string) {
-    str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
-    str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
-    str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
-    return str;
-  }
+
   const handleSubmit = async (values: any) => {
     try {
       const baseURL = "https://up-image.dlbd.vn/api/image";
@@ -107,7 +103,6 @@ export default function ExpertForm({
       console.error("Error:", error);
     }
 
-    values.slug = convertToSlug(values?.title);
     handlers.open();
     try {
       if (!isEditing) {
@@ -136,6 +131,31 @@ export default function ExpertForm({
       });
     }
   };
+
+  const getUltilities = async () => {
+    const res = await fetch(`/api/product-category`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    setUltilitiesOptions(dataOption);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      handlers.open();
+      await Promise.all([getUltilities()]);
+
+      handlers.close();
+    };
+
+    if (!isEditing) {
+      fetchData();
+    }
+  }, []);
 
   return (
     <Box pos="relative">
@@ -227,32 +247,19 @@ export default function ExpertForm({
                   />
                 </Grid.Col>
                 <Grid.Col span={4}>
-                  <TextInput
-                    {...form.getInputProps("website")}
-                    label="Số tài khoản"
-                    type="text"
-                    placeholder="Số tài khoản"
+                  <MultiSelect
+                    withAsterisk
+                    {...form.getInputProps("categories")}
+                    label="Tiện ích lân cận"
+                    checkIconPosition="right"
+                    placeholder="Tiện ích lân cận"
+                    data={UltilitiesOptions}
                   />
                 </Grid.Col>
+
                 <Grid.Col span={8}>
                   <TextInput
-                    {...form.getInputProps("website")}
-                    label="Tên ngân hàng"
-                    type="text"
-                    placeholder="Tên ngân hàng"
-                  />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <TextInput
-                    {...form.getInputProps("website")}
-                    label="Mã số thuế"
-                    type="text"
-                    placeholder="Mã số thuế"
-                  />
-                </Grid.Col>
-                <Grid.Col span={8}>
-                  <TextInput
-                    {...form.getInputProps("website")}
+                    {...form.getInputProps("address")}
                     label="Địa chỉ"
                     type="text"
                     placeholder="Địa chỉ"
@@ -260,7 +267,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={12}>
                   <TextInput
-                    {...form.getInputProps("website")}
+                    {...form.getInputProps("address2")}
                     label="Địa chỉ 2"
                     type="text"
                     placeholder="Địa chỉ 2"
@@ -268,39 +275,39 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 4, md: 4, lg: 4 }}>
                   <Select
-                    {...form.getInputProps("province_id")}
+                    {...form.getInputProps("provinceId")}
                     label="Tỉnh/Thành phố"
                     placeholder="Chọn tỉnh"
                     data={provinceData}
                     onChange={(value) => {
-                      form.setFieldValue("province_id", value);
-                      form.setFieldValue("ward_id", null);
-                      form.setFieldValue("district_id", null);
+                      form.setFieldValue("provinceId", value);
+                      form.setFieldValue("wardId", null);
+                      form.setFieldValue("districtId", null);
                       handleProvince(Number(value));
                     }}
                   ></Select>
                 </Grid.Col>
                 <Grid.Col span={{ base: 4, md: 4, lg: 4 }}>
                   <Select
-                    {...form.getInputProps("district_id")}
+                    {...form.getInputProps("districtId")}
                     label="Huyện/Quận"
                     placeholder="Chọn huyện/quận"
                     data={districtData}
                     onChange={(value) => {
-                      form.setFieldValue("district_id", value);
-                      form.setFieldValue("ward_id", null);
+                      form.setFieldValue("districtId", value);
+                      form.setFieldValue("wardId", null);
                       handleDistrict(Number(value));
                     }}
                   ></Select>
                 </Grid.Col>
                 <Grid.Col span={{ base: 4, md: 4, lg: 4 }}>
                   <Select
-                    {...form.getInputProps("ward_id")}
+                    {...form.getInputProps("wardId")}
                     label="Xã/Phường"
                     placeholder="Chọn xã/phường"
                     data={wardData}
                     onChange={(value) => {
-                      form.setFieldValue("ward_id", value);
+                      form.setFieldValue("wardId", value);
                     }}
                   ></Select>
                 </Grid.Col>
@@ -308,22 +315,14 @@ export default function ExpertForm({
               <Grid mt={24}>
                 <Grid.Col span={12}>
                   <Textarea
-                    label="Mô tả chi tiết"
+                    label="Mô tả"
                     minRows={4}
                     autosize={true}
                     {...form.getInputProps("description")}
                     placeholder="Mô tả"
                   />
                 </Grid.Col>
-                <Grid.Col span={12}>
-                  <Textarea
-                    label="Mô tả ngắn"
-                    minRows={4}
-                    autosize={true}
-                    {...form.getInputProps("sortDescription")}
-                    placeholder="Mô tả ngắn"
-                  />
-                </Grid.Col>
+
                 <Grid.Col span={4}>
                   <Select
                     {...form.getInputProps("status")}
