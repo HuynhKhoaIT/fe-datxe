@@ -24,7 +24,7 @@ export default function Header() {
     },
     {
       id: "4",
-      name: "Meceder",
+      name: "mercedes",
     },
     {
       id: "5",
@@ -32,7 +32,7 @@ export default function Header() {
     },
     {
       id: "6",
-      name: "Fort",
+      name: "Ford",
     },
     {
       id: "7",
@@ -83,7 +83,7 @@ export default function Header() {
           <div className={styles.headerNav}>
             {brandData?.map((item, index) => {
               return (
-                <Link href="" key={index} className={styles.itemNav}>
+                <Link href="/san-pham" key={index} className={styles.itemNav}>
                   {item?.name}
                 </Link>
               );
