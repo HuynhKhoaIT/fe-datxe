@@ -124,7 +124,7 @@ export async function POST(request: Request) {
         let catArr: any = [];
         let brandArr: any = [];
         let createdBy = 0;
-        let garageId = 1;
+        let garageId = Number(process.env.GARAGE_DEFAULT);
         let isProduct = true;
 
         if (!json.categories) {
@@ -236,6 +236,8 @@ export async function POST(request: Request) {
                     status: json.status,
                     createdBy: createdBy,
                     garageId: garageId,
+                    supplierId: Number(json.supplierId),
+                    productBrandId: Number(json.productBrandId),
                     isProduct: isProduct,
                     categories: {
                         create: catArr,

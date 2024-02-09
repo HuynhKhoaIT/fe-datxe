@@ -75,7 +75,7 @@ export async function createGarage(data: any) {
         const garage = await prisma.garage.create({
             data: {
                 routeId: Number(data.routeId),
-                code: data.code,
+                code: '111222',
                 name: data.name,
                 shortName: data.shortName,
                 logo: data.logo,
