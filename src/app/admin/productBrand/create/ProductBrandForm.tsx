@@ -32,7 +32,6 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
     },
   });
   useEffect(() => {
-    handlers.open();
     const fetchData = async () => {
       try {
         form.setInitialValues(dataDetail);
@@ -43,7 +42,10 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
         handlers.close();
       }
     };
-    if (isEditing) fetchData();
+    if (isEditing) {
+      handlers.open();
+      fetchData();
+    }
   }, [dataDetail]);
   const router = useRouter();
 
