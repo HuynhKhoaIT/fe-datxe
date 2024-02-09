@@ -27,11 +27,11 @@ const Expert = () => {
     {
       label: <span>Hình ảnh</span>,
       name: "image",
-      dataIndex: ["images"],
+      dataIndex: ["logo"],
       width: "90px",
       render: (data: any) => {
-        const images = JSON.parse(data);
-        if (!images) {
+        const image = JSON.parse(data);
+        if (!image) {
           return (
             <Image
               radius="md"
@@ -42,9 +42,7 @@ const Expert = () => {
             />
           );
         }
-        return (
-          <Image radius="md " h={40} w={80} fit="contain" src={images[0]} />
-        );
+        return <Image radius="md " h={40} w={80} fit="contain" src={image} />;
       },
     },
     {
@@ -65,8 +63,8 @@ const Expert = () => {
     },
     {
       label: <span>Tên rút gọn</span>,
-      name: "sortName",
-      dataIndex: ["sortName"],
+      name: "shortName",
+      dataIndex: ["shortName"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },

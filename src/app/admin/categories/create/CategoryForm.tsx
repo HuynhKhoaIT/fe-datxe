@@ -37,8 +37,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       description: "",
     },
     validate: {
-      title: (value) => (value.length < 1 ? "Không được để trống" : null),
-      image: (value) => (value.length < 1 ? "Không được để trống" : null),
+      // title: (value) => (value.length < 1 ? "Không được để trống" : null),
+      // image: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
   useEffect(() => {

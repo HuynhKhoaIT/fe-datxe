@@ -80,3 +80,22 @@
 .actionLogin {
     display: flex;
 }
+
+.navList {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+}
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.headerLanding {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 92px;
+    width: 100%;
+}
