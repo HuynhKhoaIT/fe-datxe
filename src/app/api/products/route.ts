@@ -63,6 +63,8 @@ export async function GET(request: NextRequest) {
         let garageId = {};
         if (searchParams.get('garage')) {
             garageId = Number(searchParams.get('garage'));
+        } else if (session && session?.user?.garageId) {
+            garageId = Number(session.user.garageId);
         }
 
         let isProduct = {};
