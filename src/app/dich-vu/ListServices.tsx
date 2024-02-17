@@ -60,7 +60,7 @@ export default function ListServices({ fillter }: any) {
         <Space h="md" />
         <Box w={"100%"}>
           <Grid>
-            {products?.map((product: IProduct, index: number) => (
+            {products?.data?.map((product: IProduct, index: number) => (
               <Grid.Col span={{ base: 12, xs: 6, sm: 4, md: 4, lg: 3 }}>
                 <ProductItem product={product} key={index} />
               </Grid.Col>
