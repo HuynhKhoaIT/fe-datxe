@@ -17,6 +17,7 @@ const Blogs = ({ blogs }: any) => {
       >
         <SlickCarousel
           column={7}
+          responsive={true}
           gap={8}
           dots={true}
           infinite={true}
