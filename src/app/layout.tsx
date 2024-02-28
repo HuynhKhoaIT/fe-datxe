@@ -9,9 +9,10 @@ import "@/assets/scss/index.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Notifications } from "@mantine/notifications";
-import Provider from "./Provider";
+import ProviderAuth from "./Provider";
 import { ReactNode } from "react";
 import { MantineProvider } from "@mantine/core";
+import StoreProvider from "./StoreProvider";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Datxe",
@@ -26,10 +27,12 @@ export default function RootLayout({ children }: IProps) {
     <html lang="vi">
       <body className={inter.className}>
         <MantineProvider>
-          <Provider>
-            <Notifications position="top-right" />
-            {children}
-          </Provider>
+          <ProviderAuth>
+            <StoreProvider>
+              <Notifications position="top-right" />
+              {children}
+            </StoreProvider>
+          </ProviderAuth>
         </MantineProvider>
       </body>
     </html>

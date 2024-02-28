@@ -12,7 +12,7 @@ import {
 import TableBasic from "../components/table/Tablebasic";
 import ImageDefult from "../../../public/assets/images/logoDatxe.png";
 import { IconPlus, IconMinus, IconTrash } from "@tabler/icons-react";
-
+import styles from "./InfoCart.module.scss";
 export default function InfoCart({
   loading,
   calculateSubTotal,
@@ -147,7 +147,7 @@ export default function InfoCart({
               </Group>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
-              <ul>
+              <ul className={styles.calculateSubTotal}>
                 <li>
                   <strong>Tổng tiền hàng:</strong>
                   <span>{calculateSubTotal().toLocaleString()}đ</span>
