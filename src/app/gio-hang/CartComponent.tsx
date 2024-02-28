@@ -13,7 +13,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 
-export default function CartComponent() {
+export default function CartComponent({ myAccount }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(dayjs().format("HH:mm:ss"));
@@ -84,7 +84,7 @@ export default function CartComponent() {
 
   const form = useForm({
     initialValues: {
-      customerId: "1",
+      customerId: myAccount?.id,
       fullName: "",
       phoneNumber: "",
       address: "",
@@ -179,9 +179,14 @@ export default function CartComponent() {
         <div className="shop-cart pt-60 pb-60">
           <div className="container">
             <Grid gutter={16}>
-              <InfoCustomer dataDetail={customer} form={form} />
+              <InfoCustomer
+                myAccount={myAccount}
+                dataDetail={customer}
+                form={form}
+              />
               <Suspense fallback={<p>loading...</p>}>
                 <InfoCar
+                  myAccount={myAccount}
                   visible={visible}
                   form={form}
                   carOptions={carOptions}

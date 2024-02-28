@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Grid, TextInput, Card } from "@mantine/core";
-export default function InfoCustomer({ dataDetail, form }: any) {
+export default function InfoCustomer({ myAccount, dataDetail, form }: any) {
   useEffect(() => {
     const fetchData = async () => {
       form.setFieldValue("id", dataDetail?.id);
