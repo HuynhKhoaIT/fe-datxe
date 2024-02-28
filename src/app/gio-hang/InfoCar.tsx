@@ -28,8 +28,6 @@ export default function InfoCar({
       if (!data) {
         throw new Error("Failed to fetch data");
       }
-
-      console.log("car", data);
       setCarDetail(data);
     }
   }

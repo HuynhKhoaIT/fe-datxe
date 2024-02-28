@@ -5,6 +5,7 @@ import { IProduct } from "@/interfaces/product";
 import ProductItem from "@/app/components/elements/product/ProductItem1";
 import BlogItem from "./BlogItem";
 import SlickCarousel from "@/app/components/common/SlickCarousell";
+import Scroll from "@/app/components/common/Scroll";
 const Blogs = ({ blogs }: any) => {
   return (
     <div className={styles.wrapper}>
@@ -15,18 +16,13 @@ const Blogs = ({ blogs }: any) => {
         id="blogs-expert"
         fullWidth={true}
       >
-        <SlickCarousel
-          column={7}
-          gap={8}
-          dots={true}
-          infinite={true}
-          autoplay={true}
-          responsive={true}
-        >
-          {blogs?.map((blog: any, index: number) => (
-            <BlogItem blog={blog} key={index} />
-          ))}
-        </SlickCarousel>
+        <div style={{ marginRight: "-12px" }}>
+          <Scroll>
+            {blogs?.map((blog: any, index: number) => (
+              <BlogItem blog={blog} key={index} />
+            ))}
+          </Scroll>
+        </div>
       </OverviewPanel>{" "}
     </div>
   );

@@ -12,6 +12,7 @@ import Book from "@/assets/icons/book.svg";
 
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
 function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
+  console.log(ProductDetail);
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {

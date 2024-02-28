@@ -12,6 +12,7 @@ import BlogImage1 from "@/assets/images/blog/blog1.png";
 import BlogImage2 from "@/assets/images/blog/blog2.png";
 import BlogImage3 from "@/assets/images/blog/blog3.png";
 import BlogImage4 from "@/assets/images/blog/blog4.png";
+import LandingMobile from "../layout/mobile/landing";
 
 const blogs = [
   {
@@ -199,7 +200,7 @@ export default async function Landing() {
           defaultTheme: LandingDesktop,
         },
         mobile: {
-          defaultTheme: LandingDesktop,
+          defaultTheme: LandingMobile,
         },
       }}
       data={data}
