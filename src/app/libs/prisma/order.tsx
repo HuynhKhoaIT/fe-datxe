@@ -187,31 +187,31 @@ export async function createOrder(json: any) {
                 });
             });
         }
-        
-        const order = await prisma.order.create({
-            data: {
-                code: (await codeGeneration(json.garageId)).toString(),
-                customerId: Number(customerId),
-                carId: Number(carId),
-                dateTime: json.dateTime ?? new Date(),
-                customerRequest: json.customerRequest ?? '',
-                customerNote: json.customerNote ?? '',
-                note: json.note ?? '',
-                priorityLevel: Number(json.priorityLevel ?? 1),
-                orderCategoryId: Number(json.orderCategoryId ?? 1),
-                brandId: Number(json.carBrandId),
-                modelId: Number(json.carNameId),
-                yearId: Number(json.carYearId),
-                subTotal: Number(json.subTotal),
-                total: Number(json.total),
-                garageId: Number(json.garageId ?? 1),
-                serviceAdvisorId: Number(json.serviceAdvisorId ?? 1),
-                orderDetails: {
-                    createMany : {
-                        data:orderDetails
-                    }
+        let data = {
+            code: (await codeGeneration(json.garageId)).toString(),
+            customerId: Number(customerId),
+            carId: Number(carId),
+            dateTime: json.dateTime ?? new Date(),
+            customerRequest: json.customerRequest ?? '',
+            customerNote: json.customerNote ?? '',
+            note: json.note ?? '',
+            priorityLevel: Number(json.priorityLevel ?? 1),
+            orderCategoryId: Number(json.orderCategoryId ?? 1),
+            brandId: Number(json.carBrandId),
+            modelId: Number(json.carNameId),
+            yearId: Number(json.carYearId),
+            subTotal: Number(json.subTotal),
+            total: Number(json.total),
+            garageId: Number(json.garageId ?? 1),
+            serviceAdvisorId: Number(json.serviceAdvisorId ?? 1),
+            orderDetails: {
+                createMany : {
+                    data:orderDetails
                 }
-            },
+            }
+        };
+        const order = await prisma.order.create({
+            data: data,
             include: {
                 serviceAdvisor: true,
                 car: true,
