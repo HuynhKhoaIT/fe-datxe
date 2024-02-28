@@ -12,7 +12,7 @@ import { Notifications } from "@mantine/notifications";
 import ProviderAuth from "./Provider";
 import { ReactNode } from "react";
 import { MantineProvider } from "@mantine/core";
-import StoreProvider from "./StoreProvider";
+// import StoreProvider from "./StoreProvider";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Datxe",
@@ -28,10 +28,10 @@ export default function RootLayout({ children }: IProps) {
       <body className={inter.className}>
         <MantineProvider>
           <ProviderAuth>
-            <StoreProvider>
-              <Notifications position="top-right" />
-              {children}
-            </StoreProvider>
+            {/* <StoreProvider> */}
+            <Notifications position="top-right" />
+            {children}
+            {/* </StoreProvider> */}
           </ProviderAuth>
         </MantineProvider>
       </body>
