@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { getCarNameById } from '@/app/libs/prisma/carName';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -16,10 +17,30 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
                 where: {
                     id: parseInt(id.toString()),
                 },
-                include:{
-                    cars: true
-                }
+                include: {
+                    cars: true,
+                },
             });
+
+            // // let carsA = new Array();
+
+            // const carPromises: any = customers?.cars.map(async (item) => {
+            //     return await getCarNameById(Number(item.carBrandId));
+            // });
+
+            // // Wait for all promises to resolve
+            // const carsA = await Promise.all(carPromises);
+
+            // // return Abc;
+            // return NextResponse.json(carsA);
+
+            // if (customers) {
+            //     Object.assign(customers?.cars, {
+            //         carName: {
+            //             carName: 'ad',
+            //         },
+            //     });
+            // }
             return NextResponse.json(customers);
         }
         throw new Error('Chua dang nhap');
@@ -39,7 +60,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 return new NextResponse("Missing 'id' parameter");
             }
             const json = await request.json();
-            
+
             if (session?.user?.id) {
                 createdBy = Number(session.user.id);
                 garageId = Number(session.user.garageId);
