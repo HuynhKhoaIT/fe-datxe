@@ -43,7 +43,7 @@ export default function ProductForm({
     initialValues: {
       name: "",
       categories: [],
-      supplierId: null,
+      supplierId: 1,
       productBrandId: null,
     },
     validate: {
@@ -253,7 +253,7 @@ export default function ProductForm({
                     data={productBrandOptions}
                   />
                 </Grid.Col>
-                <Grid.Col span={6}>
+                {/* <Grid.Col span={6}>
                   <Select
                     withAsterisk
                     {...form.getInputProps("supplierId")}
@@ -261,7 +261,7 @@ export default function ProductForm({
                     placeholder="Nhà cung cấp"
                     data={supplierOptions}
                   />
-                </Grid.Col>
+                </Grid.Col> */}
                 <Grid.Col span={6}>
                   <NumberInput
                     {...form.getInputProps("price")}
