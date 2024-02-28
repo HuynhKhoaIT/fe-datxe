@@ -1,0 +1,9 @@
+.calculateSubTotal {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+    li {
+        display: flex;
+        justify-content: space-between;
+    }
+}
