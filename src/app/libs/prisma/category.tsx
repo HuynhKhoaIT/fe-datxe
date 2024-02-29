@@ -55,3 +55,29 @@ export async function getCategoryById(id: number) {
     return { error };
   }
 }
+
+export async function syncCategoryFromDlbd(catData: any,garageId: number){
+  const cat = await prisma.productCategory.findFirst({
+    where:{
+      title: {
+        contains: catData.title
+      },
+      garageId: garageId,
+      status: {
+        not: 'PUBLIC'
+      }
+    }
+  })
+  if(cat){
+    return cat;    
+  }
+  const c = await prisma.productCategory.create({
+    data:{
+      title: catData.name,
+      garageId: garageId,
+      slug: catData.name,
+      image: catData.thumbnail
+    }
+  })
+  return c;
+}

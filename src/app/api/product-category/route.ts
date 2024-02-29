@@ -6,7 +6,6 @@ import { authOptions } from '../auth/[...nextauth]/route';
 export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        console.log({ session });
         const { searchParams } = new URL(request.url);
         let garageId = {};
         if (searchParams.get('garage')) {

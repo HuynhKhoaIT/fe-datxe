@@ -29,6 +29,10 @@ export async function getOrders(garage: Number,requestData: any){
         limit = 10;
     }
     const skip = take * (currentPage - 1); 
+    let createdById = {};
+    if(requestData.createdById){
+        createdById = 1
+    }
     const [data,total] = await prisma.$transaction([   
         prisma.order.findMany({
             take: take,
@@ -40,6 +44,7 @@ export async function getOrders(garage: Number,requestData: any){
                 status: {
                     not: 'DELETE',
                 },
+                createdById
             },
             include: {
                 serviceAdvisor: true,

@@ -1,5 +1,7 @@
 import { createOrder, getOrders } from '@/app/libs/prisma/order';
+import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 export async function GET(request: NextRequest) {
     try {
@@ -8,8 +10,11 @@ export async function GET(request: NextRequest) {
         if (searchParams.get('garage')) {
             garageId = Number(searchParams.get('garage'));
         }
+        const session = await getServerSession(authOptions);
+        // if()
         const requestData = {
             s: searchParams.get('s'),
+            createdById: searchParams.get('user'),
             limit: searchParams.get('limit'),
             page: searchParams.get('page'),
         };
