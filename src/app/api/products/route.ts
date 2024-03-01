@@ -9,8 +9,6 @@ import { getToken } from 'next-auth/jwt';
 import { getProducts } from '@/app/libs/prisma/product';
 export async function GET(request: NextRequest) {
     try {
-        // const token = await getToken({ request })
-
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
         const brandIdFilter = searchParams.get('brand');

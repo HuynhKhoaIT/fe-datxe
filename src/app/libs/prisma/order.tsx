@@ -2,9 +2,12 @@ import { NextRequest } from "next/server";
 import prisma from "../prismadb";
 import { createCar } from "./car";
 import { createCustomer } from "./customer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 export async function getOrders(garage: Number,requestData: any){
+    
     try {
     let titleFilter = '';
     const searchText = requestData.s;

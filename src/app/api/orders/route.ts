@@ -3,14 +3,16 @@ import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
     try {
+        const session = await getServerSession(authOptions);
+        // console.log(session);
         const { searchParams } = new URL(request.url);
         let garageId = 0;
         if (searchParams.get('garage')) {
             garageId = Number(searchParams.get('garage'));
         }
-        const session = await getServerSession(authOptions);
+
         // if()
         const requestData = {
             s: searchParams.get('s'),
