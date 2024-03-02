@@ -12,6 +12,8 @@ import Banner2 from "@/assets/images/bannerExpert.png";
 import Reasons1 from "@/assets/images/reasson1.png";
 import Reasons2 from "@/assets/images/reasson2.png";
 import Reasons3 from "@/assets/images/reasson3.png";
+import { getProducts } from "@/app/libs/prisma/product";
+import { getCategories, getCategoryById } from "@/app/libs/prisma/category";
 async function getCategoryDetail(garageId: number) {
   const res = await fetch(`${apiUrl}/api/garage/${garageId}`, {
     method: "GET",
@@ -22,13 +24,7 @@ async function getCategoryDetail(garageId: number) {
   const data = await res.json();
   return data;
 }
-async function getCategories(garageId: number) {
-  const res = await fetch(`${apiUrl}api/product-category?gara=${garageId}`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
+
 async function getProductsByCategory() {
   const res = await fetch(`${apiUrl}api/products?isProduct=1&limit=12`);
   if (!res.ok) {
@@ -194,28 +190,15 @@ const slideshowData = [
   },
 ];
 
-async function getProductsHot(garageId: number) {
-  const res = await fetch(
-    `${apiUrl}/api/products?isProduct=1&garageId=${garageId}&limit=8`,
-    {
-      method: "GET",
-    }
-  );
-  if (!res.ok) {
-    throw new Error(`HTTP error! Status: ${res.status}`);
-  }
-  const data = await res.json();
-  return data.data;
-}
 export default async function DetailCategory({
   params,
 }: {
   params: { slug: number };
 }) {
-  const categoryDetail: any = await getCategoryDetail(9);
-  const categories = await getCategories(9);
-  const products = await getProductsByCategory();
-  const productRelate: any = await getProductsHot(9);
+  const categoryDetail: any = getCategoryById(params?.slug);
+  const categories = await getCategories({});
+  const products = await getProducts(0, { category: params?.slug });
+  const productRelate: any = await getProducts(0, {});
 
   return (
     <RenderContext

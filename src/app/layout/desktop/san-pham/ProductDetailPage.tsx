@@ -23,7 +23,7 @@ const ProductDetailPageDesktop = ({ product, productRelate }: any) => {
           <ProductTabsDes ProductDetail={product?.product} />
           <ExpertBox ProductDetail={product?.product} />
           <ImagesShowRoom />
-          <ProductsRelate productRelate={productRelate} />
+          <ProductsRelate productRelate={productRelate?.data} />
           <div></div>
         </Flex>
       </Container>

@@ -1,7 +1,7 @@
 import RenderContext from "@/app/components/elements/RenderContext";
 import ExpertDetailPageDesktop from "@/app/layout/desktop/chuyen-gia/ExpertDetailPage";
 import ExpertDetailPageMobile from "@/app/layout/mobile/chuyen-gia/ExpertDetailPage";
-import { getProductById } from "@/app/libs/prisma/product";
+import { getProductById, getProducts } from "@/app/libs/prisma/product";
 import { apiUrl } from "@/constants";
 import BlogImage1 from "@/assets/images/blog/blog1.png";
 import BlogImage2 from "@/assets/images/blog/blog2.png";
@@ -10,6 +10,7 @@ import BlogImage4 from "@/assets/images/blog/blog4.png";
 import IconFaceBook from "@/assets/icons/faceBook.svg";
 import IconZalo from "@/assets/icons/zalo.svg";
 import IconIg from "@/assets/icons/instagram.svg";
+import { getCategories } from "@/app/libs/prisma/category";
 
 async function getExpertDetail(garageId: number) {
   const res = await fetch(`${apiUrl}/api/garage/${garageId}`, {
@@ -17,33 +18,6 @@ async function getExpertDetail(garageId: number) {
   });
   if (!res.ok) {
     throw new Error(`HTTP error! Status: ${res.status}`);
-  }
-  const data = await res.json();
-  return data;
-}
-async function getCategories(garageId: number) {
-  const res = await fetch(`${apiUrl}api/product-category?gara=${garageId}`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
-async function getServices(garageId: number) {
-  const res = await fetch(
-    `${apiUrl}api/products?isProduct=0&gara=${garageId}&limit=8`
-  );
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await res.json();
-  return data;
-}
-async function getProducts(garageId: number) {
-  const res = await fetch(
-    `${apiUrl}api/products?isProduct=1&gara=${garageId}&limit=8`
-  );
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
   }
   const data = await res.json();
   return data;
@@ -131,9 +105,9 @@ export default async function DetailProduct({
   params: { slug: number };
 }) {
   const expertDetail: any = await getExpertDetail(9);
-  const categories = await getCategories(9);
-  const services = await getServices(9);
-  const products = await getProducts(9);
+  const categories = await getCategories({});
+  const services = await getProducts(0, { isProduct: "0" });
+  const products = await getProducts(0, { isProduct: "1" });
 
   return (
     <RenderContext
