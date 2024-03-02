@@ -150,45 +150,6 @@ export async function deleteProduct(id: number) {
 
 export async function getProductById(id: number) {
   try {
-    // const product = await prisma.product.findFirst({
-    //   where: {
-    //       id: parseInt(id.toString()),
-    //   },
-    //   include: {
-    //       categories: true,
-    //       garage: true,
-    //       marketingCampaignDetail: {
-    //           take: 1,
-    //           where: {
-    //               marketingCampaign: {
-    //                   AND: [
-    //                       {
-    //                           status: 'PUBLIC',
-    //                           dateTimeStart: {
-    //                               lte: new Date(),
-    //                           },
-    //                           dateTimeEnd: {
-    //                               gte: new Date(),
-    //                           },
-    //                       },
-    //                   ],
-    //               },
-    //           },
-    //           include: {
-    //               marketingCampaign: true,
-    //           },
-    //       },
-    //       reviews:{
-    //         where:{
-    //           AND:[
-    //             {
-    //               status: "PUBLIC"
-    //             }
-    //           ]
-    //         },
-    //       }
-    //   },
-    // });
     const [product,avgReview] = await prisma.$transaction([
       prisma.product.findFirst({
         where: {
