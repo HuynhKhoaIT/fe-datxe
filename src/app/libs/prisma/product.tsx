@@ -3,70 +3,112 @@ import prisma from "../prismadb";
 
 export async function getProducts(garage: Number,requestData:any) {
   try {
+    
+    let currentPage = 1;
+    let take = 10;
+    if(requestData.limit){
+      take = parseInt(requestData.limit)
+    }
+    const skip = take * (currentPage - 1);
+    let categories = {};
     let titleFilter = '';
+    let brands = {};
+    let garageId = {};
+    let isProduct = {};
+    let limit = 10;
+    let statusFilter = 'PUBLIC';
+    
+    if(requestData.limit){
+      limit = Number(requestData.limit)
+    }
+    
+
+    // filter by categoryId
+    const categoryId = requestData.category;
+    if (categoryId) {
+      categories = {
+          some: {
+              category: {
+                  id: Number(categoryId!),
+              },
+          },
+      };
+    }
+
+    // fiter by brandId
+    const brandIdFilter = requestData.brand;
+    if (brandIdFilter) {
+      brands = {
+          some: {
+              carModel: {
+                  id: Number(brandIdFilter),
+              },
+          },
+      };
+    }
+
+    // fiter by text
     const searchText = requestData.s;
     if (searchText) {
         titleFilter = searchText;
     }
-    let garageId = {};
-    if (garage) {
-        garageId = Number(garage);
-    }
-    let currentPage = 1;
-    let take = 10;
-    let limit = Number(requestData.limit);
-    let page = requestData.page;
 
+    if (garage) {
+        garageId = garage;
+    }
+
+    if (requestData.status) {
+      statusFilter = requestData.status.toUpperCase();
+    }
+
+    let page = requestData.page;
     if (page) {
         currentPage = Number(page);
-    }
-    if (limit) {
-        take = Number(limit);
-    } else {
-        limit = 10;
-    }
-    const skip = take * (currentPage - 1);  
-    const [data,total] = await prisma.$transaction([
+    }    
+    
+
+    const [products, total] = await prisma.$transaction([
       prisma.product.findMany({
-        take: take,
-        skip: skip,
-        orderBy: {
-            id: 'desc',
-        },
-        where: {
-          AND: [
-              {
-                OR:[
+          take: take,
+          skip: skip,
+          orderBy: {
+              id: 'desc',
+          },
+          where: {
+              AND: [
                   {
-                    name: {
-                      contains: titleFilter
-                    },
-                    sku: {
-                      contains: titleFilter
-                    }
-                  }
-                ],
-                status: {
-                  not: 'DELETE',
-                },
-                garageId,
-              },
-          ]
-      },
-      // include:{
-      //   reviews: true
-      // },
+                      categories,
+                      name: {
+                          contains: titleFilter!,
+                      },
+                      brands,
+                      status: {
+                          not: 'DELETE',
+                      },
+                      garageId,
+                      isProduct,
+                  },
+              ],
+          },
+          include: {
+              reviews: true,
+              categories: true,
+              garage: true,
+          },
       }),
-      prisma.product.count()
-    ]);
-    return {
-      data: data,
+      prisma.product.count(),
+  ]);
+
+  const totalPage = Math.ceil(total / limit);
+
+  return NextResponse.json({
+      data: products,
       total: total,
       currentPage: currentPage,
       limit: limit,
-      totalPage: Math.ceil(total / limit),
-      status: 201
-    };
+      totalPage: totalPage,
+      status: 200,
+  });
   } catch (error) {
     return { error };
   }
