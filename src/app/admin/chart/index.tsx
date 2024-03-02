@@ -6,8 +6,8 @@ import SimpleBarChart from "./SimpleBarChart";
 
 export default function Chart() {
   return (
-    <Grid h={600}>
-      <Grid.Col span={6} h={500}>
+    <Grid mih={600}>
+      <Grid.Col span={{ base: 12, sm: 6, lg: 6, xs: 12 }} h={500}>
         <Typo
           size="primary"
           type="bold"
@@ -17,7 +17,7 @@ export default function Chart() {
         </Typo>
         <SimpleLineChart />
       </Grid.Col>
-      <Grid.Col span={6} h={500}>
+      <Grid.Col span={{ base: 12, sm: 6, lg: 6, xs: 12 }} h={500}>
         <Typo
           size="primary"
           type="bold"

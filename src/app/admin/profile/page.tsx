@@ -2,7 +2,7 @@ import React from "react";
 import { getMyAccount } from "@/utils/user";
 import { getDistricts, getProvinces, getWards } from "@/utils/notion";
 import UserProfile from "@/app/components/elements/profile/User";
-import axios from "axios";
+import styles from "./index.module.scss";
 export default async function ProfilePageAdmin() {
   const accountData: any = await getMyAccount();
   const province: any = await getProvinces();
@@ -21,7 +21,7 @@ export default async function ProfilePageAdmin() {
     label: item.name,
   }));
   return (
-    <div style={{ width: "800px" }}>
+    <div className={styles.userProfile}>
       <UserProfile
         myAccount={accountData}
         provinceData={provinceData}

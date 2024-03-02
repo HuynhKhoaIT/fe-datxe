@@ -86,11 +86,12 @@ export default function SearchForm({
         onSubmit={form.onSubmit((values) => handleSubmit(values))}
         onReset={form.onReset}
       >
-        <Flex gap={10}>
+        <Flex gap={10} style={{ flexWrap: "wrap" }}>
           {searchData?.map((item: any, index: number) => {
             if (item?.type === "input") {
               return (
                 <Input
+                  w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                   key={index}
                   {...form.getInputProps(item.name)}
                   placeholder={item?.placeholder}
@@ -99,6 +100,7 @@ export default function SearchForm({
             } else if (item?.type === "select") {
               return (
                 <Select
+                  w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                   key={index}
                   {...form.getInputProps(item.name)}
                   data={item?.data}
@@ -110,6 +112,7 @@ export default function SearchForm({
           {brandFilter && (
             <Flex gap={10}>
               <Select
+                w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
                 {...form.getInputProps("brandId")}
                 data={brandOptions}
                 placeholder={"Hãng xe"}
@@ -121,6 +124,7 @@ export default function SearchForm({
                 }}
               />
               <Select
+                w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
                 {...form.getInputProps("nameId")}
                 data={modelOptions}
                 onChange={(value) => {
@@ -131,6 +135,7 @@ export default function SearchForm({
                 placeholder={"Dòng xe"}
               />
               <Select
+                w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
                 {...form.getInputProps("yearId")}
                 data={yearCarOptions}
                 onChange={(value) => {

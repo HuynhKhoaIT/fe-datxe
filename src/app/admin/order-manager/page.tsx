@@ -67,7 +67,7 @@ export default function OrdersManaga() {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Mã đơn hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Mã đơn hàng</span>,
       name: "fullName",
       dataIndex: ["code"],
       width: "120px",
@@ -76,7 +76,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>Tên khách hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên khách hàng</span>,
       name: "fullName",
       dataIndex: ["customer"],
       render: (dataRow: any) => {
@@ -84,7 +84,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>Số điện thoại</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Số điện thoại</span>,
       name: "phoneNumber",
       dataIndex: ["customer"],
       render: (dataRow: any) => {
@@ -92,7 +92,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>Biển số xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Biển số xe</span>,
       name: "phoneNumber",
       dataIndex: ["car", "numberPlates"],
       render: (dataRow: any) => {
@@ -100,7 +100,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>Tổng đơn hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tổng đơn hàng</span>,
       name: "total",
       dataIndex: ["total"],
       render: (dataRow: number) => {
@@ -108,7 +108,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>Tình trạng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tình trạng</span>,
       name: "kind",
       dataIndex: ["step"],
       width: "100px",
@@ -126,7 +126,7 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "100px",
       render: (record: any) => {
@@ -230,7 +230,6 @@ export default function OrdersManaga() {
         handleDeleteProduct={handleDeleteProduct}
         deleteRow={deleteRow}
       />
-      <FooterAdmin />
     </div>
   );
 }

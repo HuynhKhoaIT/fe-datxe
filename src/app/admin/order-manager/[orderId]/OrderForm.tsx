@@ -253,11 +253,12 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     // const images = JSON.parse(selectedRow.images);
     return (
       <Table.Tr key={selectedRow.id}>
-        <Table.Td>
+        <Table.Td miw={200}>
           {selectedRow.name || selectedRow?.product?.name || ""}
         </Table.Td>
-        <Table.Td style={{ width: "200px" }}>
+        <Table.Td w={200}>
           <NumberInput
+            w={200}
             {...form.getInputProps(`detail.${index}.priceSale`)}
             min={0}
             placeholder="Giá sale"
@@ -273,8 +274,9 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             }}
           />
         </Table.Td>
-        <Table.Td style={{ width: "150px" }}>
+        <Table.Td w={150}>
           <NumberInput
+            w={150}
             {...form.getInputProps(`detail.${index}.quantity`)}
             min={0}
             placeholder="Số lượng"
@@ -289,8 +291,9 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             }}
           />
         </Table.Td>
-        <Table.Td style={{ width: "150px" }}>
+        <Table.Td w={150}>
           <NumberInput
+            w={150}
             {...form.getInputProps(`detail.${index}.subTotal`)}
             min={0}
             readOnly
@@ -334,10 +337,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       />
       <form onSubmit={form.onSubmit(handleSubmit)} style={{ padding: "20px" }}>
         <Grid gutter={12}>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
             Thông tin khách hàng
             <Grid gutter={12}>
-              <Grid.Col span={6}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                 <TextInput
                   {...form.getInputProps("customer.fullName")}
                   label="Tên khách hàng"
@@ -345,7 +348,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   placeholder="Tên khách hàng"
                 />
               </Grid.Col>
-              <Grid.Col span={6}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                 <TextInput
                   {...form.getInputProps("customer.phoneNumber")}
                   label="Số điện thoại"
@@ -363,10 +366,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               </Grid.Col>
             </Grid>
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
             Thông tin xe
             <Grid gutter={12}>
-              <Grid.Col span={6}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                 <TextInput
                   {...form.getInputProps("numberPlates")}
                   label="Biển số xe"
@@ -374,7 +377,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   placeholder="Biển số xe"
                 />
               </Grid.Col>
-              <Grid.Col span={6}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                 <Select
                   {...form.getInputProps("carBrandId")}
                   label="Hãng xe"
@@ -387,7 +390,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   }}
                 />
               </Grid.Col>
-              <Grid.Col span={6}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                 <Select
                   {...form.getInputProps("carNameId")}
                   label="Dòng xe"
@@ -400,7 +403,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   }}
                 />
               </Grid.Col>
-              <Grid.Col span={6}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                 <Select
                   {...form.getInputProps("carYearId")}
                   label="Năm sản xuất"
@@ -456,7 +459,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           </Grid.Col>
         </Grid>
         <Grid gutter={12} mt={24}>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
             <NumberInput
               label="Tổng đơn hàng"
               placeholder="Tổng đơn hàng"
@@ -466,7 +469,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               value={calculateSubTotal()}
             />
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
             <Select
               label="Tình trạng đơn hàng"
               placeholder="Tình trạng đơn hàng"
@@ -474,7 +477,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               data={stepOrderOptions}
             />
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
             <Textarea
               {...form.getInputProps("note")}
               label="Ghi chú của khách hàng"

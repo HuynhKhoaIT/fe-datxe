@@ -1,0 +1,31 @@
+.headerTop {
+    background-color: var(--primary-color);
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    .topWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        .topLeft {
+            display: flex;
+            gap: 1.25rem;
+        }
+        .topRight {
+            .logo {
+                display: block;
+                width: 32px;
+                flex-shrink: 0;
+                img {
+                    object-fit: fill;
+                }
+            }
+        }
+    }
+}

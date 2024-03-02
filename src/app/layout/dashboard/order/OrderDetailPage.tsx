@@ -8,22 +8,22 @@ import TableBasic from "@/app/components/table/Tablebasic";
 export default function OrderDetailPage({ dataSource }: any) {
   const columns = [
     {
-      label: <span>Tên sản phẩm</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
       name: "product",
       dataIndex: ["product", "name"],
     },
     {
-      label: <span>Giá</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Giá</span>,
       name: "priceSale",
       dataIndex: ["priceSale"],
     },
     {
-      label: <span>Số lượng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Số lượng</span>,
       name: "quantity",
       dataIndex: ["quantity"],
     },
     {
-      label: <span>Tổng tiền</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tổng tiền</span>,
       name: "subTotal",
       dataIndex: [],
       render: (dataRow: any) => {

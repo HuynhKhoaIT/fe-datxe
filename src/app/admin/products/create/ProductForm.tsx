@@ -215,12 +215,12 @@ export default function ProductForm({
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
-      <form onSubmit={form.onSubmit(handleSubmit)} style={{ padding: "20px" }}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Grid gutter={12}>
-          <Grid.Col span={8}>
+          <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
             <Card withBorder shadow="sm">
               <Grid gutter={10}>
-                <Grid.Col span={8}>
+                <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
                   <TextInput
                     withAsterisk
                     {...form.getInputProps("name")}
@@ -229,7 +229,7 @@ export default function ProductForm({
                     placeholder="Tên sản phẩm"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 4, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("isProduct")}
                     label="Loại"
@@ -241,10 +241,7 @@ export default function ProductForm({
                     ]}
                   />
                 </Grid.Col>
-              </Grid>
-
-              <Grid gutter={10}>
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <Select
                     withAsterisk
                     {...form.getInputProps("productBrandId")}
@@ -253,16 +250,7 @@ export default function ProductForm({
                     data={productBrandOptions}
                   />
                 </Grid.Col>
-                {/* <Grid.Col span={6}>
-                  <Select
-                    withAsterisk
-                    {...form.getInputProps("supplierId")}
-                    label="Nhà cung cấp"
-                    placeholder="Nhà cung cấp"
-                    data={supplierOptions}
-                  />
-                </Grid.Col> */}
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
                     {...form.getInputProps("price")}
                     label="Giá bán"
@@ -271,7 +259,7 @@ export default function ProductForm({
                     thousandSeparator=","
                   />
                 </Grid.Col>
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
                     {...form.getInputProps("salePrice")}
                     min={0}
@@ -280,8 +268,7 @@ export default function ProductForm({
                     thousandSeparator=","
                   />
                 </Grid.Col>
-
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <MultiSelect
                     withAsterisk
                     {...form.getInputProps("categories")}
@@ -291,7 +278,7 @@ export default function ProductForm({
                     data={catOptions}
                   />
                 </Grid.Col>
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
                     {...form.getInputProps("quantity")}
                     label="Số lượng"
@@ -301,6 +288,18 @@ export default function ProductForm({
                   />
                 </Grid.Col>
               </Grid>
+
+              {/* <Grid gutter={10}>
+                <Grid.Col span={6}>
+                  <Select
+                    withAsterisk
+                    {...form.getInputProps("supplierId")}
+                    label="Nhà cung cấp"
+                    placeholder="Nhà cung cấp"
+                    data={supplierOptions}
+                  />
+                </Grid.Col>
+              </Grid> */}
               <Grid mt={24}>
                 <Grid.Col span={12}>
                   <>
@@ -343,7 +342,7 @@ export default function ProductForm({
               />
             </Card>
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 4, md: 4, lg: 4 }}>
             <Card withBorder shadow="sm">
               <Grid>
                 <Grid.Col span={12}>

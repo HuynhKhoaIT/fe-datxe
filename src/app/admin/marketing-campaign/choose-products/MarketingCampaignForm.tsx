@@ -128,7 +128,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             />
           )}
         </Table.Td> */}
-        <Table.Td>
+        <Table.Td miw={200}>
           {selectedRow.name || selectedRow?.product?.name || ""}
         </Table.Td>
         <Table.Td>{selectedRow.price.toLocaleString()}đ</Table.Td>
@@ -137,6 +137,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             withAsterisk
             readOnly
             // label="Tên chương trình"
+            miw={100}
             thousandSeparator=","
             type="text"
             placeholder="Giá sau giảm"
@@ -150,10 +151,11 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             : selectedRow.price.toLocaleString()}
           đ */}
         </Table.Td>
-        <Table.Td style={{ width: "350px" }}>
-          <Grid>
-            <Grid.Col span={5}>
+        <Table.Td>
+          <Grid miw={150}>
+            <Grid.Col span={{ base: 12, sm: 5, md: 5, lg: 5 }}>
               <Select
+                miw={100}
                 {...form.getInputProps(`detail.${index}.saleType`)}
                 data={[
                   { value: "FIXED", label: "Tiền" },
@@ -169,7 +171,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                 }}
               />
             </Grid.Col>
-            <Grid.Col span={7}>
+            <Grid.Col span={{ base: 12, sm: 7, md: 7, lg: 7 }}>
               {selectedRow.saleType === "FIXED" ? (
                 <NumberInput
                   {...form.getInputProps(`detail.${index}.saleValue`)}
@@ -208,6 +210,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         </Table.Td>
         <Table.Td style={{ width: "200px" }}>
           <NumberInput
+            miw={100}
             {...form.getInputProps(`detail.${index}.quantity`)}
             min={0}
             placeholder="Số lượng"
@@ -272,7 +275,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         <div className={styles.marketingInfo}>
           <Typo className={styles.title}>Thông tin chương trình</Typo>
           <Grid gutter={16}>
-            <Grid.Col span={6}>
+            <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
               <TextInput
                 withAsterisk
                 label="Tên chương trình"
@@ -281,14 +284,14 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                 {...form.getInputProps("title")}
               />
             </Grid.Col>
-            <Grid.Col span={3}>
+            <Grid.Col span={{ base: 6, sm: 3, md: 3, lg: 3 }}>
               <DateTimeField
                 label="Ngày bắt đầu"
                 required
                 {...form.getInputProps("dateTimeStart")}
               />
             </Grid.Col>
-            <Grid.Col span={3}>
+            <Grid.Col span={{ base: 6, sm: 3, md: 3, lg: 3 }}>
               <DateTimeField
                 label="Ngày kết thúc"
                 required
@@ -325,11 +328,21 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                   <Table>
                     <Table.Thead>
                       <Table.Tr>
-                        <Table.Th>Tên sản phẩm</Table.Th>
-                        <Table.Th>Giá gốc</Table.Th>
-                        <Table.Th>Giá sau giảm</Table.Th>
-                        <Table.Th>Giá sale</Table.Th>
-                        <Table.Th>Số lượng khuyến mãi</Table.Th>
+                        <Table.Th style={{ whiteSpace: "nowrap" }}>
+                          Tên sản phẩm
+                        </Table.Th>
+                        <Table.Th style={{ whiteSpace: "nowrap" }}>
+                          Giá gốc
+                        </Table.Th>
+                        <Table.Th style={{ whiteSpace: "nowrap" }}>
+                          Giá sau giảm
+                        </Table.Th>
+                        <Table.Th style={{ whiteSpace: "nowrap" }}>
+                          Giá sale
+                        </Table.Th>
+                        <Table.Th style={{ whiteSpace: "nowrap" }}>
+                          Số lượng khuyến mãi
+                        </Table.Th>
                         <Table.Th
                           style={{ width: "120px", textAlign: "center" }}
                         >

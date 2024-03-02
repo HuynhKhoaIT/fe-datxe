@@ -20,3 +20,16 @@
         }
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .wrapper .contents {
+        padding: 0 10px;
+        .content {
+            background-color: var(--white-background);
+            height: 100%;
+            box-shadow: none;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+    }
+}

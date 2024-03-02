@@ -28,17 +28,17 @@ export default function OrdersListPage({ dataSource }: any) {
   };
   const columns = [
     {
-      label: <span>Biển số</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Biển số</span>,
       name: "licensePlates",
       dataIndex: ["car", "numberPlates"],
     },
     {
-      label: <span>Mã đơn hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Mã đơn hàng</span>,
       name: "code",
       dataIndex: ["code"],
     },
     {
-      label: <span>Ngày sửa</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Ngày sửa</span>,
       name: "dateTime",
       dataIndex: ["dateTime"],
       render: (dataRow: Date) => {
@@ -46,7 +46,7 @@ export default function OrdersListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Tổng đơn hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tổng đơn hàng</span>,
       name: "total",
       dataIndex: ["total"],
       render: (dataRow: number) => {
@@ -54,7 +54,7 @@ export default function OrdersListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "100px",
       render: (record: any) => {

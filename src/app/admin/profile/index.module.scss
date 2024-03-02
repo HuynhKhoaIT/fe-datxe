@@ -20,3 +20,19 @@
         }
     }
 }
+.userProfile {
+    width: 800px;
+}
+@media only screen and (max-width: 600px) {
+    .userProfile {
+        width: 100%;
+    }
+    .wrapper .contents {
+        padding: 0 10px;
+        .content {
+            // background-color: var(--white-background);
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+    }
+}

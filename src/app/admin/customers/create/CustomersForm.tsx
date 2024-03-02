@@ -179,7 +179,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
           <Grid.Col span={12}>
             <Card withBorder shadow="sm">
               <Grid gutter={10} mt={24}>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     withAsterisk
                     {...form.getInputProps("fullName")}
@@ -188,7 +188,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     placeholder="Họ và tên"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     withAsterisk
                     {...form.getInputProps("phoneNumber")}
@@ -197,7 +197,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     placeholder="Số điện thoại"
                   />
                 </Grid.Col>
-                <Grid.Col span={2}>
+                <Grid.Col span={{ base: 6, sm: 4, md: 2, lg: 2 }}>
                   <DateField
                     {...form.getInputProps("dob")}
                     label="Ngày sinh"
@@ -206,7 +206,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     maxDate={new Date()}
                   />
                 </Grid.Col>
-                <Grid.Col span={2}>
+                <Grid.Col span={{ base: 6, sm: 4, md: 2, lg: 2 }}>
                   <Select
                     {...form.getInputProps("sex")}
                     label="Giới tính"
@@ -215,7 +215,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     data={sexOptions}
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Autocomplete
                     withAsterisk
                     {...form.getInputProps("cityId")}
@@ -237,7 +237,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     selectFirstOptionOnChange
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Autocomplete
                     withAsterisk
                     {...form.getInputProps("districtId")}
@@ -258,7 +258,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     selectFirstOptionOnChange
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Autocomplete
                     withAsterisk
                     {...form.getInputProps("wardId")}
@@ -279,7 +279,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     selectFirstOptionOnChange
                   />
                 </Grid.Col>
-                <Grid.Col span={8}>
+                <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
                   <TextInput
                     withAsterisk
                     {...form.getInputProps("address")}
@@ -288,8 +288,7 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     placeholder="Địa chỉ"
                   />
                 </Grid.Col>
-
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("status")}
                     label="Trạng thái"

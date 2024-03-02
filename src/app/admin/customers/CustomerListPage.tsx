@@ -34,7 +34,7 @@ export default function CustomerListPage({ dataSource }: any) {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Tên khách hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên khách hàng</span>,
       name: "fullname",
       dataIndex: ["fullName"],
       render: (dataRow: any) => {
@@ -42,12 +42,12 @@ export default function CustomerListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Số điện thoại</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Số điện thoại</span>,
       name: "phoneNumber",
       dataIndex: ["phoneNumber"],
     },
     {
-      label: <span>Ngày sinh</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Ngày sinh</span>,
       name: "dob",
       dataIndex: ["dob"],
       render: (dob: any) => {
@@ -55,7 +55,7 @@ export default function CustomerListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Giới tính</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Giới tính</span>,
       name: "sex",
       dataIndex: ["sex"],
       width: "100px",
@@ -71,7 +71,7 @@ export default function CustomerListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Trạng thái</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Trạng thái</span>,
       name: "status",
       dataIndex: ["status"],
       width: "100px",
@@ -89,7 +89,7 @@ export default function CustomerListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "100px",
       render: (record: any) => {
@@ -152,11 +152,8 @@ export default function CustomerListPage({ dataSource }: any) {
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
         </Link>
       </Flex>
-      <div className="row">
-        <div className="col-12">
-          <TableBasic data={dataSource} columns={columns} />
-        </div>
-      </div>
+      <TableBasic data={dataSource} columns={columns} />
+
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}

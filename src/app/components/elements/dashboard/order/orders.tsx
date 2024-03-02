@@ -22,22 +22,22 @@ export default function Orders({ ordersData }: any) {
   };
   const columns = [
     {
-      label: <span>Tên chuyên gia</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên chuyên gia</span>,
       name: "name",
       dataIndex: ["garage", "name"],
     },
     {
-      label: <span>Biển số</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Biển số</span>,
       name: "licensePlates",
       dataIndex: ["car", "licensePlates"],
     },
     {
-      label: <span>Mã đơn hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Mã đơn hàng</span>,
       name: "code",
       dataIndex: ["code"],
     },
     {
-      label: <span>Ngày sửa</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Ngày sửa</span>,
       name: "arrivalTime",
       dataIndex: ["arrivalTime"],
       render: (dataRow: Date) => {
@@ -45,7 +45,7 @@ export default function Orders({ ordersData }: any) {
       },
     },
     {
-      label: <span>Tình trạng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tình trạng</span>,
       name: "status",
       dataIndex: ["status"],
       render: (dataRow: number) => {
@@ -71,7 +71,7 @@ export default function Orders({ ordersData }: any) {
       },
     },
     {
-      label: <span>Tổng đơn hàng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tổng đơn hàng</span>,
       name: "totalDiscount",
       dataIndex: ["totalDiscount"],
       render: (dataRow: number) => {

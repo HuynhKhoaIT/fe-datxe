@@ -84,7 +84,7 @@ export default function CarListPage({ carsData, myAccount }: any) {
   };
   const columns = [
     {
-      label: <span>Mặc định</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Mặc định</span>,
       name: "carDefault",
       dataIndex: [],
       width: "90px",
@@ -102,32 +102,32 @@ export default function CarListPage({ carsData, myAccount }: any) {
       },
     },
     {
-      label: <span>Biển số</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Biển số</span>,
       name: "licensePlates",
       dataIndex: ["licensePlates"],
     },
     {
-      label: <span>Màu xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Màu xe</span>,
       name: "color",
       dataIndex: ["color"],
     },
     {
-      label: <span>Hãng xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hãng xe</span>,
       name: "bandName",
       dataIndex: ["brandCarName", "name"],
     },
     {
-      label: <span>Dòng xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Dòng xe</span>,
       name: "modelName",
       dataIndex: ["modelCarName", "name"],
     },
     // {
-    //   label: <span>Năm sản xuất</span>,
+    //   label: <span style={{ whiteSpace: "nowrap" }}>Năm sản xuất</span>,
     //   name: "color",
     //   dataIndex: ["color"],
     // },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "120px",
       render: (record: any) => {

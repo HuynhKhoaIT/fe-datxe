@@ -74,9 +74,9 @@ export default function InfoItem({
 
   return (
     <Flex key={index} gap={12} w={"100%"} align={"end"} justify="space-between">
-      <Flex gap={12} w={"90%"}>
+      <Flex gap={12} w={"90%"} style={{ flexWrap: "wrap" }}>
         <Select
-          w={"33%"}
+          w={{ base: "100%", md: "30%", lg: "30%" }}
           label="Hãng xe"
           placeholder="Hãng xe"
           data={brandOptions}
@@ -87,7 +87,7 @@ export default function InfoItem({
           }}
         />
         <Select
-          w={"33%"}
+          w={{ base: "100%", md: "30%", lg: "30%" }}
           label="Dòng xe"
           placeholder="Dòng xe"
           data={modelOptions}
@@ -98,7 +98,7 @@ export default function InfoItem({
           }}
         />
         <MultiSelect
-          w={"33%"}
+          w={{ base: "100%", md: "30%", lg: "30%" }}
           label="Năm sản xuất"
           placeholder="Năm sản xuất"
           data={yearCarOptions}

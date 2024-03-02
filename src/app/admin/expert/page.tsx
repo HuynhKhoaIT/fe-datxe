@@ -50,7 +50,7 @@ const Expert = () => {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Hình ảnh</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
       name: "image",
       dataIndex: ["logo"],
       width: "90px",
@@ -71,7 +71,7 @@ const Expert = () => {
       },
     },
     {
-      label: <span>Mã chuyên gia</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Mã chuyên gia</span>,
       name: "code",
       dataIndex: ["code"],
       render: (dataRow: any) => {
@@ -79,7 +79,7 @@ const Expert = () => {
       },
     },
     {
-      label: <span>Tên chuyên gia</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên chuyên gia</span>,
       name: "name",
       dataIndex: ["name"],
       render: (dataRow: any) => {
@@ -87,7 +87,7 @@ const Expert = () => {
       },
     },
     {
-      label: <span>Tên rút gọn</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên rút gọn</span>,
       name: "shortName",
       dataIndex: ["shortName"],
       render: (dataRow: any) => {
@@ -95,24 +95,24 @@ const Expert = () => {
       },
     },
     {
-      label: <span>Số điện thoại</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Số điện thoại</span>,
       name: "phoneNumber",
       dataIndex: ["phoneNumber"],
       textAlign: "center",
     },
     {
-      label: <span>Email</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Email</span>,
       name: "email",
       dataIndex: ["email"],
     },
     {
-      label: <span>Địa chỉ</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Địa chỉ</span>,
       name: "address",
       dataIndex: ["address"],
     },
 
     {
-      label: <span>Trạng thái</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Trạng thái</span>,
       name: "status",
       dataIndex: ["status"],
       width: "100px",
@@ -130,7 +130,7 @@ const Expert = () => {
       },
     },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "100px",
       render: (record: any) => {
