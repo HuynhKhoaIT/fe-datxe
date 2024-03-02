@@ -61,6 +61,10 @@ export async function getProducts(garage: Number,requestData:any) {
       statusFilter = requestData.status.toUpperCase();
     }
 
+    if (requestData.isProduct?.length) {
+      isProduct = requestData.isProduct == '1' ? true : false;
+    }
+
     let page = requestData.page;
     if (page) {
         currentPage = Number(page);
