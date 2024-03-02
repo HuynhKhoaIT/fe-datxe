@@ -15,7 +15,7 @@ async function getProducts() {
   return data;
 }
 async function getCategoriesData() {
-  const { categories } = await getCategories();
+  const categories  = await getCategories({});
   if (!categories) {
     throw new Error("Failed to fetch data");
   }
