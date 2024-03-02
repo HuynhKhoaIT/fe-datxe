@@ -76,6 +76,8 @@ const blogs = [
 export default async function Home() {
   const categories = await getCategories({});
   const productsRelate = await getProducts(0, {});
+  const servicesHot = await getProducts(0, { isProduct: "0" });
+  const productsHot = await getProducts(0, { isProduct: "1" });
   // const carsOption = await getCarData();
   const province: any = await getProvinces();
   const provinceData = province.map((item: any) => ({
@@ -95,8 +97,8 @@ export default async function Home() {
       categories={categories}
       reassons={reassons}
       productsRelate={productsRelate}
-      servicesHot={productsRelate}
-      productsHot={productsRelate}
+      servicesHot={servicesHot}
+      productsHot={productsHot}
       blogs={blogs}
       // carsOption={carsOption}
       provinceData={provinceData}

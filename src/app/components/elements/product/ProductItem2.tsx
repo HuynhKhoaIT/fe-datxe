@@ -61,13 +61,13 @@ export default function ProductItem2({
             </div>
           </div>
         </Flex>
-        <div className={styles.point}>
+        {/* <div className={styles.point}>
           <img src={Point.src} className={styles.bgPoint} />
           <div className={styles.pointValue}>
             <span className={styles.value}>+50</span>
             <span className={styles.pointText}>Điểm</span>
           </div>
-        </div>
+        </div> */}
       </Card>
     </Box>
   );

@@ -23,10 +23,10 @@ const CategoryDetailPageMobile = ({
       <Hero slideshowData={slideshowData} height={135} />
       <Filter kindProduct={kindProduct} />
       <Container>
-        <Products products={products} />
+        <Products products={products?.data} />
       </Container>
       <Blogs blogs={blogs} />
-      <ViewedProducts viewedProducts={productRelate} />
+      <ViewedProducts viewedProducts={productRelate?.data} />
       <div
         className={styles.productsBox}
         style={{

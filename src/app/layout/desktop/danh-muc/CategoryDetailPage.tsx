@@ -36,11 +36,11 @@ const CategoryDetailPageDesktop = ({
         </div>
 
         <div className={styles.body}>
-          <Products products={products} />
+          <Products products={products?.data} />
         </div>
       </Container>
       <Blogs blogs={blogs} />
-      <ViewedProducts viewedProducts={productRelate} />
+      <ViewedProducts viewedProducts={productRelate?.data} />
       <div
         className={styles.productsBox}
         style={{

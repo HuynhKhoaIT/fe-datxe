@@ -17,6 +17,9 @@ const DynamicModalDeleteProduct = dynamic(
     ssr: false,
   }
 );
+const DynamicModalCategories = dynamic(() => import("./ModalCategoriesDLBD"), {
+  ssr: false,
+});
 export default function CategoryListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
@@ -32,6 +35,12 @@ export default function CategoryListPage({ dataSource }: any) {
     openedDeleteProduct,
     { open: openDeleteProduct, close: closeDeleteProduct },
   ] = useDisclosure(false);
+
+  const [
+    openedModalCategories,
+    { open: openModalCategories, close: closeModalCategories },
+  ] = useDisclosure(false);
+
   const columns = [
     {
       label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
@@ -141,13 +150,25 @@ export default function CategoryListPage({ dataSource }: any) {
   return (
     <div className={styles.content}>
       <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
-      <Flex justify={"end"} align={"center"}>
+      <Flex justify={"end"} align={"center"} gap={20}>
         <Link
           href={{
             pathname: `/admin/categories/create`,
           }}
         >
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+        </Link>
+        <Link
+          href={{
+            pathname: `/admin/categories/create`,
+          }}
+        >
+          <Button
+            onClick={openModalCategories}
+            leftSection={<IconPlus size={14} />}
+          >
+            Đồng bộ
+          </Button>
         </Link>
       </Flex>
       <TableBasic data={dataSource} columns={columns} />
@@ -156,6 +177,10 @@ export default function CategoryListPage({ dataSource }: any) {
         closeDeleteProduct={closeDeleteProduct}
         handleDeleteProduct={handleDeleteCategory}
         deleteRow={deleteRow}
+      />
+      <DynamicModalCategories
+        openedModalCategories={openedModalCategories}
+        closeModalCategories={closeModalCategories}
       />
     </div>
   );
