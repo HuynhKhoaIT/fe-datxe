@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
 
         // const totalPage = Math.ceil(total / limit);
 
-        return products;
+        return NextResponse.json(products);
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }

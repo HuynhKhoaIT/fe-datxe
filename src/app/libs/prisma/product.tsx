@@ -101,14 +101,14 @@ export async function getProducts(garage: Number,requestData:any) {
 
   const totalPage = Math.ceil(total / limit);
 
-  return NextResponse.json({
+  return {
       data: products,
       total: total,
       currentPage: currentPage,
       limit: limit,
       totalPage: totalPage,
       status: 200,
-  });
+  };
   } catch (error) {
     return { error };
   }
