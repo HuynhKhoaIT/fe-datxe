@@ -184,7 +184,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           <Grid.Col span={12}>
             <Card withBorder shadow="sm">
               <Grid gutter={10}>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("customerId")}
                     label="Khách hàng"
@@ -193,7 +193,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     data={customerOptions}
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("numberPlates")}
                     label="Biển số xe"
@@ -201,7 +201,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     placeholder="Biển số xe"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("color")}
                     label="Màu xe"
@@ -209,9 +209,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     placeholder="Màu xe"
                   />
                 </Grid.Col>
-              </Grid>
-              <Grid gutter={10}>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("carBrandId")}
                     label="Hãng xe"
@@ -223,7 +221,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     }}
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("carNameId")}
                     label="Dòng xe"
@@ -235,7 +233,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     }}
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("carYearId")}
                     label="Năm sản xuất"
@@ -246,9 +244,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     }}
                   />
                 </Grid.Col>
-              </Grid>
-              <Grid gutter={10}>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("vinNumber")}
                     label="vinNumber"
@@ -256,7 +252,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     placeholder="vinNumber"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("machineNumber")}
                     label="machineNumber"
@@ -264,7 +260,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     placeholder="machineNumber"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("status")}
                     label="Trạng thái"
@@ -274,7 +270,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                   />
                 </Grid.Col>
               </Grid>
-
               <Grid mt={24}>
                 <Grid.Col span={12}>
                   <Textarea

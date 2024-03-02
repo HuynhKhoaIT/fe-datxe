@@ -38,7 +38,7 @@ export default function ProductsManaga() {
   ];
   const columns = [
     {
-      label: <span>Hình ảnh</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
       name: "image",
       dataIndex: ["thumbnail"],
       width: "120px",
@@ -58,7 +58,7 @@ export default function ProductsManaga() {
       },
     },
     {
-      label: <span>Tên sản phẩm</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
       name: "name",
       dataIndex: ["name"],
       render: (dataRow: any) => {
@@ -66,7 +66,7 @@ export default function ProductsManaga() {
       },
     },
     {
-      label: <span>Giá bán</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Giá bán</span>,
       name: "price",
       dataIndex: ["price"],
       width: "150px",
@@ -75,7 +75,7 @@ export default function ProductsManaga() {
       },
     },
     {
-      label: <span>Giá sale</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Giá sale</span>,
       name: "priceSale",
       dataIndex: ["entryPrice"],
       width: "150px",
@@ -84,7 +84,7 @@ export default function ProductsManaga() {
       },
     },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "120px",
       textAlign: "center",
@@ -145,7 +145,6 @@ export default function ProductsManaga() {
           />
         }
       />
-      <FooterAdmin />
     </div>
   );
 }

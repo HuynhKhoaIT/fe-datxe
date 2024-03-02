@@ -85,7 +85,7 @@ export default function SupplierForm({ isEditing, dataDetail }: any) {
         visible={loading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
-      />{" "}
+      />
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Grid gutter={12}>
           <Grid.Col span={12}>

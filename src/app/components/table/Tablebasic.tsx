@@ -15,7 +15,7 @@ export default function TableBasic({
   setSelectedRows,
 }: any) {
   return (
-    <>
+    <div style={{ overflowX: "auto" }}>
       <Table>
         <Table.Thead>
           <Table.Tr>
@@ -32,7 +32,7 @@ export default function TableBasic({
             })}
           </Table.Tr>
         </Table.Thead>
-        <Table.Tbody style={{ position: "relative" }}>
+        <Table.Tbody style={{ position: "relative", overflowX: "auto" }}>
           {data?.map((item: any, index: number) => {
             return (
               <Table.Tr key={index}>
@@ -93,6 +93,6 @@ export default function TableBasic({
           setPage={setPage}
         />
       )}
-    </>
+    </div>
   );
 }

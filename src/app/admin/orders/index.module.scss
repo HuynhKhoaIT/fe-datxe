@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin-left: 20px;
+    padding-left: 20px;
     .pagination {
         display: flex;
         height: 50px;
@@ -15,5 +15,11 @@
         height: calc(100% - 50px);
         overflow-y: auto;
         margin-bottom: 20px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .wrapper {
+        padding: 0 10px;
     }
 }

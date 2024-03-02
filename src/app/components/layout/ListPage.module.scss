@@ -2,9 +2,14 @@
     // min-height: calc(100vh - 190px);
     border: 1px solid #fff;
     background-color: #fff;
+    padding: 10px;
     border-radius: 0;
+
     .action-bar {
         margin: 10px 0 10px 0;
+    }
+    .baseTable {
+        overflow-x: auto;
     }
 }
 
@@ -18,4 +23,9 @@
 }
 .actionBar {
     margin-bottom: 1rem;
+}
+@media only screen and (max-width: 600px) {
+    .baseListPage {
+        padding: 0;
+    }
 }

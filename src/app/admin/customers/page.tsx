@@ -24,7 +24,6 @@ export default async function Suppliers() {
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <CustomerListPage dataSource={categories} />
-      <FooterAdmin />
     </div>
   );
 }

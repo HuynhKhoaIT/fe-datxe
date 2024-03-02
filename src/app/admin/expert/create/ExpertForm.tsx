@@ -30,7 +30,6 @@ export default function ExpertForm({
   districtData: dtData,
   wardData: wData,
 }: any) {
-  console.log("provinceData", provinceData);
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
@@ -175,7 +174,7 @@ export default function ExpertForm({
           <Grid.Col span={12}>
             <Card withBorder shadow="sm">
               <Grid>
-                <Grid.Col span={12}>
+                <Grid.Col span={{ base: 12 }}>
                   <Text size={"16px"} c={"#999999"} mb={"6px"}>
                     Hình ảnh
                   </Text>
@@ -204,7 +203,7 @@ export default function ExpertForm({
                 </Grid.Col>
               </Grid>
               <Grid gutter={10} mt={24}>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("code")}
                     label="Mã số"
@@ -212,7 +211,7 @@ export default function ExpertForm({
                     placeholder="Mã số"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("name")}
                     label="Tên chuyên gia"
@@ -220,7 +219,7 @@ export default function ExpertForm({
                     placeholder="Tên chuyên gia"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("shortName")}
                     label="Tên rút gọn"
@@ -228,7 +227,7 @@ export default function ExpertForm({
                     placeholder="Tên rút gọn"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("phoneNumber")}
                     label="Điện thoại"
@@ -236,7 +235,7 @@ export default function ExpertForm({
                     placeholder="Điện thoại"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("email")}
                     label="email"
@@ -244,7 +243,7 @@ export default function ExpertForm({
                     placeholder="email"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     {...form.getInputProps("website")}
                     label="Website"
@@ -252,7 +251,7 @@ export default function ExpertForm({
                     placeholder="Website"
                   />
                 </Grid.Col>
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <MultiSelect
                     withAsterisk
                     {...form.getInputProps("amenities")}
@@ -263,7 +262,7 @@ export default function ExpertForm({
                   />
                 </Grid.Col>
 
-                <Grid.Col span={8}>
+                <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
                   <TextInput
                     {...form.getInputProps("address")}
                     label="Địa chỉ"
@@ -279,7 +278,7 @@ export default function ExpertForm({
                     placeholder="Địa chỉ 2"
                   />
                 </Grid.Col>
-                <Grid.Col span={{ base: 4, md: 4, lg: 4 }}>
+                <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("provinceId")}
                     label="Tỉnh/Thành phố"
@@ -293,7 +292,7 @@ export default function ExpertForm({
                     }}
                   ></Select>
                 </Grid.Col>
-                <Grid.Col span={{ base: 4, md: 4, lg: 4 }}>
+                <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("districtId")}
                     label="Huyện/Quận"
@@ -306,7 +305,7 @@ export default function ExpertForm({
                     }}
                   ></Select>
                 </Grid.Col>
-                <Grid.Col span={{ base: 4, md: 4, lg: 4 }}>
+                <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("wardId")}
                     label="Xã/Phường"
@@ -329,7 +328,7 @@ export default function ExpertForm({
                   />
                 </Grid.Col>
 
-                <Grid.Col span={4}>
+                <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
                     {...form.getInputProps("status")}
                     label="Trạng thái"

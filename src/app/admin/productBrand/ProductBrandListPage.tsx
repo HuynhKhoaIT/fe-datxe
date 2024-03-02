@@ -34,7 +34,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Thương hiệu</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Thương hiệu</span>,
       name: "name",
       dataIndex: ["name"],
       render: (dataRow: any) => {
@@ -42,12 +42,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Mô tả</span>,
-      name: "description",
-      dataIndex: ["description"],
-    },
-    {
-      label: <span>Trạng thái</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Trạng thái</span>,
       name: "status",
       dataIndex: ["status"],
       width: "100px",
@@ -65,7 +60,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "100px",
       render: (record: any) => {

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Grid, TextInput, Select, Group } from "@mantine/core";
+import { Button, Grid, TextInput, Select, Group, Box } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -77,23 +77,22 @@ export default function UserProfile({
       <div className="user-profile-card-header">
         <h4 className="user-profile-card-title">Cập nhật thông tin</h4>
       </div>
-      <div className="card-body">
+      <Box w={"100%"} px={10}>
         <form
           name="userProfileForm"
           onSubmit={form.onSubmit((values) => handleUpdateProfile(values))}
         >
-          <Grid gutter={16}>
+          <Grid gutter={16} w={"100%"}>
             <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
               <TextInput
+                w={"100%"}
                 withAsterisk
                 {...form.getInputProps("name")}
                 label="Họ tên"
                 placeholder="Nguyễn Văn A"
               />
             </Grid.Col>
-          </Grid>
-          <Grid gutter={16}>
-            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <DateField
                 {...form.getInputProps("dob")}
                 label="Ngày sinh"
@@ -102,7 +101,7 @@ export default function UserProfile({
                 maxDate={new Date()}
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <TextInput
                 type="tel"
                 disabled={true}
@@ -110,16 +109,14 @@ export default function UserProfile({
                 label="Điện thoại"
               />
             </Grid.Col>
-          </Grid>
-          <Grid gutter={16}>
-            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <TextInput
                 {...form.getInputProps("address")}
                 label="Địa chỉ"
                 placeholder="1234 Main St"
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <Select
                 {...form.getInputProps("province_id")}
                 label="Tỉnh/Thành phố"
@@ -133,7 +130,7 @@ export default function UserProfile({
                 }}
               ></Select>
             </Grid.Col>
-            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <Select
                 {...form.getInputProps("district_id")}
                 label="Huyện/Quận"
@@ -146,7 +143,7 @@ export default function UserProfile({
                 }}
               ></Select>
             </Grid.Col>
-            <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <Select
                 {...form.getInputProps("ward_id")}
                 label="Xã/Phường"
@@ -162,7 +159,7 @@ export default function UserProfile({
             <Button type="submit">Cập nhật</Button>
           </Group>
         </form>
-      </div>
+      </Box>
     </div>
   );
 }

@@ -34,7 +34,7 @@ export default function CarsListPage({ dataSource }: any) {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span>Biển số xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Biển số xe</span>,
       name: "title",
       dataIndex: ["numberPlates"],
       render: (dataRow: any) => {
@@ -42,32 +42,32 @@ export default function CarsListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Màu xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Màu xe</span>,
       name: "color",
       dataIndex: ["color"],
     },
     {
-      label: <span>Hãng xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hãng xe</span>,
       name: "carBrandId",
       dataIndex: ["carBrandId"],
     },
     {
-      label: <span>Dòng xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Dòng xe</span>,
       name: "carNameId",
       dataIndex: ["carNameId"],
     },
     {
-      label: <span>Năm sản xuất</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Năm sản xuất</span>,
       name: "carYearId",
       dataIndex: ["carYearId"],
     },
     {
-      label: <span>Loại xe</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Loại xe</span>,
       name: "carYearId",
       dataIndex: ["carYearId"],
     },
     {
-      label: <span>Trạng thái</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Trạng thái</span>,
       name: "status",
       dataIndex: ["status"],
       width: "100px",
@@ -85,12 +85,12 @@ export default function CarsListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span>Hành động</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
       dataIndex: [],
       width: "100px",
       render: (record: any) => {
         return (
-          <>
+          <Flex>
             <Link
               href={{
                 pathname: `/admin/cars/${record.id}`,
@@ -120,7 +120,7 @@ export default function CarsListPage({ dataSource }: any) {
             >
               <IconTrash size={16} color="red" />
             </Button>
-          </>
+          </Flex>
         );
       },
     },

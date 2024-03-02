@@ -24,7 +24,6 @@ export default async function ProductBrand() {
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <ProductBrandListPage dataSource={categories} />
-      <FooterAdmin />
     </div>
   );
 }

@@ -65,7 +65,7 @@ export default function SellingProductListPage() {
 
   const columns = [
     {
-      label: <span>Hình ảnh</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
       name: "image",
       dataIndex: ["images"],
       width: "90px",
@@ -88,7 +88,7 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span>Tên sản phẩm</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
       name: "name",
       dataIndex: ["name"],
       render: (dataRow: any) => {
@@ -96,13 +96,13 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span>Số lượng</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Số lượng</span>,
       name: "quantity",
       dataIndex: ["quantity"],
       textAlign: "center",
     },
     {
-      label: <span>Giá bán</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Giá bán</span>,
       name: "price",
       dataIndex: ["price"],
       render: (dataRow: number) => {
@@ -110,7 +110,7 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span>Giá sale</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Giá sale</span>,
       name: "priceSale",
       dataIndex: ["salePrice"],
       render: (dataRow: number) => {
@@ -118,7 +118,7 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span>Loại</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Loại</span>,
       name: "kind",
       dataIndex: ["isProduct"],
       width: "100px",
@@ -136,7 +136,7 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span>Trạng thái</span>,
+      label: <span style={{ whiteSpace: "nowrap" }}>Trạng thái</span>,
       name: "status",
       dataIndex: ["status"],
       width: "100px",

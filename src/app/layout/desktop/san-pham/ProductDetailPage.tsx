@@ -1,3 +1,4 @@
+"use client";
 import Container from "@/app/components/common/Container";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import ProductDetail from "./ProductDetail/ProductDetail";
@@ -18,9 +19,9 @@ const ProductDetailPageDesktop = ({ product, productRelate }: any) => {
       <Container>
         <Breadcrumb breadcrumbs={Breadcrumbs} />
         <Flex direction={"column"} gap={40}>
-          <ProductDetail ProductDetail={product} />
-          <ProductTabsDes ProductDetail={product} />
-          <ExpertBox ProductDetail={product} />
+          <ProductDetail ProductDetail={product?.product} />
+          <ProductTabsDes ProductDetail={product?.product} />
+          <ExpertBox ProductDetail={product?.product} />
           <ImagesShowRoom />
           <ProductsRelate productRelate={productRelate} />
           <div></div>
