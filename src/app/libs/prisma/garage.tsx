@@ -55,6 +55,15 @@ export async function getGarages(requestData: any) {
     }
 }
 
+export async function getGarageByDlbdId(garageId: number){
+    return await prisma.garage.findFirst({
+        where:{
+            routeId: garageId,
+            status: 'PUBLIC'
+        }
+    });
+}
+
 export async function createGarage(data: any) {
     try {
         let amenitiesArr: any = [];

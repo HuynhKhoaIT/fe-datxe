@@ -2,9 +2,12 @@ import { NextRequest } from "next/server";
 import prisma from "../prismadb";
 import { createCar } from "./car";
 import { createCustomer } from "./customer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 export async function getOrders(garage: Number,requestData: any){
+    
     try {
     let titleFilter = '';
     const searchText = requestData.s;
@@ -29,6 +32,10 @@ export async function getOrders(garage: Number,requestData: any){
         limit = 10;
     }
     const skip = take * (currentPage - 1); 
+    let createdById = {};
+    if(requestData.createdById){
+        createdById = 1
+    }
     const [data,total] = await prisma.$transaction([   
         prisma.order.findMany({
             take: take,
@@ -40,6 +47,7 @@ export async function getOrders(garage: Number,requestData: any){
                 status: {
                     not: 'DELETE',
                 },
+                createdById
             },
             include: {
                 serviceAdvisor: true,

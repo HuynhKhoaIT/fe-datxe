@@ -2,29 +2,24 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { getCategories } from '@/app/libs/prisma/category';
 
 export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        console.log({ session });
         const { searchParams } = new URL(request.url);
         let garageId = {};
         if (searchParams.get('garage')) {
             garageId = Number(searchParams.get('garage'));
         }
-        const productCategory = await prisma.productCategory.findMany({
-            where: {
-                AND: [
-                    {
-                        status: {
-                            not: 'DELETE',
-                        },
-                        garageId,
-                    },
-                ],
-            },
-        });
-        console.log(productCategory);
+        if (session?.user?.garageId) {
+            garageId = session?.user?.garageId;
+        }
+        const requestData = {
+            garageId: garageId,
+            session: session,
+        };
+        const productCategory = await getCategories(requestData);
         return NextResponse.json(productCategory);
         throw new Error('Chua dang nhap');
     } catch (error: any) {

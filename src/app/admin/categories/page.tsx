@@ -1,17 +1,26 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CategoryListPage from "./CategoryListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
+import { getCategories } from "@/app/libs/prisma/category";
 import { apiUrl } from "@/constants";
+import { getServerSession } from "next-auth";
 
 async function getData() {
-  const res = await fetch(`${apiUrl}api/product-category`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+  const session = await getServerSession(authOptions);
+  let garageId = {};
+  if (session?.user?.garageId) {
+    garageId = session?.user?.garageId;
   }
-  return res.json();
+  const requestData = {
+    garageId: garageId,
+    session: session,
+};
+  const res = await getCategories(requestData);
+  return res;
 }
 
 export default async function Categories() {

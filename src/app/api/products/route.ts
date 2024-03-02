@@ -9,8 +9,6 @@ import { getToken } from 'next-auth/jwt';
 import { getProducts } from '@/app/libs/prisma/product';
 export async function GET(request: NextRequest) {
     try {
-        // const token = await getToken({ request })
-
         const { searchParams } = new URL(request.url);
         const categoryId = searchParams.get('categoryId');
         const brandIdFilter = searchParams.get('brand');
@@ -38,29 +36,7 @@ export async function GET(request: NextRequest) {
             statusFilter = searchParams.get('status')!.toUpperCase();
         }
         const session = await getServerSession(authOptions);
-        let categories = {};
-
-        if (categoryId) {
-            categories = {
-                some: {
-                    category: {
-                        id: parseInt(categoryId!),
-                    },
-                },
-            };
-        }
-        let brands = {};
-        if (brandIdFilter) {
-            brands = {
-                some: {
-                    carModel: {
-                        id: Number(brandIdFilter),
-                    },
-                },
-            };
-        }
-
-        let garageId = {};
+        let garageId = 0;
         if (searchParams.get('garage')) {
             garageId = Number(searchParams.get('garage'));
         } else if (session && session?.user?.garageId) {
@@ -72,48 +48,50 @@ export async function GET(request: NextRequest) {
             isProduct = searchParams.get('isProduct') == '1' ? true : false;
         }
 
-        const [products, total] = await prisma.$transaction([
-            prisma.product.findMany({
-                take: take,
-                skip: skip,
-                orderBy: {
-                    id: 'desc',
-                },
-                where: {
-                    AND: [
-                        {
-                            categories,
-                            name: {
-                                contains: titleFilter!,
-                            },
-                            brands,
-                            status: {
-                                not: 'DELETE',
-                            },
-                            garageId,
-                            isProduct,
-                        },
-                    ],
-                },
-                include: {
-                    reviews: true,
-                    categories: true,
-                    garage: true,
-                },
-            }),
-            prisma.product.count(),
-        ]);
-
-        const totalPage = Math.ceil(total / limit);
-
-        return NextResponse.json({
-            data: products,
-            total: total,
-            currentPage: currentPage,
+        const requestData = {
+            category: categoryId,
+            brand: brandIdFilter,
+            s: titleFilter,
             limit: limit,
-            totalPage: totalPage,
-            status: 200,
-        });
+            page: page,
+        };
+        const products = await getProducts(garageId, requestData);
+
+        // const [products, total] = await prisma.$transaction([
+        //     prisma.product.findMany({
+        //         take: take,
+        //         skip: skip,
+        //         orderBy: {
+        //             id: 'desc',
+        //         },
+        //         where: {
+        //             AND: [
+        //                 {
+        //                     categories,
+        //                     name: {
+        //                         contains: titleFilter!,
+        //                     },
+        //                     brands,
+        //                     status: {
+        //                         not: 'DELETE',
+        //                     },
+        //                     garageId,
+        //                     isProduct,
+        //                 },
+        //             ],
+        //         },
+        //         include: {
+        //             reviews: true,
+        //             categories: true,
+        //             garage: true,
+        //         },
+        //     }),
+        //     prisma.product.count(),
+        // ]);
+
+        // const totalPage = Math.ceil(total / limit);
+
+        return products;
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
