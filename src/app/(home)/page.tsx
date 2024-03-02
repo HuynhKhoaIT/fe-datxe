@@ -12,6 +12,8 @@ import Reasons1 from "@/assets/images/reasson1.png";
 import Reasons2 from "@/assets/images/reasson2.png";
 import Reasons3 from "@/assets/images/reasson3.png";
 import { getProvinces } from "@/utils/notion";
+import { getCategories } from "../libs/prisma/category";
+import { getProducts } from "../libs/prisma/product";
 async function getCarData() {
   const res = await fetch(`${apiUrl}api/car-model`);
   if (!res.ok) {
@@ -23,44 +25,6 @@ async function getCarData() {
     label: item.title,
   }));
   return carsOption;
-}
-async function getData() {
-  const garageId = 9;
-  const res = await fetch(`${apiUrl}api/product-category?gara=${garageId}`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
-async function getProductsRelate() {
-  const res = await fetch(`${apiUrl}/api/products?isProduct=1&limit=8`, {
-    method: "GET",
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await res.json();
-  return data;
-}
-async function getServicesHot() {
-  const res = await fetch(`${apiUrl}/api/products?isProduct=0&limit=8`, {
-    method: "GET",
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await res.json();
-  return data;
-}
-async function getProductsHot() {
-  const res = await fetch(`${apiUrl}/api/products?isProduct=1&limit=8`, {
-    method: "GET",
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await res.json();
-  return data;
 }
 const reassons = [
   {
@@ -110,11 +74,9 @@ const blogs = [
   },
 ];
 export default async function Home() {
-  const categories = await getData();
-  const productsRelate = await getProductsRelate();
-  const servicesHot = await getServicesHot();
-  const productsHot = await getProductsHot();
-  const carsOption = await getCarData();
+  const categories = await getCategories({});
+  const productsRelate = await getProducts(0, {});
+  // const carsOption = await getCarData();
   const province: any = await getProvinces();
   const provinceData = province.map((item: any) => ({
     value: item.id.toString(),
@@ -133,10 +95,10 @@ export default async function Home() {
       categories={categories}
       reassons={reassons}
       productsRelate={productsRelate}
-      servicesHot={servicesHot}
-      productsHot={productsHot}
+      servicesHot={productsRelate}
+      productsHot={productsRelate}
       blogs={blogs}
-      carsOption={carsOption}
+      // carsOption={carsOption}
       provinceData={provinceData}
     />
   );
