@@ -14,7 +14,8 @@ export const GET_CAR_ENDPOINT = `${process.env.apiUser}/cars`;
 export const CUSTOMER_CARE_ENDPOINT = `${process.env.apiUser}/customer-care`;
 export const CHECK_PHONE_NUMBER = `${process.env.apiGuest}/check-phone-number`;
 export const CHECK_OTP = `${process.env.apiGuest}/check-otp`;
-export const SET_CAR_DEFAULT = `${process.env.apiUser}/user/set-car-default`
+export const SET_CAR_DEFAULT = `${process.env.apiUser}/user/set-car-default`;
+export const GET_CUSTOMERS_DLBD_ENDPOINT = `${process.env.apiUserV3}/customers`;
 export const CUSTOMER_CARE_ENDPOINT_GUEST = `${process.env.apiGuest}/customer-care`;
 export const GET_EMPLOYEES_ENDPOINT = `${process.env.apiGuest}/employees`;
 export const GET_CVDV_ENDPOINT = `${process.env.apiGuest}/cvdv`;
@@ -24,6 +25,3 @@ export const GET_DISTRICT_ENDPOINT = `${process.env.apiGuest}/get-districts`;
 export const GET_WARD_ENDPOINT = `${process.env.apiGuest}/get-wards`;
 export const GET_PROFILE_ENDPOINT = `${process.env.apiUserV3}/my-account`;
 export const GET_ORDER_GARAGE_ENDPOINT = `${process.env.apiUserV3}/orders/get-by-garage`;
-
-
-
