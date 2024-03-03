@@ -12,18 +12,28 @@ import { useState } from "react";
 import logo from "@/assets/images/logo.png";
 
 import { SidebarAdmin } from "@/app/components/profile-sidebar/SidebarAdmin";
+import { usePathname } from "next/navigation";
+import { SidebarClient } from "@/app/components/profile-sidebar/SidebarClient";
 const DynamicMenu = dynamic(() => import("./NavDrawer"), {
   ssr: false,
 });
 export default function HeaderTopMobile() {
   const [openNav, setOpenNav] = useState(false);
-
+  const pathname = usePathname();
+  const parts = pathname.split("/");
+  let page = parts[1];
   return (
     <div className={styles.headerTop}>
       <Container>
         <div className={styles.topWrapper}>
           <div className={styles.topLeft}>
-            <div className={styles.menu} onClick={() => setOpenNav(true)}>
+            <div
+              className={styles.menu}
+              onClick={() => {
+                console.log("123");
+                setOpenNav(true);
+              }}
+            >
               <IconCategory size={34} color="#fff" />
             </div>
           </div>
@@ -41,7 +51,7 @@ export default function HeaderTopMobile() {
           headerTitle="Menu"
         >
           <ul className={styles.nav}>
-            <SidebarAdmin />
+            {page ? <SidebarClient /> : <SidebarAdmin />}
           </ul>
         </DynamicMenu>
       </Container>

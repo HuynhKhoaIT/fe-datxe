@@ -13,7 +13,7 @@ const SidebarClient = () => {
       <li>
         <Link
           href="/dashboard"
-          className={`list-group-item ${page == "dashboard" && "active"}`}
+          className={`list-group-item ${page == "dashboard" && styles.active}`}
         >
           <i className="far fa-gauge-high"></i> Tổng quan
         </Link>
@@ -21,7 +21,7 @@ const SidebarClient = () => {
       <li>
         <Link
           href="/dashboard/profile"
-          className={`list-group-item ${page == "profile" && "active"}`}
+          className={`list-group-item ${page == "profile" && styles.active}`}
         >
           <i className="far fa-user"></i> Hồ sơ của tôi
         </Link>
@@ -30,7 +30,7 @@ const SidebarClient = () => {
         <Link
           href="/dashboard/cars"
           className={`list-group-item ${
-            (page == "cars" || page == "add-car") && "active"
+            (page == "cars" || page == "add-car") && styles.active
           }`}
         >
           <i className="far fa-layer-group"></i> Danh sách xe
@@ -39,7 +39,7 @@ const SidebarClient = () => {
       <li>
         <Link
           href="/dashboard/order"
-          className={`${page == "order" && "active"}`}
+          className={`${page == "order" && styles.active}`}
         >
           <i className="far fa-plus-circle"></i> Đơn hàng
         </Link>

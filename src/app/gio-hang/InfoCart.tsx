@@ -129,49 +129,47 @@ export default function InfoCart({
     },
   ];
   return (
-    <div className="container">
-      <Card className="shop-cart-wrapper">
-        <TableBasic data={cartData} columns={columns} />
-        <Card className="cart-footer">
-          <Grid justify="space-between">
-            <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
-              <Group className="cart-coupon " pos="relative">
-                <TextInput
-                  type="text"
-                  className="form-control"
-                  placeholder="Your Coupon Code"
-                />
-                <Button className="coupon-btn" variant="filled" pos="absolute">
-                  Apply
-                </Button>
-              </Group>
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
-              <ul className={styles.calculateSubTotal}>
-                <li>
-                  <strong>Tổng tiền hàng:</strong>
-                  <span>{calculateSubTotal().toLocaleString()}đ</span>
-                </li>
-                <li className="cart-total">
-                  <strong>Tổng cộng:</strong>
-                  <span>{calculateSubTotal().toLocaleString()}đ</span>
-                </li>
-              </ul>
-              <Group justify="end">
-                <Button
-                  className="theme-btn"
-                  variant="filled"
-                  type="submit"
-                  loading={loading}
-                  style={{ background: "var(--theme-color)" }}
-                >
-                  Đặt lịch
-                </Button>
-              </Group>
-            </Grid.Col>
-          </Grid>
-        </Card>
+    <Card className="shop-cart-wrapper">
+      <TableBasic data={cartData} columns={columns} />
+      <Card className="cart-footer">
+        <Grid justify="space-between">
+          <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
+            <Group className="cart-coupon " pos="relative">
+              <TextInput
+                type="text"
+                className="form-control"
+                placeholder="Your Coupon Code"
+              />
+              <Button className="coupon-btn" variant="filled" pos="absolute">
+                Apply
+              </Button>
+            </Group>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
+            <ul className={styles.calculateSubTotal}>
+              <li>
+                <strong>Tổng tiền hàng:</strong>
+                <span>{calculateSubTotal().toLocaleString()}đ</span>
+              </li>
+              <li className="cart-total">
+                <strong>Tổng cộng:</strong>
+                <span>{calculateSubTotal().toLocaleString()}đ</span>
+              </li>
+            </ul>
+            <Group justify="end">
+              <Button
+                className="theme-btn"
+                variant="filled"
+                type="submit"
+                loading={loading}
+                style={{ background: "var(--theme-color)" }}
+              >
+                Đặt lịch
+              </Button>
+            </Group>
+          </Grid.Col>
+        </Grid>
       </Card>
-    </div>
+    </Card>
   );
 }

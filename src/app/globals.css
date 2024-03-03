@@ -5759,7 +5759,6 @@ body.rtl-mode .price-wrapper {
     }
 
     .user-profile-card-header {
-        flex-direction: column;
         align-items: start;
         gap: 20px;
     }

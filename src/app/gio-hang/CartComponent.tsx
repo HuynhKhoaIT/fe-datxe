@@ -12,6 +12,7 @@ import InfoDate from "./InfoDate";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
+import Container from "../components/common/Container";
 
 export default function CartComponent({ myAccount }: any) {
   const router = useRouter();
@@ -177,7 +178,7 @@ export default function CartComponent({ myAccount }: any) {
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className="shop-cart pt-60 pb-60">
-          <div className="container">
+          <Container>
             <Grid gutter={16}>
               <InfoCustomer
                 myAccount={myAccount}
@@ -196,18 +197,18 @@ export default function CartComponent({ myAccount }: any) {
               </Suspense>
             </Grid>
             <InfoDate setDate={setDate} setTime={setTime} />
-          </div>
-          <Suspense fallback={<p>loading...</p>}>
-            <InfoCart
-              loading={loading}
-              calculateSubTotal={calculateSubTotal}
-              cartData={cartData}
-              decrementQuantity={decrementQuantity}
-              handleOpenModalDelete={handleOpenModalDelete}
-              incrementQuantity={incrementQuantity}
-              form={form}
-            />
-          </Suspense>
+            <Suspense fallback={<p>loading...</p>}>
+              <InfoCart
+                loading={loading}
+                calculateSubTotal={calculateSubTotal}
+                cartData={cartData}
+                decrementQuantity={decrementQuantity}
+                handleOpenModalDelete={handleOpenModalDelete}
+                incrementQuantity={incrementQuantity}
+                form={form}
+              />
+            </Suspense>
+          </Container>
         </div>
       </form>
 
