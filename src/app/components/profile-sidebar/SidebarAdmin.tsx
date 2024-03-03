@@ -120,16 +120,6 @@ const SidebarAdmin = () => {
       </li>
       <li>
         <Link
-          href="/admin/suppliers"
-          className={`list-group-item ${
-            (page == "suppliers" || pageUpdate == "suppliers") && styles.active
-          }`}
-        >
-          <IconSquareLetterS /> Nhà cung cấp
-        </Link>
-      </li>
-      <li>
-        <Link
           href="/admin/productBrand"
           className={`list-group-item ${
             (page == "productBrand" || pageUpdate == "productBrand") &&

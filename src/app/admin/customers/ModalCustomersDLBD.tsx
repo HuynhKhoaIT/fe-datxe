@@ -13,9 +13,9 @@ import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
-export default function ModalCategoriesDLBD({
-  openedModalCategories,
-  closeModalCategories,
+export default function ModalCustomersDLBD({
+  openedModalCustomers,
+  closeModalCustomers,
 }: any) {
   const [opened, handlers] = useDisclosure(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -32,8 +32,8 @@ export default function ModalCategoriesDLBD({
   };
   useEffect(() => {
     handlers.open();
-    if (openedModalCategories) getCategories();
-  }, [openedModalCategories]);
+    if (openedModalCustomers) getCategories();
+  }, [openedModalCustomers]);
   const columns = [
     {
       label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
@@ -67,8 +67,8 @@ export default function ModalCategoriesDLBD({
   return (
     <Modal
       title="Đồng bộ danh mục"
-      opened={openedModalCategories}
-      onClose={closeModalCategories}
+      opened={openedModalCustomers}
+      onClose={closeModalCustomers}
       lockScroll={false}
     >
       <Box>
@@ -89,7 +89,7 @@ export default function ModalCategoriesDLBD({
           <Button
             variant="filled"
             key="cancel"
-            onClick={closeModalCategories}
+            onClick={closeModalCustomers}
             color="red"
             leftSection={<IconBan />}
           >
@@ -98,7 +98,7 @@ export default function ModalCategoriesDLBD({
           <Button
             style={{ marginLeft: "12px" }}
             onClick={() => {
-              closeModalCategories();
+              closeModalCustomers();
             }}
             variant="filled"
             leftSection={<IconChevronRight />}

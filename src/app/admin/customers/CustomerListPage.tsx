@@ -17,6 +17,10 @@ const DynamicModalDeleteProduct = dynamic(
     ssr: false,
   }
 );
+
+const DynamicModalCustomers = dynamic(() => import("./ModalCustomersDLBD"), {
+  ssr: false,
+});
 export default function CustomerListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCustomer = async (id: any) => {
@@ -31,6 +35,11 @@ export default function CustomerListPage({ dataSource }: any) {
   const [
     openedDeleteProduct,
     { open: openDeleteProduct, close: closeDeleteProduct },
+  ] = useDisclosure(false);
+
+  const [
+    openedModalCustomers,
+    { open: openModalCustomers, close: closeModalCustomers },
   ] = useDisclosure(false);
   const columns = [
     {
@@ -143,7 +152,13 @@ export default function CustomerListPage({ dataSource }: any) {
   return (
     <div className={styles.content}>
       <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
-      <Flex justify={"end"} align={"center"}>
+      <Flex justify={"end"} align={"center"} gap={20}>
+        <Button
+          onClick={openModalCustomers}
+          leftSection={<IconPlus size={14} />}
+        >
+          Đồng bộ
+        </Button>
         <Link
           href={{
             pathname: `/admin/customers/create`,
@@ -160,6 +175,12 @@ export default function CustomerListPage({ dataSource }: any) {
         handleDeleteProduct={handleDeleteCustomer}
         deleteRow={deleteRow}
       />
+      {openedModalCustomers && (
+        <DynamicModalCustomers
+          openedModalCustomers={openedModalCustomers}
+          closeModalCustomers={closeModalCustomers}
+        />
+      )}
     </div>
   );
 }
