@@ -10,3 +10,11 @@ export async function GET(request: NextRequest) {
         return new NextResponse(error.message, { status: 500 });
     }
 }
+
+// export async function POST(request: NextRequest){
+//     try {
+//         const customer =
+//     } catch (error) {
+
+//     }
+// }
