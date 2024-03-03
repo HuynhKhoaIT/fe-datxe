@@ -23,4 +23,48 @@ export async function createCustomer(json: any) {
     } catch (error) {
       return { error };
     }
-  }
+}
+
+export async function getCustomers(requestData:any) {
+    let currentPage = 1;
+    let take = 10;
+    let limit = 10;
+    if(requestData.limit){
+      take = parseInt(requestData.limit)
+    }
+    const skip = take * (currentPage - 1);
+    let titleFilter = '';
+    let garageId = {};
+    
+    let status = {
+        contains: 'PUBLIC',
+    };
+    if(requestData.status == 'NOT_DELETE'){
+        let status = {
+            not: 'DELETE',
+        };
+    }else if(requestData.status){
+        let status = {
+            contains: requestData.status,
+        };
+    }
+    const customers = await prisma.customer.findMany({
+        take: take,
+        skip: skip,
+        where: {
+            AND: [
+                {
+                    fullName: {
+                        contains: titleFilter
+                    },
+                    garageId: garageId,
+                    // status: ,
+                },
+            ],
+        },
+        include: {
+            cars: true,
+        },
+    });
+    return customers;
+}

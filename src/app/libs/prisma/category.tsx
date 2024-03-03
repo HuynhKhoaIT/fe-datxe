@@ -1,12 +1,23 @@
 
+import { STATUS } from "@prisma/client";
 import prisma from "../prismadb";
 
 export async function getCategories(request: any) {
   try {
     let garageId = 1;
-    const session = request.session;
-    if(session){
-      garageId = session?.user?.garageId;
+    if(request.garageId){
+      garageId = request.garageId;
+    }
+    let arrayStatus:STATUS[] = ["PUBLIC"];
+    if(request.status){
+      switch (request.status) {
+        case 'ALL':
+          arrayStatus = ["PUBLIC",'PENDING','DRAFT'];
+          break;
+        default:
+          arrayStatus = [request.status]
+          break;
+      }
     }
     const productCategory = await prisma.productCategory.findMany({
       take: 10,
@@ -14,7 +25,7 @@ export async function getCategories(request: any) {
           AND: [
               {
                   status: {
-                      not: 'DELETE',
+                      in: arrayStatus,
                   },
                   garageId:{
                     in: [Number(process.env.GARAGE_DEFAULT),garageId]

@@ -1,23 +1,11 @@
+import { getCustomers } from '@/app/libs/prisma/customer';
 import prisma from '@/app/libs/prismadb';
 import { NextRequest, NextResponse } from 'next/server';
 import validator from 'validator';
 
 export async function GET(request: NextRequest) {
     try {
-        const customers = await prisma.customer.findMany({
-            where: {
-                AND: [
-                    {
-                        status: {
-                            not: 'DELETE',
-                        },
-                    },
-                ],
-            },
-            include: {
-                cars: true,
-            },
-        });
+        const customers = await getCustomers({});
         return NextResponse.json(customers);
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });

@@ -148,3 +148,21 @@ export const setCarDefault = async (carId: string, token: String) => {
     throw new Error("Lỗi trong quá trình tạo xe mặc định");
   }
 };
+
+export const getCarFromDLBD = async (carId: number,token: string) =>{
+  try {
+    if (token) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      const res = await axios.get(
+        `${GET_CAR_ENDPOINT}/${carId}`,
+        config
+      );
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("Lỗi trong quá trình tạo xe mặc định");
+  }
+}
