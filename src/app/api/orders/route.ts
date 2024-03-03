@@ -6,8 +6,6 @@ import { sendSMSOrder } from '@/utils/order';
 
 export async function GET(request: Request) {
     try {
-        const a = await sendSMSOrder(1, 1);
-        return NextResponse.json(a);
         const session = await getServerSession(authOptions);
         // console.log(session);
         const { searchParams } = new URL(request.url);
