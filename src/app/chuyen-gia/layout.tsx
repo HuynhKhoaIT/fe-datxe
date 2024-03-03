@@ -18,7 +18,7 @@ export default function Layout({ children }: IProps) {
       {isMobile ? (
         <main>
           <HeaderMobile />
-          <div>{children}</div>
+          <div style={{ marginTop: "67px" }}>{children}</div>
           <FooterMobile />
         </main>
       ) : (

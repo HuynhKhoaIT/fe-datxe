@@ -6,6 +6,12 @@
     padding: 0 1rem;
     gap: 10px;
     background-color: var(--white-bg);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    box-shadow: var(--box-shadow);
     .cart,
     .menu {
         width: 22px;

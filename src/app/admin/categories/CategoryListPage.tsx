@@ -18,7 +18,7 @@ const DynamicModalDeleteProduct = dynamic(
   }
 );
 const DynamicModalCategories = dynamic(() => import("./ModalCategoriesDLBD"));
-export default function CategoryListPage({ dataSource }: any) {
+export default function CategoryListPage({ dataSource, profile }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
     await fetch(`/api/product-category/${id}`, {
@@ -174,6 +174,7 @@ export default function CategoryListPage({ dataSource }: any) {
         <DynamicModalCategories
           openedModalCategories={openedModalCategories}
           closeModalCategories={closeModalCategories}
+          profile={profile}
         />
       )}
     </div>

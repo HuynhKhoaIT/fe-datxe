@@ -4,7 +4,7 @@ import { authOptions } from '../../auth/[...nextauth]/route';
 import { getGarageByDlbdId } from '@/app/libs/prisma/garage';
 import { syncCategoryFromDlbd } from '@/app/libs/prisma/category';
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
     try {
         const session = await getServerSession(authOptions);
         const cats = await request.json();

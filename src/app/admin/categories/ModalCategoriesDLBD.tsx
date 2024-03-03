@@ -12,17 +12,27 @@ import {
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBan, IconChevronRight } from "@tabler/icons-react";
+import { IconArrowBarUp } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
+import convertToSlug from "@/utils/util";
+import { syncCategoryFromDlbd } from "@/app/libs/prisma/category";
+import { getGarageByDlbdId } from "@/app/libs/prisma/garage";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 export default function ModalCategoriesDLBD({
   openedModalCategories,
   closeModalCategories,
+  profile,
 }: any) {
+  const router = useRouter();
+
   const [opened, handlers] = useDisclosure(false);
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [data, setData] = useState();
   const getCategories = async () => {
     try {
-      const data: any = await getCategoriesFromDLBD(9);
+      const data: any = await getCategoriesFromDLBD(
+        profile?.session?.user?.garageId
+      );
       setData(data);
     } catch (error) {
       console.error("error get categories");
@@ -63,7 +73,63 @@ export default function ModalCategoriesDLBD({
         return <span>{dataRow}</span>;
       },
     },
+
+    {
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      dataIndex: [],
+      width: "100px",
+      textAlign: "center",
+      render: (record: any) => {
+        return (
+          <Button
+            size="xs"
+            p={5}
+            variant="transparent"
+            color="red"
+            onClick={(e) => {
+              handleSynchronized(record);
+            }}
+          >
+            <IconArrowBarUp size={16} color="blue" />
+          </Button>
+        );
+      },
+    },
   ];
+
+  const handleSynchronized = async (data: any) => {
+    const values = {
+      image: data?.thumbnail,
+      title: data?.name,
+      slug: convertToSlug(data?.name),
+      description: data?.description,
+    };
+    try {
+      const sync = await fetch(`/api/product-category/sync`, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      if (sync) {
+        notifications.show({
+          title: "Thành công",
+          message: "Điều hướng danh mục thành công",
+        });
+      } else {
+        notifications.show({
+          title: "Thất bại",
+          message: "Thất bại",
+        });
+      }
+      closeModalCategories();
+      router.refresh();
+    } catch (error) {
+      closeModalCategories();
+      notifications.show({
+        title: "Thất bại",
+        message: "Thất bại",
+      });
+    }
+  };
   return (
     <Modal
       title="Đồng bộ danh mục"
@@ -78,34 +144,7 @@ export default function ModalCategoriesDLBD({
           overlayProps={{ radius: "sm", blur: 2 }}
         />
 
-        <TableBasic
-          selectRow={true}
-          selectedRows={selectedRows}
-          setSelectedRows={setSelectedRows}
-          data={data}
-          columns={columns}
-        />
-        <Group justify="end" style={{ marginTop: 10 }}>
-          <Button
-            variant="filled"
-            key="cancel"
-            onClick={closeModalCategories}
-            color="red"
-            leftSection={<IconBan />}
-          >
-            Huỷ bỏ
-          </Button>
-          <Button
-            style={{ marginLeft: "12px" }}
-            onClick={() => {
-              closeModalCategories();
-            }}
-            variant="filled"
-            leftSection={<IconChevronRight />}
-          >
-            Đồng bộ
-          </Button>
-        </Group>
+        <TableBasic data={data} columns={columns} />
       </Box>
     </Modal>
   );
