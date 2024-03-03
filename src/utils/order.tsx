@@ -146,3 +146,28 @@ export const checkOutCart = async (
     throw new Error("Lỗi trong quá trình tạo thông tin xe");
   }
 };
+
+export const sendSMSOrder = async (
+  orderId: number,
+  step: number
+) => {
+  try {
+    let dataSMS = {
+      Phone: '0964824588',
+      Content: process.env.SMS_MESSAGE_OTP,
+      ApiKey: process.env.SMS_APIKEY,
+      SecretKey:process.env.SMS_SECRET,
+      Brandname: process.env.SMS_BRANDNAME,
+      SmsType: 2,
+    }
+    const {data} = await axios({
+      method:"POST",
+      url: `${process.env.SMS_SMS_MKT}`,
+      data: dataSMS
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+  
+}

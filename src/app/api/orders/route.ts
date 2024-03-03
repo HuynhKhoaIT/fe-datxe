@@ -2,9 +2,12 @@ import { createOrder, getOrders } from '@/app/libs/prisma/order';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { sendSMSOrder } from '@/utils/order';
 
 export async function GET(request: Request) {
     try {
+        const a = await sendSMSOrder(1, 1);
+        return NextResponse.json(a);
         const session = await getServerSession(authOptions);
         // console.log(session);
         const { searchParams } = new URL(request.url);
