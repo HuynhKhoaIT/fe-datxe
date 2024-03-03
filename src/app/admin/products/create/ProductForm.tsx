@@ -241,7 +241,7 @@ export default function ProductForm({
                     ]}
                   />
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                {/* <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <Select
                     withAsterisk
                     {...form.getInputProps("productBrandId")}
@@ -249,7 +249,7 @@ export default function ProductForm({
                     placeholder="Thương hiệu sản phẩm"
                     data={productBrandOptions}
                   />
-                </Grid.Col>
+                </Grid.Col> */}
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
                     {...form.getInputProps("price")}

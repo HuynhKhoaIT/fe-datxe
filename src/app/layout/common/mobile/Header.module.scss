@@ -6,10 +6,17 @@
     padding: 0 1rem;
     gap: 10px;
     background-color: var(--white-bg);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    box-shadow: var(--box-shadow);
     .cart,
     .menu {
         width: 22px;
         flex-shrink: 0;
+        cursor: pointer;
         img {
             width: 22px;
         }
@@ -40,11 +47,18 @@
 .nav {
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    .navItem {
+    .navItem,
+    .navLogout {
         color: var(--nav-color);
         font-size: var(--primary-font-size);
+        display: flex;
+        align-items: center;
+        gap: 8px;
         font-weight: 500;
+        padding: 1rem;
+        line-height: 16px;
+    }
+    .navItem {
         border-bottom: 1px solid #ddd;
     }
 }

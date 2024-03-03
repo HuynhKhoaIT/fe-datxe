@@ -17,10 +17,8 @@ const DynamicModalDeleteProduct = dynamic(
     ssr: false,
   }
 );
-const DynamicModalCategories = dynamic(() => import("./ModalCategoriesDLBD"), {
-  ssr: false,
-});
-export default function CategoryListPage({ dataSource }: any) {
+const DynamicModalCategories = dynamic(() => import("./ModalCategoriesDLBD"));
+export default function CategoryListPage({ dataSource, profile }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
     await fetch(`/api/product-category/${id}`, {
@@ -151,24 +149,18 @@ export default function CategoryListPage({ dataSource }: any) {
     <div className={styles.content}>
       <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
       <Flex justify={"end"} align={"center"} gap={20}>
+        <Button
+          onClick={openModalCategories}
+          leftSection={<IconPlus size={14} />}
+        >
+          Đồng bộ
+        </Button>
         <Link
           href={{
             pathname: `/admin/categories/create`,
           }}
         >
           <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
-        </Link>
-        <Link
-          href={{
-            pathname: `/admin/categories/create`,
-          }}
-        >
-          <Button
-            onClick={openModalCategories}
-            leftSection={<IconPlus size={14} />}
-          >
-            Đồng bộ
-          </Button>
         </Link>
       </Flex>
       <TableBasic data={dataSource} columns={columns} />
@@ -178,10 +170,13 @@ export default function CategoryListPage({ dataSource }: any) {
         handleDeleteProduct={handleDeleteCategory}
         deleteRow={deleteRow}
       />
-      <DynamicModalCategories
-        openedModalCategories={openedModalCategories}
-        closeModalCategories={closeModalCategories}
-      />
+      {openedModalCategories && (
+        <DynamicModalCategories
+          openedModalCategories={openedModalCategories}
+          closeModalCategories={closeModalCategories}
+          profile={profile}
+        />
+      )}
     </div>
   );
 }
