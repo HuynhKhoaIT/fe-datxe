@@ -162,7 +162,7 @@ export default function LoginFormInput() {
           </p>
         </div>
         <p className="other-login__rules">
-          Bằng việc tiếp tục, bạn hãy chấp nhận{" "}
+          Bằng việc tiếp tục, bạn đã chấp nhận{" "}
           <a href="/"> Điều khoản sử dụng</a>
         </p>
       </div>
