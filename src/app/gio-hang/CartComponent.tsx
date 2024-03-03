@@ -13,8 +13,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
+import { sendSMSOrder } from "@/utils/order";
 
 export default function CartComponent({ myAccount }: any) {
+  console.log(process.env.apiGuest);
+  console.log(process.env.REACT_APP_API);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(dayjs().format("HH:mm:ss"));
@@ -85,11 +88,11 @@ export default function CartComponent({ myAccount }: any) {
 
   const form = useForm({
     initialValues: {
-      customerId: myAccount?.id,
+      customerId: 1,
       fullName: "",
       phoneNumber: "",
       address: "",
-      carId: "1",
+      carId: 3,
       carYearId: "",
       carNameId: "",
       carBrandId: "",
@@ -106,7 +109,7 @@ export default function CartComponent({ myAccount }: any) {
 
   const handleSubmit = async (values: any) => {
     setLoading(true);
-    values.garageId = 1;
+    values.garageId = 2;
     values.dateTime = new Date();
     values.total = calculateSubTotal();
     try {
@@ -128,6 +131,9 @@ export default function CartComponent({ myAccount }: any) {
           title: "Thành công",
           message: "Đặt hàng thành công",
         });
+        console.log(data?.order);
+        const sms = await sendSMSOrder(data?.order?.id, 1);
+        console.log(sms);
         localStorage.setItem("cartData", JSON.stringify([]));
         router.push("./");
       }
