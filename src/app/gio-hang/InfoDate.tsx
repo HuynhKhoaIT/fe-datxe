@@ -24,7 +24,7 @@ export default function InfoDate({ setDate, setTime }: any) {
   return (
     <Grid>
       <Grid.Col span={12}>
-        <Card className="bg-white mb-20 p-4">
+        <Card>
           <Grid gutter={16}>
             <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
               <DateField label="Ngày" name="date" defaultValue={new Date()} />

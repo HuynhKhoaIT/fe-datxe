@@ -7,6 +7,8 @@ import { headers } from "next/headers";
 import styles from "./index.module.scss";
 import FooterMobile from "../layout/common/mobile/Footer/FooterMobile";
 import HeaderMobile from "../layout/common/mobile/HeaderMobile";
+import Container from "../components/common/Container";
+import HeaderTopMobile from "../layout/common/mobile/HeaderTopMobile";
 
 interface IProps {
   children: ReactNode;
@@ -19,10 +21,10 @@ export default function DashboardLayout({ children }: IProps) {
     <Fragment>
       {isMobile ? (
         <main>
-          <HeaderMobile />
-          <div className={styles.wrapperMobile}>
+          <HeaderTopMobile />
+          <Container className={styles.wrapperMobile}>
             <div className={styles.content}>{children}</div>
-          </div>
+          </Container>
           <FooterMobile />
         </main>
       ) : (

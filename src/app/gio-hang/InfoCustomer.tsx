@@ -18,22 +18,20 @@ export default function InfoCustomer({ myAccount, dataDetail, form }: any) {
         <h4 className="checkout-widget-title">Thông tin khách hàng</h4>
         <Card>
           <Grid gutter={16}>
-            <Grid.Col span={6}>
+            <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
               <TextInput
                 {...form.getInputProps("fullName")}
                 label="Họ Tên"
                 placeholder="Họ Tên"
               />
             </Grid.Col>
-            <Grid.Col span={6}>
+            <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
               <TextInput
                 {...form.getInputProps("phoneNumber")}
                 label="Điện thoại"
                 placeholder="Điện thoại"
               />
             </Grid.Col>
-          </Grid>
-          <Grid gutter={16}>
             <Grid.Col span={12}>
               <TextInput
                 {...form.getInputProps("address")}
