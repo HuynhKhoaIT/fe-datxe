@@ -55,6 +55,9 @@ export async function getGarages(requestData: any) {
     }
 }
 
+
+
+
 export async function getGarageByDlbdId(garageId: number){
     return await prisma.garage.findFirst({
         where:{
