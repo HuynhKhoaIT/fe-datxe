@@ -15,7 +15,6 @@ export default function ProductItem2({
   key: number;
   product: IProduct;
 }) {
-  console.log(product);
   const images = JSON.parse(product.images);
   return (
     <Box w={"100%"}>

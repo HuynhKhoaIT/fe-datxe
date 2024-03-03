@@ -4,6 +4,7 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import Typo from "@/app/components/elements/Typo";
 import IconClose from "@/assets/icons/close.svg";
+import { IconX } from "@tabler/icons-react";
 const NavDrawer = ({
   open,
   onClose,
@@ -24,8 +25,8 @@ const NavDrawer = ({
           {/* <ArrowLeft onClick={onClose}/> */}
           <Typo size="small">{headerTitle}</Typo>
         </div>
-        <div className={styles.close}>
-          <img src={IconClose.src} alt="" onClick={onClose} />
+        <div onClick={onClose} className={styles.close}>
+          <IconX />
         </div>
       </div>
       {children}

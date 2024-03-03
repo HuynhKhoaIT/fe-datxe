@@ -64,3 +64,9 @@ export const getDateInfo = (date: any) => {
     year: year,
   };
 };
+export default function convertToSlug(str: string) {
+  str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
+  str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
+  str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
+  return str;
+}

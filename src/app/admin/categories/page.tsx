@@ -11,20 +11,24 @@ import { getServerSession } from "next-auth";
 
 async function getData() {
   const session = await getServerSession(authOptions);
-  let garageId = {};
+  let garageId = "0";
   if (session?.user?.garageId) {
     garageId = session?.user?.garageId;
   }
   const requestData = {
     garageId: garageId,
     session: session,
-};
+  };
   const res = await getCategories(requestData);
-  return res;
+  return {
+    categories: res,
+    requestData,
+  };
 }
 
 export default async function Categories() {
   let categories = await getData();
+
   const breadcrumbs = [
     { title: "Tổng quan", href: "/admin" },
     { title: "Danh mục sản phẩm" },
@@ -32,7 +36,10 @@ export default async function Categories() {
   return (
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
-      <CategoryListPage dataSource={categories} />
+      <CategoryListPage
+        dataSource={categories?.categories}
+        profile={categories?.requestData}
+      />
     </div>
   );
 }

@@ -4,17 +4,25 @@ import logo from "@/assets/images/logo.png";
 import IconMenu from "@/assets/icons/menu.svg";
 import { useForm } from "@mantine/form";
 import { ActionIcon, Input } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import {
+  IconLogin,
+  IconLogout,
+  IconSearch,
+  IconUser,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import IconCart from "@/assets/icons/cart.svg";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
 
 const DynamicMenu = dynamic(() => import("./NavDrawer"), {
   ssr: false,
 });
 const HeaderMobile = () => {
+  const { data: session } = useSession();
+
   const router = useRouter();
   const [openNav, setOpenNav] = useState(false);
   const form = useForm({
@@ -31,39 +39,41 @@ const HeaderMobile = () => {
     }
   };
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.logo}>
-        <Link href={"/"}>
-          <img src={logo.src} alt="logo" />
-        </Link>
-      </div>
-      <form
-        onSubmit={form.onSubmit((values) => handleSubmit(values))}
-        className={styles.searchForm}
-      >
-        <Input
-          {...form.getInputProps("searchValue")}
-          leftSectionPointerEvents="all"
-          leftSection={
-            <ActionIcon variant="transparent" type="submit">
-              <IconSearch />
-            </ActionIcon>
-          }
-          radius="lg"
-          placeholder="Vui lòng nhập..."
-        />
-      </form>
-      <div className={styles.headerNav}>
-        <div className={styles.cart}>
-          <img src={IconCart.src} alt="bell" />
-        </div>
-        <div className={styles.avatar}>
-          <Link href={"/admin"}>
-            <img src={logo.src} alt="avatar" />
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.logo}>
+          <Link href={"/"}>
+            <img src={logo.src} alt="logo" />
           </Link>
         </div>
-        <div className={styles.menu} onClick={() => setOpenNav(true)}>
-          <img src={IconMenu.src} alt="menu" />
+        <form
+          onSubmit={form.onSubmit((values) => handleSubmit(values))}
+          className={styles.searchForm}
+        >
+          <Input
+            {...form.getInputProps("searchValue")}
+            leftSectionPointerEvents="all"
+            leftSection={
+              <ActionIcon variant="transparent" type="submit">
+                <IconSearch />
+              </ActionIcon>
+            }
+            radius="lg"
+            placeholder="Vui lòng nhập..."
+          />
+        </form>
+        <div className={styles.headerNav}>
+          <Link href={"/gio-hang"} className={styles.cart}>
+            <img src={IconCart.src} alt="bell" />
+          </Link>
+          <div className={styles.avatar}>
+            <Link href={"/admin"}>
+              <img src={logo.src} alt="avatar" />
+            </Link>
+          </div>
+          <div className={styles.menu} onClick={() => setOpenNav(true)}>
+            <img src={IconMenu.src} alt="menu" />
+          </div>
         </div>
       </div>
       <DynamicMenu
@@ -72,13 +82,30 @@ const HeaderMobile = () => {
         headerTitle="Menu"
       >
         <ul className={styles.nav}>
-          <li className={styles.navItem}>Hồ sơ</li>
-          <li className={styles.navItem}>Giỏ hàng</li>
-
-          <li className={styles.navLogout}>Đăng xuất</li>
+          <li className={styles.navItem}>
+            <IconUser size={18} />
+            Hồ sơ
+          </li>
+          <li className={styles.navItem}>
+            <img src={IconCart.src} alt="bell" />
+            Giỏ hàng
+          </li>
+          {!session?.user ? (
+            <Link href="/dang-nhap" className={styles.title}>
+              <li className={styles.navLogout}>
+                <IconLogin size={18} />
+                Đăng nhập
+              </li>
+            </Link>
+          ) : (
+            <li className={styles.navLogout}>
+              <IconLogout size={18} />
+              Đăng xuất
+            </li>
+          )}
         </ul>
       </DynamicMenu>
-    </div>
+    </>
   );
 };
 export default HeaderMobile;
