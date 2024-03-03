@@ -1,6 +1,7 @@
 .drawer {
     background-color: var(--body-color) !important;
     z-index: 999 !important;
+    position: relative;
 }
 
 .header {
@@ -22,4 +23,13 @@
 
 .close {
     cursor: pointer;
+    position: absolute;
+    right: -24%;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

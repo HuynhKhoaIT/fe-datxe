@@ -19,7 +19,7 @@ export default async function Register() {
 
     //                     <div className="login-footer">
     //                         <p>
-    //                             Bạn đã có tài khoản? <Link href="dang-nhap">Đăng nhập.</Link>
+    //                             bạn đã  có tài khoản? <Link href="dang-nhap">Đăng nhập.</Link>
     //                         </p>
     //                     </div>
     //                 </div> */}
