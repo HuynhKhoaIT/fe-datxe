@@ -22,6 +22,7 @@ const DynamicModalCustomers = dynamic(() => import("./ModalCustomersDLBD"), {
   ssr: false,
 });
 export default function CustomerListPage({ dataSource }: any) {
+  console.log(dataSource);
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCustomer = async (id: any) => {
     await fetch(`/api/customer/${id}`, {

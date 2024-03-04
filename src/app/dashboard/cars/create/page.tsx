@@ -21,7 +21,6 @@ export default async function CreateCar() {
       <Suspense fallback={<LoadingComponent />}>
         <CarForm brandOptions={brandOptions} />
       </Suspense>
-      <Link href="/"> back</Link>
     </Box>
   );
 }
