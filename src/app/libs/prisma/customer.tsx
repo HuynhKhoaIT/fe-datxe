@@ -1,4 +1,5 @@
 import prisma from "../prismadb";
+import { getGarageByDlbdId } from "./garage";
 export async function createCustomer(json: any) {
     try {  
         const customer = await prisma.customer.create({
@@ -69,8 +70,42 @@ export async function getCustomers(requestData:any) {
     return customers;
 }
 
-// export async function name(params:type) {
-    
-// }
+export async function syncCustomerFromDLBD(requestData:any) {
+    try {
+        const customer = await prisma.customer.findFirst({
+            where:{
+                status: "PUBLIC",
+                phoneNumber: {
+                    contains: requestData.phone_number
+                }
+            }
+        });
+        if(customer){
+            return customer;
+        }else{
+            const garage = await getGarageByDlbdId(requestData.garage_id);
+            if(garage){
+                
+                const customerNew = await prisma.customer.create({
+                    data: {
+                        fullName: requestData.name,
+                        phoneNumber: requestData.phone_number,
+                        cityId: requestData.province_id,
+                        districtId: requestData.district_id,
+                        wardId: requestData.ward_id,
+                        address: requestData.address,
+                        description: requestData.description,
+                        // sex: requestData.name,
+                        garageId: garage.id,
+                    }
+                });
+                return customerNew;
+            }
+            
+        }
+    } catch (error) {
+        return { error };
+    }
+}
 
 // export async function
