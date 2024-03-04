@@ -155,7 +155,7 @@ export default function CarForm({
     <Box maw={800} mx="auto">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Grid gutter={10}>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <TextInput
               label="Biển số xe"
               type="text"
@@ -163,7 +163,7 @@ export default function CarForm({
               {...form.getInputProps("licensePlates")}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <Select
               data={brandOptions}
               {...form.getInputProps("automakerId")}
@@ -176,7 +176,7 @@ export default function CarForm({
               }}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <Select
               {...form.getInputProps("carNameId")}
               label="Dòng xe"
@@ -191,7 +191,7 @@ export default function CarForm({
           </Grid.Col>
         </Grid>
         <Grid gutter={10}>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <Select
               label="Năm sản xuất"
               checkIconPosition="right"
@@ -200,7 +200,7 @@ export default function CarForm({
               {...form.getInputProps("yearCarName")}
             ></Select>
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <TextInput
               label="Color"
               type="text"
@@ -208,7 +208,7 @@ export default function CarForm({
               {...form.getInputProps("color")}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <NumberInput
               label="Vin number"
               placeholder="Vin Number"
@@ -217,21 +217,21 @@ export default function CarForm({
           </Grid.Col>
         </Grid>
         <Grid gutter={10}>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <NumberInput
               label="Machine Number"
               placeholder="Machine Number"
               {...form.getInputProps("machine_number")}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <NumberInput
               label="Km repairt"
               placeholder="Km repairt"
               {...form.getInputProps("km_repairt")}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <DateField
               label="Date Repairt"
               placeholder="Date Repairt"
@@ -240,21 +240,21 @@ export default function CarForm({
           </Grid.Col>
         </Grid>
         <Grid gutter={10}>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <DateField
               label="Registration Deadline"
               placeholder="Registration Deadline"
               {...form.getInputProps("registration_deadline")}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <DateField
               label="Civil deadline"
               placeholder="Civil deadline"
               {...form.getInputProps("civil_insurance_deadline")}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <DateField
               label="Material deadline"
               placeholder="Material deadline"
