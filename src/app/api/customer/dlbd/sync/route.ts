@@ -1,3 +1,5 @@
+import { syncCategoryFromDlbd } from '@/app/libs/prisma/category';
+import { syncCustomerFromDLBD } from '@/app/libs/prisma/customer';
 import { getCustomersFromDLBD } from '@/utils/customers';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -11,10 +13,13 @@ export async function GET(request: NextRequest) {
     }
 }
 
-// export async function POST(request: NextRequest){
-//     try {
-//         const customer =
-//     } catch (error) {
-
-//     }
-// }
+export async function POST(request: NextRequest) {
+    try {
+        // chua hoan thien
+        const json = await request.json();
+        const customer = await syncCustomerFromDLBD(json);
+        return NextResponse.json(customer);
+    } catch (error: any) {
+        return new NextResponse(error.message, { status: 500 });
+    }
+}
