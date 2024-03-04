@@ -95,7 +95,6 @@ export async function syncCustomerFromDLBD(requestData:any) {
                         wardId: requestData.ward_id,
                         address: requestData.address,
                         description: requestData.description,
-                        // sex: requestData.name,
                         garageId: garage.id,
                     }
                 });
