@@ -36,8 +36,6 @@ const DynamicModalChooseProducts = dynamic(
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
-
-  console.log(dataDetail);
   const router = useRouter();
   const [selectedProducts, setSelectedProducts] = useState<any>(
     dataDetail
@@ -197,7 +195,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     };
 
     if (isEditing) fetchData();
-    console.log("dataDetail", dataDetail);
   }, [dataDetail]);
 
   // Tính tổng tiền
@@ -212,7 +209,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   };
   const handleSubmit = async (values: any) => {
     values.total = calculateSubTotal();
-    console.log(values);
     values.garageId = 1;
     values.dateTime = new Date();
     handlersButton.open();
@@ -235,6 +231,16 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           title: "Thành công",
           message: "Đặt hàng thành công",
         });
+        if (isEditing) {
+          const body = {
+            dataBefore: dataDetail,
+            dataAfter: data?.order,
+          };
+          const sms = await fetch(`/api/orders/sendSMS`, {
+            method: "POST",
+            body: JSON.stringify(body),
+          });
+        }
         router.back();
         router.refresh();
       }
