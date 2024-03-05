@@ -3,9 +3,11 @@ import React from "react";
 import { showStatus } from "@/utils/order";
 import OrderDetailItem from "@/app/components/elements/dashboard/order/orderDetail";
 import ListPage from "@/app/components/layout/ListPage";
-import { Button } from "@mantine/core";
 import TableBasic from "@/app/components/table/Tablebasic";
+import { Badge, Button, Tooltip } from "@mantine/core";
+import { stepOrderOptions } from "@/constants/masterData";
 export default function OrderDetailPage({ dataSource }: any) {
+  console.log(dataSource);
   const columns = [
     {
       label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
@@ -16,11 +18,15 @@ export default function OrderDetailPage({ dataSource }: any) {
       label: <span style={{ whiteSpace: "nowrap" }}>Giá</span>,
       name: "priceSale",
       dataIndex: ["priceSale"],
+      render: (dataRow: any) => {
+        return <span>{dataRow.toLocaleString()}đ</span>;
+      },
     },
     {
       label: <span style={{ whiteSpace: "nowrap" }}>Số lượng</span>,
       name: "quantity",
       dataIndex: ["quantity"],
+      textAlign: "center",
     },
     {
       label: <span style={{ whiteSpace: "nowrap" }}>Tổng tiền</span>,
@@ -35,11 +41,50 @@ export default function OrderDetailPage({ dataSource }: any) {
         );
       },
     },
+    // {
+    //   label: <span style={{ whiteSpace: "nowrap" }}>Tình trạng</span>,
+    //   name: "kind",
+    //   dataIndex: ["step"],
+    //   width: "100px",
+    //   render: (record: any, index: number) => {
+    //     const matchedStatus = stepOrderOptions.find(
+    //       (item) => item.value === record.toString()
+    //     );
+    //     if (matchedStatus) {
+    //       return (
+    //         <Badge color={matchedStatus.color} key={index}>
+    //           {matchedStatus.label}
+    //         </Badge>
+    //       );
+    //     }
+    //   },
+    // },
+    {
+      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      dataIndex: [],
+      width: "100px",
+      render: (record: any) => {
+        return (
+          <Tooltip label="Đánh giá" withArrow position="bottom">
+            <Button
+              size="xs"
+              variant="outline"
+              // onClick={(e) => {
+              //   openDeleteProduct();
+              //   setDeleteRow(record.id);
+              // }}
+            >
+              Đánh giá
+            </Button>
+          </Tooltip>
+        );
+      },
+    },
   ];
   return (
     <main className="main">
       <div className="order-item-single bg pt-60">
-        <div className="container">
+        <div>
           <div className="card text-left mb-40">
             <div className="card-body">
               <div className="row invoice-info">
@@ -59,20 +104,13 @@ export default function OrderDetailPage({ dataSource }: any) {
               </div>
             </div>
           </div>
-          <div className="row pb-60">
-            <div className="col-12 table-responsive">
-              <ListPage
-                title="Chi tiết đơn hàng"
-                style={{ height: "100%" }}
-                baseTable={
-                  <TableBasic
-                    columns={columns}
-                    data={dataSource?.orderDetails}
-                  />
-                }
-              />
-            </div>
-          </div>
+          <ListPage
+            title="Chi tiết đơn hàng"
+            style={{ height: "100%" }}
+            baseTable={
+              <TableBasic columns={columns} data={dataSource?.orderDetails} />
+            }
+          />
         </div>
       </div>
     </main>

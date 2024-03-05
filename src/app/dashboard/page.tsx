@@ -3,6 +3,7 @@ import Orders from "../components/elements/dashboard/order/orders";
 import React from "react";
 import { getCarsSsr } from "@/utils/car";
 import { getMyAccount } from "@/utils/user";
+import OrdersListPage from "../layout/dashboard/order/OrdersListPage";
 export default async function Dashboard() {
   const orders = await getOrders(1);
   const fetchedCars = await getCarsSsr();
@@ -44,6 +45,7 @@ export default async function Dashboard() {
           </div>
         </div>
       </div>
+      {/* <OrdersListPage dataSource={orders} /> */}
       <Orders ordersData={orders} />
     </div>
   );

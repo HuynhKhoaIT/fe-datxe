@@ -9,13 +9,7 @@ import { IconEye } from "@tabler/icons-react";
 import Link from "next/link";
 
 export default function OrdersListPage({ dataSource }: any) {
-  console.log(dataSource);
   const router = useRouter();
-  const [page, setPage] = useState<number>(1);
-
-  const handleRowClick = (record: any) => {
-    router.push(`/dashboard/order/${record.id}`);
-  };
   // pagination
   const itemsPerPage: number = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,9 +17,6 @@ export default function OrdersListPage({ dataSource }: any) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  const handlePageChange = (newPage: any) => {
-    setCurrentPage(newPage);
-  };
   const columns = [
     {
       label: <span style={{ whiteSpace: "nowrap" }}>Biển số</span>,
@@ -51,6 +42,24 @@ export default function OrdersListPage({ dataSource }: any) {
       dataIndex: ["total"],
       render: (dataRow: number) => {
         return <span>{dataRow?.toLocaleString()}đ</span>;
+      },
+    },
+    {
+      label: <span style={{ whiteSpace: "nowrap" }}>Tình trạng</span>,
+      name: "kind",
+      dataIndex: ["step"],
+      width: "100px",
+      render: (record: any, index: number) => {
+        const matchedStatus = stepOrderOptions.find(
+          (item) => item.value === record.toString()
+        );
+        if (matchedStatus) {
+          return (
+            <Badge color={matchedStatus.color} key={index}>
+              {matchedStatus.label}
+            </Badge>
+          );
+        }
       },
     },
     {
@@ -93,24 +102,7 @@ export default function OrdersListPage({ dataSource }: any) {
               <h4 className="user-profile-card-title">Danh sách đơn hàng</h4>
             </div>
             <div className="table-responsive" style={{ overflowY: "hidden" }}>
-              {/* <TableBasic
-                data={dataSource?.data}
-                columns={columns}
-                loading={true}
-                totalPage={dataSource?.totalPage}
-                setPage={setPage}
-                activePage={page}
-              /> */}
               <TableBasic columns={columns} data={paginatedData} />
-              {/* <Pagination
-                style={{
-                  marginTop: "16px",
-                  display: "flex",
-                  justifyContent: "end",
-                }}
-                total={Math.ceil(dataSource?.length / itemsPerPage)}
-                onChange={handlePageChange}
-              /> */}
             </div>
           </div>
         </div>

@@ -5,6 +5,8 @@ import Header from "../layout/common/desktop/HeaderDesktop";
 import { MyFooter } from "../layout/common/desktop/Footer/FooterDesktop";
 import HeaderMobile from "../layout/common/mobile/HeaderMobile";
 import FooterMobile from "../layout/common/mobile/Footer/FooterMobile";
+export const dynamic = "force-dynamic";
+
 interface IProps {
   children: ReactNode;
 }
