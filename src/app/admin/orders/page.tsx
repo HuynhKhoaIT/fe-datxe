@@ -22,9 +22,8 @@ import { getOrders } from "@/app/libs/prisma/order";
 //   return res.json();
 // }
 export default async function Orders() {
-  const orders = await getOrders(2,{});
-  console.log('orders',orders)
-  const mappedOrdersData = mapArrayEventCalendar(orders);
+  const orders = await getOrders(2, {});
+  const mappedOrdersData = mapArrayEventCalendar(orders?.data);
   // lấy danh sách brand
   const brands = await getBrands();
   const newBrands = brands?.map((brand) => ({
