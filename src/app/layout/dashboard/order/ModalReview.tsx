@@ -7,6 +7,7 @@ export default function ModalReview({
   title,
   onOkModal,
   onCancelModal,
+  dataDetail,
 }: any) {
   return (
     <BasicModal
@@ -18,6 +19,22 @@ export default function ModalReview({
       size={800}
       centered={true}
       onCancelModal={onCancelModal}
-    ></BasicModal>
+    >
+      <div>
+        {dataDetail?.map((item: any, index: number) => {
+          return (
+            <div>
+              <img src={item.product.images[0]} />
+              <div>
+                <span>{item?.product?.name}</span>
+              </div>
+            </div>
+          );
+        })}
+        <div>
+          <span>Chất lượng sản phẩm</span>
+        </div>
+      </div>
+    </BasicModal>
   );
 }
