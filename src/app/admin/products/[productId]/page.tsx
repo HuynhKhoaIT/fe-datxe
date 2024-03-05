@@ -20,7 +20,7 @@ export default async function ProductSavePage({
 }: {
   params: { productId: number };
 }) {
-  const productDetail = await getDataProduct(params.productId);
+  const productDetail = await getProductById(params.productId);
   return (
     <div>
       <ProductForm isEditing={true} dataDetail={productDetail} />
