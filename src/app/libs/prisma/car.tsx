@@ -1,4 +1,5 @@
 import prisma from "../prismadb";
+import { getCustomerByPhone } from "./customer";
 import { getGarageByDlbdId } from "./garage";
 export async function createCar(json: any) {
     try {
@@ -29,32 +30,36 @@ export async function createCar(json: any) {
 }
 
 
-export async function syncCarFromDLBD(requestData:any) {
+export async function syncCarFromDLBD(carData:any,customerData: any) {
     try {
-        const garage = await getGarageByDlbdId(requestData.garage_id);
+        const garage = await getGarageByDlbdId(carData.garage_id);
         if(garage){
-            const car = await prisma.car.findFirst({
-                where:{
-                    status: "PUBLIC",
-                    numberPlates: {
-                        contains: requestData.numberPlates
-                    },
-                    garageId: Number(garage.id)
-                }
-            });
-            if(car){
-                return car;
-            }else{
-                const carNew = await prisma.car.create({
-                    data: {
-                        customerId: Number(requestData.customerId),
-                        numberPlates: requestData.numberPlates,
-                        description: requestData.description,
+            const customer = await getCustomerByPhone(customerData.phone_number,Number(garage.id));
+            if(customer){
+                const car = await prisma.car.findFirst({
+                    where:{
+                        status: "PUBLIC",
+                        numberPlates: {
+                            contains: carData.numberPlates
+                        },
                         garageId: Number(garage.id)
                     }
                 });
-                return carNew;                
+                if(car){
+                    return car;
+                }else{
+                    const carNew = await prisma.car.create({
+                        data: {
+                            customerId: Number(customer.id),
+                            numberPlates: carData.licensePlates,
+                            description: carData.description,
+                            garageId: Number(garage.id)
+                        }
+                    });
+                    return carNew;                
+                }
             }
+            
         }
         
         
@@ -62,3 +67,7 @@ export async function syncCarFromDLBD(requestData:any) {
         return { error };
     }
 }
+
+// export async function syncCustomeFromDlbd(params:type) {
+    
+// }
