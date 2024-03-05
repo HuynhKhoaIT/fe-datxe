@@ -62,16 +62,16 @@ const blogs = [
   },
 ];
 export default async function Home() {
-  // const categories = await getCategories({});
+  const categories = await getCategories({});
   // const productsRelate = await getProducts(0, {});
   // const servicesHot = await getProducts(0, { isProduct: "0" });
   // const productsHot = await getProducts(0, { isProduct: "1" });
-  // // const carsOption = await getCarData();
-  // const province: any = await getProvinces();
-  // const provinceData = province.map((item: any) => ({
-  //   value: item.id.toString(),
-  //   label: item.name,
-  // }));
+  // const carsOption = await getCarData();
+  const province: any = await getProvinces();
+  const provinceData = province.map((item: any) => ({
+    value: item.id.toString(),
+    label: item.name,
+  }));
   return (
     <RenderContext
       components={{
@@ -82,14 +82,14 @@ export default async function Home() {
           defaultTheme: LandingPageMobile,
         },
       }}
-      // categories={categories}
+      categories={categories}
       reassons={reassons}
       // productsRelate={productsRelate}
       // servicesHot={servicesHot}
       // productsHot={productsHot}
       blogs={blogs}
       // carsOption={carsOption}
-      // provinceData={provinceData}
+      provinceData={provinceData}
     />
   );
 }
