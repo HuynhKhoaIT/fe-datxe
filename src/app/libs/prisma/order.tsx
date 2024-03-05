@@ -88,7 +88,7 @@ export async function getOrders(garage: Number,requestData: any){
     }
     
 }
-export async function findOrders(id: Number,request: NextRequest){
+export async function findOrders(id: Number,request: any){
     try {
         const rs = await prisma.order.findFirst({
             where: {

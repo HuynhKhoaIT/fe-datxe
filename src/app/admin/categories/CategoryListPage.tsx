@@ -109,7 +109,7 @@ export default function CategoryListPage({ dataSource, profile }: any) {
                 <IconPencil size={16} />
               </Button>
             </Link>
-
+              
             <Button
               size="xs"
               p={5}

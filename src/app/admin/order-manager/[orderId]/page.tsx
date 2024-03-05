@@ -1,23 +1,18 @@
 import React from "react";
 import OrderForm from "./OrderForm";
 import { apiUrl } from "@/constants";
+import { findOrders } from "@/app/libs/prisma/order";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-async function getDataProduct(productId: number) {
-  const res = await fetch(`${apiUrl}api/orders/${Number(productId)}`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
+
 
 export default async function ProductSavePage({
   params,
 }: {
   params: { orderId: number };
 }) {
-  const productDetail = await getDataProduct(params.orderId);
+  const productDetail = await findOrders(params.orderId,{});
   return (
     <div>
       <OrderForm isEditing={true} dataDetail={productDetail} />
