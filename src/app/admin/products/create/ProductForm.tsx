@@ -43,14 +43,14 @@ export default function ProductForm({
     initialValues: {
       name: "",
       categories: [],
-      supplierId: 1,
-      productBrandId: null,
+      // supplierId: 1,
+      // productBrandId: null,
     },
     validate: {
       name: (value) => (value.length < 1 ? "Không được để trống" : null),
       categories: (value) => (value.length < 1 ? "Không được để trống" : null),
-      supplierId: (value) => (!value ? "Không được để trống" : null),
-      productBrandId: (value) => (!value ? "Không được để trống" : null),
+      // supplierId: (value) => (!value ? "Không được để trống" : null),
+      // productBrandId: (value) => (!value ? "Không được để trống" : null),
     },
   });
   useEffect(() => {
@@ -58,6 +58,9 @@ export default function ProductForm({
       form.setFieldValue("garageId", 9);
       form.setFieldValue("isProduct", "1");
       form.setFieldValue("status", "PUBLIC");
+
+      form.setFieldValue("supplierId", "5");
+      form.setFieldValue("productBrandId", "4");
     }
     if (isEditing && dataDetail) {
       form.setInitialValues(dataDetail);
@@ -84,6 +87,9 @@ export default function ProductForm({
       form.setFieldValue("description", dataDetail?.description);
       form.setFieldValue("status", "PUBLIC");
       form.setFieldValue("isProduct", "1");
+
+      form.setFieldValue("supplierId", "5");
+      form.setFieldValue("productBrandId", "4");
     }
   }, [dataDetail]);
   const router = useRouter();

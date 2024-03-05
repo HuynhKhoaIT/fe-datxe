@@ -29,6 +29,25 @@ export async function createCar(json: any) {
     }
 }
 
+export async function getCars(request:any) {
+    const cars = await prisma.car.findMany({
+        where: {
+            AND: [
+                {
+                    status: {
+                        not: 'DELETE',
+                    },
+                },
+            ],
+        },
+        include: {
+            customer: true,
+            carStyle: true,
+        },
+    });
+    return cars;
+}
+
 
 export async function syncCarFromDLBD(carData:any,customerData: any) {
     try {
@@ -40,7 +59,7 @@ export async function syncCarFromDLBD(carData:any,customerData: any) {
                     where:{
                         status: "PUBLIC",
                         numberPlates: {
-                            contains: carData.numberPlates
+                            contains: carData.licensePlates
                         },
                         garageId: Number(garage.id)
                     }

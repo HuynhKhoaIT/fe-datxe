@@ -1,4 +1,4 @@
-import { createCar } from '@/app/libs/prisma/car';
+import { createCar, getCars } from '@/app/libs/prisma/car';
 import prisma from '@/app/libs/prismadb';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -9,22 +9,7 @@ export async function GET(request: NextRequest) {
         if (searchParams.get('garage')) {
             garageId = Number(searchParams.get('garage'));
         }
-        const cars = await prisma.car.findMany({
-            where: {
-                AND: [
-                    {
-                        garageId,
-                        status: {
-                            not: 'DELETE',
-                        },
-                    },
-                ],
-            },
-            include: {
-                customer: true,
-                carStyle: true,
-            },
-        });
+        const cars = await getCars({});
         return NextResponse.json(cars);
         throw new Error('Chua dang nhap');
     } catch (error: any) {
