@@ -1,0 +1,31 @@
+@media only screen and (min-width: 600px) {
+    body {
+        .wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .content {
+                width: 500px;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: var(--box-shadow);
+            }
+        }
+    }
+}
+@media only screen and (max-width: 600px) {
+    body {
+        .wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            .content {
+                width: 100%;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: var(--box-shadow);
+            }
+        }
+    }
+}

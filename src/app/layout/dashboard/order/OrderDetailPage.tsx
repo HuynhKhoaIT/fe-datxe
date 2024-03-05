@@ -5,8 +5,16 @@ import OrderDetailItem from "@/app/components/elements/dashboard/order/orderDeta
 import ListPage from "@/app/components/layout/ListPage";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { Badge, Button, Tooltip } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import dynamic from "next/dynamic";
+
+const DynamicModalReview = dynamic(() => import("./ModalReview"), {
+  ssr: false,
+});
 export default function OrderDetailPage({ dataSource }: any) {
-  console.log(dataSource);
+  const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
+    false
+  );
   const columns = [
     {
       label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
@@ -65,14 +73,7 @@ export default function OrderDetailPage({ dataSource }: any) {
       render: (record: any) => {
         return (
           <Tooltip label="Đánh giá" withArrow position="bottom">
-            <Button
-              size="xs"
-              variant="outline"
-              // onClick={(e) => {
-              //   openDeleteProduct();
-              //   setDeleteRow(record.id);
-              // }}
-            >
+            <Button size="xs" variant="outline" onClick={openModal}>
               Đánh giá
             </Button>
           </Tooltip>
@@ -112,6 +113,15 @@ export default function OrderDetailPage({ dataSource }: any) {
           />
         </div>
       </div>
+      {openedModal && (
+        <DynamicModalReview
+          openedModal={openedModal}
+          onCloseModal={closeModal}
+          title="Đánh giá sản phẩm"
+          onCancelModal={closeModal}
+          dataDetail={dataSource}
+        />
+      )}
     </main>
   );
 }
