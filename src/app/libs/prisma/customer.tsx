@@ -1,4 +1,5 @@
 import prisma from "../prismadb";
+import { syncCarFromDLBD } from "./car";
 import { getGarageByDlbdId } from "./garage";
 export async function createCustomer(json: any) {
     try {  
@@ -95,7 +96,6 @@ export async function syncCustomerFromDLBD(requestData:any) {
                         wardId: requestData.ward_id,
                         address: requestData.address,
                         description: requestData.description,
-                        // sex: requestData.name,
                         garageId: garage.id,
                     }
                 });
@@ -108,4 +108,33 @@ export async function syncCustomerFromDLBD(requestData:any) {
     }
 }
 
-// export async function
+
+export async function getCustomerByPhone(phoneNumber:string,garageId:Number) {
+    const customer = await prisma.customer.findFirst({
+        where: {
+            phoneNumber: {
+                contains: phoneNumber
+            },
+            garageId: Number(garageId),
+            status: {
+                not: 'DELETE'
+            }
+        },
+    });
+    return customer;
+}
+
+export async function syncCustomerAndCarFromDLBD(requestData:any) {
+    try {
+        const garage = await getGarageByDlbdId(requestData.customer.garage_id);
+        if(garage){
+            const customer = await syncCustomerFromDLBD(requestData.customer);
+            if(customer){
+                const car = await syncCarFromDLBD(requestData.car,requestData.customer);
+                return {customer,car}
+            }
+        }
+    } catch (error) {
+        return { error };
+    }
+}

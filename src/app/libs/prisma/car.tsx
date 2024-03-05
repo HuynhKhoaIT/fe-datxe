@@ -1,4 +1,6 @@
 import prisma from "../prismadb";
+import { getCustomerByPhone } from "./customer";
+import { getGarageByDlbdId } from "./garage";
 export async function createCar(json: any) {
     try {
         const car = await prisma.car.create({
@@ -25,4 +27,66 @@ export async function createCar(json: any) {
     } catch (error) {
       return { error };
     }
-  }
+}
+
+export async function getCars(request:any) {
+    const cars = await prisma.car.findMany({
+        where: {
+            AND: [
+                {
+                    status: {
+                        not: 'DELETE',
+                    },
+                },
+            ],
+        },
+        include: {
+            customer: true,
+            carStyle: true,
+        },
+    });
+    return cars;
+}
+
+
+export async function syncCarFromDLBD(carData:any,customerData: any) {
+    try {
+        const garage = await getGarageByDlbdId(carData.garage_id);
+        if(garage){
+            const customer = await getCustomerByPhone(customerData.phone_number,Number(garage.id));
+            if(customer){
+                const car = await prisma.car.findFirst({
+                    where:{
+                        status: "PUBLIC",
+                        numberPlates: {
+                            contains: carData.licensePlates
+                        },
+                        garageId: Number(garage.id)
+                    }
+                });
+                if(car){
+                    return car;
+                }else{
+                    const carNew = await prisma.car.create({
+                        data: {
+                            customerId: Number(customer.id),
+                            numberPlates: carData.licensePlates,
+                            description: carData.description,
+                            garageId: Number(garage.id)
+                        }
+                    });
+                    return carNew;                
+                }
+            }
+            
+        }
+        
+        
+    } catch (error) {
+        return { error };
+    }
+}
+
+// export async function syncCustomeFromDlbd(params:type) {
+    
+// }
