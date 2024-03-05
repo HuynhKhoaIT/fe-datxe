@@ -5,7 +5,6 @@ import OrderDetailItem from "@/app/components/elements/dashboard/order/orderDeta
 import ListPage from "@/app/components/layout/ListPage";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { Badge, Button, Tooltip } from "@mantine/core";
-import { stepOrderOptions } from "@/constants/masterData";
 export default function OrderDetailPage({ dataSource }: any) {
   console.log(dataSource);
   const columns = [
@@ -92,7 +91,7 @@ export default function OrderDetailPage({ dataSource }: any) {
                 <div className="col-sm-4 invoice-col">
                   <b>#{dataSource?.code}</b>
                   <br />
-                  <b>Tổng đợn hàng: </b> {dataSource?.total.toLocaleString()}
+                  <b>Tổng đơn hàng: </b> {dataSource?.total.toLocaleString()}
                   <br />
                   <b>Trạng thái:</b> {showStatus(dataSource?.status)}
                   <br />

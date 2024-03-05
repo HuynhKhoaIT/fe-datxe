@@ -53,6 +53,9 @@ export async function getCustomers(requestData:any) {
     const customers = await prisma.customer.findMany({
         take: take,
         skip: skip,
+        orderBy:{
+            id: 'desc'
+        },
         where: {
             AND: [
                 {

@@ -31,6 +31,9 @@ export async function createCar(json: any) {
 
 export async function getCars(request:any) {
     const cars = await prisma.car.findMany({
+        orderBy:{
+            id: 'desc'
+        },
         where: {
             AND: [
                 {
