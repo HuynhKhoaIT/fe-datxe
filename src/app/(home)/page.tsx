@@ -14,18 +14,6 @@ import Reasons3 from "@/assets/images/reasson3.png";
 import { getProvinces } from "@/utils/notion";
 import { getCategories } from "../libs/prisma/category";
 import { getProducts } from "../libs/prisma/product";
-async function getCarData() {
-  const res = await fetch(`${apiUrl}api/car-model`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await res.json();
-  const carsOption = data?.map((item: any) => ({
-    value: item.id.toString(),
-    label: item.title,
-  }));
-  return carsOption;
-}
 const reassons = [
   {
     image: Reasons2.src,
@@ -74,16 +62,16 @@ const blogs = [
   },
 ];
 export default async function Home() {
-  const categories = await getCategories({});
-  const productsRelate = await getProducts(0, {});
-  const servicesHot = await getProducts(0, { isProduct: "0" });
-  const productsHot = await getProducts(0, { isProduct: "1" });
-  // const carsOption = await getCarData();
-  const province: any = await getProvinces();
-  const provinceData = province.map((item: any) => ({
-    value: item.id.toString(),
-    label: item.name,
-  }));
+  // const categories = await getCategories({});
+  // const productsRelate = await getProducts(0, {});
+  // const servicesHot = await getProducts(0, { isProduct: "0" });
+  // const productsHot = await getProducts(0, { isProduct: "1" });
+  // // const carsOption = await getCarData();
+  // const province: any = await getProvinces();
+  // const provinceData = province.map((item: any) => ({
+  //   value: item.id.toString(),
+  //   label: item.name,
+  // }));
   return (
     <RenderContext
       components={{
@@ -94,14 +82,14 @@ export default async function Home() {
           defaultTheme: LandingPageMobile,
         },
       }}
-      categories={categories}
+      // categories={categories}
       reassons={reassons}
-      productsRelate={productsRelate}
-      servicesHot={servicesHot}
-      productsHot={productsHot}
+      // productsRelate={productsRelate}
+      // servicesHot={servicesHot}
+      // productsHot={productsHot}
       blogs={blogs}
       // carsOption={carsOption}
-      provinceData={provinceData}
+      // provinceData={provinceData}
     />
   );
 }
