@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { Modal } from "@mantine/core";
+import { Button, Group, Modal } from "@mantine/core";
 import styles from "./index.module.scss";
 const BasicModal = ({
   top,
@@ -16,6 +16,9 @@ const BasicModal = ({
   footer,
   classNames,
   centered = false,
+  okText = "Ok",
+  cancelText = "Cancel",
+  withCloseButton = true,
 }: any) => {
   return (
     <Modal
@@ -27,23 +30,26 @@ const BasicModal = ({
       classNames={classNames}
       lockScroll={false}
       centered={centered}
+      withCloseButton={withCloseButton}
     >
       <div className={styles.modalContent}>{children}</div>
       {footer && (
-        <div className={styles.modalFooter}>
-          <button
+        <Group mt={20} justify="flex-end" className={styles.modalFooter}>
+          <Button
             className={styles.cancelButton}
             onClick={() => {
               onCancelModal();
               onCloseModal();
             }}
+            color="gray"
+            variant="transparent"
           >
-            Cancel
-          </button>
-          <button className={styles.okButton} onClick={onOkModal}>
-            Ok
-          </button>
-        </div>
+            {cancelText}
+          </Button>
+          <Button className={styles.okButton} onClick={onOkModal}>
+            {okText}
+          </Button>
+        </Group>
       )}
     </Modal>
   );

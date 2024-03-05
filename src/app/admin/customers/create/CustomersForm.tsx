@@ -157,7 +157,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
           setDistrict(dataDetail?.districtId?.toString());
           form.setFieldValue("wardId", dataDetail?.wardId?.toString());
           setWard(dataDetail?.wardId?.toString());
-          form.setFieldValue("dob", dayjs(dataDetail?.dob).toDate());
+          if (dataDetail?.dob)
+            form.setFieldValue("dob", dayjs(dataDetail?.dob).toDate());
         } catch (error) {
           console.error("Error fetching data:", error);
         } finally {
