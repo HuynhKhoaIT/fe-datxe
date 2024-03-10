@@ -3,26 +3,33 @@ import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { sendSMSOrder } from '@/utils/order';
+import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 
 export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        // console.log(session);
-        const { searchParams } = new URL(request.url);
-        let garageId = 0;
-        if (searchParams.get('garage')) {
-            garageId = Number(searchParams.get('garage'));
+        if (session) {
+            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            const { searchParams } = new URL(request.url);
+            let page = 1;
+            let limit = 10;
+            if (searchParams.get('page')) {
+                page = Number(searchParams.get('page'));
+            }
+            if (searchParams.get('limit')) {
+                limit = Number(searchParams.get('limit'));
+            }
+            const requestData = {
+                s: searchParams.get('s'),
+                createdById: searchParams.get('user'),
+                limit: limit,
+                page: page,
+                garageId: garageId,
+            };
+            const orders = await getOrders(garageId, requestData);
+            return NextResponse.json(orders);
         }
-
-        // if()
-        const requestData = {
-            s: searchParams.get('s'),
-            createdById: searchParams.get('user'),
-            limit: searchParams.get('limit'),
-            page: searchParams.get('page'),
-        };
-        const orders = await getOrders(garageId, requestData);
-        return NextResponse.json(orders);
+        throw new Error('Chua dang nhap');
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
