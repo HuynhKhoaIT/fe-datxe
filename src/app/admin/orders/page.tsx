@@ -11,7 +11,7 @@ import SearchForm from "@/app/components/form/SearchForm";
 import { Space } from "@mantine/core";
 import { apiUrl } from "@/constants";
 export const revalidate = 0;
-
+import styles from "./index.module.scss";
 import CalendarSchedulerGarage from "@/app/admin/orders/CalendarGarage";
 import { getOrders } from "@/app/libs/prisma/order";
 // async function getDataOrder(garageId: number) {
@@ -73,7 +73,7 @@ export default async function Orders() {
     endDate: null,
   };
   return (
-    <div>
+    <div className={styles.wrapper}>
       <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
       <Space h={20} />
       <CalendarSchedulerGarage
