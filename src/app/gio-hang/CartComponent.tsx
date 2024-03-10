@@ -228,6 +228,7 @@ export default function CartComponent({ myAccount }: any) {
         <div>Bạn có muốn xoá không?</div>
         <Group justify="end" style={{ marginTop: 10 }}>
           <Button
+            size="md"
             variant="outline"
             key="cancel"
             onClick={handleDeleteCancel}
@@ -237,6 +238,7 @@ export default function CartComponent({ myAccount }: any) {
             Huỷ bỏ
           </Button>
           <Button
+            size="md"
             style={{ marginLeft: "12px" }}
             onClick={handleDeleteOk}
             variant="filled"

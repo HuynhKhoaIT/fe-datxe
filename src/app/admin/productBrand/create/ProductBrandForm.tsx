@@ -93,6 +93,7 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
               <Grid gutter={10} mt={24}>
                 <Grid.Col span={8}>
                   <TextInput
+                    size="md"
                     withAsterisk
                     {...form.getInputProps("name")}
                     label="Tên thương hiệu"
@@ -102,6 +103,7 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Select
+                    size="md"
                     label="Trạng thái"
                     checkIconPosition="right"
                     placeholder="Trạng thái"
@@ -127,6 +129,7 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
 
         <Group justify="end" style={{ marginTop: 60 }}>
           <Button
+            size="md"
             variant="outline"
             key="cancel"
             color="red"
@@ -136,6 +139,7 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
             Huỷ
           </Button>
           <Button
+            size="md"
             loading={loading}
             style={{ marginLeft: "12px" }}
             key="submit"

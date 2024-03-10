@@ -85,6 +85,7 @@ export default function UserProfile({
           <Grid gutter={16} w={"100%"}>
             <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
               <TextInput
+                size="md"
                 w={"100%"}
                 withAsterisk
                 {...form.getInputProps("name")}
@@ -103,6 +104,7 @@ export default function UserProfile({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <TextInput
+                size="md"
                 type="tel"
                 disabled={true}
                 {...form.getInputProps("phone")}
@@ -111,6 +113,7 @@ export default function UserProfile({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <TextInput
+                size="md"
                 {...form.getInputProps("address")}
                 label="Địa chỉ"
                 placeholder="1234 Main St"
@@ -118,6 +121,7 @@ export default function UserProfile({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <Select
+                size="md"
                 {...form.getInputProps("province_id")}
                 label="Tỉnh/Thành phố"
                 placeholder="Chọn tỉnh"
@@ -132,6 +136,7 @@ export default function UserProfile({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <Select
+                size="md"
                 {...form.getInputProps("district_id")}
                 label="Huyện/Quận"
                 placeholder="Chọn huyện/quận"
@@ -145,6 +150,7 @@ export default function UserProfile({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
               <Select
+                size="md"
                 {...form.getInputProps("ward_id")}
                 label="Xã/Phường"
                 placeholder="Chọn xã/phường"
@@ -156,7 +162,9 @@ export default function UserProfile({
             </Grid.Col>
           </Grid>
           <Group pt={20} justify="end" className="col-12 text-right ">
-            <Button type="submit">Cập nhật</Button>
+            <Button size="md" type="submit">
+              Cập nhật
+            </Button>
           </Group>
         </form>
       </Box>

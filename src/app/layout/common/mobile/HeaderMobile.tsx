@@ -51,6 +51,7 @@ const HeaderMobile = () => {
           className={styles.searchForm}
         >
           <Input
+            size="md"
             {...form.getInputProps("searchValue")}
             leftSectionPointerEvents="all"
             leftSection={

@@ -1,11 +1,6 @@
-import { Box, Space } from "@mantine/core";
+"use client";
 import React, { useEffect, useState } from "react";
 import ProductSave from "./ProductSave";
 export default function CreateProduct() {
-  return (
-    <Box maw={"100%"} mx="auto">
-      <Space h="md" />
-      <ProductSave isDirection={false} />
-    </Box>
-  );
+  return <ProductSave isDirection={false} />;
 }

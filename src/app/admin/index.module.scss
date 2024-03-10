@@ -1,42 +1,8 @@
-.wrapper {
-    display: flex;
-    width: 100%;
-    position: relative;
-    height: calc(100vh - 40px);
-    .navBar {
-        flex-shrink: 0;
-        width: 360px;
-    }
-    .content {
-        width: 100%;
-    }
+.main {
+    background-color: #ededed;
 }
-.wrapperMobile {
-    margin-top: 4rem;
-}
-.wrapperAdmin {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    .contents {
-        padding: 0 20px;
-        height: calc(100% - 50px);
-        margin-bottom: 20px;
-        .content {
-            background-color: var(--white-background);
-            height: 100%;
-            box-shadow: var(--box-shadow);
-            border-radius: 8px;
-            overflow-y: auto;
-        }
-    }
-}
-
 @media only screen and (max-width: 600px) {
-    .navBar {
-        display: none;
-    }
-    .wrapperAdmin .contents {
-        padding: 0 10px;
+    .main {
+        background-color: #ffffff;
     }
 }

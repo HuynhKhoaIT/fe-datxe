@@ -205,6 +205,7 @@ export default function ExpertForm({
               <Grid gutter={10} mt={24}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("code")}
                     label="Mã số"
                     type="text"
@@ -213,6 +214,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("name")}
                     label="Tên chuyên gia"
                     type="text"
@@ -221,6 +223,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("shortName")}
                     label="Tên rút gọn"
                     type="text"
@@ -229,6 +232,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("phoneNumber")}
                     label="Điện thoại"
                     type="text"
@@ -237,6 +241,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("email")}
                     label="email"
                     type="text"
@@ -245,6 +250,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("website")}
                     label="Website"
                     type="text"
@@ -253,6 +259,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <MultiSelect
+                    size="md"
                     withAsterisk
                     {...form.getInputProps("amenities")}
                     label="Tiện ích lân cận"
@@ -264,6 +271,7 @@ export default function ExpertForm({
 
                 <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("address")}
                     label="Địa chỉ"
                     type="text"
@@ -272,6 +280,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={12}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("address2")}
                     label="Địa chỉ 2"
                     type="text"
@@ -280,6 +289,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
+                    size="md"
                     {...form.getInputProps("provinceId")}
                     label="Tỉnh/Thành phố"
                     placeholder="Chọn tỉnh"
@@ -294,6 +304,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
+                    size="md"
                     {...form.getInputProps("districtId")}
                     label="Huyện/Quận"
                     placeholder="Chọn huyện/quận"
@@ -307,6 +318,7 @@ export default function ExpertForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
+                    size="md"
                     {...form.getInputProps("wardId")}
                     label="Xã/Phường"
                     placeholder="Chọn xã/phường"
@@ -330,6 +342,7 @@ export default function ExpertForm({
 
                 <Grid.Col span={{ base: 12, sm: 8, md: 4, lg: 4 }}>
                   <Select
+                    size="md"
                     {...form.getInputProps("status")}
                     label="Trạng thái"
                     checkIconPosition="right"
@@ -346,8 +359,9 @@ export default function ExpertForm({
           </Grid.Col>
         </Grid>
 
-        <Group justify="end" style={{ marginTop: 60, padding: "20px" }}>
+        <Group justify="end" mt={20}>
           <Button
+            size="md"
             variant="outline"
             key="cancel"
             color="red"
@@ -357,6 +371,7 @@ export default function ExpertForm({
             Huỷ
           </Button>
           <Button
+            size="md"
             loading={loading}
             style={{ marginLeft: "12px" }}
             key="submit"

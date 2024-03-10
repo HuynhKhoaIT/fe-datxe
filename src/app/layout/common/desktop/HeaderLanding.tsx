@@ -47,11 +47,16 @@ export default function HeaderLanding() {
           </li>
         </ul>
         <div className={styles.nav}>
-          <Button variant="outline" color="var(--primary-color)" h={56}>
+          <Button
+            size="md"
+            variant="outline"
+            color="var(--primary-color)"
+            h={56}
+          >
             Trở thành chuyên gia
           </Button>
           <Link href={"/dat-lich"}>
-            <Button color="#3450E7" h={56}>
+            <Button size="md" color="#3450E7" h={56}>
               Book Lịch
             </Button>
           </Link>

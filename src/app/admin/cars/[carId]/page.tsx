@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box } from "@mantine/core";
 import CarForm from "../create/CarForm";
 import axios from "axios";
 export const revalidate = 60;
@@ -19,9 +18,5 @@ export default function UpdateCar({ params }: { params: { carId: number } }) {
 
     fetchData();
   }, [params?.carId]);
-  return (
-    <Box maw={"100%"} mx="auto">
-      <CarForm isEditing={true} dataDetail={car} />
-    </Box>
-  );
+  return <CarForm isEditing={true} dataDetail={car} />;
 }

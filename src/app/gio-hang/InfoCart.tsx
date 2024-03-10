@@ -79,6 +79,7 @@ export default function InfoCart({
         return (
           <>
             <Button
+              size="md"
               variant="transparent"
               onClick={() => decrementQuantity(dataRow?.productId)}
             >
@@ -86,6 +87,7 @@ export default function InfoCart({
             </Button>
             <span style={{ padding: "10px" }}>{dataRow?.quantity}</span>
             <Button
+              size="md"
               variant="transparent"
               onClick={() => incrementQuantity(dataRow?.productId)}
             >
@@ -117,6 +119,7 @@ export default function InfoCart({
       render: (record: any) => {
         return (
           <Button
+            size="md"
             variant="transparent"
             color="red"
             onClick={() => handleOpenModalDelete(record)}
@@ -136,11 +139,17 @@ export default function InfoCart({
           <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
             <Group className="cart-coupon " pos="relative">
               <TextInput
+                size="md"
                 type="text"
                 className="form-control"
                 placeholder="Your Coupon Code"
               />
-              <Button className="coupon-btn" variant="filled" pos="absolute">
+              <Button
+                size="md"
+                className="coupon-btn"
+                variant="filled"
+                pos="absolute"
+              >
                 Apply
               </Button>
             </Group>
@@ -158,6 +167,7 @@ export default function InfoCart({
             </ul>
             <Group justify="end">
               <Button
+                size="md"
                 className="theme-btn"
                 variant="filled"
                 type="submit"

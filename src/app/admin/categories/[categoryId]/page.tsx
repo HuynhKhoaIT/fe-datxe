@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Space } from "@mantine/core";
 import CategoryForm from "../create/CategoryForm";
-import { getCategories, getCategoryById } from "@/app/libs/prisma/category";
 import axios from "axios";
-import { apiUrl } from "@/constants";
 export const revalidate = 60;
 export default function UpdateCategory({
   params,
@@ -27,9 +24,5 @@ export default function UpdateCategory({
 
     fetchData();
   }, [params?.categoryId]);
-  return (
-    <Box maw={"100%"} mx="auto">
-      <CategoryForm isEditing={true} dataDetail={category} />
-    </Box>
-  );
+  return <CategoryForm isEditing={true} dataDetail={category} />;
 }

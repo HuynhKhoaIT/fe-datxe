@@ -130,11 +130,11 @@ export function RegisterFormAccuracy() {
             {...form.getInputProps("pin")}
           />
           <Button
+            size="md"
             loading={opened}
             className="login-btn"
             variant="filled"
             color="var(--theme-color)"
-            size="md"
             radius="md"
             type="submit"
             fullWidth

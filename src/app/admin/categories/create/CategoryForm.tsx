@@ -153,6 +153,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
               <Grid gutter={10} mt={24}>
                 <Grid.Col span={8}>
                   <TextInput
+                    size="md"
                     {...form.getInputProps("title")}
                     label="Tên danh mục"
                     type="text"
@@ -161,6 +162,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Select
+                    size="md"
                     {...form.getInputProps("status")}
                     label="Trạng thái"
                     checkIconPosition="right"
@@ -188,8 +190,9 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           </Grid.Col>
         </Grid>
 
-        <Group justify="end" style={{ marginTop: 60 }}>
+        <Group justify="end" mt={20}>
           <Button
+            size="md"
             variant="outline"
             key="cancel"
             color="red"
@@ -199,6 +202,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
             Huỷ
           </Button>
           <Button
+            size="md"
             loading={loading}
             style={{ marginLeft: "12px" }}
             key="submit"

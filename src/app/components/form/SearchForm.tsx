@@ -91,6 +91,7 @@ export default function SearchForm({
             if (item?.type === "input") {
               return (
                 <Input
+                  size="md"
                   w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                   key={index}
                   {...form.getInputProps(item.name)}
@@ -100,6 +101,7 @@ export default function SearchForm({
             } else if (item?.type === "select") {
               return (
                 <Select
+                  size="md"
                   w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                   key={index}
                   {...form.getInputProps(item.name)}
@@ -112,6 +114,7 @@ export default function SearchForm({
           {brandFilter && (
             <Flex gap={10}>
               <Select
+                size="md"
                 w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
                 {...form.getInputProps("brandId")}
                 data={brandOptions}
@@ -124,6 +127,7 @@ export default function SearchForm({
                 }}
               />
               <Select
+                size="md"
                 w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
                 {...form.getInputProps("nameId")}
                 data={modelOptions}
@@ -135,6 +139,7 @@ export default function SearchForm({
                 placeholder={"Dòng xe"}
               />
               <Select
+                size="md"
                 w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
                 {...form.getInputProps("yearId")}
                 data={yearCarOptions}
@@ -145,11 +150,16 @@ export default function SearchForm({
               />
             </Flex>
           )}
-          <Button leftSection={<IconSearch size={14} />} type="submit">
+          <Button
+            size="md"
+            leftSection={<IconSearch size={18} />}
+            type="submit"
+          >
             Tìm kiếm
           </Button>
           <Button
-            leftSection={<IconTrash size={14} />}
+            size="md"
+            leftSection={<IconTrash size={18} />}
             variant="outline"
             color="gray"
             onClick={() => {

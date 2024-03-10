@@ -76,7 +76,7 @@ export default function OrdersListPage({ dataSource }: any) {
             >
               <Tooltip label="Chi tiết" withArrow position="bottom">
                 <Button
-                  size="xs"
+                  size="md"
                   style={{ margin: "0 5px" }}
                   variant="transparent"
                   color="gray"

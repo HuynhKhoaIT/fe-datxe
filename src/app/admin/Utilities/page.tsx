@@ -24,7 +24,6 @@ export default async function Categories() {
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <UtilitiesListPage dataSource={categories} />
-      <FooterAdmin />
     </div>
   );
 }

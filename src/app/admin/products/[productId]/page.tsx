@@ -21,20 +21,5 @@ export default async function ProductSavePage({
   params: { productId: number };
 }) {
   const productDetail = await getProductById(params.productId);
-  return (
-    <div>
-      <ProductForm isEditing={true} dataDetail={productDetail} />
-    </div>
-    // <>khoa</>
-  );
+  return <ProductForm isEditing={true} dataDetail={productDetail} />;
 }
-// export async function generateStaticParams(): Promise<any[]> {
-//   const { products } = await getProducts();
-//   return (
-//     products?.map((item) => {
-//       return {
-//         productId: item.id.toString(),
-//       };
-//     }) || []
-//   );
-// }

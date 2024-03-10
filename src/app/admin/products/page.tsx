@@ -1,8 +1,7 @@
 "use client";
 export const revalidate = 0;
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import styles from "./index.module.scss";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
@@ -182,7 +181,7 @@ export default function ProductsManaga() {
             >
               <Tooltip label="Cập nhật" withArrow position="bottom">
                 <Button
-                  size="xs"
+                  size="md"
                   style={{ margin: "0 5px" }}
                   variant="transparent"
                   color="gray"
@@ -196,7 +195,7 @@ export default function ProductsManaga() {
 
             <Tooltip label="Xoá" withArrow position="bottom">
               <Button
-                size="xs"
+                size="md"
                 p={5}
                 variant="transparent"
                 color="red"
@@ -240,7 +239,7 @@ export default function ProductsManaga() {
     yearId: null,
   };
   return (
-    <div className={styles.wrapper}>
+    <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <ListPage
         searchForm={
@@ -257,7 +256,9 @@ export default function ProductsManaga() {
                 pathname: `/admin/products/create`,
               }}
             >
-              <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+              <Button size="md" leftSection={<IconPlus size={18} />}>
+                Thêm mới
+              </Button>
             </Link>
           </Flex>
         }
@@ -279,6 +280,6 @@ export default function ProductsManaga() {
         handleDeleteProduct={handleDeleteProduct}
         deleteRow={deleteRow}
       />
-    </div>
+    </Fragment>
   );
 }

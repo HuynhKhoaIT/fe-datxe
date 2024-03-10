@@ -19,6 +19,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
         <Grid gutter={10}>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               label="Biển số xe"
               readOnly
               type="text"
@@ -28,6 +29,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="text"
               name="brandCar"
@@ -39,6 +41,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
         <Grid gutter={10}>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="text"
               name="modelCar"
@@ -48,6 +51,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="text"
               name="color"
@@ -59,6 +63,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
         <Grid gutter={10}>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="number"
               name="vin_number"
@@ -68,6 +73,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="text"
               name="date_repair"
@@ -82,6 +88,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
         <Grid gutter={10}>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="text"
               name="registration_deadline"
@@ -94,6 +101,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="text"
               name="civil_insurance_deadline"
@@ -110,6 +118,7 @@ const PreviewModal = ({ data, onOk, opened, onCancel, ...props }: any) => {
         <Grid gutter={10}>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               readOnly
               type="text"
               name="material_insurance_deadline"

@@ -1,7 +1,5 @@
-import { ReactNode, Suspense } from "react";
-import styles from "./index.module.scss";
+import { Fragment, ReactNode, Suspense } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 interface IProps {
   children: ReactNode;
 }
@@ -13,10 +11,9 @@ export default function CreateLayout({ children }: IProps) {
     { title: "Chi tiết đơn hàng" },
   ];
   return (
-    <div className={styles.wrapper}>
+    <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
-      <div className={styles.content}>{children}</div>
-      <FooterAdmin />
-    </div>
+      {children}
+    </Fragment>
   );
 }

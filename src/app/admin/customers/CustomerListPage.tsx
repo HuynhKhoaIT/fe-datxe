@@ -111,7 +111,7 @@ export default function CustomerListPage({ dataSource }: any) {
               }}
             >
               <Button
-                size="xs"
+                size="md"
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -123,7 +123,7 @@ export default function CustomerListPage({ dataSource }: any) {
             </Link>
 
             <Button
-              size="xs"
+              size="md"
               p={5}
               variant="transparent"
               color="red"
@@ -155,8 +155,9 @@ export default function CustomerListPage({ dataSource }: any) {
       <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
       <Flex justify={"end"} align={"center"} gap={20}>
         <Button
+          size="md"
           onClick={openModalCustomers}
-          leftSection={<IconPlus size={14} />}
+          leftSection={<IconPlus size={18} />}
         >
           Đồng bộ
         </Button>
@@ -165,7 +166,9 @@ export default function CustomerListPage({ dataSource }: any) {
             pathname: `/admin/customers/create`,
           }}
         >
-          <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+          <Button size="md" leftSection={<IconPlus size={18} />}>
+            Thêm mới
+          </Button>
         </Link>
       </Flex>
       <TableBasic data={dataSource} columns={columns} />
