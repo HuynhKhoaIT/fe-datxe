@@ -3,24 +3,29 @@ import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { getCategories } from '@/app/libs/prisma/category';
+import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 
 export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        const { searchParams } = new URL(request.url);
-        let garageId = {};
-        if (searchParams.get('garage')) {
-            garageId = Number(searchParams.get('garage'));
+        if (session) {
+            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            const { searchParams } = new URL(request.url);
+            let page = 1;
+            if (searchParams.get('page')) {
+                page = Number(searchParams.get('page'));
+            }
+            const requestData = {
+                s: searchParams.get('s'),
+                limit: 10,
+                take: 10,
+                page: page,
+                garageId: garageId,
+                status: 'PUBLIC',
+            };
+            const productCategory = await getCategories(requestData);
+            return NextResponse.json(productCategory);
         }
-        if (session?.user?.garageId) {
-            garageId = session?.user?.garageId;
-        }
-        const requestData = {
-            garageId: garageId,
-            session: session,
-        };
-        const productCategory = await getCategories(requestData);
-        return NextResponse.json(productCategory);
         throw new Error('Chua dang nhap');
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });

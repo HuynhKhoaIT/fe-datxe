@@ -100,7 +100,24 @@ export async function getProducts(garage: Number,requestData:any) {
               garage: true,
           },
       }),
-      prisma.product.count(),
+      prisma.product.count({
+        where: {
+              AND: [
+                  {
+                      categories,
+                      name: {
+                          contains: titleFilter!,
+                      },
+                      brands,
+                      status: {
+                          not: 'DELETE',
+                      },
+                      garageId,
+                      isProduct,
+                  },
+              ],
+          },
+      }),
   ]);
 
   const totalPage = Math.ceil(total / limit);

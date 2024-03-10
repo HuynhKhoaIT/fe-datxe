@@ -2,26 +2,47 @@
 import { STATUS } from "@prisma/client";
 import prisma from "../prismadb";
 
-export async function getCategories(request: any) {
+export async function getCategories(requestData: any) {
   try {
-    let garageId = 1;
-    if(request.garageId){
-      garageId = request.garageId;
+    let currentPage = 1;
+    let take = 10;
+    let limit = 10;
+    if(requestData.limit){
+      take = parseInt(requestData.limit)
     }
-    let arrayStatus:STATUS[] = ["PUBLIC"];
-    if(request.status){
-      switch (request.status) {
-        case 'ALL':
-          arrayStatus = ["PUBLIC",'PENDING','DRAFT'];
-          break;
-        default:
-          arrayStatus = [request.status]
-          break;
-      }
+    const skip = take * (currentPage - 1);
+    let titleFilter = '';
+    if(requestData.s){
+        titleFilter = requestData.s;
     }
-    const productCategory = await prisma.productCategory.findMany({
-      take: 10,
-      where: {
+    let garageId:any = {};
+    if(requestData.garageId){
+      garageId = requestData.garageId
+    }
+    let arrayStatus:STATUS[] = ['PUBLIC'];
+    if(requestData.status == 'ALL'){
+        arrayStatus = ["PUBLIC",'PENDING','DRAFT'];
+    }else if(requestData.status){
+      arrayStatus = [requestData.status];
+    }
+    const [productCategories, total] = await prisma.$transaction([
+      prisma.productCategory.findMany({
+        take: 10,
+        where: {
+            AND: [
+                {
+                    status: {
+                        in: arrayStatus,
+                    },
+                    garageId:{
+                      in: [Number(process.env.GARAGE_DEFAULT),garageId]
+                    }
+                },
+            ],
+        },
+      }),
+      prisma.productCategory.count({
+        where: {
           AND: [
               {
                   status: {
@@ -33,8 +54,17 @@ export async function getCategories(request: any) {
               },
           ],
       },
-  });
-    return productCategory ;
+      })
+    ]);
+    const totalPage = Math.ceil(total / limit);
+    return {
+      data: productCategories,
+      total: total,
+      currentPage: currentPage,
+      limit: limit,
+      totalPage: totalPage,
+      status: 200,
+    };
   } catch (error) {
     return { error };
   }
