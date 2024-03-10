@@ -61,7 +61,11 @@ export default function OrdersManaga() {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Mã đơn hàng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Mã đơn hàng
+        </span>
+      ),
       name: "fullName",
       dataIndex: ["code"],
       width: "120px",
@@ -70,7 +74,11 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tên khách hàng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tên khách hàng
+        </span>
+      ),
       name: "fullName",
       dataIndex: ["customer"],
       render: (dataRow: any) => {
@@ -78,7 +86,11 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Số điện thoại</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Số điện thoại
+        </span>
+      ),
       name: "phoneNumber",
       dataIndex: ["customer"],
       render: (dataRow: any) => {
@@ -86,7 +98,11 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Biển số xe</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Biển số xe
+        </span>
+      ),
       name: "phoneNumber",
       dataIndex: ["car", "numberPlates"],
       render: (dataRow: any) => {
@@ -94,7 +110,11 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tổng đơn hàng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tổng đơn hàng
+        </span>
+      ),
       name: "total",
       dataIndex: ["total"],
       render: (dataRow: number) => {
@@ -102,7 +122,11 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tình trạng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tình trạng
+        </span>
+      ),
       name: "kind",
       dataIndex: ["step"],
       width: "100px",
@@ -120,7 +144,11 @@ export default function OrdersManaga() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Hành động
+        </span>
+      ),
       dataIndex: [],
       width: "100px",
       render: (record: any) => {

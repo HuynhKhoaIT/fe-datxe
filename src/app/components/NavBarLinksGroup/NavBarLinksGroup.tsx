@@ -57,8 +57,10 @@ export function LinksGroup({
         >
           <Group justify="space-between" gap={0}>
             <Box style={{ display: "flex", alignItems: "center" }}>
-              <Icon style={{ width: 18, height: 18 }} />
-              <Box ml="md">{label}</Box>
+              <Icon style={{ width: 24, height: 24 }} />
+              <Box ml="md" fw={600}>
+                {label}
+              </Box>
             </Box>
           </Group>
         </Link>
@@ -69,17 +71,19 @@ export function LinksGroup({
         >
           <Group justify="space-between" gap={0}>
             <Box style={{ display: "flex", alignItems: "center" }}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+              <Icon style={{ width: 24, height: 24 }} />
 
-              <Box ml="md">{label}</Box>
+              <Box ml="md" fw={600}>
+                {label}
+              </Box>
             </Box>
             {hasLinks && (
               <IconChevronRight
                 className={classes.chevron}
                 stroke={1.5}
                 style={{
-                  width: rem(16),
-                  height: rem(16),
+                  width: 16,
+                  height: 16,
                   transform: opened ? "rotate(-90deg)" : "none",
                 }}
               />

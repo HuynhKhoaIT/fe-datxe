@@ -19,17 +19,25 @@ export default function OrdersListPage({ dataSource }: any) {
   );
   const columns = [
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Biển số</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Biển số</span>
+      ),
       name: "licensePlates",
       dataIndex: ["car", "numberPlates"],
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Mã đơn hàng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Mã đơn hàng
+        </span>
+      ),
       name: "code",
       dataIndex: ["code"],
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Ngày sửa</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Ngày sửa</span>
+      ),
       name: "dateTime",
       dataIndex: ["dateTime"],
       render: (dataRow: Date) => {
@@ -37,7 +45,11 @@ export default function OrdersListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tổng đơn hàng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tổng đơn hàng
+        </span>
+      ),
       name: "total",
       dataIndex: ["total"],
       render: (dataRow: number) => {
@@ -45,7 +57,11 @@ export default function OrdersListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tình trạng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tình trạng
+        </span>
+      ),
       name: "kind",
       dataIndex: ["step"],
       width: "100px",
@@ -63,7 +79,11 @@ export default function OrdersListPage({ dataSource }: any) {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Hành động
+        </span>
+      ),
       dataIndex: [],
       width: "100px",
       render: (record: any) => {

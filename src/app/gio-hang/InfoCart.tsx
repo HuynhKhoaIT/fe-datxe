@@ -32,7 +32,9 @@ export default function InfoCart({
 
   const columns = [
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
+      ),
       name: "image",
       dataIndex: ["images"],
       width: "90px",
@@ -55,12 +57,18 @@ export default function InfoCart({
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tên sản phẩm
+        </span>
+      ),
       name: "title",
       dataIndex: ["name"],
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Giá</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Giá</span>
+      ),
       name: "price",
       dataIndex: ["priceSale"],
       width: "120px",
@@ -70,7 +78,9 @@ export default function InfoCart({
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Số lượng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Số lượng</span>
+      ),
       name: "quantity",
       dataIndex: [],
       width: "160px",
@@ -98,7 +108,11 @@ export default function InfoCart({
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Thành tiền</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Thành tiền
+        </span>
+      ),
       name: "totalPrice",
       dataIndex: [],
       width: "120px",
@@ -112,7 +126,11 @@ export default function InfoCart({
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Hành động
+        </span>
+      ),
       dataIndex: [],
       width: "120px",
       textAlign: "center",
