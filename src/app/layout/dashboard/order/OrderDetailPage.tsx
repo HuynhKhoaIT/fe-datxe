@@ -89,7 +89,7 @@ export default function OrderDetailPage({ dataSource }: any) {
       render: (record: any) => {
         return (
           <Tooltip label="Đánh giá" withArrow position="bottom">
-            <Button size="md" variant="outline" onClick={openModal}>
+            <Button size="lg" radius={0} variant="outline" onClick={openModal}>
               Đánh giá
             </Button>
           </Tooltip>

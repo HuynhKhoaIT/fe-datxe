@@ -148,7 +148,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
         return (
           <>
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               p={5}
               variant="transparent"
               onClick={() => {
@@ -160,7 +161,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
             </Button>
             <Link href={`/dashboard/cars/${record.id}`}>
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -171,7 +173,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
             </Link>
 
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               p={5}
               variant="transparent"
               color="red"
@@ -197,7 +200,7 @@ export default function CarListPage({ carsData, myAccount }: any) {
               <div className="form-group"></div>
             </div>
             <Link href={{ pathname: `/dashboard/cars/create` }}>
-              <Button size="md" className="theme-btn btn-add-car">
+              <Button size="lg" radius={0} className="theme-btn btn-add-car">
                 Thêm xe
               </Button>
             </Link>
@@ -222,7 +225,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
         <div>Bạn có muốn xoá không?</div>
         <Group justify="end" style={{ marginTop: 10 }}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="filled"
             key="cancel"
             onClick={closeDeleteCar}
@@ -232,7 +236,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
             Huỷ bỏ
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             style={{ marginLeft: "12px" }}
             onClick={() => {
               closeDeleteCar();
@@ -256,7 +261,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
         <div>Biển số: {dataCarDefault?.licensePlates}</div>
         <Group justify="end" style={{ marginTop: 10 }}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             color="red"
             onClick={() => setOpenModalCarDefault(false)}
@@ -264,7 +270,12 @@ export default function CarListPage({ carsData, myAccount }: any) {
           >
             Huỷ bỏ
           </Button>
-          <Button size="md" variant="filled" onClick={() => handleCarDefault()}>
+          <Button
+            size="lg"
+            radius={0}
+            variant="filled"
+            onClick={() => handleCarDefault()}
+          >
             Cập nhật
           </Button>
         </Group>

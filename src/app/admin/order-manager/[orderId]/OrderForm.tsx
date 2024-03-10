@@ -265,7 +265,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         </Table.Td>
         <Table.Td w={200}>
           <NumberInput
-            size="md"
+            size="lg"
+            radius={0}
             w={200}
             {...form.getInputProps(`detail.${index}.priceSale`)}
             min={0}
@@ -284,7 +285,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         </Table.Td>
         <Table.Td w={150}>
           <NumberInput
-            size="md"
+            size="lg"
+            radius={0}
             w={150}
             {...form.getInputProps(`detail.${index}.quantity`)}
             min={0}
@@ -302,7 +304,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         </Table.Td>
         <Table.Td w={150}>
           <NumberInput
-            size="md"
+            size="lg"
+            radius={0}
             w={150}
             {...form.getInputProps(`detail.${index}.subTotal`)}
             min={0}
@@ -316,7 +319,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           <>
             <Tooltip label="Xoá" withArrow position="bottom">
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 p={5}
                 variant="transparent"
                 color="red"
@@ -356,7 +360,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               <Grid gutter={12}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("customer.fullName")}
                     label="Tên khách hàng"
                     type="text"
@@ -365,7 +370,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("customer.phoneNumber")}
                     label="Số điện thoại"
                     type="text"
@@ -374,7 +380,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={12}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("customer.address")}
                     label="Địa chỉ"
                     type="text"
@@ -395,7 +402,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               <Grid gutter={12}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("numberPlates")}
                     label="Biển số xe"
                     type="text"
@@ -404,7 +412,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("carBrandId")}
                     label="Hãng xe"
                     type="text"
@@ -418,7 +427,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("carNameId")}
                     label="Dòng xe"
                     type="text"
@@ -432,7 +442,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("carYearId")}
                     label="Năm sản xuất"
                     data={yearCarOptions}
@@ -462,7 +473,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   }}
                 >
                   <Button
-                    size="md"
+                    size="lg"
+                    radius={0}
                     onClick={(e) => {
                       openModal();
                     }}
@@ -495,7 +507,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           <Grid gutter={12} mt={24}>
             <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
               <NumberInput
-                size="md"
+                size="lg"
+                radius={0}
                 label="Tổng đơn hàng"
                 placeholder="Tổng đơn hàng"
                 suffix="đ"
@@ -506,7 +519,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
               <Select
-                size="md"
+                size="lg"
+                radius={0}
                 label="Tình trạng đơn hàng"
                 placeholder="Tình trạng đơn hàng"
                 {...form.getInputProps("step")}
@@ -526,7 +540,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         </div>
         <Group justify="end" mt={20}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             key="cancel"
             color="red"
@@ -536,7 +551,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             Huỷ bỏ
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             loading={loadingButton}
             style={{ marginLeft: "12px" }}
             key="submit"

@@ -2,6 +2,7 @@
 import { Checkbox, Table } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import PaginationBase from "../form/PaginationBase";
+import styles from "./index.module.scss";
 export default function TableBasic({
   data = [],
   columns,
@@ -16,7 +17,14 @@ export default function TableBasic({
 }: any) {
   return (
     <div style={{ overflowX: "auto" }}>
-      <Table>
+      <Table
+        classNames={{
+          table: styles.rootTable,
+          tr: styles.trTable,
+          td: styles.td,
+          th: styles.th,
+        }}
+      >
         <Table.Thead>
           <Table.Tr>
             {selectRow && <Table.Th />}

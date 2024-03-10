@@ -203,7 +203,8 @@ export default function ProductsManaga() {
             >
               <Tooltip label="Cập nhật" withArrow position="bottom">
                 <Button
-                  size="md"
+                  size="lg"
+                  radius={0}
                   style={{ margin: "0 5px" }}
                   variant="transparent"
                   color="gray"
@@ -217,7 +218,8 @@ export default function ProductsManaga() {
 
             <Tooltip label="Xoá" withArrow position="bottom">
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 p={5}
                 variant="transparent"
                 color="red"
@@ -278,7 +280,7 @@ export default function ProductsManaga() {
                 pathname: `/admin/products/create`,
               }}
             >
-              <Button size="md" leftSection={<IconPlus size={18} />}>
+              <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
                 Thêm mới
               </Button>
             </Link>

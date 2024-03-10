@@ -42,7 +42,8 @@ const Filter = ({ kindProduct }: any) => {
     <Container>
       <Group py={20} justify="space-between">
         <Button
-          size="md"
+          size="lg"
+          radius={0}
           radius={"lg"}
           color="#2D3C52"
           h={34}
@@ -85,7 +86,8 @@ const Filter = ({ kindProduct }: any) => {
             />
             <Flex gap={10} mt={32}>
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 w={"50%"}
                 type="submit"
                 color={"var(--primary-color)"}
@@ -93,7 +95,8 @@ const Filter = ({ kindProduct }: any) => {
                 Lọc
               </Button>
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 w={"50%"}
                 variant="outline"
                 color="gray"

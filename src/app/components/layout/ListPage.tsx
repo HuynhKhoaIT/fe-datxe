@@ -11,9 +11,10 @@ function ListPage({
   children,
   title,
   style,
+  padding = 30,
 }: any) {
   return (
-    <div className={styles.baseListPage} style={style}>
+    <div className={styles.baseListPage} style={{ padding: padding, ...style }}>
       <div className={styles.title}>{title}</div>
       <div className={styles.baseListPageList}>
         <div className={styles.searchForm}> {searchForm}</div>

@@ -48,7 +48,8 @@ export default function HeaderLanding() {
         </ul>
         <div className={styles.nav}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             color="var(--primary-color)"
             h={56}
@@ -56,7 +57,7 @@ export default function HeaderLanding() {
             Trở thành chuyên gia
           </Button>
           <Link href={"/dat-lich"}>
-            <Button size="md" color="#3450E7" h={56}>
+            <Button size="lg" radius={0} color="#3450E7" h={56}>
               Book Lịch
             </Button>
           </Link>

@@ -20,7 +20,8 @@ export default function InfoCustomer({ myAccount, dataDetail, form }: any) {
           <Grid gutter={16}>
             <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
               <TextInput
-                size="md"
+                size="lg"
+                radius={0}
                 {...form.getInputProps("fullName")}
                 label="Họ Tên"
                 placeholder="Họ Tên"
@@ -28,7 +29,8 @@ export default function InfoCustomer({ myAccount, dataDetail, form }: any) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
               <TextInput
-                size="md"
+                size="lg"
+                radius={0}
                 {...form.getInputProps("phoneNumber")}
                 label="Điện thoại"
                 placeholder="Điện thoại"
@@ -36,7 +38,8 @@ export default function InfoCustomer({ myAccount, dataDetail, form }: any) {
             </Grid.Col>
             <Grid.Col span={12}>
               <TextInput
-                size="md"
+                size="lg"
+                radius={0}
                 {...form.getInputProps("address")}
                 label="Địa chỉ"
                 type="text"

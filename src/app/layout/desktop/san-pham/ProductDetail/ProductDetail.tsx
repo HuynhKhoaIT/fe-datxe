@@ -145,7 +145,8 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
                 {ProductDetail?.salePrice?.toLocaleString()} đ
               </Typo>
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 mt={22}
                 color={"var(--primary-color)"}
                 leftSection={<img src={Book.src} />}
@@ -167,7 +168,8 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
         </div>
         <Group justify="end" style={{ marginTop: 10 }}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             key="cancel"
             onClick={handleCancel}
@@ -177,7 +179,8 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
             Huỷ bỏ
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             style={{ marginLeft: "12px" }}
             onClick={handleOk}
             variant="filled"

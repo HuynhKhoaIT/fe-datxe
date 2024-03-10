@@ -97,7 +97,8 @@ export default function LoginFormInput() {
 
         <form className="login-form-input" onSubmit={form.onSubmit(onSubmit)}>
           <TextInput
-            size="md"
+            size="lg"
+            radius={0}
             withAsterisk
             style={{ borderBottom: "1px solid #ddd" }}
             variant="unstyled"
@@ -105,7 +106,8 @@ export default function LoginFormInput() {
             {...form.getInputProps("phone")}
           />
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             className="login-btn"
             variant="filled"
             color="var(--theme-color)"
@@ -144,7 +146,7 @@ export default function LoginFormInput() {
                 ></path>
               </svg>
             </Button>
-            <Button size="md" variant="outline" color="gray">
+            <Button size="lg" radius={0} variant="outline" color="gray">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"

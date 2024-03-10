@@ -88,7 +88,8 @@ const MyFooter = () => (
               </ul>
             </div>
             <Input
-              size="md"
+              size="lg"
+              radius={0}
               placeholder="Nhập địa chỉ email"
               classNames={{
                 input: styles.input,
@@ -96,7 +97,8 @@ const MyFooter = () => (
               rightSectionWidth={180}
               rightSection={
                 <Button
-                  size="md"
+                  size="lg"
+                  radius={0}
                   mr={8}
                   color={"var(--yellow-btn)"}
                   rightSection={<img src={Send.src} />}

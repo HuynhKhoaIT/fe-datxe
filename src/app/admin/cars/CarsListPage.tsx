@@ -125,7 +125,8 @@ export default function CarsListPage({
               }}
             >
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -137,7 +138,8 @@ export default function CarsListPage({
             </Link>
 
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               p={5}
               variant="transparent"
               color="red"
@@ -156,8 +158,8 @@ export default function CarsListPage({
 
   const searchData = [
     {
-      name: "s",
-      placeholder: "Tên danh mục",
+      name: "place",
+      placeholder: "Biển số",
       type: "input",
     },
     {
@@ -168,8 +170,11 @@ export default function CarsListPage({
     },
   ];
   const initialValuesSearch = {
-    s: "",
+    place: "",
     status: null,
+    brandId: null,
+    nameId: null,
+    yearId: null,
   };
   return (
     <Fragment>
@@ -189,6 +194,7 @@ export default function CarsListPage({
               <SearchForm
                 searchData={searchData}
                 initialValues={initialValuesSearch}
+                brandFilter={true}
               />
             }
             actionBar={
@@ -198,7 +204,11 @@ export default function CarsListPage({
                     pathname: `/admin/cars/create`,
                   }}
                 >
-                  <Button size="md" leftSection={<IconPlus size={18} />}>
+                  <Button
+                    size="lg"
+                    radius={0}
+                    leftSection={<IconPlus size={18} />}
+                  >
                     Thêm mới
                   </Button>
                 </Link>
@@ -223,6 +233,7 @@ export default function CarsListPage({
               <SearchForm
                 searchData={searchData}
                 initialValues={initialValuesSearch}
+                brandFilter={true}
               />
             }
             actionBar={
@@ -232,7 +243,11 @@ export default function CarsListPage({
                     pathname: `/admin/cars/create`,
                   }}
                 >
-                  <Button size="md" leftSection={<IconPlus size={18} />}>
+                  <Button
+                    size="lg"
+                    radius={0}
+                    leftSection={<IconPlus size={18} />}
+                  >
                     Thêm mới
                   </Button>
                 </Link>

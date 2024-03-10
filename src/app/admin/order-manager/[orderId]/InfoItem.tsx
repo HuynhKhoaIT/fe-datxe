@@ -76,7 +76,8 @@ export default function InfoItem({
     <Flex key={index} gap={12} w={"100%"} align={"end"} justify="space-between">
       <Flex gap={12} w={"90%"}>
         <Select
-          size="md"
+          size="lg"
+          radius={0}
           w={"33%"}
           label="Hãng xe"
           placeholder="Hãng xe"
@@ -88,7 +89,8 @@ export default function InfoItem({
           }}
         />
         <Select
-          size="md"
+          size="lg"
+          radius={0}
           w={"33%"}
           label="Dòng xe"
           placeholder="Dòng xe"
@@ -100,7 +102,8 @@ export default function InfoItem({
           }}
         />
         <MultiSelect
-          size="md"
+          size="lg"
+          radius={0}
           w={"33%"}
           label="Năm sản xuất"
           placeholder="Năm sản xuất"
@@ -112,7 +115,8 @@ export default function InfoItem({
         />
       </Flex>
       <Button
-        size="md"
+        size="lg"
+        radius={0}
         onClick={() => removeCar(index)}
         variant="outline"
         color="red"

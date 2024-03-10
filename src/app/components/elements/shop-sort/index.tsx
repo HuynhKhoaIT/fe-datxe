@@ -13,7 +13,8 @@ export function Sort({ lengthData }: { lengthData: number }) {
         Hiển thị {lengthData} sản phẩm
       </Typo>
       <Select
-        size="md"
+        size="lg"
+        radius={0}
         placeholder="Sắp xếp theo mặc định"
         data={[
           { value: "0", label: "Sắp xếp theo mặc định" },

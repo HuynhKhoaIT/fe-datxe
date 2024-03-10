@@ -182,7 +182,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
               <Grid gutter={10} mt={24}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("fullName")}
                     label="Họ và tên"
@@ -192,7 +193,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("phoneNumber")}
                     label="Số điện thoại"
@@ -211,7 +213,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 6, sm: 4, md: 2, lg: 2 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("sex")}
                     label="Giới tính"
                     checkIconPosition="right"
@@ -285,7 +288,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("address")}
                     label="Địa chỉ"
@@ -295,7 +299,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("status")}
                     label="Trạng thái"
                     checkIconPosition="right"
@@ -321,7 +326,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
 
         <Group justify="end" style={{ marginTop: 60 }}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             key="cancel"
             color="red"
@@ -331,7 +337,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
             Huỷ
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             loading={loading}
             style={{ marginLeft: "12px" }}
             key="submit"

@@ -228,7 +228,8 @@ export default function ProductForm({
               <Grid gutter={10}>
                 <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("name")}
                     label="Tên sản phẩm"
@@ -238,7 +239,8 @@ export default function ProductForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 4, md: 4, lg: 4 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("isProduct")}
                     label="Loại"
                     checkIconPosition="right"
@@ -260,7 +262,8 @@ export default function ProductForm({
                 </Grid.Col> */}
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("price")}
                     label="Giá bán"
                     min={0}
@@ -270,7 +273,8 @@ export default function ProductForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("salePrice")}
                     min={0}
                     label="Giá sale"
@@ -280,7 +284,8 @@ export default function ProductForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <MultiSelect
-                    size="md"
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("categories")}
                     label="Danh mục"
@@ -291,7 +296,8 @@ export default function ProductForm({
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("quantity")}
                     label="Số lượng"
                     min={0}
@@ -359,7 +365,8 @@ export default function ProductForm({
               <Grid>
                 <Grid.Col span={12}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("status")}
                     label="Trạng thái"
                     checkIconPosition="right"
@@ -403,7 +410,8 @@ export default function ProductForm({
 
         <Group justify="end" mt={20}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             key="cancel"
             color="red"
@@ -413,7 +421,8 @@ export default function ProductForm({
             Huỷ bỏ
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             loading={loading}
             style={{ marginLeft: "12px" }}
             key="submit"

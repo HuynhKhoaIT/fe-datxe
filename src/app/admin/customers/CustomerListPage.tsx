@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "./index.module.scss";
 import { Badge, Button, Flex, Image, Tabs } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
@@ -12,6 +11,8 @@ import { sexOptions, statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import dayjs from "dayjs";
 import ListPage from "@/app/components/layout/ListPage";
+import styles from "./index.module.scss";
+import Typo from "@/app/components/elements/Typo";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -19,9 +20,9 @@ const DynamicModalDeleteProduct = dynamic(
   }
 );
 
-const DynamicModalCustomers = dynamic(() => import("./ModalCustomersDLBD"), {
-  ssr: false,
-});
+// const DynamicModalCustomers = dynamic(() => import("./ModalCustomersDLBD"), {
+//   ssr: false,
+// });
 export default function CustomerListPage({
   dataSource,
   activeTab,
@@ -139,7 +140,8 @@ export default function CustomerListPage({
               }}
             >
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -151,7 +153,8 @@ export default function CustomerListPage({
             </Link>
 
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               p={5}
               variant="transparent"
               color="red"
@@ -171,105 +174,127 @@ export default function CustomerListPage({
   const searchData = [
     {
       name: "s",
-      placeholder: "Tên nhà cung cấp",
+      placeholder: "Tên",
       type: "input",
+    },
+    {
+      name: "phone",
+      placeholder: "Phone",
+      type: "input",
+    },
+    {
+      name: "group",
+      placeholder: "Nhóm khách hàng",
+      type: "select",
     },
   ];
   const initialValuesSearch = {
     s: "",
+    phone: "",
+    group: "",
   };
 
   return (
     <div>
-      <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
-        <Tabs.List>
-          <Tabs.Tab value="first">Khách hàng trên sàn</Tabs.Tab>
-          <Tabs.Tab value="second">Khách hàng trên phần mềm</Tabs.Tab>
-        </Tabs.List>
+      <div style={{ background: "#fff", marginBottom: 30 }}>
+        <Typo
+          size="small"
+          type="bold"
+          style={{ color: "var(--primary-orange)", padding: "8px 20px" }}
+        >
+          Tìm kiếm
+        </Typo>
+        <div style={{ padding: 30 }}>
+          <SearchForm
+            searchData={searchData}
+            initialValues={initialValuesSearch}
+          />
+        </div>
+      </div>
+      <div style={{ background: "#fff", position: "relative" }}>
+        <div className={styles.title}>
+          <Typo
+            size="small"
+            type="bold"
+            style={{ color: "var(--primary-orange)", padding: "8px 20px" }}
+          >
+            Khách hàng
+          </Typo>
+        </div>
+        <div style={{ paddingTop: 30 }}>
+          <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
+            <Tabs.List classNames={{ list: styles.list }}>
+              <Tabs.Tab value="first">Khách hàng trên sàn</Tabs.Tab>
+              <Tabs.Tab value="second">Khách hàng trên phần mềm</Tabs.Tab>
+            </Tabs.List>
 
-        <Tabs.Panel value="first">
-          <ListPage
-            searchForm={
-              <SearchForm
-                searchData={searchData}
-                initialValues={initialValuesSearch}
+            <Tabs.Panel value="first">
+              <ListPage
+                actionBar={
+                  <Flex justify={"end"} align={"center"} gap={20}>
+                    <Link
+                      href={{
+                        pathname: `/admin/customers/create`,
+                      }}
+                    >
+                      <Button
+                        size="lg"
+                        radius={0}
+                        leftSection={<IconPlus size={18} />}
+                      >
+                        Thêm mới
+                      </Button>
+                    </Link>
+                  </Flex>
+                }
+                style={{ height: "100%" }}
+                baseTable={
+                  <TableBasic
+                    data={dataSource}
+                    columns={columns}
+                    loading={true}
+                    // totalPage={marketing?.totalPage}
+                    // setPage={setPage}
+                    // activePage={page}
+                  />
+                }
               />
-            }
-            actionBar={
-              <Flex justify={"end"} align={"center"} gap={20}>
-                <Button
-                  size="md"
-                  onClick={openModalCustomers}
-                  leftSection={<IconPlus size={18} />}
-                >
-                  Đồng bộ
-                </Button>
-                <Link
-                  href={{
-                    pathname: `/admin/customers/create`,
-                  }}
-                >
-                  <Button size="md" leftSection={<IconPlus size={18} />}>
-                    Thêm mới
-                  </Button>
-                </Link>
-              </Flex>
-            }
-            style={{ height: "100%" }}
-            baseTable={
-              <TableBasic
-                data={dataSource}
-                columns={columns}
-                loading={true}
-                // totalPage={marketing?.totalPage}
-                // setPage={setPage}
-                // activePage={page}
+            </Tabs.Panel>
+            <Tabs.Panel value="second">
+              <ListPage
+                actionBar={
+                  <Flex justify={"end"} align={"center"} gap={20}>
+                    <Link
+                      href={{
+                        pathname: `/admin/customers/create`,
+                      }}
+                    >
+                      <Button
+                        size="lg"
+                        radius={0}
+                        leftSection={<IconPlus size={18} />}
+                      >
+                        Thêm mới
+                      </Button>
+                    </Link>
+                  </Flex>
+                }
+                style={{ height: "100%" }}
+                baseTable={
+                  <TableBasic
+                    data={dataSource}
+                    columns={columns}
+                    loading={true}
+                    // totalPage={marketing?.totalPage}
+                    // setPage={setPage}
+                    // activePage={page}
+                  />
+                }
               />
-            }
-          />
-        </Tabs.Panel>
-        <Tabs.Panel value="second">
-          <ListPage
-            searchForm={
-              <SearchForm
-                searchData={searchData}
-                initialValues={initialValuesSearch}
-              />
-            }
-            actionBar={
-              <Flex justify={"end"} align={"center"} gap={20}>
-                <Button
-                  size="md"
-                  onClick={openModalCustomers}
-                  leftSection={<IconPlus size={18} />}
-                >
-                  Đồng bộ
-                </Button>
-                <Link
-                  href={{
-                    pathname: `/admin/customers/create`,
-                  }}
-                >
-                  <Button size="md" leftSection={<IconPlus size={18} />}>
-                    Thêm mới
-                  </Button>
-                </Link>
-              </Flex>
-            }
-            style={{ height: "100%" }}
-            baseTable={
-              <TableBasic
-                data={dataSource}
-                columns={columns}
-                loading={true}
-                // totalPage={marketing?.totalPage}
-                // setPage={setPage}
-                // activePage={page}
-              />
-            }
-          />
-        </Tabs.Panel>
-      </Tabs>
+            </Tabs.Panel>
+          </Tabs>
+        </div>
+      </div>
 
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
@@ -277,12 +302,12 @@ export default function CustomerListPage({
         handleDeleteProduct={handleDeleteCustomer}
         deleteRow={deleteRow}
       />
-      {openedModalCustomers && (
+      {/* {openedModalCustomers && (
         <DynamicModalCustomers
           openedModalCustomers={openedModalCustomers}
           closeModalCustomers={closeModalCustomers}
         />
-      )}
+      )} */}
     </div>
   );
 }

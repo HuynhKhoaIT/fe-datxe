@@ -17,7 +17,8 @@ export default function ModalDeleteProduct({
       <div>Bạn có muốn xoá không?</div>
       <Group justify="end" style={{ marginTop: 10 }}>
         <Button
-          size="md"
+          size="lg"
+          radius={0}
           variant="filled"
           key="cancel"
           onClick={closeDeleteProduct}
@@ -27,7 +28,8 @@ export default function ModalDeleteProduct({
           Huỷ bỏ
         </Button>
         <Button
-          size="md"
+          size="lg"
+          radius={0}
           style={{ marginLeft: "12px" }}
           onClick={() => {
             closeDeleteProduct();
