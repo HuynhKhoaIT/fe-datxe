@@ -28,6 +28,7 @@ export default function CustomerListPage({
   activeTab,
   setActiveTab,
 }: any) {
+  console.log(dataSource);
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCustomer = async (id: any) => {
     await fetch(`/api/customer/${id}`, {
@@ -250,7 +251,7 @@ export default function CustomerListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource}
+                    data={dataSource?.data}
                     columns={columns}
                     loading={true}
                     // totalPage={marketing?.totalPage}
@@ -282,7 +283,7 @@ export default function CustomerListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource}
+                    data={dataSource?.data}
                     columns={columns}
                     loading={true}
                     // totalPage={marketing?.totalPage}

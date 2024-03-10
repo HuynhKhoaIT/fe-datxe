@@ -13,14 +13,14 @@ export default function Suppliers() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/customer`);
-        setCustomers(response.data);
+        const response: any = await axios.get(`/api/customer`);
+        setCustomers(response);
       } catch (error) {}
     };
     const fetchDataDLBD = async () => {
       try {
         const response = await axios.get(`/api/customer/dlbd`);
-        setCustomers(response.data.data);
+        setCustomers(response.data);
       } catch (error) {
         console.error(error);
       }
