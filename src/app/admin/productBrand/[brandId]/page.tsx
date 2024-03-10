@@ -25,9 +25,5 @@ export default function UpdateProductBrand({
 
     fetchData();
   }, [params?.brandId]);
-  return (
-    <Box maw={"100%"} mx="auto">
-      <ProductBrandForm isEditing={true} dataDetail={brand} />
-    </Box>
-  );
+  return <ProductBrandForm isEditing={true} dataDetail={brand} />;
 }
