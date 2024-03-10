@@ -9,25 +9,30 @@ import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
-        let garageId = 0;
         if (session) {
-            garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            const { searchParams } = new URL(request.url);
+            let customerGroup: any = 0;
+            if (searchParams.get('customerGroup')) {
+                customerGroup = Number(searchParams.get('customerGroup'));
+            }
+            let page = 1;
+            if (searchParams.get('page')) {
+                page = Number(searchParams.get('page'));
+            }
+            const requestData = {
+                s: searchParams.get('s'),
+                limit: 10,
+                take: 10,
+                page: page,
+                customerGroup: customerGroup,
+                garageId: garageId,
+                status: 'PUBLIC',
+            };
+            const customers = await getCustomers(requestData);
+            return NextResponse.json(customers);
         }
-        const { searchParams } = new URL(request.url);
-        let customerGroup: any = 0;
-        if (searchParams.get('customerGroup')) {
-            customerGroup = Number(searchParams.get('customerGroup'));
-        }
-        const requestData = {
-            s: searchParams.get('s'),
-            limit: 10,
-            take: 10,
-            customerGroup: customerGroup,
-            garageId: garageId,
-            status: 'PUBLIC',
-        };
-        const customers = await getCustomers(requestData);
-        return NextResponse.json(customers);
+        throw new Error('Chua dang nhap');
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
