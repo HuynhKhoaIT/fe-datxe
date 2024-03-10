@@ -40,7 +40,6 @@ export default function SearchFormName() {
                 />
               </ActionIcon>
             }
-            size="xl"
           />
         </Grid.Col>
       </Grid>

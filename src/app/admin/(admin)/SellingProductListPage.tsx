@@ -65,7 +65,9 @@ export default function SellingProductListPage() {
 
   const columns = [
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
+      ),
       name: "image",
       dataIndex: ["images"],
       width: "90px",
@@ -88,7 +90,11 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tên sản phẩm
+        </span>
+      ),
       name: "name",
       dataIndex: ["name"],
       render: (dataRow: any) => {
@@ -96,13 +102,17 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Số lượng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Số lượng</span>
+      ),
       name: "quantity",
       dataIndex: ["quantity"],
       textAlign: "center",
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Giá bán</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Giá bán</span>
+      ),
       name: "price",
       dataIndex: ["price"],
       render: (dataRow: number) => {
@@ -110,7 +120,9 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Giá sale</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Giá sale</span>
+      ),
       name: "priceSale",
       dataIndex: ["salePrice"],
       render: (dataRow: number) => {
@@ -118,7 +130,9 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Loại</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Loại</span>
+      ),
       name: "kind",
       dataIndex: ["isProduct"],
       width: "100px",
@@ -136,7 +150,11 @@ export default function SellingProductListPage() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Trạng thái</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Trạng thái
+        </span>
+      ),
       name: "status",
       dataIndex: ["status"],
       width: "100px",

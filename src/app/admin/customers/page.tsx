@@ -1,22 +1,49 @@
+"use client";
 import CustomerListPage from "./CustomerListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { getCustomers } from "@/app/libs/prisma/customer";
-import { apiUrl } from "@/constants";
+import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
 
-export default async function Suppliers() {
-  let customers = await getCustomers({});
+export default function Suppliers() {
+  const [activeTab, setActiveTab] = useState<string | null>("first");
+  const [customers, setCustomers] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/customer`);
+        setCustomers(response.data);
+      } catch (error) {}
+    };
+    const fetchDataDLBD = async () => {
+      try {
+        const response = await axios.get(`/api/customer/dlbd`);
+        setCustomers(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (activeTab === "first") {
+      fetchData();
+    } else if (activeTab === "second") {
+      fetchDataDLBD();
+    }
+  }, [activeTab]);
   const breadcrumbs = [
     { title: "Tổng quan", href: "/admin" },
     { title: "Quản lý khách hàng" },
   ];
+
   return (
-    <div className={styles.wrapper}>
+    <Fragment>
       <Breadcrumb breadcrumbs={breadcrumbs} />
-      <CustomerListPage dataSource={customers} />
-    </div>
+      <CustomerListPage
+        dataSource={customers}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
+    </Fragment>
   );
 }

@@ -17,12 +17,18 @@ export default function OrderDetailPage({ dataSource }: any) {
   );
   const columns = [
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tên sản phẩm</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tên sản phẩm
+        </span>
+      ),
       name: "product",
       dataIndex: ["product", "name"],
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Giá</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Giá</span>
+      ),
       name: "priceSale",
       dataIndex: ["priceSale"],
       render: (dataRow: any) => {
@@ -30,13 +36,19 @@ export default function OrderDetailPage({ dataSource }: any) {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Số lượng</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Số lượng</span>
+      ),
       name: "quantity",
       dataIndex: ["quantity"],
       textAlign: "center",
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tổng tiền</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tổng tiền
+        </span>
+      ),
       name: "subTotal",
       dataIndex: [],
       render: (dataRow: any) => {
@@ -49,7 +61,7 @@ export default function OrderDetailPage({ dataSource }: any) {
       },
     },
     // {
-    //   label: <span style={{ whiteSpace: "nowrap" }}>Tình trạng</span>,
+    //   label: <span style={{ whiteSpace: "nowrap",fontSize:"16px" }}>Tình trạng</span>,
     //   name: "kind",
     //   dataIndex: ["step"],
     //   width: "100px",
@@ -67,7 +79,11 @@ export default function OrderDetailPage({ dataSource }: any) {
     //   },
     // },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Hành động
+        </span>
+      ),
       dataIndex: [],
       width: "100px",
       render: (record: any) => {

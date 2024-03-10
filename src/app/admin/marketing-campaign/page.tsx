@@ -69,7 +69,11 @@ export default function Discounts() {
   ] = useDisclosure(false);
   const columns = [
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tên chương trình</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Tên chương trình
+        </span>
+      ),
       name: "title",
       dataIndex: ["title"],
       render: (dataRow: any) => {
@@ -77,7 +81,9 @@ export default function Discounts() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Sản phẩm</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Sản phẩm</span>
+      ),
       name: "detail",
       dataIndex: ["detail"],
       textAlign: "center",
@@ -86,7 +92,11 @@ export default function Discounts() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Thời gian bắt đầu</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Thời gian bắt đầu
+        </span>
+      ),
       name: "dateTimeStart",
       dataIndex: ["dateTimeStart"],
       width: "200px",
@@ -99,7 +109,11 @@ export default function Discounts() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Thời gian kết thúc</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Thời gian kết thúc
+        </span>
+      ),
       name: "dateTimeEnd",
       dataIndex: ["dateTimeEnd"],
       width: "200px",
@@ -112,7 +126,11 @@ export default function Discounts() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Trạng thái</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Trạng thái
+        </span>
+      ),
       name: "status",
       dataIndex: ["status"],
       width: "100px",
@@ -130,7 +148,11 @@ export default function Discounts() {
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Hành động
+        </span>
+      ),
       dataIndex: [],
       width: "100px",
       render: (record: any) => {
