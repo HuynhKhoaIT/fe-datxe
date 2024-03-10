@@ -72,7 +72,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
               }}
             >
               <Button
-                size="xs"
+                size="md"
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -84,7 +84,7 @@ export default function ProductBrandListPage({ dataSource }: any) {
             </Link>
 
             <Button
-              size="xs"
+              size="md"
               p={5}
               variant="transparent"
               color="red"
@@ -127,7 +127,9 @@ export default function ProductBrandListPage({ dataSource }: any) {
             pathname: `/admin/productBrand/create`,
           }}
         >
-          <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+          <Button size="md" leftSection={<IconPlus size={18} />}>
+            Thêm mới
+          </Button>
         </Link>
       </Flex>
       <div className="row">

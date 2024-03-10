@@ -11,6 +11,7 @@ import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
 import { statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
+import ListPage from "@/app/components/layout/ListPage";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -99,7 +100,7 @@ export default function CategoryListPage({ dataSource, profile }: any) {
               }}
             >
               <Button
-                size="xs"
+                size="md"
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -109,9 +110,9 @@ export default function CategoryListPage({ dataSource, profile }: any) {
                 <IconPencil size={16} />
               </Button>
             </Link>
-              
+
             <Button
-              size="xs"
+              size="md"
               p={5}
               variant="transparent"
               color="red"
@@ -146,24 +147,48 @@ export default function CategoryListPage({ dataSource, profile }: any) {
     status: null,
   };
   return (
-    <div className={styles.content}>
-      <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
-      <Flex justify={"end"} align={"center"} gap={20}>
-        <Button
-          onClick={openModalCategories}
-          leftSection={<IconPlus size={14} />}
-        >
-          Đồng bộ
-        </Button>
-        <Link
-          href={{
-            pathname: `/admin/categories/create`,
-          }}
-        >
-          <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
-        </Link>
-      </Flex>
-      <TableBasic data={dataSource} columns={columns} />
+    <div>
+      <ListPage
+        searchForm={
+          <SearchForm
+            searchData={searchData}
+            brandFilter={false}
+            initialValues={initialValuesSearch}
+          />
+        }
+        actionBar={
+          <Flex justify={"end"} align={"center"} gap={20}>
+            <Button
+              size="md"
+              onClick={openModalCategories}
+              leftSection={<IconPlus size={18} />}
+            >
+              Đồng bộ
+            </Button>
+            <Link
+              href={{
+                pathname: `/admin/categories/create`,
+              }}
+            >
+              <Button size="md" leftSection={<IconPlus size={18} />}>
+                Thêm mới
+              </Button>
+            </Link>
+          </Flex>
+        }
+        style={{ height: "100%" }}
+        baseTable={
+          <TableBasic
+            data={dataSource}
+            columns={columns}
+            loading={true}
+            // totalPage={marketing?.totalPage}
+            // setPage={setPage}
+            // activePage={page}
+          />
+        }
+      />
+
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}

@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import styles from "./index.module.scss";
+import React, { Fragment, useState } from "react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { Badge, Button, Flex, Image } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
@@ -11,6 +10,7 @@ import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
 import { statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
+import ListPage from "@/app/components/layout/ListPage";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -97,7 +97,7 @@ export default function CarsListPage({ dataSource }: any) {
               }}
             >
               <Button
-                size="xs"
+                size="md"
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -109,7 +109,7 @@ export default function CarsListPage({ dataSource }: any) {
             </Link>
 
             <Button
-              size="xs"
+              size="md"
               p={5}
               variant="transparent"
               color="red"
@@ -144,28 +144,45 @@ export default function CarsListPage({ dataSource }: any) {
     status: null,
   };
   return (
-    <div className={styles.content}>
-      <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
-      <Flex justify={"end"} align={"center"}>
-        <Link
-          href={{
-            pathname: `/admin/cars/create`,
-          }}
-        >
-          <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
-        </Link>
-      </Flex>
-      <div className="row">
-        <div className="col-12">
-          <TableBasic data={dataSource} columns={columns} />
-        </div>
-      </div>
+    <Fragment>
+      <ListPage
+        searchForm={
+          <SearchForm
+            searchData={searchData}
+            initialValues={initialValuesSearch}
+          />
+        }
+        actionBar={
+          <Flex justify={"end"} align={"center"}>
+            <Link
+              href={{
+                pathname: `/admin/cars/create`,
+              }}
+            >
+              <Button size="md" leftSection={<IconPlus size={18} />}>
+                Thêm mới
+              </Button>
+            </Link>
+          </Flex>
+        }
+        style={{ height: "100%" }}
+        baseTable={
+          <TableBasic
+            data={dataSource}
+            columns={columns}
+            loading={true}
+            // totalPage={marketing?.totalPage}
+            // setPage={setPage}
+            // activePage={page}
+          />
+        }
+      />
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}
         handleDeleteProduct={handleDeleteCategory}
         deleteRow={deleteRow}
       />
-    </div>
+    </Fragment>
   );
 }

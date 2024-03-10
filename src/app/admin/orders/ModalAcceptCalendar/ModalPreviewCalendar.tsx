@@ -180,6 +180,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
         <Grid gutter={10} mt="md">
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               label="Họ và tên"
               placeholder="Họ và tên"
               withAsterisk
@@ -188,6 +189,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
+              size="md"
               label="Số điện thoại"
               placeholder="Số điện thoại"
               withAsterisk
@@ -205,7 +207,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
                 input: styles.inputPlates,
               }}
               placeholder="Nhập biển số xe"
-              size="lg"
+              size="md"
               {...form.getInputProps("numberPlates")}
             ></TextInput>
           </Grid.Col>
@@ -214,6 +216,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
         <Grid gutter={10} mt="md">
           <Grid.Col span={4}>
             <Select
+              size="md"
               label="Hãng xe"
               {...form.getInputProps("carBrandId")}
               name="carBrandId"
@@ -230,6 +233,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           </Grid.Col>
           <Grid.Col span={4}>
             <Select
+              size="md"
               label="Dòng xe"
               data={modelOptions}
               placeholder="Dòng xe"
@@ -245,6 +249,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           </Grid.Col>
           <Grid.Col span={4}>
             <Select
+              size="md"
               label="Năm sản xuất"
               data={yearCarOptions}
               placeholder="Năm sản xuất"
@@ -258,6 +263,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
         <Grid gutter={10} mt="md">
           <Grid.Col span={6}>
             <Select
+              size="md"
               label="Danh mục đặt lịch"
               data={categoryOptions}
               placeholder="Danh mục đặt lịch"
@@ -278,6 +284,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           </Grid.Col>
           <Grid.Col span={6}>
             <Select
+              size="md"
               label="Cố vận dịch vụ"
               allowDeselect={false}
               data={advisorOptions}
@@ -289,6 +296,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           </Grid.Col>
           <Grid.Col span={6}>
             <Select
+              size="md"
               label="Chuyên gia"
               allowDeselect={false}
               data={garageOptions}
@@ -312,6 +320,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
         <Grid mt="md">
           <Grid.Col span={12}>
             <Select
+              size="md"
               label="Tình trạng"
               {...form.getInputProps("step")}
               placeholder="Tình trạng"
@@ -327,6 +336,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           className="footer-modal-schedule"
         >
           <Button
+            size="md"
             w={100}
             variant="outline"
             color="red"
@@ -335,6 +345,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
             Huỷ
           </Button>
           <Button
+            size="md"
             loading={loading}
             w={100}
             bg={"var(--theme-color)"}

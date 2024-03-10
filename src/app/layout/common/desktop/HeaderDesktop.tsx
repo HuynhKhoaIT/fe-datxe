@@ -64,6 +64,7 @@ export default function Header() {
                 </ActionIcon>
               </Link>
               <Button
+                size="md"
                 color="#EEF1F9"
                 leftSection={<img src={car.src} alt="Car Icon" />}
                 classNames={{ root: styles.btnAdd, inner: styles.innerAdd }}
@@ -72,6 +73,7 @@ export default function Header() {
               </Button>
               <Link href={"/dat-lich"}>
                 <Button
+                  size="md"
                   color="#3450E7"
                   classNames={{ root: styles.btnBook, inner: styles.innerBook }}
                 >

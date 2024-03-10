@@ -117,12 +117,12 @@ export function ModalOrderGuest({
             {...form.getInputProps("pin")}
           />
           <Button
+            size="md"
             loading={loading}
             className="login-btn"
             type="submit"
             variant="filled"
             color="var(--theme-color)"
-            size="md"
             radius="md"
             fullWidth
           >

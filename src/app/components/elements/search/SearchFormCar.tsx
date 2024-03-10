@@ -59,6 +59,7 @@ export default function SearchFormCar({ brandsOption }: any) {
       <Grid gutter={5}>
         <Grid.Col span={3.5}>
           <Select
+            size="md"
             {...form.getInputProps("brand_id")}
             checkIconPosition="right"
             placeholder="Hãng xe"
@@ -74,6 +75,7 @@ export default function SearchFormCar({ brandsOption }: any) {
         </Grid.Col>
         <Grid.Col span={3.5}>
           <Select
+            size="md"
             {...form.getInputProps("car_name_id")}
             checkIconPosition="right"
             placeholder="Dòng xe"
@@ -88,6 +90,7 @@ export default function SearchFormCar({ brandsOption }: any) {
         </Grid.Col>
         <Grid.Col span={3}>
           <Select
+            size="md"
             {...form.getInputProps("year_id")}
             checkIconPosition="right"
             placeholder="Năm sản xuất"
@@ -100,6 +103,7 @@ export default function SearchFormCar({ brandsOption }: any) {
         </Grid.Col>
         <Grid.Col span={2}>
           <Button
+            size="md"
             loading={opened}
             variant="filled"
             type="submit"

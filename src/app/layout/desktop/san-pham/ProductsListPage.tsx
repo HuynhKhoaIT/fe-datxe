@@ -62,7 +62,7 @@ export default function ProductsListPage({ categroies }: any) {
             ))}
           </Grid>
           {/* <Flex justify="center" mt={36}>
-            <Button color={"var(--theme-color)"}>Xem Thêm</Button>
+            <Button size = 'md' color={"var(--theme-color)"}>Xem Thêm</Button>
           </Flex> */}
         </Box>
       </Body.Content>

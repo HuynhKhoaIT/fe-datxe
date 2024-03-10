@@ -1,5 +1,4 @@
 import { Fragment, ReactNode, Suspense } from "react";
-import styles from "../index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { headers } from "next/headers";
@@ -20,15 +19,14 @@ export default function CreateLayout({ children }: IProps) {
   return (
     <Fragment>
       {isMobile ? (
-        <div className={styles.wrapper}>
+        <div>
           <Breadcrumb breadcrumbs={Breadcrumbs} />
-          <div className={styles.content}>{children}</div>
+          <div>{children}</div>
         </div>
       ) : (
-        <div className={styles.wrapper}>
+        <div>
           <Breadcrumb breadcrumbs={Breadcrumbs} />
-          <div className={styles.content}>{children}</div>
-          <FooterAdmin />
+          <div>{children}</div>
         </div>
       )}
     </Fragment>

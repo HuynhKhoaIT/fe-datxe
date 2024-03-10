@@ -56,8 +56,8 @@ const Reviews = () => {
           1-5 trên 300 đánh giá
         </Typo>
         <Select
+          size="md"
           w={130}
-          size="xs"
           placeholder="Lọc theo"
           data={["5 sao", "4 sao", "3 sao", "2 sao", "1 sao"]}
         />

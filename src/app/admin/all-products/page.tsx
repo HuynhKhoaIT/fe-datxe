@@ -1,9 +1,7 @@
 "use client";
 import { getProductByGar } from "@/utils/product";
-import React, { useEffect, useState } from "react";
-import styles from "./index.module.scss";
+import React, { Fragment, useEffect, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
@@ -93,7 +91,7 @@ export default function ProductsManaga() {
           <>
             <Tooltip label="Lên sàn" withArrow position="bottom">
               <Button
-                size="xs"
+                size="md"
                 p={5}
                 variant="transparent"
                 color="red"
@@ -123,7 +121,7 @@ export default function ProductsManaga() {
     s: "",
   };
   return (
-    <div className={styles.wrapper}>
+    <Fragment>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <ListPage
         searchForm={
@@ -145,6 +143,6 @@ export default function ProductsManaga() {
           />
         }
       />
-    </div>
+    </Fragment>
   );
 }

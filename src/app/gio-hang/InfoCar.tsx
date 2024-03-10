@@ -46,6 +46,7 @@ export default function InfoCar({
           <Grid gutter={16}>
             <Grid.Col span={12}>
               <Select
+                size="md"
                 {...form.getInputProps("numberPlates")}
                 label="Biển số"
                 checkIconPosition="right"
@@ -60,6 +61,7 @@ export default function InfoCar({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
               <TextInput
+                size="md"
                 label="Hãng Xe"
                 placeholder="Hãng Xe"
                 readOnly
@@ -68,6 +70,7 @@ export default function InfoCar({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
               <TextInput
+                size="md"
                 {...form.getInputProps("carNameId")}
                 label="Dòng xe"
                 placeholder="Dòng xe"
@@ -76,6 +79,7 @@ export default function InfoCar({
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
               <TextInput
+                size="md"
                 {...form.getInputProps("carYearId")}
                 label="Năm sản xuất"
                 placeholder="Năm sản xuất"

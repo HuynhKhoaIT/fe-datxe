@@ -82,7 +82,7 @@ export default function ModalCategoriesDLBD({
       render: (record: any) => {
         return (
           <Button
-            size="xs"
+            size="md"
             p={5}
             variant="transparent"
             color="red"

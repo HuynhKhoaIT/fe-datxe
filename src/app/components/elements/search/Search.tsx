@@ -37,6 +37,7 @@ function SearchForm() {
         <Grid.Col span={1.5} style={{ display: "flex", alignItems: "end" }}>
           <Link href="/dat-lich">
             <Button
+              size="md"
               // loading={loading}
               variant="filled"
               style={{

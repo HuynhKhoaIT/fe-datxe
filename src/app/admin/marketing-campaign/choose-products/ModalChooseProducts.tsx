@@ -219,6 +219,7 @@ export default function ModalChooseProducts({
       />
       <Group justify="end" style={{ marginTop: 10 }}>
         <Button
+          size="md"
           variant="outline"
           key="cancel"
           onClick={close}
@@ -228,6 +229,7 @@ export default function ModalChooseProducts({
           Huỷ bỏ
         </Button>
         <Button
+          size="md"
           style={{ marginLeft: "12px" }}
           onClick={() => {
             setSelectedProducts(selectedRows);

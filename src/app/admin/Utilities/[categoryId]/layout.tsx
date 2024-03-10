@@ -16,7 +16,6 @@ export default function CreateLayout({ children }: IProps) {
     <div className={styles.wrapper}>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <div className={styles.content}>{children}</div>
-      <FooterAdmin />
     </div>
   );
 }

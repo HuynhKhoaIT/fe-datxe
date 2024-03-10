@@ -87,6 +87,7 @@ export default function ModalCustomersDLBD({
         />
         <Group justify="end" style={{ marginTop: 10 }}>
           <Button
+            size="md"
             variant="filled"
             key="cancel"
             onClick={closeModalCustomers}
@@ -96,6 +97,7 @@ export default function ModalCustomersDLBD({
             Huỷ bỏ
           </Button>
           <Button
+            size="md"
             style={{ marginLeft: "12px" }}
             onClick={() => {
               closeModalCustomers();

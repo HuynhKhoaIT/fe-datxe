@@ -16,9 +16,11 @@ export default function DateTimeField({
   locale = "vi",
   required = false,
   defaultValue,
+  size = "md",
 }: any) {
   return (
     <DateTimePicker
+      size={size}
       defaultValue={defaultValue}
       value={value}
       onChange={onChange}

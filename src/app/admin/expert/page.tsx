@@ -7,9 +7,8 @@ import { kindProductOptions, statusOptions } from "@/constants/masterData";
 import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import styles from "./index.module.scss";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -143,7 +142,7 @@ const Expert = () => {
             >
               <Tooltip label="Cập nhật" withArrow position="bottom">
                 <Button
-                  size="xs"
+                  size="md"
                   style={{ margin: "0 5px" }}
                   variant="transparent"
                   color="gray"
@@ -157,7 +156,7 @@ const Expert = () => {
 
             <Tooltip label="Xoá" withArrow position="bottom">
               <Button
-                size="xs"
+                size="md"
                 p={5}
                 variant="transparent"
                 color="red"
@@ -195,7 +194,7 @@ const Expert = () => {
     s: "",
   };
   return (
-    <div className={styles.wrapper}>
+    <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <ListPage
         searchForm={
@@ -212,7 +211,9 @@ const Expert = () => {
                 pathname: `/admin/expert/create`,
               }}
             >
-              <Button leftSection={<IconPlus size={14} />}>Thêm mới</Button>
+              <Button size="md" leftSection={<IconPlus size={18} />}>
+                Thêm mới
+              </Button>
             </Link>
           </Flex>
         }
@@ -234,7 +235,7 @@ const Expert = () => {
         handleDeleteProduct={handleDeleteProduct}
         deleteRow={deleteRow}
       />
-    </div>
+    </Fragment>
   );
 };
 export default Expert;

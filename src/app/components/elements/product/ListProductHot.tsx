@@ -43,7 +43,7 @@ export default function Product({
         ))}
       </Grid>
       {/* <Flex justify="center" mt={36}>
-        <Button onClick={handleButtonClick} color={"var(--theme-color)"}>
+        <Button size = 'md' onClick={handleButtonClick} color={"var(--theme-color)"}>
           Xem Thêm
         </Button>
       </Flex> */}

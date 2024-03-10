@@ -2,12 +2,11 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CategoryListPage from "./CategoryListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { getCategories } from "@/app/libs/prisma/category";
 import { apiUrl } from "@/constants";
 import { getServerSession } from "next-auth";
+import { Fragment } from "react";
 
 async function getData() {
   const session = await getServerSession(authOptions);
@@ -34,12 +33,12 @@ export default async function Categories() {
     { title: "Danh mục sản phẩm" },
   ];
   return (
-    <div className={styles.wrapper}>
+    <Fragment>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <CategoryListPage
         dataSource={categories?.categories}
         profile={categories?.requestData}
       />
-    </div>
+    </Fragment>
   );
 }
