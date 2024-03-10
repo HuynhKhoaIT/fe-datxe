@@ -55,6 +55,22 @@ export async function getGarages(requestData: any) {
   }
 }
 
+export async function getGarageIdByDLBDID(dlbdId:number) {
+  const rs = await prisma.garage.findFirst({
+    where:{
+        routeId: dlbdId,
+        status: {
+          not: 'DELETE'
+        }
+    }
+  });
+  if(rs){
+    return rs.id;
+  }
+  return 0;
+}
+
+
 export async function showGarage(id:number) {
     return await prisma.garage.findFirst({
         where:{

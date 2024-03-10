@@ -29,26 +29,74 @@ export async function createCar(json: any) {
     }
 }
 
-export async function getCars(request:any) {
-    const cars = await prisma.car.findMany({
-        orderBy:{
-            id: 'desc'
-        },
-        where: {
-            AND: [
-                {
-                    status: {
-                        not: 'DELETE',
+export async function getCars(requestData:any) {
+    let currentPage = 1;
+    let take = 10;
+    let limit = 10;
+    if(requestData.limit){
+      take = parseInt(requestData.limit)
+    }
+    const skip = take * (currentPage - 1);
+    let titleFilter = '';
+    if(requestData.s){
+        titleFilter = requestData.s;
+    }
+    let garageId = {};    
+    let status = {
+        contains: 'PUBLIC',
+    };
+    if(requestData.status == 'NOT_DELETE'){
+        let status = {
+            not: 'DELETE',
+        };
+    }else if(requestData.status){
+        let status = {
+            contains: requestData.status,
+        };
+    }
+    const [cars, total] = await prisma.$transaction([
+        prisma.car.findMany({
+            orderBy:{
+                id: 'desc'
+            },
+            where: {
+                AND: [
+                    {
+                        numberPlates: {
+                            contains: titleFilter
+                        },
+                        garageId: garageId,
                     },
-                },
-            ],
-        },
-        include: {
-            customer: true,
-            carStyle: true,
-        },
-    });
-    return cars;
+                ],
+            },
+            include: {
+                customer: true,
+                carStyle: true,
+            },
+        }),
+        prisma.car.count({
+            where: {
+                AND: [
+                    {
+                        numberPlates: {
+                            contains: titleFilter
+                        },
+                        garageId: garageId,
+                    },
+                ],
+            },
+        })
+    ])
+    const totalPage = Math.ceil(total / limit);
+
+    return {
+      data: cars,
+      total: total,
+      currentPage: currentPage,
+      limit: limit,
+      totalPage: totalPage,
+      status: 200,
+    };
 }
 
 

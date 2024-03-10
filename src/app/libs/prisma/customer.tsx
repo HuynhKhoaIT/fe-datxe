@@ -27,53 +27,91 @@ export async function createCustomer(json: any) {
   }
 }
 
-export async function getCustomers(requestData: any) {
-  console.log("customers");
-
-  let currentPage = 1;
-  let take = 10;
-  let limit = 10;
-  if (requestData.limit) {
-    take = parseInt(requestData.limit);
-  }
-  const skip = take * (currentPage - 1);
-  let titleFilter = "";
-  let garageId = {};
-
-  let status = {
-    contains: "PUBLIC",
-  };
-  if (requestData.status == "NOT_DELETE") {
+export async function getCustomers(requestData:any) {
+    let customerGroup = {};
+    let currentPage = 1;
+    let take = 10;
+    let limit = 10;
+    if(requestData.limit){
+      take = parseInt(requestData.limit)
+    }
+    const skip = take * (currentPage - 1);
+    let titleFilter = '';
+    if(requestData.s){
+        titleFilter = requestData.s;
+    }
+    let garageId = {};
+    
     let status = {
       not: "DELETE",
     };
-  } else if (requestData.status) {
-    let status = {
-      contains: requestData.status,
+    if(requestData.status == 'NOT_DELETE'){
+        let status = {
+            not: 'DELETE',
+        };
+    }else if(requestData.status){
+        let status = {
+            contains: requestData.status,
+        };
+    }
+
+    if(requestData.customerGroup){
+        customerGroup = {
+            some: {
+                customerGroup: {
+                    id: Number(requestData.customerGroup)
+                }
+            }
+        }
+    }
+    const [customers, total] = await prisma.$transaction([
+        prisma.customer.findMany({
+            take: take,
+            skip: skip,
+            orderBy:{
+                id: 'desc'
+            },
+            where: {
+                AND: [
+                    {
+                        fullName: {
+                            contains: titleFilter
+                        },
+                        garageId: garageId,
+                        customerGroup
+                        // status: ,
+                    },
+                ],
+            },
+            include: {
+                cars: true,
+            },
+        }),
+        prisma.customer.count({
+            where: {
+                AND: [
+                    {
+                        fullName: {
+                            contains: titleFilter
+                        },
+                        garageId: garageId,
+                        customerGroup
+                        // status: ,
+                    },
+                ],
+            },
+          }),
+    ])
+    const totalPage = Math.ceil(total / limit);
+
+    return {
+      data: customers,
+      total: total,
+      currentPage: currentPage,
+      limit: limit,
+      totalPage: totalPage,
+      status: 200,
     };
-  }
-  const customers = await prisma.customer.findMany({
-    take: take,
-    skip: skip,
-    orderBy: {
-      id: "desc",
-    },
-    where: {
-      AND: [
-        {
-          fullName: {
-            contains: titleFilter,
-          },
-          garageId: garageId,
-          // status: ,
-        },
-      ],
-    },
-    include: {
-      cars: true,
-    },
-  });
-  return customers;
 }
 
 export async function syncCustomerFromDLBD(requestData: any) {
