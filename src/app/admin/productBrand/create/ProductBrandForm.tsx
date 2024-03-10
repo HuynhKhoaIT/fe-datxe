@@ -127,7 +127,7 @@ export default function ProductBrandForm({ isEditing, dataDetail }: any) {
           </Grid.Col>
         </Grid>
 
-        <Group justify="end" style={{ marginTop: 60 }}>
+        <Group justify="end" mt={20}>
           <Button
             size="md"
             variant="outline"

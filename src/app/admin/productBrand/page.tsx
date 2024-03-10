@@ -1,10 +1,9 @@
 import ProductBrandListPage from "./ProductBrandListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { apiUrl } from "@/constants";
+import { Fragment } from "react";
 
 async function getData() {
   const res = await fetch(`${apiUrl}api/product-brands`);
@@ -21,9 +20,9 @@ export default async function ProductBrand() {
     { title: "Thương hiệu" },
   ];
   return (
-    <div className={styles.wrapper}>
+    <Fragment>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <ProductBrandListPage dataSource={categories} />
-    </div>
+    </Fragment>
   );
 }
