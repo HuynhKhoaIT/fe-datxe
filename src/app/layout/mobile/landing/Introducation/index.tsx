@@ -22,9 +22,9 @@ const Introducation = () => {
         Không còn phải xếp hàng đợi sửa xe, biết trước giá dịch vụ, tiết kiệm
       </Typo>
       <Button
-        size="md"
+        size="lg"
+        radius={0}
         leftSection={<img src={IconPlay.src} />}
-        radius="lg"
         color="#6C00FF"
         h={38}
         w={158}

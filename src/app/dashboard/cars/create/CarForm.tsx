@@ -157,7 +157,8 @@ export default function CarForm({
         <Grid gutter={10}>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <TextInput
-              size="md"
+              size="lg"
+              radius={0}
               label="Biển số xe"
               type="text"
               placeholder="Biển số xe"
@@ -166,7 +167,8 @@ export default function CarForm({
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               data={brandOptions}
               {...form.getInputProps("automakerId")}
               label="Hãng xe"
@@ -180,7 +182,8 @@ export default function CarForm({
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               {...form.getInputProps("carNameId")}
               label="Dòng xe"
               checkIconPosition="right"
@@ -196,7 +199,8 @@ export default function CarForm({
         <Grid gutter={10}>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               label="Năm sản xuất"
               checkIconPosition="right"
               placeholder="Năm sản xuất"
@@ -206,7 +210,8 @@ export default function CarForm({
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <TextInput
-              size="md"
+              size="lg"
+              radius={0}
               label="Color"
               type="text"
               placeholder="Màu xe"
@@ -215,7 +220,8 @@ export default function CarForm({
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <NumberInput
-              size="md"
+              size="lg"
+              radius={0}
               label="Vin number"
               placeholder="Vin Number"
               {...form.getInputProps("vinNumber")}
@@ -225,7 +231,8 @@ export default function CarForm({
         <Grid gutter={10}>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <NumberInput
-              size="md"
+              size="lg"
+              radius={0}
               label="Machine Number"
               placeholder="Machine Number"
               {...form.getInputProps("machine_number")}
@@ -233,7 +240,8 @@ export default function CarForm({
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
             <NumberInput
-              size="md"
+              size="lg"
+              radius={0}
               label="Km repairt"
               placeholder="Km repairt"
               {...form.getInputProps("km_repairt")}
@@ -282,7 +290,8 @@ export default function CarForm({
         </Grid>
         <Group justify="end" style={{ marginTop: 10 }}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             key="cancel"
             color="red"
@@ -292,7 +301,8 @@ export default function CarForm({
             Huỷ bỏ
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             style={{ marginLeft: "12px" }}
             key="submit"
             type="submit"

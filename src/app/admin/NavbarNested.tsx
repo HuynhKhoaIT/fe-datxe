@@ -15,48 +15,45 @@ import {
 import classes from "./NavbarNested.module.scss";
 import { LinksGroup } from "../components/NavBarLinksGroup/NavBarLinksGroup";
 import { IconUsersGroup } from "@tabler/icons-react";
+import { signOut } from "next-auth/react";
 
 const mockdata = [
   { link: "/admin", label: "Tổng quan", icon: IconGauge },
-  {
-    label: "Chuyên gia",
-    icon: IconUsers,
-    links: [
-      { label: "Danh sách chuyên gia", link: "/admin/expert" },
-      {
-        label: "Chương trình của chuyên gia",
-        link: "/admin/marketing-campaign",
-      },
-    ],
-  },
   {
     label: "Đơn hàng",
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: "Danh sách đơn hàng", link: "/admin/orders" },
       { label: "Quản lý đơn hàng", link: "/admin/order-manager" },
+      { label: "Danh sách đơn hàng", link: "/admin/orders" },
     ],
   },
+
   {
     label: "Sản phẩm",
     icon: IconCalendarStats,
     links: [
-      { label: "Danh mục sản phẩm", link: "/admin/categories" },
-      { label: "Sản phẩm trên sàn", link: "/admin/products" },
-      { label: "Sản phẩm trong kho", link: "/admin/all-products" },
+      { label: "Danh sách sản phẩm", link: "/admin/products" },
+      // { label: "Sản phẩm trong kho", link: "/admin/all-products" },
+      { label: "Danh mục", link: "/admin/categories" },
     ],
   },
   { link: "/admin/cars", label: "Danh sách xe", icon: IconCar },
-  {
-    link: "/admin/productBrand",
-    label: "Danh sách thương hiệu",
-    icon: IconAdjustments,
-  },
+  // {
+  //   link: "/admin/productBrand",
+  //   label: "Thương hiệu",
+  //   icon: IconAdjustments,
+  // },
   {
     link: "/admin/customers",
-    label: "Danh sách khách hàng",
+    label: "Khách hàng",
     icon: IconUsersGroup,
+  },
+  { link: "/admin/marketing-campaign", label: "Marketing", icon: IconGauge },
+  {
+    label: "Chuyên gia",
+    icon: IconUsers,
+    links: [{ label: "Danh sách chuyên gia", link: "/admin/expert" }],
   },
 ];
 
@@ -70,17 +67,12 @@ export function NavbarNested() {
       <ScrollArea className={classes.links}>
         <div className={classes.linksInner}>{links}</div>
       </ScrollArea>
-      <div className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
+      {/* <div className={classes.footer}>
+        <div className={classes.link} onClick={() => signOut()}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
-        </a>
-      </div>
-      {/* <div className={classes.footer}><UserButton /></div> */}
+        </div>
+      </div> */}
     </nav>
   );
 }

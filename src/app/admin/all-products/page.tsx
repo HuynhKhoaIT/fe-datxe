@@ -105,7 +105,8 @@ export default function ProductsManaga() {
           <>
             <Tooltip label="Lên sàn" withArrow position="bottom">
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 p={5}
                 variant="transparent"
                 color="red"

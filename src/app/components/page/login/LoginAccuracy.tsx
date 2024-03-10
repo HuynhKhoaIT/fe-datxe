@@ -101,17 +101,18 @@ export function LoginFormAccuracy() {
             variant="unstyled"
             placeholder="○"
             length={6}
-            size="md"
+            size="lg"
+            radius={0}
             {...form.getInputProps("pin")}
           />
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             loading={opened}
             className="login-btn"
             type="submit"
             variant="filled"
             color="var(--theme-color)"
-            radius="md"
             fullWidth
           >
             Đăng nhập

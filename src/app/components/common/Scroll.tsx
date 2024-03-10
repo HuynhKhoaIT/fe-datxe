@@ -63,7 +63,8 @@ const Scroll = ({ children, shadow }: any) => {
   return (
     <div className={styles.wrapper}>
       <Button
-        size="md"
+        size="lg"
+        radius={0}
         onClick={handleLeftButton}
         className={`${styles.button} ${styles.pre}`}
         refControl={buttonPre}
@@ -76,7 +77,8 @@ const Scroll = ({ children, shadow }: any) => {
       </Button>
 
       <Button
-        size="md"
+        size="lg"
+        radius={0}
         onClick={handleRightButton}
         className={`${styles.button} ${styles.next}`}
         refControl={buttonNext}

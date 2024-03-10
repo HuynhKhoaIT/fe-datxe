@@ -151,7 +151,8 @@ export const ModalEventCalendar = ({
         <Grid gutter={10} mt="md">
           <Grid.Col span={6}>
             <TextInput
-              size="md"
+              size="lg"
+              radius={0}
               placeholder="Họ và tên"
               withAsterisk
               {...form.getInputProps("fullName")}
@@ -159,7 +160,8 @@ export const ModalEventCalendar = ({
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
-              size="md"
+              size="lg"
+              radius={0}
               placeholder="Số điện thoại"
               withAsterisk
               {...form.getInputProps("phoneNumber")}
@@ -180,6 +182,7 @@ export const ModalEventCalendar = ({
                 }}
                 allowDeselect={false}
                 size="lg"
+                radius={0}
                 data={carOptions}
                 onChange={handlePlace}
               ></Select>
@@ -192,6 +195,7 @@ export const ModalEventCalendar = ({
                 }}
                 placeholder="Nhập biển số xe"
                 size="lg"
+                radius={0}
                 {...form.getInputProps("numberPlates")}
               ></TextInput>
             )}
@@ -202,7 +206,8 @@ export const ModalEventCalendar = ({
           <Grid gutter={10} mt="md">
             <Grid.Col span={4}>
               <TextInput
-                size="md"
+                size="lg"
+                radius={0}
                 placeholder="Hãng xe"
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
@@ -212,7 +217,8 @@ export const ModalEventCalendar = ({
             </Grid.Col>
             <Grid.Col span={4}>
               <TextInput
-                size="md"
+                size="lg"
+                radius={0}
                 placeholder="Dòng xe"
                 leftSection={<IconPlus size={22} color="blue" />}
                 {...form.getInputProps("carNameId")}
@@ -222,7 +228,8 @@ export const ModalEventCalendar = ({
             </Grid.Col>
             <Grid.Col span={4}>
               <TextInput
-                size="md"
+                size="lg"
+                radius={0}
                 placeholder="Năm sản xuất"
                 leftSection={<IconPlus size={22} color="blue" />}
                 withAsterisk
@@ -234,7 +241,8 @@ export const ModalEventCalendar = ({
           <Grid gutter={10} mt="md">
             <Grid.Col span={4}>
               <Select
-                size="md"
+                size="lg"
+                radius={0}
                 {...form.getInputProps("carBrandId")}
                 name="carBrandId"
                 data={brandOptions}
@@ -251,7 +259,8 @@ export const ModalEventCalendar = ({
             </Grid.Col>
             <Grid.Col span={4}>
               <Select
-                size="md"
+                size="lg"
+                radius={0}
                 data={modelOptions}
                 placeholder="Dòng xe"
                 leftSection={<IconPlus size={22} color="blue" />}
@@ -267,7 +276,8 @@ export const ModalEventCalendar = ({
             </Grid.Col>
             <Grid.Col span={4}>
               <Select
-                size="md"
+                size="lg"
+                radius={0}
                 data={yearCarOptions}
                 placeholder="Năm sản xuất"
                 leftSection={<IconPlus size={22} color="blue" />}
@@ -281,7 +291,8 @@ export const ModalEventCalendar = ({
         <Grid gutter={10} mt="md">
           <Grid.Col span={6}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               data={categoryOptions}
               placeholder="Danh mục đặt lịch"
               withAsterisk
@@ -304,7 +315,8 @@ export const ModalEventCalendar = ({
           <Grid gutter={10} mt="md">
             <Grid.Col span={6}>
               <Select
-                size="md"
+                size="lg"
+                radius={0}
                 allowDeselect={false}
                 data={advisorOptions}
                 placeholder="Chọn CVDV"
@@ -316,7 +328,8 @@ export const ModalEventCalendar = ({
             {token ? (
               <Grid.Col span={6}>
                 <Select
-                  size="md"
+                  size="lg"
+                  radius={0}
                   allowDeselect={false}
                   data={garageOptions}
                   placeholder="Chọn chuyên gia"
@@ -327,7 +340,8 @@ export const ModalEventCalendar = ({
             ) : (
               <Grid.Col span={6}>
                 <TextInput
-                  size="md"
+                  size="lg"
+                  radius={0}
                   readOnly
                   placeholder="Chuyên gia"
                   {...form.getInputProps("garageId")}
@@ -357,7 +371,8 @@ export const ModalEventCalendar = ({
             <a href="/">đăng nhập</a>
           </div>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             loading={loading}
             w={100}
             bg={"var(--theme-color)"}

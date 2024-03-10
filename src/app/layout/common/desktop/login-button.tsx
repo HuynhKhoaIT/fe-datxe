@@ -3,7 +3,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import styles from "./Header.module.scss";
-import { Menu, Button, rem } from "@mantine/core";
+import { Menu, Button, rem, Image } from "@mantine/core";
 import {
   IconExternalLink,
   IconLogout,

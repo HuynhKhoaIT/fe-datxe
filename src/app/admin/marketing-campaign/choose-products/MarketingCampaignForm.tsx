@@ -134,7 +134,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         <Table.Td>{selectedRow.price.toLocaleString()}đ</Table.Td>
         <Table.Td>
           <NumberInput
-            size="md"
+            size="lg"
+            radius={0}
             withAsterisk
             readOnly
             // label="Tên chương trình"
@@ -156,7 +157,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
           <Grid miw={150}>
             <Grid.Col span={{ base: 12, sm: 5, md: 5, lg: 5 }}>
               <Select
-                size="md"
+                size="lg"
+                radius={0}
                 miw={100}
                 {...form.getInputProps(`detail.${index}.saleType`)}
                 data={[
@@ -176,7 +178,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             <Grid.Col span={{ base: 12, sm: 7, md: 7, lg: 7 }}>
               {selectedRow.saleType === "FIXED" ? (
                 <NumberInput
-                  size="md"
+                  size="lg"
+                  radius={0}
                   {...form.getInputProps(`detail.${index}.saleValue`)}
                   min={0}
                   placeholder="Giá sale"
@@ -193,7 +196,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                 />
               ) : (
                 <NumberInput
-                  size="md"
+                  size="lg"
+                  radius={0}
                   {...form.getInputProps(`detail.${index}.saleValue`)}
                   placeholder="Phầm trăm sale"
                   suffix="%"
@@ -214,7 +218,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         </Table.Td>
         <Table.Td style={{ width: "200px" }}>
           <NumberInput
-            size="md"
+            size="lg"
+            radius={0}
             miw={100}
             {...form.getInputProps(`detail.${index}.quantity`)}
             min={0}
@@ -226,7 +231,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
           <>
             <Tooltip label="Xoá" withArrow position="bottom">
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 p={5}
                 variant="transparent"
                 color="red"
@@ -282,7 +288,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
           <Grid gutter={16}>
             <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
               <TextInput
-                size="md"
+                size="lg"
+                radius={0}
                 withAsterisk
                 label="Tên chương trình"
                 type="text"
@@ -321,7 +328,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
                     }}
                   >
                     <Button
-                      size="md"
+                      size="lg"
+                      radius={0}
                       onClick={(e) => {
                         openModal();
                       }}
@@ -365,7 +373,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
           </Grid>
           <Group justify="end" mt={20}>
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               variant="outline"
               key="cancel"
               color="red"
@@ -375,7 +384,8 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
               Huỷ bỏ
             </Button>
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               loading={loading}
               style={{ marginLeft: "12px" }}
               key="submit"

@@ -11,7 +11,8 @@ export default function InputField({
 }: any) {
   return (
     <TextInput
-      size="md"
+      size="lg"
+      radius={0}
       withAsterisk={withAsterisk}
       label={label}
       placeholder={placeholder}

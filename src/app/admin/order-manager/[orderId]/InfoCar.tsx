@@ -30,7 +30,7 @@ export default function InfoCar({
         />
       ))}
       <Flex justify="end" mt={12}>
-        <Button size="md" onClick={addCar}>
+        <Button size="lg" radius={0} onClick={addCar}>
           <IconPlus size={16} />
         </Button>
       </Flex>

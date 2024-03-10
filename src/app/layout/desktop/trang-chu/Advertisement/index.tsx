@@ -15,7 +15,7 @@ export default function Advertisement() {
               Ưu đãi dịch vụ Rửa xe{" "}
               <span style={{ fontWeight: "600" }}>giảm 20%</span>
             </Typo>
-            <Button size="md" color="#421E98">
+            <Button size="lg" radius={0} color="#421E98">
               Đặt lịch
             </Button>
           </div>
@@ -29,7 +29,12 @@ export default function Advertisement() {
               Ưu đãi dịch vụ Độ xe{" "}
               <span style={{ fontWeight: "600" }}>giảm 20%</span>
             </Typo>
-            <Button size="md" color="#FFDF7A" style={{ color: "#421E98" }}>
+            <Button
+              size="lg"
+              radius={0}
+              color="#FFDF7A"
+              style={{ color: "#421E98" }}
+            >
               Độ ngay
             </Button>
           </div>

@@ -112,7 +112,8 @@ export default function CategoryListPage({ dataSource, profile }: any) {
               }}
             >
               <Button
-                size="md"
+                size="lg"
+                radius={0}
                 style={{ margin: "0 5px" }}
                 variant="transparent"
                 color="gray"
@@ -124,7 +125,8 @@ export default function CategoryListPage({ dataSource, profile }: any) {
             </Link>
 
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               p={5}
               variant="transparent"
               color="red"
@@ -171,7 +173,8 @@ export default function CategoryListPage({ dataSource, profile }: any) {
         actionBar={
           <Flex justify={"end"} align={"center"} gap={20}>
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               onClick={openModalCategories}
               leftSection={<IconPlus size={18} />}
             >
@@ -182,7 +185,7 @@ export default function CategoryListPage({ dataSource, profile }: any) {
                 pathname: `/admin/categories/create`,
               }}
             >
-              <Button size="md" leftSection={<IconPlus size={18} />}>
+              <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
                 Thêm mới
               </Button>
             </Link>

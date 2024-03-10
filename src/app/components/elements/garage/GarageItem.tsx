@@ -19,7 +19,7 @@ const GarageItem = ({ garage }: { garage: IGarage }) => {
         {garage.name}
       </Typo>
       <Link href={`/chuyen-gia/${garage.code}`}>
-        <Button size="md" color="blue" fullWidth mt="md" radius="md">
+        <Button size="lg" radius={0} color="blue" fullWidth mt="md">
           Xem chi tiết
         </Button>
       </Link>

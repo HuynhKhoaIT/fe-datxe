@@ -186,7 +186,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
               <Grid gutter={10}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("customerId")}
                     label="Khách hàng"
                     type="text"
@@ -196,7 +197,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("numberPlates")}
                     label="Biển số xe"
                     type="text"
@@ -205,7 +207,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("color")}
                     label="Màu xe"
                     type="text"
@@ -214,7 +217,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("carBrandId")}
                     label="Hãng xe"
                     placeholder="Hãng xe"
@@ -227,7 +231,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("carNameId")}
                     label="Dòng xe"
                     placeholder="Dòng xe"
@@ -240,7 +245,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("carYearId")}
                     label="Năm sản xuất"
                     placeholder="Năm sản xuất"
@@ -252,7 +258,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("vinNumber")}
                     label="vinNumber"
                     type="text"
@@ -261,7 +268,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("machineNumber")}
                     label="machineNumber"
                     type="text"
@@ -270,7 +278,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Select
-                    size="md"
+                    size="lg"
+                    radius={0}
                     {...form.getInputProps("status")}
                     label="Trạng thái"
                     checkIconPosition="right"
@@ -296,7 +305,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
 
         <Group justify="end" style={{ marginTop: 60 }}>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             variant="outline"
             key="cancel"
             color="red"
@@ -306,7 +316,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
             Huỷ
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             loading={loading}
             style={{ marginLeft: "12px" }}
             key="submit"

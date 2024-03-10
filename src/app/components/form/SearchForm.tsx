@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form";
 import { IconSearch, IconTrash } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Typo from "../elements/Typo";
 
 export default function SearchForm({
   searchData,
@@ -91,7 +92,8 @@ export default function SearchForm({
             if (item?.type === "input") {
               return (
                 <Input
-                  size="md"
+                  size="lg"
+                  radius={0}
                   w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                   key={index}
                   {...form.getInputProps(item.name)}
@@ -101,7 +103,8 @@ export default function SearchForm({
             } else if (item?.type === "select") {
               return (
                 <Select
-                  size="md"
+                  size="lg"
+                  radius={0}
                   w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                   key={index}
                   {...form.getInputProps(item.name)}
@@ -112,10 +115,11 @@ export default function SearchForm({
             }
           })}
           {brandFilter && (
-            <Flex gap={10}>
+            <>
               <Select
-                size="md"
-                w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
+                size="lg"
+                radius={0}
+                w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                 {...form.getInputProps("brandId")}
                 data={brandOptions}
                 placeholder={"Hãng xe"}
@@ -127,8 +131,9 @@ export default function SearchForm({
                 }}
               />
               <Select
-                size="md"
-                w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
+                size="lg"
+                radius={0}
+                w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                 {...form.getInputProps("nameId")}
                 data={modelOptions}
                 onChange={(value) => {
@@ -139,8 +144,9 @@ export default function SearchForm({
                 placeholder={"Dòng xe"}
               />
               <Select
-                size="md"
-                w={{ base: "100%", sm: "33.33%", md: "33.33%", lg: "33.33%" }}
+                size="lg"
+                radius={0}
+                w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                 {...form.getInputProps("yearId")}
                 data={yearCarOptions}
                 onChange={(value) => {
@@ -148,17 +154,19 @@ export default function SearchForm({
                 }}
                 placeholder={"Năm sản xuất"}
               />
-            </Flex>
+            </>
           )}
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             leftSection={<IconSearch size={18} />}
             type="submit"
           >
             Tìm kiếm
           </Button>
           <Button
-            size="md"
+            size="lg"
+            radius={0}
             leftSection={<IconTrash size={18} />}
             variant="outline"
             color="gray"

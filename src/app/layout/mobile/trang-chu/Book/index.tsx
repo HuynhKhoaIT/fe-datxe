@@ -61,7 +61,8 @@ const Book = ({ carsOption, provinceData }: any) => {
         <ul className={styles.listItem}>
           <li className={styles.item}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               classNames={{ label: styles.label }}
               label="Vị trí"
               variant="unstyled"
@@ -71,7 +72,8 @@ const Book = ({ carsOption, provinceData }: any) => {
           </li>
           <li className={styles.item}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               {...form.getInputProps("carBrandId")}
               classNames={{ label: styles.label }}
               variant="unstyled"
@@ -88,7 +90,8 @@ const Book = ({ carsOption, provinceData }: any) => {
           </li>
           <li className={styles.item}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               {...form.getInputProps("carNameId")}
               classNames={{ label: styles.label }}
               variant="unstyled"
@@ -104,7 +107,8 @@ const Book = ({ carsOption, provinceData }: any) => {
           </li>
           <li className={styles.item}>
             <Select
-              size="md"
+              size="lg"
+              radius={0}
               {...form.getInputProps("carNameId")}
               classNames={{ label: styles.label }}
               variant="unstyled"
@@ -120,7 +124,8 @@ const Book = ({ carsOption, provinceData }: any) => {
           </li>
           <li className={styles.itemBtn}>
             <Button
-              size="md"
+              size="lg"
+              radius={0}
               h={47}
               fullWidth
               color="var(--yellow-btn)"
