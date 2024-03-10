@@ -108,7 +108,6 @@ export function RegisterFormInput() {
             className="login-btn"
             variant="filled"
             color="var(--theme-color)"
-            radius="md"
             fullWidth
             type="submit"
             loading={opened}

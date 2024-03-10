@@ -60,7 +60,6 @@ const HeaderMobile = () => {
                 <IconSearch />
               </ActionIcon>
             }
-            radius="lg"
             placeholder="Vui lòng nhập..."
           />
         </form>

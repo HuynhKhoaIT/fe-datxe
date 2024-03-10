@@ -137,7 +137,6 @@ export function RegisterFormAccuracy() {
             className="login-btn"
             variant="filled"
             color="var(--theme-color)"
-            radius="md"
             type="submit"
             fullWidth
           >

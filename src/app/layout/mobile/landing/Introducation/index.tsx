@@ -25,7 +25,6 @@ const Introducation = () => {
         size="lg"
         radius={0}
         leftSection={<img src={IconPlay.src} />}
-        radius="lg"
         color="#6C00FF"
         h={38}
         w={158}

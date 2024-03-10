@@ -125,7 +125,6 @@ export function ModalOrderGuest({
             type="submit"
             variant="filled"
             color="var(--theme-color)"
-            radius="md"
             fullWidth
           >
             Đăng nhập

@@ -44,7 +44,6 @@ const Filter = ({ kindProduct }: any) => {
         <Button
           size="lg"
           radius={0}
-          radius={"lg"}
           color="#2D3C52"
           h={34}
           leftSection={<img src={IconFilter.src} />}
