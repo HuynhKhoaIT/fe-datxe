@@ -46,7 +46,9 @@ export default function ModalCategoriesDLBD({
   }, [openedModalCategories]);
   const columns = [
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hình ảnh</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
+      ),
       name: "thumbnail",
       dataIndex: ["thumbnail"],
       width: "90px",
@@ -66,7 +68,9 @@ export default function ModalCategoriesDLBD({
       },
     },
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Tên</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Tên</span>
+      ),
       name: "name",
       dataIndex: ["name"],
       render: (dataRow: any) => {
@@ -75,7 +79,11 @@ export default function ModalCategoriesDLBD({
     },
 
     {
-      label: <span style={{ whiteSpace: "nowrap" }}>Hành động</span>,
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Hành động
+        </span>
+      ),
       dataIndex: [],
       width: "100px",
       textAlign: "center",
