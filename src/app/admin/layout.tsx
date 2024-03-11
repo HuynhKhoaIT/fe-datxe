@@ -37,7 +37,7 @@ export default function Layout({ children }: IProps) {
             visibleFrom="sm"
             size="sm"
           />
-          <SearchFormName />
+          {/* <SearchFormName /> */}
           <SigninButton />
         </Group>
       </AppShell.Header>
