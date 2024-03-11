@@ -44,7 +44,7 @@ export default function Layout({ children }: IProps) {
       <AppShell.Navbar>
         <Group h={60} pl={"md"}>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text>Navbar</Text>
+          {/* <Text>Navbar</Text> */}
           <Link href={"/"}>
             <img style={{ height: "60px" }} src={logo.src} alt="logo" />
           </Link>

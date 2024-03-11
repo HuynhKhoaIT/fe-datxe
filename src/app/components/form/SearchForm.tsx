@@ -169,7 +169,9 @@ export default function SearchForm({
             radius={0}
             leftSection={<IconTrash size={18} />}
             variant="outline"
-            color="gray"
+            color="#f72b50"
+            bg="#fee6ea"
+            style={{border:"0"}}
             onClick={() => {
               form.reset();
             }}

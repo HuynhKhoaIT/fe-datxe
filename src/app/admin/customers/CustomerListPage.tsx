@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Flex, Image, Tabs } from "@mantine/core";
-import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconPencil,IconFilter, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { notifications } from "@mantine/notifications";
@@ -37,7 +37,7 @@ export default function CustomerListPage({
     });
     notifications.show({
       title: "Thành công",
-      message: "Xoá danh mục thành công",
+      message: "Xoá thành công",
     });
   };
   const [
@@ -192,14 +192,10 @@ export default function CustomerListPage({
       type: "input",
     },
     {
-      name: "phone",
-      placeholder: "Phone",
-      type: "input",
-    },
-    {
       name: "group",
       placeholder: "Nhóm khách hàng",
       type: "select",
+      // dataSource
     },
   ];
   const initialValuesSearch = {
@@ -211,13 +207,15 @@ export default function CustomerListPage({
   return (
     <div>
       <div style={{ background: "#fff", marginBottom: 30 }}>
+        <div style={{borderBottom: "1px solid #eeeeee"}}>
         <Typo
-          size="small"
+          size="18px"
           type="bold"
-          style={{ color: "var(--primary-orange)", padding: "8px 20px" }}
+          style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
         >
-          Tìm kiếm
+          <IconFilter size={22} />Tìm kiếm
         </Typo>
+        </div>
         <div style={{ padding: 30 }}>
           <SearchForm
             searchData={searchData}
@@ -225,8 +223,17 @@ export default function CustomerListPage({
           />
         </div>
       </div>
+      <div style={{marginBottom: 20,}}>
+      <Button
+        size="lg"
+        radius={0}
+        leftSection={<IconPlus size={18} />}
+      >
+        Thêm mới
+      </Button>
+      </div>
       <div style={{ background: "#fff", position: "relative" }}>
-        <div className={styles.title}>
+        {/* <div className={styles.title}>
           <Typo
             size="small"
             type="bold"
@@ -234,14 +241,24 @@ export default function CustomerListPage({
           >
             Khách hàng
           </Typo>
+        </div> */}
+
+        <div style={{borderBottom: "1px solid #eeeeee"}}>
+          <Typo
+            size="18px"
+            type="bold"
+            style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
+          >
+            <IconFilter size={22} />Danh sách
+          </Typo>
         </div>
-        <div style={{ paddingTop: 30 }}>
+        
+        <div >
           <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
-            <Tabs.List classNames={{ list: styles.list }}>
+          <Tabs.List classNames={{ list: styles.list }}>
               <Tabs.Tab value="first">Khách hàng trên sàn</Tabs.Tab>
               <Tabs.Tab value="second">Khách hàng trên phần mềm</Tabs.Tab>
             </Tabs.List>
-
             <Tabs.Panel value="first">
               <ListPage
                 actionBar={
@@ -251,13 +268,7 @@ export default function CustomerListPage({
                         pathname: `/admin/customers/create`,
                       }}
                     >
-                      <Button
-                        size="lg"
-                        radius={0}
-                        leftSection={<IconPlus size={18} />}
-                      >
-                        Thêm mới
-                      </Button>
+                      
                     </Link>
                   </Flex>
                 }
