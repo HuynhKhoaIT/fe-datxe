@@ -30,6 +30,9 @@ export async function createCustomer(json: any) {
 export async function getCustomers(requestData:any) {
     let customerGroup = {};
     let currentPage = 1;
+    if(requestData.page){
+      currentPage = Number(requestData.page)
+    }
     let take = 10;
     let limit = 10;
     if(requestData.limit){
