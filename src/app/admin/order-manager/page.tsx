@@ -245,6 +245,7 @@ export default function OrdersManaga() {
           </Flex>
         }
         style={{ height: "100%" }}
+        titleTable={true}
         baseTable={
           <TableBasic
             data={orders?.data}

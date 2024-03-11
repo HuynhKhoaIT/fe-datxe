@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
+import { Badge, Button, Flex, Image, Tabs, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
 import Link from "next/link";
@@ -16,6 +16,8 @@ import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import ListPage from "@/app/components/layout/ListPage";
 import Typo from "@/app/components/elements/Typo";
+import styles from "./index.module.scss";
+import { IconFilter } from "@tabler/icons-react";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -25,6 +27,7 @@ const DynamicModalDeleteProduct = dynamic(
 export default function ProductsManaga() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<string | null>("first");
 
   const [products, setProducts] = useState<any>([]);
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
@@ -36,6 +39,13 @@ export default function ProductsManaga() {
     { title: "Sản phẩm" },
   ];
   async function getData(searchParams: any, page: number) {
+    const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    setProducts(data);
+  }
+  async function getDataDLBD(searchParams: any, page: number) {
     const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
       method: "GET",
     });
@@ -55,9 +65,12 @@ export default function ProductsManaga() {
     setCategoryOptions(dataOption);
   }
   useEffect(() => {
-    getData(searchParams.toString(), page);
     getDataCategories();
-  }, [searchParams, page]);
+    if (activeTab == "first") {
+      getData(searchParams.toString(), page);
+    } else if (activeTab == "second") {
+    }
+  }, [searchParams, page, activeTab]);
 
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteProduct = async (idProduct: any) => {
@@ -279,14 +292,17 @@ export default function ProductsManaga() {
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <div style={{ background: "#fff", marginBottom: 30 }}>
-        <Typo
-          size="small"
-          type="bold"
-          style={{ color: "var(--primary-orange)", padding: "8px 20px" }}
-        >
-          Tìm kiếm
-        </Typo>
-        <div style={{ padding: "0 30px 30px" }}>
+        <div style={{ borderBottom: "1px solid #eeeeee" }}>
+          <Typo
+            size="18px"
+            type="bold"
+            style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
+          >
+            <IconFilter size={22} />
+            Tìm kiếm
+          </Typo>
+        </div>
+        <div style={{ padding: 30 }}>
           <SearchForm
             searchData={searchData}
             brandFilter={true}
@@ -294,7 +310,98 @@ export default function ProductsManaga() {
           />
         </div>
       </div>
-      <ListPage
+      <div style={{ marginBottom: 20 }}>
+        <Flex justify={"end"} align={"center"} gap={20}>
+          <Link
+            href={{
+              pathname: `/admin/customers/create`,
+            }}
+          >
+            <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+              Thêm mới
+            </Button>
+          </Link>
+        </Flex>
+      </div>
+      <div style={{ background: "#fff", position: "relative" }}>
+        <div style={{ borderBottom: "1px solid #eeeeee" }}>
+          <Typo
+            size="18px"
+            type="bold"
+            style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
+          >
+            <IconFilter size={22} />
+            Danh sách
+          </Typo>
+        </div>
+
+        <div>
+          <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
+            <Tabs.List classNames={{ list: styles.list }}>
+              <Tabs.Tab value="first">Sản phẩm trên sàn</Tabs.Tab>
+              <Tabs.Tab value="second">Sản phẩm trên phần mềm</Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="first">
+              <ListPage
+                actionBar={
+                  <Flex justify={"end"} align={"center"} gap={20}>
+                    <Link
+                      href={{
+                        pathname: `/admin/customers/create`,
+                      }}
+                    ></Link>
+                  </Flex>
+                }
+                style={{ height: "100%" }}
+                baseTable={
+                  <TableBasic
+                    data={products?.data}
+                    columns={columns}
+                    loading={true}
+                    totalPage={products?.totalPage}
+                    setPage={setPage}
+                    activePage={page}
+                  />
+                }
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value="second">
+              <ListPage
+                actionBar={
+                  <Flex justify={"end"} align={"center"} gap={20}>
+                    <Link
+                      href={{
+                        pathname: `/admin/customers/create`,
+                      }}
+                    >
+                      <Button
+                        size="lg"
+                        radius={0}
+                        leftSection={<IconPlus size={18} />}
+                      >
+                        Thêm mới
+                      </Button>
+                    </Link>
+                  </Flex>
+                }
+                style={{ height: "100%" }}
+                baseTable={
+                  <TableBasic
+                    data={products?.data}
+                    columns={columns}
+                    loading={true}
+                    // totalPage={products?.totalPage}
+                    // setPage={setPage}
+                    // activePage={page}
+                  />
+                }
+              />
+            </Tabs.Panel>
+          </Tabs>
+        </div>
+      </div>
+
+      {/* <ListPage
         actionBar={
           <Flex justify={"end"} align={"center"}>
             <Link
@@ -319,7 +426,8 @@ export default function ProductsManaga() {
             activePage={page}
           />
         }
-      />
+      /> */}
+
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}

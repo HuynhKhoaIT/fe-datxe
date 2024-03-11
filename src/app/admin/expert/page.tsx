@@ -256,6 +256,7 @@ const Expert = () => {
           </Flex>
         }
         style={{ height: "100%" }}
+        titleTable={true}
         baseTable={
           <TableBasic
             data={experts?.data}

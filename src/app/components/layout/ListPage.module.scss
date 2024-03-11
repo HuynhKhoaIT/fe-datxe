@@ -1,12 +1,17 @@
 .baseListPage {
     min-height: calc(100vh - 230px);
-    border: 1px solid #fff;
-    background-color: #fff;
+    // border: 1px solid #fff;
+    // background-color: #fff;
     .action-bar {
         margin: 10px 0 10px 0;
     }
     .baseTable {
         overflow-x: auto;
+        background-color: #fff;
+        position: relative;
+        .table {
+            padding: 30px;
+        }
     }
 }
 
@@ -15,8 +20,12 @@
     font-weight: 500;
 }
 
-.searchForm {
+.searchBox {
     margin-bottom: 20px;
+    background-color: #fff;
+    .searchForm {
+        padding: 30px;
+    }
 }
 .actionBar {
     margin-bottom: 1rem;
