@@ -30,6 +30,7 @@ export default function ExpertForm({
   districtData: dtData,
   wardData: wData,
 }: any) {
+  console.log(dataDetail);
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
@@ -70,13 +71,18 @@ export default function ExpertForm({
     validate: {},
   });
   useEffect(() => {
-    // handlers.open();
+    handlers.open();
 
     const fetchData = async () => {
       try {
         form.setInitialValues(dataDetail);
         form.setValues(dataDetail);
         if (isEditing && dataDetail) {
+          form.setFieldValue("provinceId", dataDetail?.provinceId?.toString());
+          form.setFieldValue("districtId", dataDetail?.districtId?.toString());
+          handleProvince(dataDetail?.provinceId?.toString());
+          handleDistrict(dataDetail?.districtId?.toString());
+          form.setFieldValue("wardId", dataDetail?.wardId?.toString());
           if (dataDetail?.amenities?.length > 0) {
             const dataOption = dataDetail?.amenities?.map((item: any) =>
               item.amenityId.toString()
@@ -344,6 +350,8 @@ export default function ExpertForm({
               <Grid mt={24}>
                 <Grid.Col span={12}>
                   <Textarea
+                    size="lg"
+                    radius={0}
                     label="Mô tả"
                     minRows={4}
                     autosize={true}

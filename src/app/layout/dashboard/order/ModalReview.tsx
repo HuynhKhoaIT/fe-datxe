@@ -50,6 +50,8 @@ export default function ModalReview({
           </div>
           <div className={styles.review}>
             <Textarea
+              size="lg"
+              radius={0}
               label="Chất lượng sản phẩm:"
               placeholder="Để lại đánh giá"
               variant="unstyled"

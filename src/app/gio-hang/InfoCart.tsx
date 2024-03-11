@@ -89,7 +89,6 @@ export default function InfoCart({
         return (
           <>
             <Button
-              size="lg"
               radius={0}
               variant="transparent"
               onClick={() => decrementQuantity(dataRow?.productId)}
@@ -98,7 +97,6 @@ export default function InfoCart({
             </Button>
             <span style={{ padding: "10px" }}>{dataRow?.quantity}</span>
             <Button
-              size="lg"
               radius={0}
               variant="transparent"
               onClick={() => incrementQuantity(dataRow?.productId)}
@@ -160,14 +158,12 @@ export default function InfoCart({
           <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
             <Group className="cart-coupon " pos="relative">
               <TextInput
-                size="lg"
                 radius={0}
                 type="text"
                 className="form-control"
                 placeholder="Your Coupon Code"
               />
               <Button
-                size="lg"
                 radius={0}
                 className="coupon-btn"
                 variant="filled"

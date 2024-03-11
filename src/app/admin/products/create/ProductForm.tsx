@@ -33,6 +33,7 @@ export default function ProductForm({
   dataDetail,
   isDirection = false,
 }: any) {
+  console.log(dataDetail);
   const [loading, handlers] = useDisclosure();
   const [catOptions, setCatOptions] = useState<any>([]);
   const [productBrandOptions, setProductBrandOptions] = useState<any>([]);
@@ -63,18 +64,24 @@ export default function ProductForm({
       form.setFieldValue("productBrandId", "4");
     }
     if (isEditing && dataDetail) {
-      form.setInitialValues(dataDetail);
-      form.setValues(dataDetail);
-      if (dataDetail?.brandDetail) {
-        form.setFieldValue("brands", JSON?.parse(dataDetail?.brandDetail));
-        setCar(JSON?.parse(dataDetail?.brandDetail));
+      form.setInitialValues(dataDetail?.product);
+      form.setValues(dataDetail?.product);
+      if (dataDetail?.product?.brandDetail) {
+        form.setFieldValue(
+          "brands",
+          JSON?.parse(dataDetail?.product?.brandDetail)
+        );
+        setCar(JSON?.parse(dataDetail?.product?.brandDetail));
       }
 
-      if (dataDetail?.isProduct) {
-        form.setFieldValue("isProduct", dataDetail?.isProduct.toString());
+      if (dataDetail?.product?.isProduct) {
+        form.setFieldValue(
+          "isProduct",
+          Number(dataDetail?.product?.isProduct).toString()
+        );
       }
-      if (dataDetail?.categories?.length > 0) {
-        const dataOption = dataDetail?.categories?.map((item: any) =>
+      if (dataDetail?.product?.categories?.length > 0) {
+        const dataOption = dataDetail?.product?.categories?.map((item: any) =>
           item.categoryId.toString()
         );
         form.setFieldValue("categories", dataOption);
@@ -82,16 +89,16 @@ export default function ProductForm({
     }
     if (isDirection) {
       form.setFieldValue("garageId", 9);
-      form.setFieldValue("name", dataDetail?.name);
-      form.setFieldValue("price", dataDetail?.price);
-      form.setFieldValue("description", dataDetail?.description);
+      form.setFieldValue("name", dataDetail?.product?.name);
+      form.setFieldValue("price", dataDetail?.product?.price);
+      form.setFieldValue("description", dataDetail?.product?.description);
       form.setFieldValue("status", "PUBLIC");
       form.setFieldValue("isProduct", "1");
 
       form.setFieldValue("supplierId", "5");
       form.setFieldValue("productBrandId", "4");
     }
-  }, [dataDetail]);
+  }, [dataDetail?.product]);
   const router = useRouter();
   const [car, setCar] = useState([{ brandId: "", nameId: "", yearId: "" }]);
 
@@ -141,7 +148,7 @@ export default function ProductForm({
 
     try {
       const url = isEditing
-        ? `/api/products/${dataDetail?.id}`
+        ? `/api/products/${dataDetail?.product?.id}`
         : `/api/products`;
       await fetch(url, {
         method: isEditing ? "PUT" : "POST",
@@ -325,6 +332,8 @@ export default function ProductForm({
                     Mô tả chi tiết
                   </Text> */}
                     <Textarea
+                      size="lg"
+                      radius={0}
                       label="Mô tả chi tiết"
                       minRows={6}
                       autosize={true}
@@ -343,6 +352,8 @@ export default function ProductForm({
               <Grid mt={24}>
                 <Grid.Col span={12}>
                   <Textarea
+                    size="lg"
+                    radius={0}
                     label="Mô tả ngắn"
                     minRows={4}
                     autosize={true}

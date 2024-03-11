@@ -9,17 +9,31 @@ export default function Breadcrumb({ breadcrumbs }: any) {
     if (item?.href) {
       return (
         <Link href={item.href} key={index}>
-          <span style={{ color: "#474747" }}>{item.title}</span>
+          <span
+            style={{
+              color: "var(--primary-orange)",
+              fontSize: 18,
+              fontWeight: 500,
+            }}
+          >
+            {item.title}
+          </span>
         </Link>
       );
     } else {
-      return <span key={index}>{item.title}</span>;
+      return (
+        <span key={index} style={{ fontSize: 18, fontWeight: 500 }}>
+          {item.title}
+        </span>
+      );
     }
   });
 
   return (
     <div className={styles.breadcrumbs}>
-      <Breadcrumbs separator={<img src={IconArrow.src} />}>{items}</Breadcrumbs>
+      <Breadcrumbs fs={"lg"} separator={<img src={IconArrow.src} />}>
+        {items}
+      </Breadcrumbs>
     </div>
   );
 }

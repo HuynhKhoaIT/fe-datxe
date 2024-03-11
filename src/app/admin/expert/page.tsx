@@ -8,7 +8,7 @@ import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import Link from "next/link";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -268,12 +268,14 @@ const Expert = () => {
           />
         }
       />
-      <DynamicModalDeleteProduct
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteProduct}
-        deleteRow={deleteRow}
-      />
+      {openedDeleteProduct && (
+        <DynamicModalDeleteProduct
+          openedDeleteProduct={openedDeleteProduct}
+          closeDeleteProduct={closeDeleteProduct}
+          handleDeleteProduct={handleDeleteProduct}
+          deleteRow={deleteRow}
+        />
+      )}
     </Fragment>
   );
 };

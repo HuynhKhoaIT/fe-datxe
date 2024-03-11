@@ -529,6 +529,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
               <Textarea
+                size="lg"
+                radius={0}
                 {...form.getInputProps("note")}
                 label="Ghi chú của khách hàng"
                 minRows={3}

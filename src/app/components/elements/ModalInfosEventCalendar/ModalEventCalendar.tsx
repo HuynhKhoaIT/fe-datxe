@@ -136,6 +136,8 @@ export const ModalEventCalendar = ({
     <Box>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Textarea
+          size="lg"
+          radius={0}
           placeholder="Yêu cầu khách hàng"
           withAsterisk={true}
           {...form.getInputProps("customerRequest")}
@@ -353,6 +355,8 @@ export const ModalEventCalendar = ({
         <Grid mt="md">
           <Grid.Col span={12}>
             <Textarea
+              size="lg"
+              radius={0}
               placeholder="Ghi chú cho CVDV"
               withAsterisk
               {...form.getInputProps("customerNote")}
