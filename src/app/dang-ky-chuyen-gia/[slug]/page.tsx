@@ -1,13 +1,13 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { RegisterFormAccuracy } from "../../components/page/register/RegisterAccuracy";
 import React from "react";
 import { redirect } from "next/navigation";
+import { RegisterGarageFormAccuracy } from "@/app/components/page/register/RegisterGarageAccuracy";
 
 export default function RegisterAccuracy() {
   const { data: session } = useSession();
   if (session && session.user) {
-    redirect("/dashboard");
+    redirect("/admin");
   }
-  return <RegisterFormAccuracy />;
+  return <RegisterGarageFormAccuracy />;
 }

@@ -107,7 +107,7 @@ export default function ProductsManaga() {
       dataIndex: activeTab === "first" ? ["images"] : ["thumbnail"],
       width: "90px",
       render: (data: any) => {
-        if (activeTab === "first") {
+        if (activeTab === "first" && data) {
           const images = JSON?.parse(data);
           if (!images) {
             return (
@@ -177,7 +177,7 @@ export default function ProductsManaga() {
       width: "100px",
       render: (record: any, index: number) => {
         const matchedStatus = kindProductOptions.find(
-          (item) => item.value === record.toString()
+          (item) => item.value === record?.toString()
         );
         if (matchedStatus) {
           return (

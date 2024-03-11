@@ -121,6 +121,47 @@ export const register = async (
   }
 };
 
+export const registerGarage = async (
+  name: string,
+  phone: string,
+  password: string,
+  password_confirmation: string,
+  address: string,
+  garageName: string
+): Promise<void> => {
+  try {
+    const res = await axios.post(
+      `${POST_REGISTER_ENDPOINT}`,
+      {
+        name: name,
+        phone: phone,
+        address: address,
+        phongarageNamee: garageName,
+        password: password,
+        password_confirmation: password_confirmation,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      signIn("credentials", {
+        phone: phone,
+        password: password,
+        callbackUrl: "/admin",
+      });
+    } else {
+      console.log("Regiter failed");
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("Đăng Ký thất bại");
+  }
+};
+
 export const GenOTP = async (phone: string) => {
   try {
     const res = await axios.post(
