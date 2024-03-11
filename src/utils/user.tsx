@@ -19,6 +19,7 @@ import { IUser } from "@/interfaces/user";
 import { signIn } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { createGarage } from "@/app/libs/prisma/garage";
 // import ForgotPassword from '@/app/forgot-password/page';
 /**
  * Get getMyAccount.
@@ -147,8 +148,25 @@ export const registerGarage = async (
         },
       }
     );
-
-    if (res.status === 200) {
+    console.log(res.status)
+    console.log(res.data)
+    if (res.status === 201 || res.status === 200) {
+      await fetch('/api/garage',{
+        method: 'POST',
+        body: JSON.stringify({
+          routeId: Number(res.data.id),
+          code: "111222",
+          name: garageName,
+          shortName: garageName,
+          logo: "",
+          email: `${phone}@datxe.com`,
+          phoneNumber: phone,
+          website: "",
+          address: address,
+          status: "PUBLIC",
+          description: "",
+        })
+      });
       signIn("credentials", {
         phone: phone,
         password: password,

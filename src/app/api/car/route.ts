@@ -7,6 +7,7 @@ import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
+
         if (session) {
             let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
             const { searchParams } = new URL(request.url);

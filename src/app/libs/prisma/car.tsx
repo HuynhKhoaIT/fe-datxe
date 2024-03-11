@@ -41,7 +41,10 @@ export async function getCars(requestData:any) {
     if(requestData.s){
         titleFilter = requestData.s;
     }
-    let garageId = {};    
+    let garageId = {};
+    if(requestData.garageId){
+        garageId = requestData.garageId;
+    }
     let status = {
         contains: 'PUBLIC',
     };

@@ -7,91 +7,90 @@ import { getUserByValidSessionToken } from '@/utils/user';
 type ResponseBody = { errors: { message: string }[] } | { username: string };
 import { getToken } from 'next-auth/jwt';
 import { getProducts } from '@/app/libs/prisma/product';
+import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url);
-        const categoryId = searchParams.get('categoryId');
-        const brandIdFilter = searchParams.get('brand');
-        let titleFilter = '';
-        const searchText = searchParams.get('s');
-        if (searchText) {
-            titleFilter = searchText;
-        }
-        let currentPage = 1;
-        let take = 10;
-        let limit = Number(searchParams.get('limit'));
-        let page = searchParams.get('page');
-
-        if (page) {
-            currentPage = parseInt(page);
-        }
-        if (limit) {
-            take = Number(limit);
-        } else {
-            limit = 10;
-        }
-        const skip = take * (currentPage - 1);
-        let statusFilter = 'PUBLIC';
-        if (searchParams.get('status')) {
-            statusFilter = searchParams.get('status')!.toUpperCase();
-        }
         const session = await getServerSession(authOptions);
-        let garageId = 0;
-        if (searchParams.get('garage')) {
-            garageId = Number(searchParams.get('garage'));
-        } else if (session && session?.user?.garageId) {
-            garageId = Number(session.user.garageId);
+        if (session) {
+            const { searchParams } = new URL(request.url);
+            const categoryId = searchParams.get('categoryId');
+            const brandIdFilter = searchParams.get('brand');
+            let titleFilter = '';
+            const searchText = searchParams.get('s');
+            if (searchText) {
+                titleFilter = searchText;
+            }
+            let currentPage = 1;
+            let take = 10;
+            let limit = Number(searchParams.get('limit'));
+            let page = searchParams.get('page');
+
+            if (page) {
+                currentPage = parseInt(page);
+            }
+            if (limit) {
+                take = Number(limit);
+            } else {
+                limit = 10;
+            }
+            const skip = take * (currentPage - 1);
+            let statusFilter = 'PUBLIC';
+            if (searchParams.get('status')) {
+                statusFilter = searchParams.get('status')!.toUpperCase();
+            }
+            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+
+            let isProduct = {};
+            if (searchParams.get('isProduct')?.length) {
+                isProduct = searchParams.get('isProduct') == '1' ? true : false;
+            }
+
+            const requestData = {
+                category: categoryId,
+                brand: brandIdFilter,
+                s: titleFilter,
+                limit: limit,
+                page: page,
+                garageId: garageId,
+            };
+            const products = await getProducts(garageId, requestData);
+
+            // const [products, total] = await prisma.$transaction([
+            //     prisma.product.findMany({
+            //         take: take,
+            //         skip: skip,
+            //         orderBy: {
+            //             id: 'desc',
+            //         },
+            //         where: {
+            //             AND: [
+            //                 {
+            //                     categories,
+            //                     name: {
+            //                         contains: titleFilter!,
+            //                     },
+            //                     brands,
+            //                     status: {
+            //                         not: 'DELETE',
+            //                     },
+            //                     garageId,
+            //                     isProduct,
+            //                 },
+            //             ],
+            //         },
+            //         include: {
+            //             reviews: true,
+            //             categories: true,
+            //             garage: true,
+            //         },
+            //     }),
+            //     prisma.product.count(),
+            // ]);
+
+            // const totalPage = Math.ceil(total / limit);
+
+            return NextResponse.json(products);
         }
-
-        let isProduct = {};
-        if (searchParams.get('isProduct')?.length) {
-            isProduct = searchParams.get('isProduct') == '1' ? true : false;
-        }
-
-        const requestData = {
-            category: categoryId,
-            brand: brandIdFilter,
-            s: titleFilter,
-            limit: limit,
-            page: page,
-        };
-        const products = await getProducts(garageId, requestData);
-
-        // const [products, total] = await prisma.$transaction([
-        //     prisma.product.findMany({
-        //         take: take,
-        //         skip: skip,
-        //         orderBy: {
-        //             id: 'desc',
-        //         },
-        //         where: {
-        //             AND: [
-        //                 {
-        //                     categories,
-        //                     name: {
-        //                         contains: titleFilter!,
-        //                     },
-        //                     brands,
-        //                     status: {
-        //                         not: 'DELETE',
-        //                     },
-        //                     garageId,
-        //                     isProduct,
-        //                 },
-        //             ],
-        //         },
-        //         include: {
-        //             reviews: true,
-        //             categories: true,
-        //             garage: true,
-        //         },
-        //     }),
-        //     prisma.product.count(),
-        // ]);
-
-        // const totalPage = Math.ceil(total / limit);
-
-        return NextResponse.json(products);
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
