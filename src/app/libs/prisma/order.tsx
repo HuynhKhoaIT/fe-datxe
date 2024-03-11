@@ -8,6 +8,7 @@ import { randomString } from "@/utils";
 export async function getOrders(garage: Number,requestData: any){
     
     try {
+        
     let titleFilter = '';
     const searchText = requestData.s;
     if (searchText) {
@@ -46,7 +47,8 @@ export async function getOrders(garage: Number,requestData: any){
                 status: {
                     not: 'DELETE',
                 },
-                createdById
+                createdById,
+                garageId: garageId
             },
             include: {
                 serviceAdvisor: true,
@@ -77,7 +79,8 @@ export async function getOrders(garage: Number,requestData: any){
                 status: {
                     not: 'DELETE',
                 },
-                createdById
+                createdById,
+                garageId: garageId
             },
         })
     ]);

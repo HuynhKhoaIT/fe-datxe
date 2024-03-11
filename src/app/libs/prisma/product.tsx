@@ -54,7 +54,7 @@ export async function getProducts(garage: Number,requestData:any) {
     }
 
     if (garage) {
-        garageId = garage;
+      garageId = requestData.garageId;
     }
 
     if (requestData.status) {
