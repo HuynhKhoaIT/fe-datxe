@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -160,6 +161,7 @@ model CarModelsOnProducts {
 }
 model Order{
   id                Int @id @default(autoincrement())
+  slug              String?
   code              String
   customerRequest   String?
   customerNote      String?
@@ -251,6 +253,8 @@ model Customer{
   cars                Car[]
   customerGroup       CustomerGroupsOnCustomers[]
   orders              Order[]
+  @@fulltext([fullName])
+  @@fulltext([fullName, phoneNumber])
 }
 
 model CustomerGroup {

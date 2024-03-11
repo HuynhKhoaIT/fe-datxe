@@ -1,16 +1,13 @@
-import { getCustomers } from '@/app/libs/prisma/customer';
-import prisma from '@/app/libs/prismadb';
-import { getCustomersFromDLBD } from '@/utils/customers';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
-import validator from 'validator';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { getCarsFromDLBD } from '@/utils/car';
 
 export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
         if (session?.user?.token) {
-            const customers = await getCustomersFromDLBD(session?.user?.token);
+            const customers = await getCarsFromDLBD(session?.user?.token);
             return NextResponse.json(customers);
         }
         throw new Error('Chua dang nhap');

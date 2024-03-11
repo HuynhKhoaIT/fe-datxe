@@ -10,6 +10,7 @@ import {
   GET_PRODUCTS_ENDPOINT,
   GET_SERVICE_ENDPOINT,
   GET_PRODUCT_DETAIL,
+  GET_PRODUCTS_DLBD_ENDPOINT,
 } from "./constants/endpoints";
 import { IProduct } from "@/interfaces/product";
 /**
@@ -105,3 +106,14 @@ export const getProductsSearch = async (
     throw new Error("Lỗi trong quá trình lấy danh sách sản phẩm");
   }
 };
+export async function getProductsFromDLBD(token : string){
+  const res = await fetch(GET_PRODUCTS_DLBD_ENDPOINT,{
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+token
+    },
+  });
+
+  const data = await res.json();
+  return data;
+}
