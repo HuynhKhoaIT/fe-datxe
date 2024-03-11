@@ -30,6 +30,8 @@ export default function DateField({
       locale={locale}
       required={required}
       defaultValue={defaultValue}
+      size="lg"
+      radius={0}
     />
   );
 }

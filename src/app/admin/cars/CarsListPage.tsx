@@ -241,23 +241,6 @@ export default function CarsListPage({
             </Tabs.Panel>
             <Tabs.Panel value="second">
               <ListPage
-                actionBar={
-                  <Flex justify={"end"} align={"center"} gap={20}>
-                    <Link
-                      href={{
-                        pathname: `/admin/customers/create`,
-                      }}
-                    >
-                      <Button
-                        size="lg"
-                        radius={0}
-                        leftSection={<IconPlus size={18} />}
-                      >
-                        Thêm mới
-                      </Button>
-                    </Link>
-                  </Flex>
-                }
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic

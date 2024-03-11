@@ -49,7 +49,7 @@ export default function ModalChooseProducts({
     if (!data) {
       throw new Error("Failed to fetch data");
     }
-    const dataOption = data?.map((item: any) => ({
+    const dataOption = data?.data?.map((item: any) => ({
       value: item.id.toString(),
       label: item.title,
     }));
