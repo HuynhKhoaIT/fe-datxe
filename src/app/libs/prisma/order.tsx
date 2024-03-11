@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import prisma from "../prismadb";
 import { createCar } from "./car";
 import { createCustomer } from "./customer";
+import { randomString } from "@/utils";
 
 
 export async function getOrders(garage: Number,requestData: any){
@@ -133,6 +134,47 @@ export async function findOrders(id: Number,request: any){
     }
     
 }
+export async function getOrderBySlug(slug: string){
+    try {
+        const rs = await prisma.order.findFirst({
+            where: {
+                slug: slug,
+            },
+            include: {
+                serviceAdvisor: true,
+                car: true,
+                customer: true,
+                orderDetails: {
+                    select: {
+                        productId:true,
+                        note: true,
+                        priceSale: true,
+                        price: true,
+                        subTotal: true,
+                        saleType: true,
+                        saleValue: true,
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    }
+                },
+            },
+            orderBy: {
+                id: 'desc',
+            },
+        });
+        return rs;
+    } catch (error) {
+        return { error };
+    }
+    
+}
+
 export async function createOrder(json: any) {
     try {
         let customerId = 1;
@@ -200,8 +242,10 @@ export async function createOrder(json: any) {
                 });
             });
         }
+        
         let data = {
             code: (await codeGeneration(json.garageId)).toString(),
+            slug: await getSlugForOrder(),
             customerId: Number(customerId),
             carId: Number(carId),
             dateTime: json.dateTime ?? new Date(),
@@ -435,3 +479,13 @@ export async function codeGeneration(garageId: Number){
         return num.padStart(6, '0');
     }
 }
+
+export async function getSlugForOrder() {
+    let str = randomString(9).toLowerCase();
+    const c = await getOrderBySlug(str);
+    if(!c){
+        return str;
+    }
+    await getSlugForOrder();
+}
+

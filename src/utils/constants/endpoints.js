@@ -27,6 +27,7 @@ export const GET_ORDER_GARAGE_ENDPOINT = `${process.env.apiUserV3}/orders/get-by
 
 // DLBD
 export const GET_CUSTOMERS_DLBD_ENDPOINT = `${process.env.apiUserV3}/customers`;
+export const GET_PRODUCTS_DLBD_ENDPOINT = `${process.env.apiUserV3}/products`;
+export const GET_CARS_DLBD_ENDPOINT = `${process.env.apiUserV3}/cars`;
 export const GET_CARS_DLBD_GUEST = `${process.env.apiUserV3}/cars`;
 export const GET_PRODUCTS_DLBD_GUEST = `${process.env.apiUserV3}/products`;
-

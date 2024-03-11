@@ -75,16 +75,22 @@ export async function getCustomers(requestData:any) {
                 id: 'desc'
             },
             where: {
-                AND: [
-                    {
-                        fullName: {
-                            contains: titleFilter
-                        },
-                        garageId: garageId,
-                        customerGroup
-                        // status: ,
-                    },
-                ],
+              
+              OR: [
+                {
+                  fullName: {
+                    contains: titleFilter
+                  },
+                },
+                {
+                  phoneNumber: {
+                    contains: titleFilter
+                  }
+                }
+              ],
+              
+              garageId: garageId,
+              customerGroup
             },
             include: {
                 cars: true,

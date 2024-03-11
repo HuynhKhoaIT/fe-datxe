@@ -5,7 +5,7 @@ import axios from "axios";
 /**
  * Internal Dependencies.
  */
-import { GET_CAR_ENDPOINT, SET_CAR_DEFAULT } from "./constants/endpoints";
+import { GET_CARS_DLBD_ENDPOINT, GET_CAR_ENDPOINT, SET_CAR_DEFAULT } from "./constants/endpoints";
 import { ICar } from "@/interfaces/car";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -165,4 +165,16 @@ export const getCarFromDLBD = async (carId: number,token: string) =>{
     console.error(error);
     throw new Error("Lỗi trong quá trình tạo xe mặc định");
   }
+}
+
+export async function getCarsFromDLBD(token : string){
+  const res = await fetch(GET_CARS_DLBD_ENDPOINT,{
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+token
+    },
+  });
+
+  const data = await res.json();
+  return data;
 }
