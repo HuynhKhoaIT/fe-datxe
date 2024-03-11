@@ -8,7 +8,13 @@ import { Badge, Button, Flex, Image, Tabs, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
 import Link from "next/link";
-import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+  IconArrowUp,
+  IconCopy,
+  IconPencil,
+  IconPlus,
+  IconTrash,
+} from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 import { useDisclosure } from "@mantine/hooks";
@@ -18,6 +24,7 @@ import ListPage from "@/app/components/layout/ListPage";
 import Typo from "@/app/components/elements/Typo";
 import styles from "./index.module.scss";
 import { IconFilter } from "@tabler/icons-react";
+import axios from "axios";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -46,11 +53,10 @@ export default function ProductsManaga() {
     setProducts(data);
   }
   async function getDataDLBD(searchParams: any, page: number) {
-    const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    setProducts(data);
+    const res = await axios.get(
+      `/api/products/dlbd?${searchParams}&page=${page}`
+    );
+    setProducts(res?.data);
   }
   async function getDataCategories() {
     const res = await fetch(`/api/product-category`, { method: "GET" });
@@ -69,6 +75,7 @@ export default function ProductsManaga() {
     if (activeTab == "first") {
       getData(searchParams.toString(), page);
     } else if (activeTab == "second") {
+      getDataDLBD(searchParams.toString(), page);
     }
   }, [searchParams, page, activeTab]);
 
@@ -97,24 +104,28 @@ export default function ProductsManaga() {
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
       ),
       name: "image",
-      dataIndex: ["images"],
+      dataIndex: activeTab === "first" ? ["images"] : ["thumbnail"],
       width: "90px",
       render: (data: any) => {
-        const images = JSON.parse(data);
-        if (!images) {
+        if (activeTab === "first") {
+          const images = JSON?.parse(data);
+          if (!images) {
+            return (
+              <Image
+                radius="md"
+                src={ImageDefult.src}
+                h={40}
+                w="auto"
+                fit="contain"
+              />
+            );
+          }
           return (
-            <Image
-              radius="md"
-              src={ImageDefult.src}
-              h={40}
-              w="auto"
-              fit="contain"
-            />
+            <Image radius="md " h={40} w={40} fit="cover" src={images[0]} />
           );
+        } else {
+          return <Image radius="md " h={40} w={40} fit="cover" src={data} />;
         }
-        return (
-          <Image radius="md " h={40} w={80} fit="contain" src={images[0]} />
-        );
       },
     },
     {
@@ -129,7 +140,7 @@ export default function ProductsManaga() {
         return <span>{dataRow}</span>;
       },
     },
-    {
+    activeTab === "first" && {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Số lượng</span>
       ),
@@ -147,7 +158,7 @@ export default function ProductsManaga() {
         return <span>{dataRow?.toLocaleString()}đ</span>;
       },
     },
-    {
+    activeTab === "first" && {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Giá sale</span>
       ),
@@ -157,7 +168,7 @@ export default function ProductsManaga() {
         return <span>{dataRow?.toLocaleString()}đ</span>;
       },
     },
-    {
+    activeTab === "first" && {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Loại</span>
       ),
@@ -219,30 +230,52 @@ export default function ProductsManaga() {
       ),
       dataIndex: [],
       width: "100px",
+      textAlign: "center",
       render: (record: any) => {
-        return (
-          <>
-            <Link
-              href={{
-                pathname: `/admin/products/${record.id}`,
-              }}
-            >
-              <Tooltip label="Cập nhật" withArrow position="bottom">
+        if (activeTab === "first") {
+          return (
+            <>
+              <Link
+                href={{
+                  pathname: `/admin/products/${record.id}`,
+                }}
+              >
+                <Tooltip label="Cập nhật" withArrow position="bottom">
+                  <Button
+                    size="lg"
+                    radius={0}
+                    style={{ margin: "0 5px" }}
+                    variant="transparent"
+                    color="gray"
+                    p={5}
+                    onClick={() => {}}
+                  >
+                    <IconPencil size={16} />
+                  </Button>
+                </Tooltip>
+              </Link>
+
+              <Tooltip label="Xoá" withArrow position="bottom">
                 <Button
                   size="lg"
                   radius={0}
-                  style={{ margin: "0 5px" }}
-                  variant="transparent"
-                  color="gray"
                   p={5}
-                  onClick={() => {}}
+                  variant="transparent"
+                  color="red"
+                  onClick={(e) => {
+                    openDeleteProduct();
+                    setDeleteRow(record.id);
+                  }}
                 >
-                  <IconPencil size={16} />
+                  <IconTrash size={16} color="red" />
                 </Button>
               </Tooltip>
-            </Link>
-
-            <Tooltip label="Xoá" withArrow position="bottom">
+            </>
+          );
+        }
+        return (
+          <>
+            <Tooltip label="Lên sàn" withArrow position="bottom">
               <Button
                 size="lg"
                 radius={0}
@@ -250,11 +283,12 @@ export default function ProductsManaga() {
                 variant="transparent"
                 color="red"
                 onClick={(e) => {
-                  openDeleteProduct();
-                  setDeleteRow(record.id);
+                  router.push(
+                    `/admin/products/direction?productId=${record.id}`
+                  );
                 }}
               >
-                <IconTrash size={16} color="red" />
+                <IconArrowUp size={16} color="red" />
               </Button>
             </Tooltip>
           </>
@@ -288,33 +322,23 @@ export default function ProductsManaga() {
     nameId: null,
     yearId: null,
   };
+
+  console.log(products);
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
       <div style={{ background: "#fff", marginBottom: 30 }}>
-        <div style={{ borderBottom: "1px solid #eeeeee" }}>
-          <Typo
-            size="18px"
-            type="bold"
-            style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
-          >
-            <IconFilter size={22} />
-            Tìm kiếm
-          </Typo>
-        </div>
-        <div style={{ padding: 30 }}>
-          <SearchForm
-            searchData={searchData}
-            brandFilter={true}
-            initialValues={initialValuesSearch}
-          />
-        </div>
+        <SearchForm
+          searchData={searchData}
+          brandFilter={true}
+          initialValues={initialValuesSearch}
+        />
       </div>
       <div style={{ marginBottom: 20 }}>
         <Flex justify={"end"} align={"center"} gap={20}>
           <Link
             href={{
-              pathname: `/admin/customers/create`,
+              pathname: `/admin/products/create`,
             }}
           >
             <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
@@ -324,22 +348,22 @@ export default function ProductsManaga() {
         </Flex>
       </div>
       <div style={{ background: "#fff", position: "relative" }}>
-        <div style={{ borderBottom: "1px solid #eeeeee" }}>
-          <Typo
-            size="18px"
-            type="bold"
-            style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
-          >
-            <IconFilter size={22} />
-            Danh sách
-          </Typo>
-        </div>
-
         <div>
-          <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
+          <Tabs
+            variant="pills"
+            value={activeTab}
+            onChange={(value) => {
+              setActiveTab(value);
+              setPage(1);
+            }}
+          >
             <Tabs.List classNames={{ list: styles.list }}>
-              <Tabs.Tab value="first">Sản phẩm trên sàn</Tabs.Tab>
-              <Tabs.Tab value="second">Sản phẩm trên phần mềm</Tabs.Tab>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="first">
+                Sản phẩm trên sàn
+              </Tabs.Tab>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="second">
+                Sản phẩm trên phần mềm
+              </Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="first">
               <ListPage
@@ -367,32 +391,15 @@ export default function ProductsManaga() {
             </Tabs.Panel>
             <Tabs.Panel value="second">
               <ListPage
-                actionBar={
-                  <Flex justify={"end"} align={"center"} gap={20}>
-                    <Link
-                      href={{
-                        pathname: `/admin/customers/create`,
-                      }}
-                    >
-                      <Button
-                        size="lg"
-                        radius={0}
-                        leftSection={<IconPlus size={18} />}
-                      >
-                        Thêm mới
-                      </Button>
-                    </Link>
-                  </Flex>
-                }
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
                     data={products?.data}
                     columns={columns}
                     loading={true}
-                    // totalPage={products?.totalPage}
-                    // setPage={setPage}
-                    // activePage={page}
+                    totalPage={products?.last_page}
+                    setPage={setPage}
+                    activePage={page}
                   />
                 }
               />

@@ -224,6 +224,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Autocomplete
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("cityId")}
                     label="Tỉnh/Thành phố"
@@ -246,6 +248,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Autocomplete
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("districtId")}
                     label="Huyện/Phường"
@@ -267,6 +271,8 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <Autocomplete
+                    size="lg"
+                    radius={0}
                     withAsterisk
                     {...form.getInputProps("wardId")}
                     disabled={
