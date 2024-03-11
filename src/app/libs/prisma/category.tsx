@@ -10,12 +10,14 @@ export async function getCategories(requestData: any) {
     if(requestData.limit){
       take = parseInt(requestData.limit)
     }
+    
     const skip = take * (currentPage - 1);
     let titleFilter = '';
     if(requestData.s){
         titleFilter = requestData.s;
     }
-    let garageId:any = {};
+    
+    let garageId:any = 0;
     if(requestData.garageId){
       garageId = requestData.garageId
     }
