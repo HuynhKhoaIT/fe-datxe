@@ -16,7 +16,7 @@ const Category = ({ categories }: any) => {
     >
       <div className={styles.rowItem}>
         <SlickCarousel gap={8} column={4} height="200px">
-          {categories?.map((item: any) => {
+          {categories?.data?.map((item: any) => {
             return <CardCategory key={item?.id} category={item} garageId={0} />;
           })}
         </SlickCarousel>
