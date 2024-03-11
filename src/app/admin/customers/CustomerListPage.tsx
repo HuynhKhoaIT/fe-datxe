@@ -1,7 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Flex, Image, Tabs } from "@mantine/core";
-import { IconPencil,IconFilter, IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+  IconPencil,
+  IconFilter,
+  IconPlus,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { notifications } from "@mantine/notifications";
@@ -206,72 +211,44 @@ export default function CustomerListPage({
 
   return (
     <div>
-      <div style={{ background: "#fff", marginBottom: 30 }}>
-        <div style={{borderBottom: "1px solid #eeeeee"}}>
-        <Typo
-          size="18px"
-          type="bold"
-          style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
-        >
-          <IconFilter size={22} />Tìm kiếm
-        </Typo>
-        </div>
-        <div style={{ padding: 30 }}>
-          <SearchForm
-            searchData={searchData}
-            initialValues={initialValuesSearch}
-          />
-        </div>
-      </div>
-      <div style={{marginBottom: 20,}}>
-      <Button
-        size="lg"
-        radius={0}
-        leftSection={<IconPlus size={18} />}
-      >
-        Thêm mới
-      </Button>
+      <SearchForm searchData={searchData} initialValues={initialValuesSearch} />
+      <div style={{ marginBottom: 20 }}>
+        <Flex justify={"end"} align={"center"} gap={20}>
+          <Link
+            href={{
+              pathname: `/admin/customers/create`,
+            }}
+          >
+            <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+              Thêm mới
+            </Button>
+          </Link>
+        </Flex>
       </div>
       <div style={{ background: "#fff", position: "relative" }}>
-        {/* <div className={styles.title}>
-          <Typo
-            size="small"
-            type="bold"
-            style={{ color: "var(--primary-orange)", padding: "8px 20px" }}
-          >
-            Khách hàng
-          </Typo>
-        </div> */}
-
-        <div style={{borderBottom: "1px solid #eeeeee"}}>
+        {/* <div style={{ borderBottom: "1px solid #eeeeee" }}>
           <Typo
             size="18px"
             type="bold"
             style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
           >
-            <IconFilter size={22} />Danh sách
+            <IconFilter size={22} />
+            Danh sách
           </Typo>
-        </div>
-        
-        <div >
+        </div> */}
+
+        <div>
           <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
-          <Tabs.List classNames={{ list: styles.list }}>
-              <Tabs.Tab value="first">Khách hàng trên sàn</Tabs.Tab>
-              <Tabs.Tab value="second">Khách hàng trên phần mềm</Tabs.Tab>
+            <Tabs.List classNames={{ list: styles.list }}>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="first">
+                Khách hàng trên sàn
+              </Tabs.Tab>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="second">
+                Khách hàng trên phần mềm
+              </Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="first">
               <ListPage
-                actionBar={
-                  <Flex justify={"end"} align={"center"} gap={20}>
-                    <Link
-                      href={{
-                        pathname: `/admin/customers/create`,
-                      }}
-                    >
-                      
-                    </Link>
-                  </Flex>
-                }
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic

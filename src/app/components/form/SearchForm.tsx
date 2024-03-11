@@ -5,6 +5,7 @@ import { IconSearch, IconTrash } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Typo from "../elements/Typo";
+import { IconFilter } from "@tabler/icons-react";
 
 export default function SearchForm({
   searchData,
@@ -82,10 +83,21 @@ export default function SearchForm({
     router.push(`${pathname}?${queryString}`, { scroll: false });
   };
   return (
-    <Box>
+    <Box style={{ background: "#fff", marginBottom: 30 }}>
+      <div style={{ borderBottom: "1px solid #eeeeee" }}>
+        <Typo
+          size="18px"
+          type="bold"
+          style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
+        >
+          <IconFilter size={22} />
+          Tìm kiếm
+        </Typo>
+      </div>
       <form
         onSubmit={form.onSubmit((values) => handleSubmit(values))}
         onReset={form.onReset}
+        style={{ padding: 30 }}
       >
         <Flex gap={10} style={{ flexWrap: "wrap" }}>
           {searchData?.map((item: any, index: number) => {
@@ -171,7 +183,7 @@ export default function SearchForm({
             variant="outline"
             color="#f72b50"
             bg="#fee6ea"
-            style={{border:"0"}}
+            style={{ border: "0" }}
             onClick={() => {
               form.reset();
             }}

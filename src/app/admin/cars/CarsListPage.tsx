@@ -2,7 +2,12 @@
 import React, { Fragment, useState } from "react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { Badge, Button, Flex, Image, Tabs } from "@mantine/core";
-import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+  IconFilter,
+  IconPencil,
+  IconPlus,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { notifications } from "@mantine/notifications";
@@ -11,6 +16,8 @@ import dynamic from "next/dynamic";
 import { statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import ListPage from "@/app/components/layout/ListPage";
+import styles from "./index.module.scss";
+import Typo from "@/app/components/elements/Typo";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -21,6 +28,8 @@ export default function CarsListPage({
   dataSource,
   activeTab,
   setActiveTab,
+  page,
+  setPage,
 }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
@@ -184,95 +193,87 @@ export default function CarsListPage({
   };
   return (
     <Fragment>
-      <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
-        <Tabs.List>
-          <Tabs.Tab h={42} value="first">
-            Xe trên sàn
-          </Tabs.Tab>
-          <Tabs.Tab h={42} value="second">
-            Xe trên phần mềm
-          </Tabs.Tab>
-        </Tabs.List>
-
-        <Tabs.Panel value="first">
-          <ListPage
-            searchForm={
-              <SearchForm
-                searchData={searchData}
-                initialValues={initialValuesSearch}
-                brandFilter={true}
+      <div style={{ background: "#fff", marginBottom: 30 }}>
+        <SearchForm
+          searchData={searchData}
+          initialValues={initialValuesSearch}
+          brandFilter={true}
+        />
+      </div>
+      <div style={{ marginBottom: 20 }}>
+        <Flex justify={"end"} align={"center"}>
+          <Link
+            href={{
+              pathname: `/admin/cars/create`,
+            }}
+          >
+            <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+              Thêm mới
+            </Button>
+          </Link>
+        </Flex>
+      </div>
+      <div style={{ background: "#fff", position: "relative" }}>
+        <div>
+          <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
+            <Tabs.List classNames={{ list: styles.list }}>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="first">
+                Xe trên sàn
+              </Tabs.Tab>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="second">
+                Xe trên phần mềm
+              </Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="first">
+              <ListPage
+                style={{ height: "100%" }}
+                baseTable={
+                  <TableBasic
+                    data={dataSource?.data}
+                    columns={columns}
+                    loading={true}
+                    totalPage={dataSource?.totalPage}
+                    setPage={setPage}
+                    activePage={page}
+                  />
+                }
               />
-            }
-            actionBar={
-              <Flex justify={"end"} align={"center"}>
-                <Link
-                  href={{
-                    pathname: `/admin/cars/create`,
-                  }}
-                >
-                  <Button
-                    size="lg"
-                    radius={0}
-                    leftSection={<IconPlus size={18} />}
-                  >
-                    Thêm mới
-                  </Button>
-                </Link>
-              </Flex>
-            }
-            style={{ height: "100%" }}
-            baseTable={
-              <TableBasic
-                data={dataSource}
-                columns={columns}
-                loading={true}
-                // totalPage={marketing?.totalPage}
-                // setPage={setPage}
-                // activePage={page}
+            </Tabs.Panel>
+            <Tabs.Panel value="second">
+              <ListPage
+                actionBar={
+                  <Flex justify={"end"} align={"center"} gap={20}>
+                    <Link
+                      href={{
+                        pathname: `/admin/customers/create`,
+                      }}
+                    >
+                      <Button
+                        size="lg"
+                        radius={0}
+                        leftSection={<IconPlus size={18} />}
+                      >
+                        Thêm mới
+                      </Button>
+                    </Link>
+                  </Flex>
+                }
+                style={{ height: "100%" }}
+                baseTable={
+                  <TableBasic
+                    data={dataSource?.data}
+                    columns={columns}
+                    loading={true}
+                    // totalPage={marketing?.totalPage}
+                    // setPage={setPage}
+                    // activePage={page}
+                  />
+                }
               />
-            }
-          />
-        </Tabs.Panel>
-        <Tabs.Panel value="second">
-          <ListPage
-            searchForm={
-              <SearchForm
-                searchData={searchData}
-                initialValues={initialValuesSearch}
-                brandFilter={true}
-              />
-            }
-            actionBar={
-              <Flex justify={"end"} align={"center"}>
-                <Link
-                  href={{
-                    pathname: `/admin/cars/create`,
-                  }}
-                >
-                  <Button
-                    size="lg"
-                    radius={0}
-                    leftSection={<IconPlus size={18} />}
-                  >
-                    Thêm mới
-                  </Button>
-                </Link>
-              </Flex>
-            }
-            style={{ height: "100%" }}
-            baseTable={
-              <TableBasic
-                data={dataSource}
-                columns={columns}
-                loading={true}
-                // totalPage={marketing?.totalPage}
-                // setPage={setPage}
-                // activePage={page}
-              />
-            }
-          />
-        </Tabs.Panel>
-      </Tabs>
+            </Tabs.Panel>
+          </Tabs>
+        </div>
+      </div>
 
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}

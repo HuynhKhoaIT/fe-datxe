@@ -246,6 +246,7 @@ export default function Discounts() {
           </Flex>
         }
         style={{ height: "100%" }}
+        titleTable={true}
         baseTable={
           <TableBasic
             data={marketing?.data}

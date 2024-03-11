@@ -198,9 +198,10 @@ export default function CategoryListPage({ dataSource, profile }: any) {
           </Flex>
         }
         style={{ height: "100%" }}
+        titleTable={true}
         baseTable={
           <TableBasic
-            data={dataSource}
+            data={dataSource?.data}
             columns={columns}
             loading={true}
             // totalPage={marketing?.totalPage}
