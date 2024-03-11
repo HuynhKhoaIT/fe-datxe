@@ -44,7 +44,14 @@ export default function ProductItem2({
               4.6
             </Typo>
           </div>
-          <Badge classNames={{ root: styles.productOnSale }}>On Sale</Badge>
+          <Badge
+            radius={0}
+            variant="light"
+            size="lg"
+            classNames={{ root: styles.productOnSale }}
+          >
+            On Sale
+          </Badge>
         </div>
 
         <Flex gap={10} mt={6} align={"center"}>

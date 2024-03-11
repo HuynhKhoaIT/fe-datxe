@@ -142,7 +142,13 @@ export default function SellingProductListPage() {
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={index}>
+            <Badge
+              radius={0}
+              size="lg"
+              variant="light"
+              color={matchedStatus.color}
+              key={index}
+            >
               {matchedStatus.label}
             </Badge>
           );
@@ -164,7 +170,13 @@ export default function SellingProductListPage() {
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge
+              variant="light"
+              radius={0}
+              size="lg"
+              color={matchedStatus.color}
+              key={record}
+            >
               {matchedStatus.label}
             </Badge>
           );

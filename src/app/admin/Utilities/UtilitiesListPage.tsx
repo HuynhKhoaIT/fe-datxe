@@ -87,7 +87,13 @@ export default function UtilitiesListPage({ dataSource }: any) {
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge
+              variant="light"
+              radius={0}
+              size="lg"
+              color={matchedStatus.color}
+              key={record}
+            >
               {matchedStatus.label}
             </Badge>
           );

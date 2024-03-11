@@ -27,6 +27,8 @@ export default function CustomerListPage({
   dataSource,
   activeTab,
   setActiveTab,
+  page,
+  setPage,
 }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCustomer = async (id: any) => {
@@ -94,7 +96,13 @@ export default function CustomerListPage({
         const matchedStatus = sexOptions.find((item) => item.value === record);
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge
+              variant="light"
+              radius={0}
+              size="lg"
+              color={matchedStatus.color}
+              key={record}
+            >
               {matchedStatus.label}
             </Badge>
           );
@@ -116,7 +124,13 @@ export default function CustomerListPage({
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge
+              variant="light"
+              radius={0}
+              size="lg"
+              color={matchedStatus.color}
+              key={record}
+            >
               {matchedStatus.label}
             </Badge>
           );
@@ -250,12 +264,12 @@ export default function CustomerListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource}
+                    data={dataSource?.data}
                     columns={columns}
                     loading={true}
-                    // totalPage={marketing?.totalPage}
-                    // setPage={setPage}
-                    // activePage={page}
+                    totalPage={dataSource?.totalPage}
+                    setPage={setPage}
+                    activePage={page}
                   />
                 }
               />
@@ -282,7 +296,7 @@ export default function CustomerListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource}
+                    data={dataSource?.data}
                     columns={columns}
                     loading={true}
                     // totalPage={marketing?.totalPage}

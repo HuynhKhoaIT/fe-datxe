@@ -71,7 +71,13 @@ export default function OrdersListPage({ dataSource }: any) {
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={index}>
+            <Badge
+              radius={0}
+              size="lg"
+              variant="light"
+              color={matchedStatus.color}
+              key={index}
+            >
               {matchedStatus.label}
             </Badge>
           );

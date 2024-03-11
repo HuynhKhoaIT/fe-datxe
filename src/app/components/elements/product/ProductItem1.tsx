@@ -43,7 +43,14 @@ export default function ProductItem({
           <Typo size="tiny" className={styles.address}>
             Hồ Chí Minh
           </Typo>
-          <Badge classNames={{ root: styles.productOnSale }}>On Sale</Badge>
+          <Badge
+            radius={0}
+            size="lg"
+            variant="light"
+            classNames={{ root: styles.productOnSale }}
+          >
+            On Sale
+          </Badge>
         </div>
 
         <Flex gap={10}>

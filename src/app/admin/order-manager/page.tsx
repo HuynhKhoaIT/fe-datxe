@@ -136,7 +136,13 @@ export default function OrdersManaga() {
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={index}>
+            <Badge
+              radius={0}
+              size="lg"
+              variant="light"
+              color={matchedStatus.color}
+              key={index}
+            >
               {matchedStatus.label}
             </Badge>
           );

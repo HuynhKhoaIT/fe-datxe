@@ -140,7 +140,13 @@ export default function ModalChooseProducts({
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={index}>
+            <Badge
+              radius={0}
+              size="lg"
+              variant="light"
+              color={matchedStatus.color}
+              key={index}
+            >
               {matchedStatus.label}
             </Badge>
           );
@@ -162,7 +168,13 @@ export default function ModalChooseProducts({
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge
+              radius={0}
+              size="lg"
+              color={matchedStatus.color}
+              key={record}
+              variant="light"
+            >
               {matchedStatus.label}
             </Badge>
           );

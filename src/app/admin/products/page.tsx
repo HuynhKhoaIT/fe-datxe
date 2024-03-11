@@ -15,6 +15,7 @@ import { useDisclosure } from "@mantine/hooks";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import ListPage from "@/app/components/layout/ListPage";
+import Typo from "@/app/components/elements/Typo";
 const DynamicModalDeleteProduct = dynamic(
   () => import("../board/ModalDeleteProduct"),
   {
@@ -25,7 +26,7 @@ export default function ProductsManaga() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [products, setProducts] = useState<any>();
+  const [products, setProducts] = useState<any>([]);
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
 
   const [page, setPage] = useState<number>(1);
@@ -47,7 +48,7 @@ export default function ProductsManaga() {
     if (!data) {
       throw new Error("Failed to fetch data");
     }
-    const dataOption = data?.map((item: any) => ({
+    const dataOption = data?.data?.map((item: any) => ({
       value: item.id.toString(),
       label: item.title,
     }));
@@ -156,7 +157,13 @@ export default function ProductsManaga() {
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={index}>
+            <Badge
+              radius={0}
+              size="lg"
+              variant="light"
+              color={matchedStatus.color}
+              key={index}
+            >
               {matchedStatus.label}
             </Badge>
           );
@@ -178,7 +185,13 @@ export default function ProductsManaga() {
         );
         if (matchedStatus) {
           return (
-            <Badge color={matchedStatus.color} key={record}>
+            <Badge
+              variant="light"
+              radius={0}
+              size="lg"
+              color={matchedStatus.color}
+              key={record}
+            >
               {matchedStatus.label}
             </Badge>
           );
@@ -265,14 +278,23 @@ export default function ProductsManaga() {
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
-      <ListPage
-        searchForm={
+      <div style={{ background: "#fff", marginBottom: 30 }}>
+        <Typo
+          size="small"
+          type="bold"
+          style={{ color: "var(--primary-orange)", padding: "8px 20px" }}
+        >
+          Tìm kiếm
+        </Typo>
+        <div style={{ padding: "0 30px 30px" }}>
           <SearchForm
             searchData={searchData}
             brandFilter={true}
             initialValues={initialValuesSearch}
           />
-        }
+        </div>
+      </div>
+      <ListPage
         actionBar={
           <Flex justify={"end"} align={"center"}>
             <Link

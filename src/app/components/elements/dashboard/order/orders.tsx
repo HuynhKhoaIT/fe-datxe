@@ -68,17 +68,17 @@ export default function Orders({ ordersData }: any) {
         return (
           <span>
             {dataRow == 1 && (
-              <Badge variant="light" color="yellow">
+              <Badge radius={0} size="lg" variant="light" color="yellow">
                 Tiếp nhận
               </Badge>
             )}
             {dataRow == 2 && (
-              <Badge variant="light" color="blue">
+              <Badge radius={0} size="lg" variant="light" color="blue">
                 Báo giá
               </Badge>
             )}
             {dataRow == 7 && (
-              <Badge variant="light" color="green">
+              <Badge radius={0} size="lg" variant="light" color="green">
                 Hoàn thành
               </Badge>
             )}

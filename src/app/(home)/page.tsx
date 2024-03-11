@@ -82,7 +82,7 @@ export default async function Home() {
           defaultTheme: LandingPageMobile,
         },
       }}
-      categories={categories}
+      categories={categories.data}
       reassons={reassons}
       productsRelate={productsRelate}
       servicesHot={servicesHot}
