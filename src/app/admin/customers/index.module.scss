@@ -12,8 +12,13 @@
     padding-left: 20px;
 }
 .list {
-    justify-content: flex-end;
-    padding-right: 30px;
+    border-bottom: 1px solid #eeeeee;
+}
+.tab {
+    height: 50px;
+    font-size: 18px;
+    font-weight: 550;
+    border-radius: 0;
 }
 .title {
     position: absolute;
