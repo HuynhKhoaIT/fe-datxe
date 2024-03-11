@@ -12,6 +12,7 @@ import {
   CHECK_PHONE_NUMBER,
   CHECK_OTP,
   GET_PROFILE_ENDPOINT,
+  POST_GARAGE_REGISTER_ENDPOINT,
 } from "./constants/endpoints";
 
 import { IUser } from "@/interfaces/user";
@@ -131,12 +132,12 @@ export const registerGarage = async (
 ): Promise<void> => {
   try {
     const res = await axios.post(
-      `${POST_REGISTER_ENDPOINT}`,
+      `${POST_GARAGE_REGISTER_ENDPOINT}`,
       {
         name: name,
         phone: phone,
         address: address,
-        phongarageNamee: garageName,
+        garageName: garageName,
         password: password,
         password_confirmation: password_confirmation,
       },
