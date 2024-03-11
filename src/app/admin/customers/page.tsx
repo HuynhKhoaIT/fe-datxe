@@ -3,7 +3,6 @@ import CustomerListPage from "./CustomerListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import { getCustomers } from "@/app/libs/prisma/customer";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";

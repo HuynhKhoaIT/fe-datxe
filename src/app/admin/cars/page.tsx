@@ -13,7 +13,7 @@ export default function Cars() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/car`);
-        setCars(response.data);
+        setCars(response.data.data);
       } catch (error) {}
     };
     const fetchDataDLBD = async () => {
