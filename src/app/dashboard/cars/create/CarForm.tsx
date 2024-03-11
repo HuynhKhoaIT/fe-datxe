@@ -281,6 +281,8 @@ export default function CarForm({
         <Grid>
           <Grid.Col span={12}>
             <Textarea
+              size="lg"
+              radius={0}
               label="Mô tả chi tiết"
               maxLength={100}
               {...form.getInputProps("description")}

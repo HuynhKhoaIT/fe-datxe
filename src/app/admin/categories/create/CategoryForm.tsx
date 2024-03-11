@@ -180,6 +180,8 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
               <Grid mt={24}>
                 <Grid.Col span={12}>
                   <Textarea
+                    size="lg"
+                    radius={0}
                     label="Mô tả chi tiết"
                     minRows={4}
                     autosize={true}

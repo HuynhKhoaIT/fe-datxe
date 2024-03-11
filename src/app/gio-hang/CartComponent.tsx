@@ -16,8 +16,6 @@ import Container from "../components/common/Container";
 import { sendSMSOrder } from "@/utils/order";
 
 export default function CartComponent({ myAccount }: any) {
-  console.log(process.env.apiGuest);
-  console.log(process.env.REACT_APP_API);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(dayjs().format("HH:mm:ss"));
@@ -127,6 +125,7 @@ export default function CartComponent({ myAccount }: any) {
           message: "Đặt hàng thất bại: " + (data?.error || "Unknown error"),
         });
       } else {
+        console.log(data?.order);
         notifications.show({
           title: "Thành công",
           message: "Đặt hàng thành công",
@@ -136,7 +135,7 @@ export default function CartComponent({ myAccount }: any) {
           body: JSON.stringify(data?.order),
         });
         localStorage.setItem("cartData", JSON.stringify([]));
-        router.push("./");
+        router.push(`/dashboard/order/${data?.order?.slug}`);
       }
     } catch (error) {
       console.error("Error during API call:", error);

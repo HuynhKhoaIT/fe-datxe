@@ -97,7 +97,7 @@ export default function OrdersListPage({ dataSource }: any) {
           <>
             <Link
               href={{
-                pathname: `/dashboard/order/${record.id}`,
+                pathname: `/dashboard/order/${record.slug}`,
               }}
             >
               <Tooltip label="Chi tiết" withArrow position="bottom">

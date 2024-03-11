@@ -7,11 +7,13 @@ import TableBasic from "@/app/components/table/Tablebasic";
 import { Badge, Button, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dynamic from "next/dynamic";
+import { stepOrderOptions } from "@/constants/masterData";
 
 const DynamicModalReview = dynamic(() => import("./ModalReview"), {
   ssr: false,
 });
 export default function OrderDetailPage({ dataSource }: any) {
+  console.log(dataSource);
   const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
     false
   );
@@ -60,24 +62,6 @@ export default function OrderDetailPage({ dataSource }: any) {
         );
       },
     },
-    // {
-    //   label: <span style={{ whiteSpace: "nowrap",fontSize:"16px" }}>Tình trạng</span>,
-    //   name: "kind",
-    //   dataIndex: ["step"],
-    //   width: "100px",
-    //   render: (record: any, index: number) => {
-    //     const matchedStatus = stepOrderOptions.find(
-    //       (item) => item.value === record.toString()
-    //     );
-    //     if (matchedStatus) {
-    //       return (
-    //         <Badge radius={0} size="lg" variant="light"color={matchedStatus.color} key={index}>
-    //           {matchedStatus.label}
-    //         </Badge>
-    //       );
-    //     }
-    //   },
-    // },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
@@ -110,7 +94,7 @@ export default function OrderDetailPage({ dataSource }: any) {
                   <br />
                   <b>Tổng đơn hàng: </b> {dataSource?.total.toLocaleString()}
                   <br />
-                  <b>Trạng thái:</b> {showStatus(dataSource?.status)}
+                  <b>Trạng thái:</b> {showStatus(dataSource?.step.toString())}
                   <br />
                   <b>Ngày tiếp nhận:</b> 2/22/2014
                   <br />

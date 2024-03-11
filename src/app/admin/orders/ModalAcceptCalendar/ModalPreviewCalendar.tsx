@@ -160,6 +160,8 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
     <Box w={"100%"}>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Textarea
+          size="lg"
+          radius={0}
           label="Yêu cầu khách hàng"
           placeholder="Yêu cầu khách hàng"
           withAsterisk={true}
@@ -319,6 +321,8 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
         <Grid mt="md">
           <Grid.Col span={12}>
             <Textarea
+              size="lg"
+              radius={0}
               label="Ghi chú cho CVDV"
               placeholder="Ghi chú cho CVDV"
               withAsterisk
