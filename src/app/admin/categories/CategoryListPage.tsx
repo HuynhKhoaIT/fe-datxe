@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { Badge, Button, Flex, Image } from "@mantine/core";
@@ -21,6 +21,8 @@ const DynamicModalDeleteProduct = dynamic(
 const DynamicModalCategories = dynamic(() => import("./ModalCategoriesDLBD"));
 export default function CategoryListPage({ dataSource, profile }: any) {
   const [deleteRow, setDeleteRow] = useState();
+  const [loadingTable, handlers] = useDisclosure(true);
+
   const handleDeleteCategory = async (id: any) => {
     await fetch(`/api/product-category/${id}`, {
       method: "DELETE",
@@ -30,6 +32,12 @@ export default function CategoryListPage({ dataSource, profile }: any) {
       message: "Xoá danh mục thành công",
     });
   };
+
+  useEffect(() => {
+    if (dataSource?.data) {
+      handlers.close();
+    }
+  }, [dataSource]);
   const [
     openedDeleteProduct,
     { open: openDeleteProduct, close: closeDeleteProduct },
@@ -203,7 +211,7 @@ export default function CategoryListPage({ dataSource, profile }: any) {
           <TableBasic
             data={dataSource?.data}
             columns={columns}
-            loading={true}
+            loading={loadingTable}
             // totalPage={marketing?.totalPage}
             // setPage={setPage}
             // activePage={page}

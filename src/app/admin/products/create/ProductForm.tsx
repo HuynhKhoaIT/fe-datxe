@@ -32,8 +32,8 @@ export default function ProductForm({
   isEditing = false,
   dataDetail,
   isDirection = false,
+  user,
 }: any) {
-  console.log(dataDetail);
   const [loading, handlers] = useDisclosure();
   const [catOptions, setCatOptions] = useState<any>([]);
   const [productBrandOptions, setProductBrandOptions] = useState<any>([]);
@@ -56,7 +56,7 @@ export default function ProductForm({
   });
   useEffect(() => {
     if (!isEditing) {
-      form.setFieldValue("garageId", 9);
+      form.setFieldValue("garageId", user?.id);
       form.setFieldValue("isProduct", "1");
       form.setFieldValue("status", "PUBLIC");
 
@@ -88,7 +88,7 @@ export default function ProductForm({
       }
     }
     if (isDirection) {
-      form.setFieldValue("garageId", 9);
+      form.setFieldValue("garageId", user?.id);
       form.setFieldValue("name", dataDetail?.product?.name);
       form.setFieldValue("price", dataDetail?.product?.price);
       form.setFieldValue("description", dataDetail?.product?.description);

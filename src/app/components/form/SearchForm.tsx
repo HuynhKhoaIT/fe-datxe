@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Typo from "../elements/Typo";
 import { IconFilter } from "@tabler/icons-react";
-
+import styles from "./SearchForm.module.scss";
 export default function SearchForm({
   searchData,
   brandFilter = false,
@@ -85,11 +85,7 @@ export default function SearchForm({
   return (
     <Box style={{ background: "#fff", marginBottom: 30 }}>
       <div style={{ borderBottom: "1px solid #eeeeee" }}>
-        <Typo
-          size="18px"
-          type="bold"
-          style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
-        >
+        <Typo size="18px" type="bold" className={styles.titleSearch}>
           <IconFilter size={22} />
           Tìm kiếm
         </Typo>
@@ -97,7 +93,7 @@ export default function SearchForm({
       <form
         onSubmit={form.onSubmit((values) => handleSubmit(values))}
         onReset={form.onReset}
-        style={{ padding: 30 }}
+        className={styles.formSearch}
       >
         <Flex gap={10} style={{ flexWrap: "wrap" }}>
           {searchData?.map((item: any, index: number) => {

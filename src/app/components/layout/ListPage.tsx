@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./ListPage.module.scss";
 import { Box } from "@mantine/core";
 import Typo from "../elements/Typo";
-import { IconFilter } from "@tabler/icons-react";
+import { IconFilter, IconList } from "@tabler/icons-react";
 
 function ListPage({
   searchForm,
@@ -30,7 +30,7 @@ function ListPage({
                 type="bold"
                 style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
               >
-                <IconFilter size={22} />
+                <IconList size={22} />
                 Danh sách
               </Typo>
             </div>

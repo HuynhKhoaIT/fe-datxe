@@ -38,8 +38,14 @@ export function RegisterGarageFormInput() {
 
     validate: {
       name: hasLength({ min: 2, max: 30 }, "Name must be 2-30 characters long"),
-      garageName: hasLength({ min: 2, max: 30 }, "Name must be 2-30 characters long"),
-      address: hasLength({ min: 2, max: 30 }, "Name must be 2-30 characters long"),
+      garageName: hasLength(
+        { min: 2, max: 30 },
+        "Name must be 2-30 characters long"
+      ),
+      address: hasLength(
+        { min: 2, max: 30 },
+        "Name must be 2-30 characters long"
+      ),
       phone: hasLength(
         { min: 2, max: 11 },
         "phone must be 2-10 characters long"
@@ -48,12 +54,14 @@ export function RegisterGarageFormInput() {
   });
   const onSubmit = async () => {
     handlers.open();
-    const { name, phone,address,garageName } = form.values;
+    const { name, phone, address, garageName } = form.values;
     const res = await CheckPhone(phone);
     if (!res) {
       const genRs = await GenOTP(phone);
       if (genRs.CodeResult == 100) {
-        router.push(`./dang-ky-chuyen-gia/xac-thuc?name=${name}&phone=${phone}&address=${address}&garageName=${garageName}`);
+        router.push(
+          `./dang-ky-chuyen-gia/xac-thuc?name=${name}&phone=${phone}&address=${address}&garageName=${garageName}`
+        );
       } else {
         notifications.show({
           title: "Error",
@@ -142,7 +150,6 @@ export function RegisterGarageFormInput() {
           </Button>
         </form>
         <div className="other-login">
-          
           {/* <div className="login-footer">
                     <p>
                         Bạn không có tài khoản? <Link href="dang-ky">Đăng Ký</Link>
@@ -151,13 +158,12 @@ export function RegisterGarageFormInput() {
           <div className={styles.accept}>
             Bằng việc tiếp tục, bạn đã chấp nhận{" "}
             <div className={styles.acceptRules}>
-            <Checkbox
+              <Checkbox
                 defaultChecked
                 labelPosition="left"
                 color="var(--theme-color)"
               />
               <a href="/"> Điều khoản sử dụng </a>
-              
             </div>
           </div>
         </div>
@@ -165,4 +171,3 @@ export function RegisterGarageFormInput() {
     </div>
   );
 }
-

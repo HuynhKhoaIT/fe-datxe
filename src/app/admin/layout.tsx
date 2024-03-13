@@ -26,7 +26,7 @@ export default function Layout({ children }: IProps) {
         breakpoint: "sm",
         collapsed: { mobile: !opened, desktop: !desktopOpened },
       }}
-      padding={30}
+      padding={{ base: 10, md: 30, lg: 30 }}
     >
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">

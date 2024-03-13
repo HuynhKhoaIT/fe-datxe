@@ -71,9 +71,7 @@ export default function ListProducts({ fillter }: any) {
             ))}
           </Grid>
           <Flex justify="center" mt={36}>
-            <Button size="lg" radius={0} color={"var(--theme-color)"}>
-              Xem Thêm
-            </Button>
+            <Button color={"var(--theme-color)"}>Xem Thêm</Button>
           </Flex>
         </Box>
       </Body.Content>

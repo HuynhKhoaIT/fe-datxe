@@ -28,6 +28,7 @@ const Expert = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [deleteRow, setDeleteRow] = useState();
+  const [loadingTable, handlers] = useDisclosure(false);
 
   const [experts, setExperts] = useState<any>();
 
@@ -47,30 +48,31 @@ const Expert = () => {
     openedDeleteProduct,
     { open: openDeleteProduct, close: closeDeleteProduct },
   ] = useDisclosure(false);
+
   const columns = [
-    {
-      label: (
-        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
-      ),
-      name: "image",
-      dataIndex: ["logo"],
-      width: "90px",
-      render: (data: any) => {
-        const image = JSON.parse(data);
-        if (!image) {
-          return (
-            <Image
-              radius="md"
-              src={ImageDefult.src}
-              h={40}
-              w="auto"
-              fit="contain"
-            />
-          );
-        }
-        return <Image radius="md " h={40} w={80} fit="contain" src={image} />;
-      },
-    },
+    // {
+    //   label: (
+    //     <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
+    //   ),
+    //   name: "image",
+    //   dataIndex: ["logo"],
+    //   width: "90px",
+    //   render: (data: any) => {
+    //     const image = JSON.parse(data);
+    //     if (!image) {
+    //       return (
+    //         <Image
+    //           radius="md"
+    //           src={ImageDefult.src}
+    //           h={40}
+    //           w="auto"
+    //           fit="contain"
+    //         />
+    //       );
+    //     }
+    //     return <Image radius="md " h={40} w={80} fit="contain" src={image} />;
+    //   },
+    // },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
@@ -217,6 +219,7 @@ const Expert = () => {
     });
     const data = await res.json();
     setExperts(data);
+    handlers.close();
   }
   const searchData = [
     {
@@ -226,6 +229,7 @@ const Expert = () => {
     },
   ];
   useEffect(() => {
+    handlers.open();
     getData(searchParams.toString(), page);
   }, [searchParams, page]);
   const initialValuesSearch = {
@@ -261,7 +265,7 @@ const Expert = () => {
           <TableBasic
             data={experts?.data}
             columns={columns}
-            loading={true}
+            loading={loadingTable}
             totalPage={experts?.totalPage}
             setPage={setPage}
             activePage={page}

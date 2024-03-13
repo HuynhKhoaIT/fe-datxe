@@ -35,10 +35,9 @@ export default function ProductsManaga() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string | null>("first");
-
+  const [loadingTable, handlers] = useDisclosure(false);
   const [products, setProducts] = useState<any>([]);
   const [categoryOptions, setCategoryOptions] = useState<any>([]);
-
   const [page, setPage] = useState<number>(1);
 
   const Breadcrumbs = [
@@ -51,12 +50,14 @@ export default function ProductsManaga() {
     });
     const data = await res.json();
     setProducts(data);
+    handlers.close();
   }
   async function getDataDLBD(searchParams: any, page: number) {
     const res = await axios.get(
       `/api/products/dlbd?${searchParams}&page=${page}`
     );
     setProducts(res?.data);
+    handlers.close();
   }
   async function getDataCategories() {
     const res = await fetch(`/api/product-category`, { method: "GET" });
@@ -71,6 +72,7 @@ export default function ProductsManaga() {
     setCategoryOptions(dataOption);
   }
   useEffect(() => {
+    handlers.open();
     getDataCategories();
     if (activeTab == "first") {
       getData(searchParams.toString(), page);
@@ -322,8 +324,6 @@ export default function ProductsManaga() {
     nameId: null,
     yearId: null,
   };
-
-  console.log(products);
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
@@ -381,7 +381,7 @@ export default function ProductsManaga() {
                   <TableBasic
                     data={products?.data}
                     columns={columns}
-                    loading={true}
+                    loading={loadingTable}
                     totalPage={products?.totalPage}
                     setPage={setPage}
                     activePage={page}
@@ -396,7 +396,7 @@ export default function ProductsManaga() {
                   <TableBasic
                     data={products?.data}
                     columns={columns}
-                    loading={true}
+                    loading={loadingTable}
                     totalPage={products?.last_page}
                     setPage={setPage}
                     activePage={page}
@@ -407,34 +407,6 @@ export default function ProductsManaga() {
           </Tabs>
         </div>
       </div>
-
-      {/* <ListPage
-        actionBar={
-          <Flex justify={"end"} align={"center"}>
-            <Link
-              href={{
-                pathname: `/admin/products/create`,
-              }}
-            >
-              <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
-                Thêm mới
-              </Button>
-            </Link>
-          </Flex>
-        }
-        style={{ height: "100%" }}
-        baseTable={
-          <TableBasic
-            data={products?.data}
-            columns={columns}
-            loading={true}
-            totalPage={products?.totalPage}
-            setPage={setPage}
-            activePage={page}
-          />
-        }
-      /> */}
-
       <DynamicModalDeleteProduct
         openedDeleteProduct={openedDeleteProduct}
         closeDeleteProduct={closeDeleteProduct}

@@ -235,9 +235,9 @@ export default function ModalChooseProducts({
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
+            loading={loading}
             data={products?.data}
             columns={columns}
-            loading={true}
             totalPage={products?.totalPage}
             setPage={setPage}
             activePage={page}

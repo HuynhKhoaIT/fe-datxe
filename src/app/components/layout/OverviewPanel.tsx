@@ -36,8 +36,6 @@ function OverviewPanel({
               {!hiddenShowMore && (
                 <Link className={styles.showMore} href={linkToList}>
                   <Button
-                    size="lg"
-                    radius={0}
                     variant="outline"
                     color={"var(--blue-color)"}
                     rightSection={<img src={ArrowRight.src} />}
@@ -68,8 +66,6 @@ function OverviewPanel({
             {!hiddenShowMore && (
               <Link className={styles.showMore} href={linkToList}>
                 <Button
-                  size="lg"
-                  radius={0}
                   variant="outline"
                   color={"var(--blue-color)"}
                   rightSection={<img src={ArrowRight.src} />}

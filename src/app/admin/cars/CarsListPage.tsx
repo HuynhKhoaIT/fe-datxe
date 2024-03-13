@@ -30,6 +30,7 @@ export default function CarsListPage({
   setActiveTab,
   page,
   setPage,
+  loadingTable,
 }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
@@ -231,7 +232,7 @@ export default function CarsListPage({
                   <TableBasic
                     data={dataSource?.data}
                     columns={columns}
-                    loading={true}
+                    loading={loadingTable}
                     totalPage={dataSource?.totalPage}
                     setPage={setPage}
                     activePage={page}
@@ -246,7 +247,7 @@ export default function CarsListPage({
                   <TableBasic
                     data={dataSource?.data}
                     columns={columns}
-                    loading={true}
+                    loading={loadingTable}
                     // totalPage={marketing?.totalPage}
                     // setPage={setPage}
                     // activePage={page}

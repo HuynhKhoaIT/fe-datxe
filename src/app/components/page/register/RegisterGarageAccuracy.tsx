@@ -55,7 +55,7 @@ export function RegisterGarageFormAccuracy() {
   });
   const onSubmit = async () => {
     handlers.open();
-    const { name, phone,garageName,address, pin } = form.values;
+    const { name, phone, garageName, address, pin } = form.values;
     let password = phone + "@@Datxe.com@@";
     let passwordConfirmation = password;
     try {
@@ -66,7 +66,14 @@ export function RegisterGarageFormAccuracy() {
           message: "Xác thực thành công",
         });
         try {
-          await registerGarage(name, phone, password, passwordConfirmation,address,garageName);
+          await registerGarage(
+            name,
+            phone,
+            password,
+            passwordConfirmation,
+            address,
+            garageName
+          );
 
           notifications.show({
             title: "Thành công",

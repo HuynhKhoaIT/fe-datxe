@@ -79,8 +79,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                 <Grid.Col span={10}>
                   <Flex mt={16}>
                     <Select
-                      size="lg"
-                      radius={0}
                       classNames={{ input: styles.input1 }}
                       variant="unstyled"
                       leftSection={icon}
@@ -90,8 +88,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       data={provinceData}
                     />
                     <Select
-                      size="lg"
-                      radius={0}
                       {...form.getInputProps("carBrandId")}
                       classNames={{ input: styles.input2 }}
                       leftSection={icon}
@@ -108,8 +104,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       }}
                     />
                     <Select
-                      size="lg"
-                      radius={0}
                       {...form.getInputProps("carNameId")}
                       classNames={{ input: styles.input3 }}
                       leftSection={icon}
@@ -125,8 +119,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       }}
                     />
                     <Select
-                      size="lg"
-                      radius={0}
                       {...form.getInputProps("carYearId")}
                       classNames={{ input: styles.input4 }}
                       leftSection={icon}
@@ -143,8 +135,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                 </Grid.Col>
                 <Grid.Col span={2} mt={16}>
                   <Button
-                    size="lg"
-                    radius={0}
                     h={54}
                     style={{ width: "100%" }}
                     color={"var(--yellow-btn)"}
@@ -163,8 +153,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                 <Grid.Col span={10}>
                   <Flex mt={16}>
                     <Select
-                      size="lg"
-                      radius={0}
                       classNames={{ input: styles.input1 }}
                       variant="unstyled"
                       leftSection={icon}
@@ -174,8 +162,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       data={["React", "Angular", "Vue", "Svelte"]}
                     />
                     <Select
-                      size="lg"
-                      radius={0}
                       classNames={{ input: styles.input2 }}
                       leftSection={icon}
                       variant="unstyled"
@@ -185,8 +171,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       data={["React", "Angular", "Vue", "Svelte"]}
                     />
                     <Select
-                      size="lg"
-                      radius={0}
                       classNames={{ input: styles.input3 }}
                       leftSection={icon}
                       variant="unstyled"
@@ -200,8 +184,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       }}
                     />
                     <Select
-                      size="lg"
-                      radius={0}
                       classNames={{ input: styles.input4 }}
                       leftSection={icon}
                       variant="unstyled"
@@ -217,8 +199,6 @@ export default function BookForm({ carsOption, provinceData }: any) {
                 </Grid.Col>
                 <Grid.Col span={2} mt={16}>
                   <Button
-                    size="lg"
-                    radius={0}
                     h={54}
                     style={{ width: "100%" }}
                     color={"var(--yellow-btn)"}

@@ -1,0 +1,17 @@
+.formSearch {
+    padding: 30px;
+}
+.titleSearch {
+    padding: 1rem 30px;
+    color: var(--primary-orange);
+}
+/* Styles cho điện thoại */
+@media screen and (max-width: 576px) {
+    .formSearch {
+        padding: 0;
+    }
+    .titleSearch {
+        padding: 1rem 0;
+        color: var(--primary-orange);
+    }
+}
