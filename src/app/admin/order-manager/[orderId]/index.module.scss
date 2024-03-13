@@ -17,12 +17,24 @@
         margin-bottom: 20px;
     }
 }
-.marketingInfo {
-    padding: 30px;
-    background-color: var(--white-background);
-    // box-shadow: var(--box-shadow);
+.card {
+    background-color: #ffffff;
+    box-shadow: var(--box-shadow);
+    margin: 10px;
     .title {
-        font-size: 20px !important;
-        font-weight: 500 !important;
+        padding: 16px 32px;
+        border-bottom: 1px solid #eeeeee;
+    }
+    .marketingInfo {
+        padding: 30px;
+        background-color: var(--white-background);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .card {
+        .marketingInfo {
+            padding: 10px;
+        }
     }
 }

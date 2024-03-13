@@ -352,6 +352,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             w={100}
             variant="outline"
             color="red"
@@ -362,6 +363,7 @@ export const ModalPreviewCalendar = ({ detail, onClose }: any) => {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             loading={loading}
             w={100}
             bg={"var(--theme-color)"}

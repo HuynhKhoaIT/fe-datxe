@@ -6,7 +6,7 @@ import styles from "./index.module.scss";
 export default function TableBasic({
   data = [],
   columns,
-  loading,
+  loading = false,
   activePage,
   setPage,
   totalPage,
@@ -16,7 +16,7 @@ export default function TableBasic({
   setSelectedRows,
 }: any) {
   return (
-    <div style={{ overflowX: "auto" }}>
+    <div style={{ overflowX: "auto" }} className={styles.tableBasic}>
       <Skeleton visible={loading} mih={300}>
         <Table
           classNames={{

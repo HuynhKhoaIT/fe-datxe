@@ -208,7 +208,12 @@ export default function CarsListPage({
               pathname: `/admin/cars/create`,
             }}
           >
-            <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+            <Button
+              size="lg"
+              h={{ base: 42, md: 50, lg: 50 }}
+              radius={0}
+              leftSection={<IconPlus size={18} />}
+            >
               Thêm mới
             </Button>
           </Link>
@@ -218,10 +223,18 @@ export default function CarsListPage({
         <div>
           <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
             <Tabs.List classNames={{ list: styles.list }}>
-              <Tabs.Tab classNames={{ tab: styles.tab }} value="first">
+              <Tabs.Tab
+                h={{ base: 42, md: 50, lg: 50 }}
+                classNames={{ tab: styles.tab }}
+                value="first"
+              >
                 Xe trên sàn
               </Tabs.Tab>
-              <Tabs.Tab classNames={{ tab: styles.tab }} value="second">
+              <Tabs.Tab
+                h={{ base: 42, md: 50, lg: 50 }}
+                classNames={{ tab: styles.tab }}
+                value="second"
+              >
                 Xe trên phần mềm
               </Tabs.Tab>
             </Tabs.List>

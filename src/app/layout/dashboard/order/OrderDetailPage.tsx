@@ -13,7 +13,6 @@ const DynamicModalReview = dynamic(() => import("./ModalReview"), {
   ssr: false,
 });
 export default function OrderDetailPage({ dataSource }: any) {
-  console.log(dataSource);
   const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
     false
   );
@@ -108,7 +107,11 @@ export default function OrderDetailPage({ dataSource }: any) {
             title="Chi tiết đơn hàng"
             style={{ height: "100%" }}
             baseTable={
-              <TableBasic columns={columns} data={dataSource?.orderDetails} />
+              <TableBasic
+                loading={false}
+                columns={columns}
+                data={dataSource?.orderDetails}
+              />
             }
           />
         </div>

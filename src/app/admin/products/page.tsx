@@ -341,7 +341,12 @@ export default function ProductsManaga() {
               pathname: `/admin/products/create`,
             }}
           >
-            <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+            <Button
+              size="lg"
+              h={{ base: 42, md: 50, lg: 50 }}
+              radius={0}
+              leftSection={<IconPlus size={18} />}
+            >
               Thêm mới
             </Button>
           </Link>
@@ -358,10 +363,18 @@ export default function ProductsManaga() {
             }}
           >
             <Tabs.List classNames={{ list: styles.list }}>
-              <Tabs.Tab classNames={{ tab: styles.tab }} value="first">
+              <Tabs.Tab
+                h={{ base: 42, md: 50, lg: 50 }}
+                classNames={{ tab: styles.tab }}
+                value="first"
+              >
                 Sản phẩm trên sàn
               </Tabs.Tab>
-              <Tabs.Tab classNames={{ tab: styles.tab }} value="second">
+              <Tabs.Tab
+                h={{ base: 42, md: 50, lg: 50 }}
+                classNames={{ tab: styles.tab }}
+                value="second"
+              >
                 Sản phẩm trên phần mềm
               </Tabs.Tab>
             </Tabs.List>

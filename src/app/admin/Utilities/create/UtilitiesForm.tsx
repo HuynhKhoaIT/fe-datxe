@@ -197,6 +197,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             variant="outline"
             key="cancel"
             color="red"
@@ -208,6 +209,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             loading={loading}
             style={{ marginLeft: "12px" }}
             key="submit"

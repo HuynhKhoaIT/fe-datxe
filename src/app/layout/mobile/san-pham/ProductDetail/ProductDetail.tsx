@@ -168,6 +168,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             variant="outline"
             key="cancel"
             onClick={handleCancel}
@@ -179,6 +180,7 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             style={{ marginLeft: "12px" }}
             onClick={handleOk}
             variant="filled"

@@ -227,6 +227,7 @@ export default function CarListPage({ carsData, myAccount }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             variant="filled"
             key="cancel"
             onClick={closeDeleteCar}
@@ -238,6 +239,7 @@ export default function CarListPage({ carsData, myAccount }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             style={{ marginLeft: "12px" }}
             onClick={() => {
               closeDeleteCar();
@@ -263,6 +265,7 @@ export default function CarListPage({ carsData, myAccount }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             variant="outline"
             color="red"
             onClick={() => setOpenModalCarDefault(false)}
@@ -272,6 +275,7 @@ export default function CarListPage({ carsData, myAccount }: any) {
           </Button>
           <Button
             size="lg"
+            h={{ base: 42, md: 50, lg: 50 }}
             radius={0}
             variant="filled"
             onClick={() => handleCarDefault()}

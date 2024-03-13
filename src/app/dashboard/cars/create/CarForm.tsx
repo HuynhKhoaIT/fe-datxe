@@ -294,6 +294,7 @@ export default function CarForm({
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             variant="outline"
             key="cancel"
             color="red"
@@ -305,6 +306,7 @@ export default function CarForm({
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             style={{ marginLeft: "12px" }}
             key="submit"
             type="submit"

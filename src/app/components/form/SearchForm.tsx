@@ -83,7 +83,7 @@ export default function SearchForm({
     router.push(`${pathname}?${queryString}`, { scroll: false });
   };
   return (
-    <Box style={{ background: "#fff", marginBottom: 30 }}>
+    <Box className={styles.boxSearch}>
       <div style={{ borderBottom: "1px solid #eeeeee" }}>
         <Typo size="18px" type="bold" className={styles.titleSearch}>
           <IconFilter size={22} />
@@ -166,6 +166,7 @@ export default function SearchForm({
           )}
           <Button
             size="lg"
+            h={{ base: 42, md: 50, lg: 50 }}
             radius={0}
             leftSection={<IconSearch size={18} />}
             type="submit"
@@ -174,6 +175,7 @@ export default function SearchForm({
           </Button>
           <Button
             size="lg"
+            h={{ base: 42, md: 50, lg: 50 }}
             radius={0}
             leftSection={<IconTrash size={18} />}
             variant="outline"

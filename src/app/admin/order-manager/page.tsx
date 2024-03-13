@@ -228,7 +228,12 @@ export default function OrdersManaga() {
                 pathname: `/admin/order-manager/create`,
               }}
             >
-              <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+              <Button
+                size="lg"
+                h={{ base: 42, md: 50, lg: 50 }}
+                radius={0}
+                leftSection={<IconPlus size={18} />}
+              >
                 Thêm mới
               </Button>
             </Link>

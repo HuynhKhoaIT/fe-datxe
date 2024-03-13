@@ -188,6 +188,7 @@ export default function CategoryListPage({ dataSource, profile }: any) {
           <Flex justify={"end"} align={"center"} gap={20}>
             <Button
               size="lg"
+              h={{ base: 42, md: 50, lg: 50 }}
               radius={0}
               onClick={openModalCategories}
               leftSection={<IconPlus size={18} />}
@@ -199,7 +200,12 @@ export default function CategoryListPage({ dataSource, profile }: any) {
                 pathname: `/admin/categories/create`,
               }}
             >
-              <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+              <Button
+                h={{ base: 42, md: 50, lg: 50 }}
+                size="lg"
+                radius={0}
+                leftSection={<IconPlus size={18} />}
+              >
                 Thêm mới
               </Button>
             </Link>
