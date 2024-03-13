@@ -34,6 +34,7 @@ export default function CustomerListPage({
   setActiveTab,
   page,
   setPage,
+  loadingTable,
 }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCustomer = async (id: any) => {
@@ -219,7 +220,12 @@ export default function CustomerListPage({
               pathname: `/admin/customers/create`,
             }}
           >
-            <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+            <Button
+              size="lg"
+              h={{ base: 42, md: 50, lg: 50 }}
+              radius={0}
+              leftSection={<IconPlus size={18} />}
+            >
               Thêm mới
             </Button>
           </Link>
@@ -240,10 +246,18 @@ export default function CustomerListPage({
         <div>
           <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
             <Tabs.List classNames={{ list: styles.list }}>
-              <Tabs.Tab classNames={{ tab: styles.tab }} value="first">
+              <Tabs.Tab
+                h={{ base: 42, md: 50, lg: 50 }}
+                classNames={{ tab: styles.tab }}
+                value="first"
+              >
                 Khách hàng trên sàn
               </Tabs.Tab>
-              <Tabs.Tab classNames={{ tab: styles.tab }} value="second">
+              <Tabs.Tab
+                h={{ base: 42, md: 50, lg: 50 }}
+                classNames={{ tab: styles.tab }}
+                value="second"
+              >
                 Khách hàng trên phần mềm
               </Tabs.Tab>
             </Tabs.List>
@@ -254,7 +268,7 @@ export default function CustomerListPage({
                   <TableBasic
                     data={dataSource?.data}
                     columns={columns}
-                    loading={true}
+                    loading={loadingTable}
                     totalPage={dataSource?.totalPage}
                     setPage={setPage}
                     activePage={page}
@@ -269,7 +283,7 @@ export default function CustomerListPage({
                   <TableBasic
                     data={dataSource?.data}
                     columns={columns}
-                    loading={true}
+                    loading={loadingTable}
                     // totalPage={marketing?.totalPage}
                     // setPage={setPage}
                     // activePage={page}

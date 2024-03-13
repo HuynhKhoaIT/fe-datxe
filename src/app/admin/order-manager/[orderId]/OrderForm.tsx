@@ -352,12 +352,84 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Grid gutter={12}>
           <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-            <div
-              className={styles.marketingInfo}
-              style={{ background: "#fff" }}
-            >
-              <Typo className={styles.title}>Thông tin khách hàng</Typo>
-              <Grid gutter={12}>
+            <div className={styles.card}>
+              <Typo
+                size="primary"
+                type="bold"
+                style={{ color: "var(--primary-orange)" }}
+                className={styles.title}
+              >
+                Thông tin xe
+              </Typo>
+              <Grid gutter={12} className={styles.marketingInfo}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                  <TextInput
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("numberPlates")}
+                    label="Biển số xe"
+                    type="text"
+                    placeholder="Biển số xe"
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                  <Select
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("carBrandId")}
+                    label="Hãng xe"
+                    type="text"
+                    data={brandOptions}
+                    placeholder="Hãng xe"
+                    onChange={(value) => {
+                      getDataModels(Number(value));
+                      form.setFieldValue("carBrandId", value);
+                    }}
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                  <Select
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("carNameId")}
+                    label="Dòng xe"
+                    type="text"
+                    data={modelOptions}
+                    placeholder="Dòng xe"
+                    onChange={(value) => {
+                      getDataYearCar(Number(value));
+                      form.setFieldValue("carNameId", value);
+                    }}
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                  <Select
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("carYearId")}
+                    label="Năm SX"
+                    data={yearCarOptions}
+                    type="text"
+                    placeholder="Năm sản xuất"
+                    onChange={(value) => {
+                      form.setFieldValue("carYearId", value);
+                    }}
+                  />
+                </Grid.Col>
+              </Grid>
+            </div>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+            <div className={styles.card}>
+              <Typo
+                size="primary"
+                type="bold"
+                style={{ color: "var(--primary-orange)" }}
+                className={styles.title}
+              >
+                Thông tin khách hàng
+              </Typo>
+              <Grid gutter={12} className={styles.marketingInfo}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <TextInput
                     size="lg"
@@ -391,120 +463,70 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               </Grid>
             </div>
           </Grid.Col>
-
-          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-            <div
-              className={styles.marketingInfo}
-              style={{ background: "#fff" }}
-            >
-              <Typo className={styles.title}>Thông tin xe</Typo>
-
-              <Grid gutter={12}>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <TextInput
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("numberPlates")}
-                    label="Biển số xe"
-                    type="text"
-                    placeholder="Biển số xe"
-                  />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carBrandId")}
-                    label="Hãng xe"
-                    type="text"
-                    data={brandOptions}
-                    placeholder="Hãng xe"
-                    onChange={(value) => {
-                      getDataModels(Number(value));
-                      form.setFieldValue("carBrandId", value);
-                    }}
-                  />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carNameId")}
-                    label="Dòng xe"
-                    type="text"
-                    data={modelOptions}
-                    placeholder="Dòng xe"
-                    onChange={(value) => {
-                      getDataYearCar(Number(value));
-                      form.setFieldValue("carNameId", value);
-                    }}
-                  />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carYearId")}
-                    label="Năm sản xuất"
-                    data={yearCarOptions}
-                    type="text"
-                    placeholder="Năm sản xuất"
-                    onChange={(value) => {
-                      form.setFieldValue("carYearId", value);
-                    }}
-                  />
-                </Grid.Col>
-              </Grid>
-            </div>
-          </Grid.Col>
         </Grid>
-
-        <Grid mt={24}>
-          <Grid.Col span={12}>
-            <ListPage
-              title="Chi tiết đơn hàng"
-              style={{ height: "100%" }}
-              actionBar={
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "end",
-                    alignItems: "center",
-                  }}
-                >
-                  <Button
-                    size="lg"
-                    radius={0}
-                    onClick={(e) => {
-                      openModal();
+        <div style={{ marginTop: 20 }} className={styles.card}>
+          <Typo
+            className={styles.title}
+            size="primary"
+            type="bold"
+            style={{ color: "var(--primary-orange)" }}
+          >
+            Chi tiết đơn hàng
+          </Typo>
+          <Grid className={styles.marketingInfo}>
+            <Grid.Col span={12}>
+              <ListPage
+                style={{ height: "100%" }}
+                actionBar={
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "end",
+                      alignItems: "center",
                     }}
-                    leftSection={<IconPlus size={18} />}
                   >
-                    Thêm sản phẩm
-                  </Button>
-                </div>
-              }
-              baseTable={
-                <Table>
-                  <Table.Thead>
-                    <Table.Tr>
-                      <Table.Th>Tên sản phẩm</Table.Th>
-                      <Table.Th>Giá</Table.Th>
-                      <Table.Th>Số lượng</Table.Th>
-                      <Table.Th>Tổng tiền</Table.Th>
-                      <Table.Th>Hành động</Table.Th>
-                    </Table.Tr>
-                  </Table.Thead>
-                  <Table.Tbody>{rows}</Table.Tbody>
-                </Table>
-              }
-            />
-          </Grid.Col>
-        </Grid>
-        <div style={{ marginTop: 20 }} className={styles.marketingInfo}>
-          <Typo className={styles.title}>Thông tin đơn hàng</Typo>
+                    <Button
+                      size="lg"
+                      radius={0}
+                      h={{ base: 42, md: 50, lg: 50 }}
+                      onClick={(e) => {
+                        openModal();
+                      }}
+                      leftSection={<IconPlus size={18} />}
+                    >
+                      Thêm sản phẩm
+                    </Button>
+                  </div>
+                }
+                baseTable={
+                  <Table>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th>Tên sản phẩm</Table.Th>
+                        <Table.Th>Giá</Table.Th>
+                        <Table.Th>Số lượng</Table.Th>
+                        <Table.Th>Tổng tiền</Table.Th>
+                        <Table.Th>Hành động</Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>{rows}</Table.Tbody>
+                  </Table>
+                }
+              />
+            </Grid.Col>
+          </Grid>
+        </div>
+        <div style={{ marginTop: 20 }} className={styles.card}>
+          <Typo
+            className={styles.title}
+            size="primary"
+            type="bold"
+            style={{ color: "var(--primary-orange)" }}
+          >
+            Thông tin đơn hàng
+          </Typo>
 
-          <Grid gutter={12} mt={24}>
+          <Grid gutter={12} mt={24} className={styles.marketingInfo}>
             <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
               <NumberInput
                 size="lg"
@@ -544,6 +566,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             variant="outline"
             key="cancel"
             color="red"
@@ -555,6 +578,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             loading={loadingButton}
             style={{ marginLeft: "12px" }}
             key="submit"

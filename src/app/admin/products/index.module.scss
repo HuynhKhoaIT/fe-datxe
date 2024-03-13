@@ -27,6 +27,10 @@
 }
 .list {
     border-bottom: 1px solid #eeeeee;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 .tab {
     height: 50px;

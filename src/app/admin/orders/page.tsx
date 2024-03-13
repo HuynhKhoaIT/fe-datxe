@@ -14,13 +14,6 @@ export const revalidate = 0;
 import styles from "./index.module.scss";
 import CalendarSchedulerGarage from "@/app/admin/orders/CalendarGarage";
 import { getOrders } from "@/app/libs/prisma/order";
-// async function getDataOrder(garageId: number) {
-//   const res = await fetch(`${apiUrl}api/orders?garage=${garageId}`);
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch data");
-//   }
-//   return res.json();
-// }
 export default async function Orders() {
   const orders = await getOrders(2, {});
   const mappedOrdersData = mapArrayEventCalendar(orders?.data);

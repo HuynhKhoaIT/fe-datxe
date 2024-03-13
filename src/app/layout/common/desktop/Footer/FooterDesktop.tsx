@@ -97,8 +97,6 @@ const MyFooter = () => (
               rightSectionWidth={180}
               rightSection={
                 <Button
-                  size="lg"
-                  radius={0}
                   mr={8}
                   color={"var(--yellow-btn)"}
                   rightSection={<img src={Send.src} />}

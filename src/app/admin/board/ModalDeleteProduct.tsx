@@ -19,6 +19,7 @@ export default function ModalDeleteProduct({
         <Button
           size="lg"
           radius={0}
+          h={{ base: 42, md: 50, lg: 50 }}
           variant="filled"
           key="cancel"
           onClick={closeDeleteProduct}
@@ -30,6 +31,7 @@ export default function ModalDeleteProduct({
         <Button
           size="lg"
           radius={0}
+          h={{ base: 42, md: 50, lg: 50 }}
           style={{ marginLeft: "12px" }}
           onClick={() => {
             closeDeleteProduct();

@@ -33,6 +33,7 @@ const Breadcrumbs = [
 export default function Discounts() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [loadingTable, handlers] = useDisclosure(true);
 
   const [marketing, setMarketing] = useState<any>();
   const [page, setPage] = useState<number>(1);
@@ -45,9 +46,11 @@ export default function Discounts() {
     );
     const data = await res.json();
     setMarketing(data);
+    handlers.close();
   }
 
   useEffect(() => {
+    handlers.open();
     getData(searchParams.toString(), page);
   }, [searchParams, page]);
 
@@ -239,7 +242,12 @@ export default function Discounts() {
                 pathname: `/admin/marketing-campaign/choose-products`,
               }}
             >
-              <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+              <Button
+                size="lg"
+                h={{ base: 42, md: 50, lg: 50 }}
+                radius={0}
+                leftSection={<IconPlus size={18} />}
+              >
                 Thêm mới
               </Button>
             </Link>
@@ -251,7 +259,7 @@ export default function Discounts() {
           <TableBasic
             data={marketing?.data}
             columns={columns}
-            loading={true}
+            loading={loadingTable}
             totalPage={marketing?.totalPage}
             setPage={setPage}
             activePage={page}

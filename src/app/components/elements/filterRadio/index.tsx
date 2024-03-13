@@ -22,7 +22,7 @@ export function FilterRadio({
           defaultValue={String(valueRadio)}
           classNames={{ root: styles.root }}
         >
-          {data?.map((item: any, index: number) => (
+          {data?.data?.map((item: any, index: number) => (
             <ItemRadio dataDetail={item} key={index} keyName={keyName} />
           ))}
         </Radio.Group>

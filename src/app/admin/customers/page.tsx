@@ -1,4 +1,5 @@
 "use client";
+import { useDisclosure } from "@mantine/hooks";
 import CustomerListPage from "./CustomerListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -10,6 +11,7 @@ import { Fragment, useEffect, useState } from "react";
 export default function Suppliers() {
   const searchParams = useSearchParams();
   const [page, setPage] = useState<number>(1);
+  const [loadingTable, handlers] = useDisclosure(true);
   const [activeTab, setActiveTab] = useState<string | null>("first");
   const [customers, setCustomers] = useState([]);
   useEffect(() => {
@@ -19,7 +21,11 @@ export default function Suppliers() {
           `/api/customer?${searchParams}&page=${page}`
         );
         setCustomers(response?.data);
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      } finally {
+        handlers.close();
+      }
     };
     const fetchDataDLBD = async () => {
       try {
@@ -27,8 +33,11 @@ export default function Suppliers() {
         setCustomers(response?.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        handlers.close();
       }
     };
+    handlers.open();
     if (activeTab === "first") {
       fetchData(searchParams, page);
     } else if (activeTab === "second") {
@@ -49,6 +58,7 @@ export default function Suppliers() {
         setActiveTab={setActiveTab}
         page={page}
         setPage={setPage}
+        loadingTable={loadingTable}
       />
     </Fragment>
   );

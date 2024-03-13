@@ -27,17 +27,20 @@ const Breadcrumbs = [
 export default function OrdersManaga() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [loadingTable, handlers] = useDisclosure(false);
 
   const [orders, setOrders] = useState<any>();
   const [page, setPage] = useState<number>(1);
   const [deleteRow, setDeleteRow] = useState();
 
   async function getData(searchParams: any, page: number) {
+    handlers.open();
     const res = await fetch(`/api/orders?${searchParams}&page=${page}`, {
       method: "GET",
     });
     const data = await res.json();
     setOrders(data);
+    handlers.close();
   }
 
   useEffect(() => {
@@ -60,19 +63,6 @@ export default function OrdersManaga() {
     { open: openDeleteProduct, close: closeDeleteProduct },
   ] = useDisclosure(false);
   const columns = [
-    {
-      label: (
-        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
-          Mã đơn hàng
-        </span>
-      ),
-      name: "fullName",
-      dataIndex: ["code"],
-      width: "120px",
-      render: (dataRow: any) => {
-        return <span>{dataRow}</span>;
-      },
-    },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
@@ -238,7 +228,12 @@ export default function OrdersManaga() {
                 pathname: `/admin/order-manager/create`,
               }}
             >
-              <Button size="lg" radius={0} leftSection={<IconPlus size={18} />}>
+              <Button
+                size="lg"
+                h={{ base: 42, md: 50, lg: 50 }}
+                radius={0}
+                leftSection={<IconPlus size={18} />}
+              >
                 Thêm mới
               </Button>
             </Link>
@@ -250,7 +245,7 @@ export default function OrdersManaga() {
           <TableBasic
             data={orders?.data}
             columns={columns}
-            loading={true}
+            loading={loadingTable}
             totalPage={orders?.totalPage}
             setPage={setPage}
             activePage={page}

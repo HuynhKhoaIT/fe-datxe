@@ -217,7 +217,8 @@ export default function ModalChooseProducts({
       opened={openModal}
       onClose={close}
       lockScroll={false}
-      size={"80%"}
+      // size={"80%"}
+      size="auto"
     >
       <LoadingOverlay
         visible={loading}
@@ -235,9 +236,9 @@ export default function ModalChooseProducts({
         style={{ height: "100%" }}
         baseTable={
           <TableBasic
+            loading={loading}
             data={products?.data}
             columns={columns}
-            loading={true}
             totalPage={products?.totalPage}
             setPage={setPage}
             activePage={page}
@@ -251,6 +252,7 @@ export default function ModalChooseProducts({
         <Button
           size="lg"
           radius={0}
+          h={{ base: 42, md: 50, lg: 50 }}
           variant="outline"
           key="cancel"
           onClick={close}
@@ -262,6 +264,7 @@ export default function ModalChooseProducts({
         <Button
           size="lg"
           radius={0}
+          h={{ base: 42, md: 50, lg: 50 }}
           style={{ marginLeft: "12px" }}
           onClick={() => {
             setSelectedProducts(selectedRows);

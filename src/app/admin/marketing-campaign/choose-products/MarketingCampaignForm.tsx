@@ -313,68 +313,81 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             </Grid.Col>
           </Grid>
         </div>
+
         <div style={{ borderRadius: 8 }}>
-          <Grid>
-            <Grid.Col span={12}>
-              <ListPage
-                title="Danh sách sản phẩm khuyến mãi"
-                style={{ height: "100%" }}
-                actionBar={
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "end",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Button
-                      size="lg"
-                      radius={0}
-                      onClick={(e) => {
-                        openModal();
+          <div style={{ marginTop: 20 }} className={styles.card}>
+            <Typo
+              className={styles.title}
+              size="primary"
+              type="bold"
+              style={{ color: "var(--primary-orange)" }}
+            >
+              Danh sách sản phẩm khuyến mãi
+            </Typo>
+            <Grid className={styles.marketingInfo}>
+              <Grid.Col span={12}>
+                <ListPage
+                  style={{ height: "100%" }}
+                  isBoxShadow={false}
+                  actionBar={
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "end",
+                        alignItems: "center",
                       }}
-                      leftSection={<IconPlus size={18} />}
                     >
-                      Thêm sản phẩm
-                    </Button>
-                  </div>
-                }
-                baseTable={
-                  <Table>
-                    <Table.Thead>
-                      <Table.Tr>
-                        <Table.Th style={{ whiteSpace: "nowrap" }}>
-                          Tên sản phẩm
-                        </Table.Th>
-                        <Table.Th style={{ whiteSpace: "nowrap" }}>
-                          Giá gốc
-                        </Table.Th>
-                        <Table.Th style={{ whiteSpace: "nowrap" }}>
-                          Giá sau giảm
-                        </Table.Th>
-                        <Table.Th style={{ whiteSpace: "nowrap" }}>
-                          Giá sale
-                        </Table.Th>
-                        <Table.Th style={{ whiteSpace: "nowrap" }}>
-                          Số lượng khuyến mãi
-                        </Table.Th>
-                        <Table.Th
-                          style={{ width: "120px", textAlign: "center" }}
-                        >
-                          hành động
-                        </Table.Th>
-                      </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{rows}</Table.Tbody>
-                  </Table>
-                }
-              />
-            </Grid.Col>
-          </Grid>
+                      <Button
+                        size="lg"
+                        radius={0}
+                        onClick={(e) => {
+                          openModal();
+                        }}
+                        leftSection={<IconPlus size={18} />}
+                      >
+                        Thêm sản phẩm
+                      </Button>
+                    </div>
+                  }
+                  baseTable={
+                    <Table>
+                      <Table.Thead>
+                        <Table.Tr>
+                          <Table.Th style={{ whiteSpace: "nowrap" }}>
+                            Tên sản phẩm
+                          </Table.Th>
+                          <Table.Th style={{ whiteSpace: "nowrap" }}>
+                            Giá gốc
+                          </Table.Th>
+                          <Table.Th style={{ whiteSpace: "nowrap" }}>
+                            Giá sau giảm
+                          </Table.Th>
+                          <Table.Th style={{ whiteSpace: "nowrap" }}>
+                            Giá sale
+                          </Table.Th>
+                          <Table.Th style={{ whiteSpace: "nowrap" }}>
+                            Số lượng khuyến mãi
+                          </Table.Th>
+                          <Table.Th
+                            style={{ width: "120px", textAlign: "center" }}
+                          >
+                            hành động
+                          </Table.Th>
+                        </Table.Tr>
+                      </Table.Thead>
+                      <Table.Tbody>{rows}</Table.Tbody>
+                    </Table>
+                  }
+                />
+              </Grid.Col>
+            </Grid>
+          </div>
+
           <Group justify="end" mt={20}>
             <Button
               size="lg"
               radius={0}
+              h={{ base: 42, md: 50, lg: 50 }}
               variant="outline"
               key="cancel"
               color="red"
@@ -386,6 +399,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             <Button
               size="lg"
               radius={0}
+              h={{ base: 42, md: 50, lg: 50 }}
               loading={loading}
               style={{ marginLeft: "12px" }}
               key="submit"

@@ -24,8 +24,8 @@ const mockdata = [
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: "Quản lý đơn hàng", link: "/admin/order-manager" },
-      { label: "Danh sách đơn hàng", link: "/admin/orders" },
+      { label: "Danh sách đơn hàng", link: "/admin/order-manager" },
+      { label: "Đặt lịch", link: "/admin/orders" },
     ],
   },
 

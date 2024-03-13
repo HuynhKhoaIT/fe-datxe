@@ -1,7 +1,5 @@
 .navbar {
     min-height: 80vh;
-
-    // width: 300px;
     padding: var(--mantine-spacing-md);
     display: flex;
     flex-direction: column;
@@ -76,6 +74,9 @@
     width: 25px;
     height: 25px;
 }
+// .tableBasic {
+//     padding: 30px;
+// }
 
 // table
 .rootTable {

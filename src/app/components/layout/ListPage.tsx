@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./ListPage.module.scss";
 import { Box } from "@mantine/core";
 import Typo from "../elements/Typo";
-import { IconFilter } from "@tabler/icons-react";
+import { IconFilter, IconList } from "@tabler/icons-react";
 
 function ListPage({
   searchForm,
@@ -13,24 +13,23 @@ function ListPage({
   children,
   title,
   style,
-  padding = 0,
   titleTable = false,
+  isBoxShadow = true,
 }: any) {
   return (
-    <div className={styles.baseListPage} style={{ padding: padding, ...style }}>
+    <div className={styles.baseListPage} style={{ ...style }}>
       <div className={styles.title}>{title}</div>
       <div className={styles.baseListPageList}>
         <div className={styles.searchForm}>{searchForm}</div>
         {actionBar && <div className={styles.actionBar}>{actionBar}</div>}
-        <div className={styles.baseTable}>
+        <div
+          className={styles.baseTable}
+          style={{ boxShadow: isBoxShadow ? "var(--box-shadow)" : "none" }}
+        >
           {titleTable && (
             <div style={{ borderBottom: "1px solid #eeeeee" }}>
-              <Typo
-                size="18px"
-                type="bold"
-                style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
-              >
-                <IconFilter size={22} />
+              <Typo size="18px" type="bold" className={styles.titleList}>
+                <IconList size={22} />
                 Danh sách
               </Typo>
             </div>

@@ -1,6 +1,6 @@
 .baseListPage {
     // border: 1px solid #fff;
-    // background-color: #fff;
+
     .action-bar {
         margin: 10px 0 10px 0;
     }
@@ -29,8 +29,20 @@
 .actionBar {
     margin-bottom: 1rem;
 }
+.titleList {
+    color: var(--primary-orange);
+    padding: 16px 30px;
+}
 @media only screen and (max-width: 600px) {
     .baseListPage {
         padding: 0;
+        .baseTable {
+            .table {
+                padding: 10px;
+            }
+        }
+    }
+    .titleList {
+        padding: 16px 0;
     }
 }

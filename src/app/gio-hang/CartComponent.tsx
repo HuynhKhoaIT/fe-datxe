@@ -229,6 +229,7 @@ export default function CartComponent({ myAccount }: any) {
           <Button
             size="lg"
             radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
             variant="outline"
             key="cancel"
             onClick={handleDeleteCancel}
@@ -239,6 +240,7 @@ export default function CartComponent({ myAccount }: any) {
           </Button>
           <Button
             size="lg"
+            h={{ base: 42, md: 50, lg: 50 }}
             radius={0}
             style={{ marginLeft: "12px" }}
             onClick={handleDeleteOk}

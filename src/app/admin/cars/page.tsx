@@ -1,4 +1,5 @@
 "use client";
+import { useDisclosure } from "@mantine/hooks";
 import CarsListPage from "./CarsListPage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -9,6 +10,7 @@ import { Fragment, useEffect, useState } from "react";
 
 export default function Cars() {
   const searchParams = useSearchParams();
+  const [loadingTable, handlers] = useDisclosure(true);
 
   const [page, setPage] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string | null>("first");
@@ -20,7 +22,10 @@ export default function Cars() {
           `/api/car?${searchParams}&page=${page}`
         );
         setCars(response?.data);
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        handlers.close();
+      }
     };
     const fetchDataDLBD = async () => {
       try {
@@ -28,8 +33,11 @@ export default function Cars() {
         setCars(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        handlers.close();
       }
     };
+    handlers.open();
     if (activeTab === "first") {
       fetchData(searchParams, page);
     } else if (activeTab === "second") {
@@ -49,6 +57,7 @@ export default function Cars() {
         setActiveTab={setActiveTab}
         page={page}
         setPage={setPage}
+        loadingTable={loadingTable}
       />
     </Fragment>
   );

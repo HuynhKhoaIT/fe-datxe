@@ -1,12 +1,12 @@
 "use client";
-import { Checkbox, Table } from "@mantine/core";
+import { Checkbox, Skeleton, Table } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import PaginationBase from "../form/PaginationBase";
 import styles from "./index.module.scss";
 export default function TableBasic({
   data = [],
   columns,
-  loading,
+  loading = false,
   activePage,
   setPage,
   totalPage,
@@ -16,84 +16,87 @@ export default function TableBasic({
   setSelectedRows,
 }: any) {
   return (
-    <div style={{ overflowX: "auto" }}>
-      <Table
-        classNames={{
-          table: styles.rootTable,
-          tr: styles.trTable,
-          td: styles.td,
-          th: styles.th,
-        }}
-      >
-        <Table.Thead>
-          <Table.Tr>
-            {selectRow && <Table.Th />}
-            {columns?.map((item: any, index: number) => {
+    <div style={{ overflowX: "auto" }} className={styles.tableBasic}>
+      <Skeleton visible={loading} mih={300}>
+        <Table
+          classNames={{
+            table: styles.rootTable,
+            tr: styles.trTable,
+            td: styles.td,
+            th: styles.th,
+          }}
+        >
+          <Table.Thead>
+            <Table.Tr>
+              {selectRow && <Table.Th />}
+              {columns?.map((item: any, index: number) => {
+                return (
+                  <Table.Th
+                    style={{ width: item?.width, textAlign: item?.textAlign }}
+                    key={index}
+                  >
+                    {item.label}
+                  </Table.Th>
+                );
+              })}
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody style={{ position: "relative", overflowX: "auto" }}>
+            {data?.map((item: any, index: number) => {
               return (
-                <Table.Th
-                  style={{ width: item?.width, textAlign: item?.textAlign }}
-                  key={index}
-                >
-                  {item.label}
-                </Table.Th>
+                <Table.Tr key={index}>
+                  {selectRow && (
+                    <Table.Td>
+                      <Checkbox
+                        aria-label="Select row"
+                        checked={
+                          selectedRows &&
+                          selectedRows.some(
+                            (selectedItem: { id: any }) =>
+                              selectedItem.id === item.id
+                          )
+                        }
+                        onChange={(event) => {
+                          setSelectedRows(
+                            event.currentTarget.checked
+                              ? [...selectedRows, item]
+                              : selectedRows.filter(
+                                  (selectedItem: any) =>
+                                    selectedItem?.id !== item.id
+                                )
+                          );
+                        }}
+                      />
+                    </Table.Td>
+                  )}
+                  {columns.map((col: any, _index: number) => {
+                    const { render, dataIndex, name } = col;
+                    const data = col.dataIndex?.reduce(
+                      (acc: any, current: number) => acc && acc[current],
+                      item
+                    );
+                    function returnFunc(data: any) {
+                      return <span>{data}</span>;
+                    }
+                    return (
+                      <Table.Td
+                        style={{
+                          width: col?.width,
+                          textAlign: col?.textAlign,
+                        }}
+                        key={_index}
+                      >
+                        {render ? render(data, item) : returnFunc(data)}
+                      </Table.Td>
+                    );
+                  })}
+                </Table.Tr>
               );
             })}
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody style={{ position: "relative", overflowX: "auto" }}>
-          {data?.map((item: any, index: number) => {
-            return (
-              <Table.Tr key={index}>
-                {selectRow && (
-                  <Table.Td>
-                    <Checkbox
-                      aria-label="Select row"
-                      checked={
-                        selectedRows &&
-                        selectedRows.some(
-                          (selectedItem: { id: any }) =>
-                            selectedItem.id === item.id
-                        )
-                      }
-                      onChange={(event) => {
-                        setSelectedRows(
-                          event.currentTarget.checked
-                            ? [...selectedRows, item]
-                            : selectedRows.filter(
-                                (selectedItem: any) =>
-                                  selectedItem?.id !== item.id
-                              )
-                        );
-                      }}
-                    />
-                  </Table.Td>
-                )}
-                {columns.map((col: any, _index: number) => {
-                  const { render, dataIndex, name } = col;
-                  const data = col.dataIndex?.reduce(
-                    (acc: any, current: number) => acc && acc[current],
-                    item
-                  );
-                  function returnFunc(data: any) {
-                    return <span>{data}</span>;
-                  }
-                  return (
-                    <Table.Td
-                      style={{
-                        width: col?.width,
-                        textAlign: col?.textAlign,
-                      }}
-                      key={_index}
-                    >
-                      {render ? render(data, item) : returnFunc(data)}
-                    </Table.Td>
-                  );
-                })}
-              </Table.Tr>
-            );
-          })}
-        </Table.Tbody>
-      </Table>
+          </Table.Tbody>
+        </Table>
+      </Skeleton>
+
       {totalPage > 1 && (
         <PaginationBase
           totalPage={totalPage}
