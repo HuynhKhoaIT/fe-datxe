@@ -1,6 +1,6 @@
 import RenderContext from "@/app/components/elements/RenderContext";
 import OrderDetailPage from "@/app/layout/dashboard/order/OrderDetailPage";
-import { findOrders } from "@/app/libs/prisma/order";
+import { findOrders, getOrderBySlug } from "@/app/libs/prisma/order";
 import { apiUrl } from "@/constants";
 import { getOrderDetail } from "@/utils/order";
 // async function getDataProduct(productId: number) {
@@ -14,9 +14,9 @@ import { getOrderDetail } from "@/utils/order";
 export default async function Products({
   params,
 }: {
-  params: { orderId: number };
+  params: { orderId: string };
 }) {
-  const orderDetail = await findOrders(params.orderId,{});
+  const orderDetail = await getOrderBySlug(params.orderId);
   return (
     <RenderContext
       components={{
