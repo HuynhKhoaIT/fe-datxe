@@ -15,6 +15,10 @@ export async function getGarages(requestData: any) {
     } else {
       limit = 10;
     }
+    let garageId = 0;
+    if(requestData.garageId){
+      garageId = requestData.garageId;
+    }
     const skip = take * (currentPage - 1);
     const [data, total] = await prisma.$transaction([
       prisma.garage.findMany({
@@ -29,6 +33,7 @@ export async function getGarages(requestData: any) {
               status: {
                 not: "DELETE",
               },
+              routeId: garageId
             },
           ],
         },
