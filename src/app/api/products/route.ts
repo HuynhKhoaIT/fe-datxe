@@ -100,105 +100,105 @@ export async function POST(request: Request) {
     try {
         const json = await request.json();
         const session = await getServerSession(authOptions);
-        let catArr: any = [];
-        let brandArr: any = [];
-        let createdBy = 0;
-        let garageId = Number(process.env.GARAGE_DEFAULT);
-        let isProduct = true;
+        if (session) {
+            let catArr: any = [];
+            let brandArr: any = [];
+            let createdBy = 0;
+            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            let isProduct = true;
 
-        if (!json.categories) {
-            return new NextResponse("Missing 'categoryId' parameter");
-        } else {
-            json.categories.forEach(function (id: number) {
-                catArr.push({
+            if (!json.categories) {
+                return new NextResponse("Missing 'categoryId' parameter");
+            } else {
+                json.categories.forEach(function (id: number) {
+                    catArr.push({
+                        assignedBy: session?.user?.name ?? 'Admin',
+                        assignedAt: new Date(),
+                        category: {
+                            connect: {
+                                id: parseInt(id.toString()),
+                            },
+                        },
+                    });
+                });
+            }
+
+            if (!json.brands) {
+                brandArr = {
                     assignedBy: session?.user?.name ?? 'Admin',
                     assignedAt: new Date(),
-                    category: {
+                    carBrandType: 'CARBRAND',
+                    carModel: {
                         connect: {
-                            id: parseInt(id.toString()),
+                            id: 1,
                         },
                     },
-                });
-            });
-        }
-
-        if (!json.brands) {
-            brandArr = {
-                assignedBy: session?.user?.name ?? 'Admin',
-                assignedAt: new Date(),
-                carBrandType: 'CARBRAND',
-                carModel: {
-                    connect: {
-                        id: 1,
-                    },
-                },
-            };
-        } else {
-            let brandArrTemp: any = [];
-            json.brands.forEach(function (b: any) {
-                const assignedAt = new Date();
-                const assignedBy = session?.user?.name ?? 'Admin';
-                if (b.yearId) {
-                    const yearArr = b.yearId.split(',');
-                    yearArr.forEach(function (y: any) {
-                        let yO = {
+                };
+            } else {
+                let brandArrTemp: any = [];
+                json.brands.forEach(function (b: any) {
+                    const assignedAt = new Date();
+                    const assignedBy = session?.user?.name ?? 'Admin';
+                    if (b.yearId) {
+                        const yearArr = b.yearId.split(',');
+                        yearArr.forEach(function (y: any) {
+                            let yO = {
+                                assignedBy: assignedBy,
+                                assignedAt: assignedAt,
+                                carBrandType: 'CARYEAR',
+                                carModel: {
+                                    connect: {
+                                        id: Number(y),
+                                    },
+                                },
+                            };
+                            if (!brandArrTemp.includes(Number(y))) {
+                                brandArrTemp.push(Number(y));
+                                brandArr.push(yO);
+                            }
+                        });
+                    }
+                    if (b.nameId) {
+                        let bO = {
+                            assignedBy: assignedBy,
+                            assignedAt: assignedAt,
+                            carBrandType: 'CARNAME',
+                            carModel: {
+                                connect: {
+                                    id: Number(b.nameId),
+                                },
+                            },
+                        };
+                        if (!brandArrTemp.includes(Number(b.nameId))) {
+                            brandArrTemp.push(Number(b.nameId));
+                            brandArr.push(bO);
+                        }
+                    }
+                    if (b.brandId) {
+                        let cO = {
                             assignedBy: assignedBy,
                             assignedAt: assignedAt,
                             carBrandType: 'CARYEAR',
                             carModel: {
                                 connect: {
-                                    id: Number(y),
+                                    id: Number(b.brandId),
                                 },
                             },
                         };
-                        if (!brandArrTemp.includes(Number(y))) {
-                            brandArrTemp.push(Number(y));
-                            brandArr.push(yO);
+                        if (!brandArrTemp.includes(Number(b.brandId))) {
+                            brandArrTemp.push(Number(b.brandId));
+                            brandArr.push(cO);
                         }
-                    });
-                }
-                if (b.nameId) {
-                    let bO = {
-                        assignedBy: assignedBy,
-                        assignedAt: assignedAt,
-                        carBrandType: 'CARNAME',
-                        carModel: {
-                            connect: {
-                                id: Number(b.nameId),
-                            },
-                        },
-                    };
-                    if (!brandArrTemp.includes(Number(b.nameId))) {
-                        brandArrTemp.push(Number(b.nameId));
-                        brandArr.push(bO);
                     }
-                }
-                if (b.brandId) {
-                    let cO = {
-                        assignedBy: assignedBy,
-                        assignedAt: assignedAt,
-                        carBrandType: 'CARYEAR',
-                        carModel: {
-                            connect: {
-                                id: Number(b.brandId),
-                            },
-                        },
-                    };
-                    if (!brandArrTemp.includes(Number(b.brandId))) {
-                        brandArrTemp.push(Number(b.brandId));
-                        brandArr.push(cO);
-                    }
-                }
-            });
-        }
-        if (session?.user?.id) {
-            createdBy = Number(session.user.id);
-            garageId = Number(session.user.garageId);
-        }
-        if (typeof json.isProduct !== 'undefined') {
-            isProduct = Number(json.isProduct) == 1 ? true : false;
-        }
-        if (1) {
+                });
+            }
+            if (session?.user?.id) {
+                createdBy = Number(session.user.id);
+                garageId = Number(session.user.garageId);
+            }
+            if (typeof json.isProduct !== 'undefined') {
+                isProduct = Number(json.isProduct) == 1 ? true : false;
+            }
             const product = await prisma.product.create({
                 data: {
                     name: json.title,
@@ -242,6 +242,7 @@ export async function POST(request: Request) {
                 headers: { 'Content-Type': 'application/json' },
             });
         }
+        throw new Error('Chua dang nhap');
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
