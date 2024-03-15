@@ -166,6 +166,7 @@ export async function getOrderBySlug(slug: string){
                         }
                     }
                 },
+                garage: true
             },
             orderBy: {
                 id: 'desc',

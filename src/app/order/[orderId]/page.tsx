@@ -17,6 +17,7 @@ export default async function Products({
   params: { orderId: string };
 }) {
   const orderDetail = await getOrderBySlug(params.orderId);
+  console.log(orderDetail)
   return (
     <RenderContext
       components={{
