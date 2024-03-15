@@ -5,10 +5,10 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import logo from "@/assets/images/logo.png";
 import { NavbarNested } from "./NavbarNested";
-import FooterAdmin from "../components/page/footer/footer-admin";
 import styles from "./index.module.scss";
 import SigninButton from "../layout/common/desktop/login-button";
 import SearchFormName from "../components/elements/search/SearchFormName";
+import FooterAdmin from "../layout/common/desktop/Footer/footer-admin";
 interface IProps {
   children: ReactNode;
 }

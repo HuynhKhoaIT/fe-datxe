@@ -1,15 +1,3 @@
-import { apiUrl } from "@/constants";
-import { CategoryItem } from "../components/elements/category/categoryItem";
-import { ICategory } from "@/interfaces/category";
-import { getCategories } from "@/utils/category";
-// async function getData() {
-//   const res = await fetch(`${apiUrl}api/product-category`);
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch data");
-//   }
-//   return res.json();
-// }
-
 export default async function Category() {
   // let categories = await getData();
 

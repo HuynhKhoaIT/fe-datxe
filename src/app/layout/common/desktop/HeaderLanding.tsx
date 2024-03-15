@@ -57,7 +57,7 @@ export default function HeaderLanding() {
             Trở thành chuyên gia
           </Button>
           <Link href={"/dat-lich"}>
-            <Button size="lg" radius={0} color="#3450E7" h={56}>
+            <Button color="#3450E7" h={56}>
               Book Lịch
             </Button>
           </Link>

@@ -5,6 +5,7 @@ import "./globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
+import { ModalsProvider } from "@mantine/modals";
 
 import "@/assets/scss/index.scss";
 import "slick-carousel/slick/slick.css";
@@ -59,12 +60,14 @@ export default function RootLayout({ children }: IProps) {
     <html lang="vi">
       <body className={inter.className}>
         <MantineProvider theme={theme}>
-          <ProviderAuth>
-            {/* <StoreProvider> */}
-            <Notifications position="top-right" />
-            {children}
-            {/* </StoreProvider> */}
-          </ProviderAuth>
+          <ModalsProvider>
+            <ProviderAuth>
+              {/* <StoreProvider> */}
+              <Notifications position="top-right" />
+              {children}
+              {/* </StoreProvider> */}
+            </ProviderAuth>
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>
