@@ -16,6 +16,7 @@ import classes from "./NavbarNested.module.scss";
 import { LinksGroup } from "../components/NavBarLinksGroup/NavBarLinksGroup";
 import { IconUsersGroup } from "@tabler/icons-react";
 import { signOut } from "next-auth/react";
+import FooterAdmin from "../layout/common/desktop/Footer/footer-admin";
 
 const mockdata = [
   { link: "/admin", label: "Tổng quan", icon: IconGauge },
@@ -67,12 +68,13 @@ export function NavbarNested() {
       <ScrollArea className={classes.links}>
         <div className={classes.linksInner}>{links}</div>
       </ScrollArea>
-      {/* <div className={classes.footer}>
-        <div className={classes.link} onClick={() => signOut()}>
+      <div className={classes.footer}>
+        {/* <div className={classes.link} onClick={() => signOut()}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
-        </div>
-      </div> */}
+        </div> */}
+        <FooterAdmin />
+      </div>
     </nav>
   );
 }

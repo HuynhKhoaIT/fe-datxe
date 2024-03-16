@@ -20,6 +20,7 @@ export default function InfoCar({
     <Card shadow="sm" padding="lg" withBorder title="Áp dụng dòng xe" mt={24}>
       {carData.map((item: any, index: number) => (
         <InfoItem
+          key={index}
           dataDetail={item}
           index={index}
           setCar={setCar}

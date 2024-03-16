@@ -20,7 +20,7 @@ export default function Layout({ children }: IProps) {
     <AppShell
       layout="alt"
       header={{ height: 60 }}
-      footer={{ height: 70 }}
+      // footer={{ height: 70 }}
       navbar={{
         width: 300,
         breakpoint: "sm",
@@ -52,9 +52,9 @@ export default function Layout({ children }: IProps) {
         <NavbarNested />
       </AppShell.Navbar>
       <AppShell.Main className={styles.main}>{children}</AppShell.Main>
-      <AppShell.Footer h={70}>
-        <FooterAdmin />
-      </AppShell.Footer>
+      {/* <AppShell.Footer h={70}>
+        
+      </AppShell.Footer> */}
     </AppShell>
   );
 }

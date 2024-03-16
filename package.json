@@ -39,6 +39,7 @@
         "next-auth": "^4.24.5",
         "node-sass": "^9.0.0",
         "query-string": "^8.1.0",
+        "quill-mention": "^4.1.0",
         "react": "18.2.0",
         "react-device-detect": "^2.2.3",
         "react-dom": "18.2.0",

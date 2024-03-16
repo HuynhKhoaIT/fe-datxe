@@ -16,8 +16,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
 import InfoCar from "../[productId]/InfoCar";
@@ -27,6 +25,7 @@ import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
 import DateTimeField from "@/app/components/form/DateTimeField";
 import axios, { AxiosRequestConfig } from "axios";
+import QuillEditor from "@/app/components/elements/RichTextEditor";
 
 export default function ProductForm({
   isEditing = false,
@@ -38,7 +37,7 @@ export default function ProductForm({
   const [catOptions, setCatOptions] = useState<any>([]);
   const [productBrandOptions, setProductBrandOptions] = useState<any>([]);
   const [supplierOptions, setSuppliersOptions] = useState<any>([]);
-
+  const [valueRTE, setValueRTE] = useState("");
   const [images, setImages] = useState<any>();
   const form = useForm({
     initialValues: {
@@ -86,6 +85,7 @@ export default function ProductForm({
         );
         form.setFieldValue("categories", dataOption);
       }
+      setValueRTE(dataDetail?.metaDescription);
     }
     if (isDirection) {
       form.setFieldValue("garageId", user?.id);
@@ -123,6 +123,7 @@ export default function ProductForm({
     setCar(newCar);
   };
   const handleSubmit = async (values: any) => {
+    values.metaDescription = valueRTE;
     try {
       const baseURL = "https://up-image.dlbd.vn/api/image";
       const options = { headers: { "Content-Type": "multipart/form-data" } };
@@ -221,6 +222,7 @@ export default function ProductForm({
       fetchData();
     }
   }, []);
+  console.log(valueRTE);
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -331,7 +333,7 @@ export default function ProductForm({
                     {/* <Text size={"14px"} c={"#999999"} mb={"6px"}>
                     Mô tả chi tiết
                   </Text> */}
-                    <Textarea
+                    {/* <Textarea
                       size="lg"
                       radius={0}
                       label="Mô tả chi tiết"
@@ -339,6 +341,15 @@ export default function ProductForm({
                       autosize={true}
                       {...form.getInputProps("metaDescription")}
                       placeholder="Mô tả chi tiết"
+                    /> */}
+                    <QuillEditor
+                      theme="snow"
+                      placeholder="Mô tả chi tiết"
+                      className={"quill"}
+                      defaultValue={dataDetail?.description || ""}
+                      setValue={setValueRTE}
+                      value={valueRTE}
+                      style={{ height: 450 }}
                     />
                     {/* <ReactQuill
                     theme="snow"

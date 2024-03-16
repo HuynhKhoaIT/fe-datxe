@@ -14,6 +14,7 @@ import ImageField from "@/app/components/form/ImageField";
 import ImageDefaul from "@/assets/images/logo.png";
 import Typo from "@/app/components/elements/Typo";
 import classNames from "classnames";
+import dayjs from "dayjs";
 const DynamicModalReview = dynamic(() => import("./ModalReview"), {
   ssr: false,
 });
@@ -86,6 +87,7 @@ export default function OrderDetailPage({ dataSource }: any) {
       },
     },
   ];
+  console.log(dayjs(dataSource?.dateTime).format("HH:mm DD:MM:YY"));
   return (
     <Container>
       <div className={styles.infoGara}>
@@ -95,15 +97,15 @@ export default function OrderDetailPage({ dataSource }: any) {
           </div>
           <div className={styles.detailInfo}>
             <Typo type="bold" style={{ color: "var(--primary-color)" }}>
-              Meta Auto
+              {dataSource?.garage?.name}
             </Typo>
             <Typo
               style={{ color: "var(--primary-color)" }}
               size="sub"
               type="bold"
             >
-              <span style={{ fontSize: 16, fontWeight: 400 }}>Add:</span> 230
-              Nguyễn Thị Định, Quận 2, Tp Hcm
+              <span style={{ fontSize: 16, fontWeight: 400 }}>Add:</span>{" "}
+              {dataSource?.garage?.address}
             </Typo>
             <Typo
               style={{ color: "var(--primary-color)" }}
@@ -111,17 +113,15 @@ export default function OrderDetailPage({ dataSource }: any) {
               type="bold"
             >
               <span style={{ fontSize: 16, fontWeight: 400 }}>Phone/Zalo:</span>
-              0369911366
+              {dataSource?.garage?.phoneNumber}
             </Typo>
             <Typo
               style={{ color: "var(--primary-color)" }}
               size="sub"
               type="bold"
             >
-              <span style={{ fontSize: 16, fontWeight: 400 }}>
-                Số tài khoản:
-              </span>
-              12000000000 Ngân hàng VCB
+              <span style={{ fontSize: 16, fontWeight: 400 }}>emil:</span>
+              {dataSource?.garage?.email}
             </Typo>
           </div>
         </div>
@@ -132,27 +132,29 @@ export default function OrderDetailPage({ dataSource }: any) {
       </div>
       <div className={styles.date}>
         <Typo size="sub" type="bold">
-          Ngày 14 tháng 3 năm 2024
+          {dayjs(dataSource?.createdAt).format("DD [tháng] MM [năm] YYYY")}
         </Typo>
         <Typo size="sub" type="bold">
-          Số báo giá: Dh-003213
+          Số báo giá:{dataSource?.code}
         </Typo>
       </div>
       <div className={styles.infoCustomer}>
-        <div className={classNames(styles._1, styles.item)}>
-          Khách hàng: Anh
-        </div>
+        <div className={classNames(styles._1, styles.item)}>Khách hàng:</div>
         <div className={classNames(styles._2, styles.item)}>
-          Nguyễn Huỳnh Khoa
+          {dataSource?.customer?.fullName}
         </div>
         <div className={classNames(styles._3, styles.item)}>Điện thoại</div>
-        <div className={classNames(styles._4, styles.item)}>0869950090</div>
+        <div className={classNames(styles._4, styles.item)}>
+          {dataSource?.customer?.phoneNumber}
+        </div>
         <div className={classNames(styles._5, styles.item)}>Địa chỉ</div>
         <div className={classNames(styles._6, styles.item)}>
-          230 Nguyễn Thị Định Quận 2 TpHCm
+          {dataSource?.customer?.address}
         </div>
         <div className={classNames(styles._7, styles.item)}>Biển sô</div>
-        <div className={classNames(styles._8, styles.item)}>76C1. 39776</div>
+        <div className={classNames(styles._8, styles.item)}>
+          {dataSource?.car?.numberPlates}
+        </div>
         <div className={classNames(styles._9, styles.item)}>hiệu xe</div>
         <div className={classNames(styles._10, styles.item)}>BMW</div>
         <div className={classNames(styles._11, styles.item)}>Model</div>
@@ -168,15 +170,15 @@ export default function OrderDetailPage({ dataSource }: any) {
         <div className={classNames(styles._19, styles.item)}></div>
         <div className={classNames(styles._20, styles.item)}>Ngày vào</div>
         <div className={classNames(styles._21, styles.item)}>
-          15:03 15/03/2024
+          {dayjs(dataSource?.dateTime).format("HH:mm DD:MM:YY")}
         </div>
         <div className={classNames(styles._22, styles.item)}>DK hoàn thành</div>
         <div className={classNames(styles._23, styles.item)}>
-          18:00 20/03/2024
+          {dayjs(dataSource?.dateExpected).format("HH:mm DD:MM:YY")}
         </div>
         <div className={classNames(styles._24, styles.item)}></div>
         <div className={classNames(styles._25, styles.item)}>
-          Khách hàng yêu cầu: Thay dầu móc, lọc dầu + thay bugi
+          Khách hàng yêu cầu: {dataSource?.customerRequest}
         </div>
       </div>
       <Typo size="sub" style={{ padding: "10px 0" }}>
