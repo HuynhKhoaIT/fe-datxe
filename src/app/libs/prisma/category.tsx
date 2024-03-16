@@ -1,6 +1,7 @@
 
 import { STATUS } from "@prisma/client";
 import prisma from "../prismadb";
+import { getGarageIdByDLBDID } from "./garage";
 
 export async function getCategories(requestData: any) {
   try {
@@ -21,6 +22,9 @@ export async function getCategories(requestData: any) {
     if(requestData.garageId){
       garageId = requestData.garageId
     }
+    if(requestData.session){
+      garageId  = await getGarageIdByDLBDID(Number(requestData.session.user?.garageId));
+    }
     let arrayStatus:STATUS[] = ['PUBLIC'];
     if(requestData.status == 'ALL'){
         arrayStatus = ["PUBLIC",'PENDING','DRAFT'];
@@ -29,6 +33,9 @@ export async function getCategories(requestData: any) {
     }
     const [productCategories, total] = await prisma.$transaction([
       prisma.productCategory.findMany({
+        orderBy: {
+          id: 'desc',
+        },
         take: 10,
         where: {
             AND: [

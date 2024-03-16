@@ -229,6 +229,15 @@ export async function createOrder(json: any) {
         }else{
             carId = json.carId;
         }
+        let garageId = 2;
+        if(json.detail.garageId){
+            garageId = Number(json.detail.garageId)
+        }
+
+        if(json.user){
+            
+        }
+
         let orderDetails: any = [];
         if(json.detail){
             json.detail.forEach(function (data: any) {
