@@ -34,12 +34,18 @@ export async function GET(request: NextRequest) {
 }
 export async function POST(request: Request) {
     try {
-        const json = await request.json();
-        const car = await createCar(json);
-        return new NextResponse(JSON.stringify(car), {
-            status: 201,
-            headers: { 'Content-Type': 'application/json' },
-        });
+        const session = await getServerSession(authOptions);
+        if (session) {
+            const json = await request.json();
+            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            json.garageId = garageId;
+            const car = await createCar(json);
+            return new NextResponse(JSON.stringify(car), {
+                status: 201,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+        throw new Error('Chua dang nhap');
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
