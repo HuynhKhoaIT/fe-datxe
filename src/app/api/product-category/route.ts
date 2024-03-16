@@ -23,8 +23,8 @@ export async function GET(request: Request) {
                 garageId: garageId,
                 status: 'PUBLIC',
             };
-            const productCategory = await getCategories(requestData);
-            return NextResponse.json(productCategory);
+            // const productCategory = await getCategories(requestData);
+            return NextResponse.json(requestData);
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {
@@ -35,14 +35,18 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
-        const productCategory = await prisma.productCategory.create({
-            data: json,
-        });
-
-        return new NextResponse(JSON.stringify(productCategory), {
-            status: 201,
-            headers: { 'Content-Type': 'application/json' },
-        });
+        const session = await getServerSession(authOptions);
+        if (session) {
+            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            json.garageId = garageId;
+            const productCategory = await prisma.productCategory.create({
+                data: json,
+            });
+            return new NextResponse(JSON.stringify(productCategory), {
+                status: 201,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }
