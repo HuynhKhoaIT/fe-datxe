@@ -8,6 +8,7 @@ import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 export async function GET(request: Request) {
     try {
         const session = await getServerSession(authOptions);
+
         if (session) {
             let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
             const { searchParams } = new URL(request.url);
@@ -23,8 +24,8 @@ export async function GET(request: Request) {
                 garageId: garageId,
                 status: 'PUBLIC',
             };
-            // const productCategory = await getCategories(requestData);
-            return NextResponse.json(requestData);
+            const productCategory = await getCategories(requestData);
+            return NextResponse.json(productCategory);
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {
