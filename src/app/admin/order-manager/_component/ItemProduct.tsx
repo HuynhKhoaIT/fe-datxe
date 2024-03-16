@@ -2,11 +2,11 @@ import React from "react";
 import styles from "./ItemProduct.module.scss";
 import ImageField from "@/app/components/form/ImageField";
 import ImageDefault from "@/assets/images/logo.png";
-import { Box, Flex, Group, Image } from "@mantine/core";
+import { ActionIcon, Box, Button, Flex, Group, Image } from "@mantine/core";
 import { modals } from "@mantine/modals";
 
 import Typo from "@/app/components/elements/Typo";
-import { IconTrash } from "@tabler/icons-react";
+import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 export default function ItemProduct({ data, removeItem }: any) {
   const routes = useRouter();
@@ -34,32 +34,42 @@ export default function ItemProduct({ data, removeItem }: any) {
   };
   return (
     <div className={styles.item}>
-      <Flex className={styles.itemcart} gap="xs" pl={5}>
-        <Box onClick={() => routes.push(`/product/${data.id}`)}>
+      <div className={styles.itemLeft}>
+        <div className={styles.imgItem}>
           <Image
             src={ImageDefault.src}
             alt="Relevant Image"
-            w="114"
+            width="80px"
             height={"80px"}
             radius="md"
           />
-        </Box>
-        <Box pr={44}>
-          <Typo size="primary" className={styles.titleItem}>
-            {data?.name}
-          </Typo>
-          <Group>
-            <Typo size="primary" style={{ color: "var(--primary-color)" }}>
-              154,155 đ
-            </Typo>
-          </Group>
-        </Box>
-        <IconTrash
-          color="red"
-          className={styles.trash}
-          onClick={() => DeleteItemConfirm(data)}
-        />
-      </Flex>
+        </div>
+        <div className={styles.info}>
+          <div className={styles.title}>{data?.name}</div>
+
+          <div className={styles.quantity}>
+            <ActionIcon variant="outline" color="gray" aria-label="Settings">
+              <IconMinus style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
+            {data.quantity}
+            <ActionIcon variant="outline" color="gray" aria-label="Settings">
+              <IconPlus style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.price}>
+        {(data?.price).toLocaleString("vi", {
+          style: "currency",
+          currency: "VND",
+        })}
+      </div>
+      <IconTrash
+        color="red"
+        className={styles.trash}
+        onClick={() => DeleteItemConfirm(data)}
+      />
     </div>
   );
 }

@@ -28,12 +28,40 @@ import dynamic from "next/dynamic";
 import ListPage from "@/app/components/layout/ListPage";
 import { notifications } from "@mantine/notifications";
 import Typo from "@/app/components/elements/Typo";
+import ItemProduct from "../_component/ItemProduct";
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
   {
     ssr: false,
   }
 );
+
+const dataDemo = [
+  {
+    name: "san pham maam xe",
+    price: 130000,
+    id: 1,
+    quantity: 2,
+  },
+  {
+    name: "san pham 2",
+    price: 130000,
+    id: 2,
+    quantity: 2,
+  },
+  {
+    name: "san pham 3",
+    price: 130000,
+    id: 3,
+    quantity: 2,
+  },
+  {
+    name: "san pham 4",
+    price: 130000,
+    id: 4,
+    quantity: 1,
+  },
+];
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
@@ -464,18 +492,31 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             </div>
           </Grid.Col>
         </Grid>
-        <div style={{ marginTop: 20 }} className={styles.card}>
-          <Typo
-            className={styles.title}
-            size="primary"
-            type="bold"
-            style={{ color: "var(--primary-orange)" }}
-          >
-            Chi tiết đơn hàng
-          </Typo>
+        <div style={{ marginTop: 20 }} className={styles.cardListProduct}>
+          <div className={styles.top}>
+            <Typo
+              className={styles.title}
+              size="primary"
+              type="bold"
+              style={{ color: "var(--primary-orange)" }}
+            >
+              Chi tiết đơn hàng
+            </Typo>
+            <Button
+              size="lg"
+              radius={0}
+              h={{ base: 42, md: 50, lg: 50 }}
+              onClick={(e) => {
+                openModal();
+              }}
+              leftSection={<IconPlus size={18} />}
+            >
+              Thêm
+            </Button>
+          </div>
           <Grid className={styles.marketingInfo}>
             <Grid.Col span={12}>
-              <ListPage
+              {/* <ListPage
                 style={{ height: "100%" }}
                 actionBar={
                   <div
@@ -512,7 +553,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     <Table.Tbody>{rows}</Table.Tbody>
                   </Table>
                 }
-              />
+              /> */}
+              {dataDemo?.map((product: any, index: number) => {
+                return <ItemProduct data={product} key={index} />;
+              })}
             </Grid.Col>
           </Grid>
         </div>
