@@ -47,7 +47,6 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
   const router = useRouter();
 
   const handleSubmit = async (values: any) => {
-    values.garageId = 1;
     handlers.open();
     try {
       if (!isEditing) {
