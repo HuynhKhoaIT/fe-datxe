@@ -10,12 +10,7 @@ import { Fragment } from "react";
 
 async function getData() {
   const session = await getServerSession(authOptions);
-  let garageId = "0";
-  if (session?.user?.garageId) {
-    garageId = session?.user?.garageId;
-  }
   const requestData = {
-    garageId: garageId,
     session: session,
   };
   const res = await getCategories(requestData);

@@ -14,6 +14,8 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
 import { sendSMSOrder } from "@/utils/order";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default function CartComponent({ myAccount }: any) {
   const router = useRouter();
@@ -107,9 +109,12 @@ export default function CartComponent({ myAccount }: any) {
 
   const handleSubmit = async (values: any) => {
     setLoading(true);
-    values.garageId = 2;
-    values.dateTime = new Date();
-    values.total = calculateSubTotal();
+    const session = await getServerSession(authOptions);
+    if(session?.user){
+      values.dateTime = new Date();
+      values.total = calculateSubTotal();
+    }
+    
     try {
       const res = await fetch(`/api/orders`, {
         method: "POST",
@@ -117,7 +122,6 @@ export default function CartComponent({ myAccount }: any) {
       });
 
       const data = await res.json();
-      console.log("data", data);
 
       if (!data?.order) {
         notifications.show({
