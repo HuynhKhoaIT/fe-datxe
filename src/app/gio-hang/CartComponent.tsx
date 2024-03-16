@@ -130,10 +130,10 @@ export default function CartComponent({ myAccount }: any) {
           title: "Thành công",
           message: "Đặt hàng thành công",
         });
-        const sms = await fetch(`/api/orders/sendSMS`, {
-          method: "POST",
-          body: JSON.stringify(data?.order),
-        });
+        // const sms = await fetch(`/api/orders/sendSMS`, {
+        //   method: "POST",
+        //   body: JSON.stringify(data?.order),
+        // });
         localStorage.setItem("cartData", JSON.stringify([]));
         router.push(`/dashboard/order/${data?.order?.slug}`);
       }

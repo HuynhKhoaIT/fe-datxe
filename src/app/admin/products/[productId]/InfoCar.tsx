@@ -28,6 +28,7 @@ export default function InfoCar({
           handleChangeBrand={handleChangeBrand}
           handleChangeNameCar={handleChangeNameCar}
           handleChangeYearCar={handleChangeYearCar}
+          
         />
       ))}
       <Flex justify="end" mt={12}>
