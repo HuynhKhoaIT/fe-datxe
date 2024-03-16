@@ -1,4 +1,3 @@
-import { apiUrl } from "@/constants";
 import RenderContext from "../components/elements/RenderContext";
 import LandingPageDesktop from "../layout/desktop/trang-chu";
 import LandingPageMobile from "../layout/mobile/trang-chu";

@@ -39,27 +39,39 @@ export default function ProductForm({
   const [supplierOptions, setSuppliersOptions] = useState<any>([]);
   const [valueRTE, setValueRTE] = useState("");
   const [images, setImages] = useState<any>();
-  const form = useForm({
+  const form = useForm<{
+    name: string;
+    salePrice: number | undefined;
+    price: number | undefined;
+    categories: any;
+  }>({
+    validateInputOnChange: true,
     initialValues: {
       name: "",
       categories: [],
-      // supplierId: 1,
-      // productBrandId: null,
+      salePrice: undefined,
+      price: undefined,
+      // images: "",
     },
-    validate: {
-      name: (value) => (value.length < 1 ? "Không được để trống" : null),
-      categories: (value) => (value.length < 1 ? "Không được để trống" : null),
-      // supplierId: (value) => (!value ? "Không được để trống" : null),
-      // productBrandId: (value) => (!value ? "Không được để trống" : null),
-    },
+    validate: (values) => ({
+      name: values.name.length < 1 ? "Không được để trống" : null,
+      categories: values.name.length < 1 ? "Không được để trống" : null,
+      salePrice:
+        values?.salePrice === undefined
+          ? null
+          : values?.price === undefined
+          ? null
+          : values?.salePrice > values?.price
+          ? "Giá giảm phải nhỏ hơn giá bán"
+          : null,
+      // images: values?.images.length < 1 ? "Không được để trống" : null,
+    }),
   });
   useEffect(() => {
     if (!isEditing) {
-      form.setFieldValue("garageId", user?.id);
+      // form.setFieldValue("garageId", user?.id);
       form.setFieldValue("isProduct", "1");
       form.setFieldValue("status", "PUBLIC");
-
-      form.setFieldValue("supplierId", "5");
       form.setFieldValue("productBrandId", "4");
     }
     if (isEditing && dataDetail) {
@@ -88,14 +100,12 @@ export default function ProductForm({
       setValueRTE(dataDetail?.metaDescription);
     }
     if (isDirection) {
-      form.setFieldValue("garageId", user?.id);
+      // form.setFieldValue("garageId", user?.id);
       form.setFieldValue("name", dataDetail?.product?.name);
       form.setFieldValue("price", dataDetail?.product?.price);
       form.setFieldValue("description", dataDetail?.product?.description);
       form.setFieldValue("status", "PUBLIC");
       form.setFieldValue("isProduct", "1");
-
-      form.setFieldValue("supplierId", "5");
       form.setFieldValue("productBrandId", "4");
     }
   }, [dataDetail?.product]);
