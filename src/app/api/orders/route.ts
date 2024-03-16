@@ -37,11 +37,15 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
-        const order = await createOrder(json);
-        return new NextResponse(JSON.stringify(order), {
-            status: 201,
-            headers: { 'Content-Type': 'application/json' },
-        });
+        const session = await getServerSession(authOptions);
+        if (session) {
+            json.garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            const order = await createOrder(json);
+            return new NextResponse(JSON.stringify(order), {
+                status: 201,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }

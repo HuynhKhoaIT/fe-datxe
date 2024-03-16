@@ -104,6 +104,7 @@ export async function POST(request: Request) {
             let catArr: any = [];
             let brandArr: any = [];
             let createdBy = 0;
+
             let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
             let isProduct = true;
 
@@ -194,7 +195,6 @@ export async function POST(request: Request) {
             }
             if (session?.user?.id) {
                 createdBy = Number(session.user.id);
-                garageId = Number(session.user.garageId);
             }
             if (typeof json.isProduct !== 'undefined') {
                 isProduct = Number(json.isProduct) == 1 ? true : false;
