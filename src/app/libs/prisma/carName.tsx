@@ -17,7 +17,7 @@ export async function getCarModes(requestData:any) {
 }
 export async function getCarNameById(id: Number) {
     try {
-        const rs = await prisma.carModels.findFirst({
+        const rs = await prisma.carModels.findUnique({
             where:{
                 id: Number(id)
             }
@@ -26,4 +26,7 @@ export async function getCarNameById(id: Number) {
     } catch (error) {
       return {error} ;
     }
-  }
+}
+
+
+

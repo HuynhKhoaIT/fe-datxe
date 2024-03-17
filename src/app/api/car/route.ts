@@ -3,7 +3,10 @@ import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
-
+interface carData {
+    numberPlates: string;
+    // abc: string;
+}
 export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
@@ -24,6 +27,7 @@ export async function GET(request: NextRequest) {
                 status: 'PUBLIC',
             };
             const cars = await getCars(requestData);
+
             return NextResponse.json(cars);
         } else {
             throw new Error('Chua dang nhap');

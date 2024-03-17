@@ -1,4 +1,5 @@
 import prisma from "../prismadb";
+import { getCarNameById } from "./carName";
 import { getCustomerByPhone } from "./customer";
 import { getGarageByDlbdId } from "./garage";
 export async function createCar(json: any) {
@@ -58,7 +59,7 @@ export async function getCars(requestData:any) {
         };
     }
     const [cars, total] = await prisma.$transaction([
-        prisma.car.findMany({
+        prisma.car.findMany({          
             orderBy:{
                 id: 'desc'
             },
@@ -74,8 +75,8 @@ export async function getCars(requestData:any) {
             },
             include: {
                 customer: true,
-                carStyle: true,
-            },
+                carStyle: true
+            }
         }),
         prisma.car.count({
             where: {
@@ -90,10 +91,18 @@ export async function getCars(requestData:any) {
             },
         })
     ])
+    let carRs = JSON.parse(JSON.stringify(cars));
+    for (const car of carRs) {
+        let br = await getCarNameById(car.carBrandId);
+        let md = await getCarNameById(car.carNameId);
+        let y = await getCarNameById(car.carYearId);
+        car.brandName = br;
+        car.modelName = md;
+        car.yearName = y;
+    }
     const totalPage = Math.ceil(total / limit);
-
     return {
-      data: cars,
+      data: carRs,
       total: total,
       currentPage: currentPage,
       limit: limit,
