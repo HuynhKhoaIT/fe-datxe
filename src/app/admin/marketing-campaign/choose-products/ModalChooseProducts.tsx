@@ -61,7 +61,6 @@ export default function ModalChooseProducts({
   }
   useEffect(() => {
     if (openModal) {
-      console.log("searchParams", searchParams);
       getData(searchParams.toString(), page);
       getDataCategories();
     }
@@ -211,14 +210,13 @@ export default function ModalChooseProducts({
   const initialValuesSearch = {
     s: "",
     categoryId: null,
+    isProduct: null,
     brandId: null,
     nameId: null,
     yearId: null,
   };
 
   const [loading, handlers] = useDisclosure();
-
-  console.log(products?.data);
   return (
     <Modal
       title="Chọn sản phẩm"

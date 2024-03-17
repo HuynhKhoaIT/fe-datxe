@@ -96,7 +96,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     initialValues: {
       detail: selectedProducts,
       numberPlates: "",
-      customer: {},
+      customerId: 0,
+      carId: 0,
     },
     validate: {
       numberPlates: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
@@ -214,6 +215,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     // form.setFieldValue("total", subTotal);
   };
   const handleSubmit = async (values: any) => {
+    values.subTotal = calculateSubTotal();
     values.total = calculateSubTotal();
     values.dateTime = new Date();
     handlersButton.open();
@@ -270,6 +272,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       );
       const data = await res.json();
       if (data?.data) {
+        console.log(data.data);
         handlersIsUser.open();
         const [models, yearCars] = await Promise.all([
           getOptionsModels(data?.data?.carBrandId),
@@ -277,19 +280,19 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         ]);
         setModelOptions(models);
         setYearCarOptions(yearCars);
+        form.setFieldValue("customerId", data?.data?.customer.id);
+        form.setFieldValue("carId", data?.data?.id);
+
         form.setFieldValue("carBrandId", data?.data?.carBrandId);
         form.setFieldValue("carNameId", data?.data?.carNameId);
         form.setFieldValue("carYearId", data?.data?.carYearId);
         form.setFieldValue("carBrand", data?.data?.brandName.title);
         form.setFieldValue("carName", data?.data?.modelName.title);
         form.setFieldValue("carYear", data?.data?.yearName.title);
+        form.setFieldValue("fullName", data?.data?.customer.fullName);
+        form.setFieldValue("phoneNumber", data?.data?.customer.phoneNumber);
+        form.setFieldValue("address", data?.data?.customer.address);
       }
-      form.setFieldValue("customer.fullName", data?.data?.customer.fullName);
-      form.setFieldValue(
-        "customer.phoneNumber",
-        data?.data?.customer.phoneNumber
-      );
-      form.setFieldValue("customer.address", data?.data?.customer.address);
     } catch (error) {
     } finally {
       handlers.close();
@@ -436,7 +439,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   }}
                   error={errorPlate ? "Vui lòng nhập..." : false}
                   placeholder="Biển số xe"
-                  readOnly={isUser}
                 />
                 <div className={styles.footer}>
                   <Button
@@ -494,6 +496,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     }}
                     error={errorPlate ? "Vui lòng nhập..." : false}
                     placeholder="Biển số xe"
+                    readOnly={isUser}
                   />
                 </Grid.Col>
                 <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
@@ -592,7 +595,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   <TextInput
                     size="lg"
                     radius={0}
-                    {...form.getInputProps("customer.fullName")}
+                    {...form.getInputProps("fullName")}
                     label="Tên khách hàng"
                     type="text"
                     placeholder="Tên khách hàng"
@@ -602,7 +605,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   <TextInput
                     size="lg"
                     radius={0}
-                    {...form.getInputProps("customer.phoneNumber")}
+                    {...form.getInputProps("phoneNumber")}
                     label="Số điện thoại"
                     type="text"
                     placeholder="Số điện thoại"
@@ -612,7 +615,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   <TextInput
                     size="lg"
                     radius={0}
-                    {...form.getInputProps("customer.address")}
+                    {...form.getInputProps("address")}
                     label="Địa chỉ"
                     type="text"
                     placeholder="Địa chỉ"
@@ -803,57 +806,93 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       />
                     </Grid.Col>
                     <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                      <Select
-                        size="lg"
-                        radius={0}
-                        {...form.getInputProps("carBrandId")}
-                        label="Hãng xe"
-                        type="text"
-                        data={brandOptions}
-                        placeholder="Hãng xe"
-                        onChange={async (value) => {
-                          const optionsData = await getOptionsModels(
-                            Number(value)
-                          );
-                          setModelOptions(optionsData);
-                          form.setFieldValue("carBrandId", value);
-                          form.setFieldValue("carNameId", null);
-                          form.setFieldValue("carYearId", null);
-                        }}
-                      />
+                      {isUser ? (
+                        <TextInput
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("carBrand")}
+                          label="Hãng xe"
+                          type="text"
+                          placeholder="Hãng xe"
+                          readOnly
+                        />
+                      ) : (
+                        <Select
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("carBrandId")}
+                          label="Hãng xe"
+                          type="text"
+                          data={brandOptions}
+                          placeholder="Hãng xe"
+                          onChange={async (value) => {
+                            const optionsData = await getOptionsModels(
+                              Number(value)
+                            );
+                            setModelOptions(optionsData);
+                            form.setFieldValue("carBrandId", value);
+                            form.setFieldValue("carNameId", null);
+                            form.setFieldValue("carYearId", null);
+                          }}
+                        />
+                      )}
                     </Grid.Col>
                     <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                      <Select
-                        size="lg"
-                        radius={0}
-                        {...form.getInputProps("carNameId")}
-                        label="Dòng xe"
-                        type="text"
-                        data={modelOptions}
-                        placeholder="Dòng xe"
-                        onChange={async (value) => {
-                          const optionsData = await getOptionsYearCar(
-                            Number(value)
-                          );
-                          setYearCarOptions(optionsData);
-                          form.setFieldValue("carNameId", value);
-                          form.setFieldValue("carYearId", null);
-                        }}
-                      />
+                      {isUser ? (
+                        <TextInput
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("carName")}
+                          label="Dòng xe"
+                          type="text"
+                          placeholder="Dòng xe"
+                          readOnly
+                        />
+                      ) : (
+                        <Select
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("carNameId")}
+                          label="Dòng xe"
+                          type="text"
+                          data={modelOptions}
+                          placeholder="Dòng xe"
+                          onChange={async (value) => {
+                            const optionsData = await getOptionsYearCar(
+                              Number(value)
+                            );
+                            setYearCarOptions(optionsData);
+                            form.setFieldValue("carNameId", value);
+                            form.setFieldValue("carYearId", null);
+                          }}
+                        />
+                      )}
                     </Grid.Col>
                     <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                      <Select
-                        size="lg"
-                        radius={0}
-                        {...form.getInputProps("carYearId")}
-                        label="Năm SX"
-                        data={yearCarOptions}
-                        type="text"
-                        placeholder="Năm sản xuất"
-                        onChange={(value) => {
-                          form.setFieldValue("carYearId", value);
-                        }}
-                      />
+                      {isUser ? (
+                        <TextInput
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("carYear")}
+                          label="Năm sản xuất"
+                          type="text"
+                          placeholder="Năm sản xuất"
+                          readOnly
+                        />
+                      ) : (
+                        <Select
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("carYearId")}
+                          label="Năm SX"
+                          data={yearCarOptions}
+                          type="text"
+                          placeholder="Năm sản xuất"
+                          onChange={(value) => {
+                            form.setFieldValue("carYearId", value);
+                          }}
+                        />
+                      )}
                     </Grid.Col>
                   </Grid>
                 </div>
@@ -873,7 +912,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       <TextInput
                         size="lg"
                         radius={0}
-                        {...form.getInputProps("customer.fullName")}
+                        {...form.getInputProps("fullName")}
                         label="Tên khách hàng"
                         type="text"
                         placeholder="Tên khách hàng"
@@ -883,7 +922,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       <TextInput
                         size="lg"
                         radius={0}
-                        {...form.getInputProps("customer.phoneNumber")}
+                        {...form.getInputProps("phoneNumber")}
                         label="Số điện thoại"
                         type="text"
                         placeholder="Số điện thoại"
@@ -893,7 +932,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       <TextInput
                         size="lg"
                         radius={0}
-                        {...form.getInputProps("customer.address")}
+                        {...form.getInputProps("address")}
                         label="Địa chỉ"
                         type="text"
                         placeholder="Địa chỉ"
@@ -1032,6 +1071,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           openModal={openModalNubmberPlates}
           close={closeModalNumberPlates}
           formOrder={form}
+          handleGetInfo={handleGetInfo}
         />
       )}
     </Box>

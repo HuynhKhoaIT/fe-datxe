@@ -89,7 +89,7 @@ export default function OrderDetailPage({ dataSource }: any) {
   ];
   console.log(dayjs(dataSource?.dateTime).format("HH:mm DD:MM:YY"));
   return (
-    <Container>
+    <Container className="printable">
       <div className={styles.infoGara}>
         <div className={styles.info}>
           <div className={styles.imageGara}>
