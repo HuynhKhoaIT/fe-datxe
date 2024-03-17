@@ -7,6 +7,11 @@ import { useEffect, useState } from "react";
 import Typo from "../elements/Typo";
 import { IconFilter } from "@tabler/icons-react";
 import styles from "./SearchForm.module.scss";
+import {
+  getOptionsBrands,
+  getOptionsModels,
+  getOptionsYearCar,
+} from "@/utils/util";
 export default function SearchForm({
   searchData,
   brandFilter = false,
@@ -17,44 +22,14 @@ export default function SearchForm({
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
-  const getBrands = async () => {
-    const res = await fetch("/api/car-model", { method: "GET" });
-    const data = await res.json();
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setBrandOptions(dataOption);
-  };
-  async function getDataModels(brandId: number) {
-    const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setModelOptions(dataOption);
-  }
-  async function getDataYearCar(modelId: number) {
-    const res = await fetch(`/api/car-model/${modelId}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setYearCarOptions(dataOption);
-  }
+
   useEffect(() => {
+    const fetchData = async () => {
+      const brands = await getOptionsBrands();
+      setBrandOptions(brands);
+    };
     if (brandFilter) {
-      getBrands();
+      fetchData();
     }
   }, [brandFilter]);
   const form = useForm({
@@ -131,8 +106,9 @@ export default function SearchForm({
                 {...form.getInputProps("brandId")}
                 data={brandOptions}
                 placeholder={"Hãng xe"}
-                onChange={(value) => {
-                  getDataModels(Number(value));
+                onChange={async (value) => {
+                  const optionsData = await getOptionsModels(Number(value));
+                  setModelOptions(optionsData);
                   form.setFieldValue("brandId", String(value));
                   form.setFieldValue("nameId", null);
                   form.setFieldValue("yearId", null);
@@ -144,8 +120,9 @@ export default function SearchForm({
                 w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                 {...form.getInputProps("nameId")}
                 data={modelOptions}
-                onChange={(value) => {
-                  getDataYearCar(Number(value));
+                onChange={async (value) => {
+                  const optionsData = await getOptionsYearCar(Number(value));
+                  setYearCarOptions(optionsData);
                   form.setFieldValue("nameId", String(value));
                   form.setFieldValue("yearId", null);
                 }}

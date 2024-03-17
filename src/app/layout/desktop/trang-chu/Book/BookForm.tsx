@@ -8,6 +8,7 @@ import ArrowDown from "@/assets/icons/arrow-down.svg";
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
+import { getOptionsModels, getOptionsYearCar } from "@/utils/util";
 export default function BookForm({ carsOption, provinceData }: any) {
   const router = useRouter();
   const icon = <img src={ArrowDown.src} />;
@@ -17,36 +18,7 @@ export default function BookForm({ carsOption, provinceData }: any) {
   });
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
-  async function getDataModels(brandId: number) {
-    if (brandId) {
-      const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setModelOptions(dataOption);
-    }
-  }
-  async function getDataYearCar(modelId: number) {
-    if (modelId) {
-      const res = await fetch(`/api/car-model/${modelId}`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setYearCarOptions(dataOption);
-    }
-  }
+
   const handleSubmit = async (values: any) => {
     let queryString = "";
     if (values?.carBrandId) {
@@ -96,8 +68,11 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       rightSection={<></>}
                       placeholder="Hãng xe"
                       data={carsOption}
-                      onChange={(value) => {
-                        getDataModels(Number(value));
+                      onChange={async (value) => {
+                        const optionsData = await getOptionsModels(
+                          Number(value)
+                        );
+                        setModelOptions(optionsData);
                         form.setFieldValue("carBrandId", value);
                         form.setFieldValue("carNameId", null);
                         form.setFieldValue("carYearId", null);
@@ -112,8 +87,11 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       rightSection={<></>}
                       placeholder="Dòng xe"
                       data={modelOptions}
-                      onChange={(value) => {
-                        getDataYearCar(Number(value));
+                      onChange={async (value) => {
+                        const optionsData = await getOptionsYearCar(
+                          Number(value)
+                        );
+                        setYearCarOptions(optionsData);
                         form.setFieldValue("carNameId", value);
                         form.setFieldValue("carYearId", null);
                       }}
@@ -178,8 +156,10 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       rightSection={<></>}
                       placeholder="Dòng xe"
                       data={modelOptions}
-                      onChange={(value) => {
-                        getDataYearCar(Number(value));
+                      onChange={async (value) => {
+                        const optionsData = await getOptionsYearCar(
+                          Number(value)
+                        );
                         form.setFieldValue("carNameId", value);
                       }}
                     />

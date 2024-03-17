@@ -4,44 +4,17 @@ import styles from "./index.module.scss";
 import { useRouter } from "next/navigation";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
+import { getOptionsModels, getOptionsYearCar } from "@/utils/util";
 const Book = ({ carsOption, provinceData }: any) => {
   const router = useRouter();
   const form = useForm({
     initialValues: {},
     validate: {},
   });
+
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
-  async function getDataModels(brandId: number) {
-    if (brandId) {
-      const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setModelOptions(dataOption);
-    }
-  }
-  async function getDataYearCar(modelId: number) {
-    if (modelId) {
-      const res = await fetch(`/api/car-model/${modelId}`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setYearCarOptions(dataOption);
-    }
-  }
+
   const handleSubmit = async (values: any) => {
     let queryString = "";
     if (values?.carBrandId) {
@@ -80,8 +53,9 @@ const Book = ({ carsOption, provinceData }: any) => {
               label="Hãng xe"
               placeholder="Chọn hãng xe"
               data={carsOption}
-              onChange={(value) => {
-                getDataModels(Number(value));
+              onChange={async (value) => {
+                const optionsData = await getOptionsModels(Number(value));
+                setModelOptions(optionsData);
                 form.setFieldValue("carBrandId", value);
                 form.setFieldValue("carNameId", null);
                 form.setFieldValue("carYearId", null);
@@ -98,8 +72,9 @@ const Book = ({ carsOption, provinceData }: any) => {
               label="Dòng xe"
               placeholder="Chọn dòng xe"
               data={modelOptions}
-              onChange={(value) => {
-                getDataYearCar(Number(value));
+              onChange={async (value) => {
+                const optionsData = await getOptionsYearCar(Number(value));
+                setYearCarOptions(optionsData);
                 form.setFieldValue("carNameId", value);
                 form.setFieldValue("carYearId", null);
               }}
@@ -114,11 +89,9 @@ const Book = ({ carsOption, provinceData }: any) => {
               variant="unstyled"
               label="Năm sản xuất"
               placeholder="Chọn năm sản xuất"
-              data={modelOptions}
+              data={yearCarOptions}
               onChange={(value) => {
-                getDataYearCar(Number(value));
-                form.setFieldValue("carNameId", value);
-                form.setFieldValue("carYearId", null);
+                form.setFieldValue("carYearId", value);
               }}
             />
           </li>

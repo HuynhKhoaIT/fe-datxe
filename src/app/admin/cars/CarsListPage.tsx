@@ -32,6 +32,7 @@ export default function CarsListPage({
   setPage,
   loadingTable,
 }: any) {
+  console.log(dataSource);
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteCategory = async (id: any) => {
     await fetch(`/api/cars/${id}`, {

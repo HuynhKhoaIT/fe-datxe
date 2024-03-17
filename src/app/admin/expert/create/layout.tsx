@@ -1,6 +1,5 @@
 import { Fragment, ReactNode, Suspense } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { headers } from "next/headers";
 import { getSelectorsByUserAgent } from "react-device-detect";
 interface IProps {

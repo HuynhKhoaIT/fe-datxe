@@ -70,3 +70,58 @@ export default function convertToSlug(str: string) {
   str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
   return str;
 }
+export async function getOptionsBrands() {
+  const res = await fetch(`/api/car-model`, { method: "GET" });
+  const data = await res.json();
+  if (!data) {
+    throw new Error("Failed to fetch data");
+  }
+  const dataOption = data?.map((item: any) => ({
+    value: item.id.toString(),
+    label: item.title,
+  }));
+  return dataOption;
+}
+export async function getOptionsModels(brandId: number) {
+  if (brandId) {
+    const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    return dataOption;
+  }
+}
+export async function getOptionsYearCar(modelId: number) {
+  if (modelId) {
+    const res = await fetch(`/api/car-model/${modelId}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    if (!data) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataOption = data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    return dataOption;
+  }
+}
+
+export async function getOptionsCustomers() {
+  const res = await fetch(`/api/customer`, { method: "GET" });
+  const data = await res.json();
+  if (!data) {
+    throw new Error("Failed to fetch data");
+  }
+  const dataOption = data?.data?.map((item: any) => ({
+    value: item.id.toString(),
+    label: item.fullName,
+  }));
+  return dataOption;
+}
