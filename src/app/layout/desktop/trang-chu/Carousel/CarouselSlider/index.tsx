@@ -14,8 +14,8 @@ const Carousel = ({ slideshowData, height }: any) => {
         infinite={true}
         autoplay={true}
       >
-        {slideshowData?.map((item: any) => {
-          return <CarouselItem height={height} item={item} key={item.id} />;
+        {slideshowData?.map((item: any, index: number) => {
+          return <CarouselItem height={height} item={item} key={index} />;
         })}
       </SlickCarousel>
     </div>

@@ -1,40 +1,39 @@
-import React from "react";
-import styles from "./index.module.scss";
+"use client";
+import React, { useEffect, useState } from "react";
+import styles from "./ItemProductChoose.module.scss";
 import ImageField from "@/app/components/form/ImageField";
 import ImageDefault from "@/assets/images/logo.png";
 import {
   ActionIcon,
   Box,
   Button,
+  Checkbox,
   Flex,
   Group,
   Image,
-  Menu,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
+
 import Typo from "@/app/components/elements/Typo";
-import { IconDotsVertical } from "@tabler/icons-react";
+import {
+  IconMinus,
+  IconPlus,
+  IconShoppingCartPlus,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useDisclosure } from "@mantine/hooks";
-import dynamic from "next/dynamic";
-
-const DynamicModalUpdate = dynamic(() => import("./ModalUpdate"), {
-  ssr: false,
-});
-
-export default function ItemProduct({
+export default function ItemProductChoose({
   data,
   removeItem,
-  form,
-  index,
-  setSelectedProducts,
-  selectedProducts,
+  selectedRows,
+  setSelectedRows,
 }: any) {
-  const [
-    openModalChoose,
-    { open: openModal, close: closeModal },
-  ] = useDisclosure(false);
+  const [isChecked, setIschecked] = useState(true);
+  console.log(selectedRows);
   const images = JSON.parse(data?.images);
+  useEffect(() => {
+    setIschecked(selectedRows?.some((obj: any) => obj.id === data?.id));
+  }, [selectedRows]);
   const routes = useRouter();
   const DeleteItemConfirm = (data: any) => {
     modals.openConfirmModal({
@@ -61,6 +60,23 @@ export default function ItemProduct({
   return (
     <div className={styles.item}>
       <div className={styles.itemLeft}>
+        <div className={styles.iconCheck}>
+          <Checkbox
+            defaultChecked={selectedRows?.some(
+              (obj: any) => obj.id === data?.id
+            )}
+            onChange={(event) => {
+              setSelectedRows(
+                event.currentTarget.checked
+                  ? [...selectedRows, data]
+                  : selectedRows.filter(
+                      (selectedItem: any) => selectedItem?.id !== data.id
+                    )
+              );
+              console.log(data, event.currentTarget.checked);
+            }}
+          />
+        </div>
         <div className={styles.imgItem}>
           <Image
             src={images[0]}
@@ -70,12 +86,21 @@ export default function ItemProduct({
             radius="md"
           />
         </div>
-
         <div className={styles.info}>
           <div className={styles.title}>{data?.name}</div>
+          {/* 
+          <div className={styles.quantity}>
+            <ActionIcon variant="outline" color="gray" aria-label="Settings">
+              <IconMinus style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
+            {data.quantity}
+            <ActionIcon variant="outline" color="gray" aria-label="Settings">
+              <IconPlus style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
+          </div> */}
           <div className={styles.price}>
             <p style={{ color: "var(--primary-color)" }}>
-              {(data?.priceSale).toLocaleString("vi", {
+              {(data?.salePrice).toLocaleString("vi", {
                 style: "currency",
                 currency: "VND",
               })}
@@ -87,42 +112,8 @@ export default function ItemProduct({
               })}
             </del>
           </div>
-          <div className={styles.quantity}>
-            Số lượng:
-            <span>{data.quantity}</span>
-          </div>
         </div>
       </div>
-      <div className={styles.menu}>
-        <Menu>
-          <Menu.Target>
-            <IconDotsVertical />
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item onClick={openModal}>Chỉnh sửa</Menu.Item>
-            <Menu.Item
-              onClick={(e) => {
-                setSelectedProducts(
-                  selectedProducts.filter(
-                    (selectedItem: any) =>
-                      selectedItem.id !== data.id &&
-                      selectedItem.id !== data.productId
-                  )
-                );
-              }}
-            >
-              Xoá
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      </div>
-      <DynamicModalUpdate
-        openModal={openModalChoose}
-        close={closeModal}
-        data={data}
-        form={form}
-        index={index}
-      />
     </div>
   );
 }

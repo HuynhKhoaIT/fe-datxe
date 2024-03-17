@@ -6,12 +6,17 @@
     border: 1px solid #eeeeee;
     border-radius: 8px;
     width: 100%;
+    .iconCheck {
+        display: flex;
+        align-items: center;
+    }
     .itemLeft {
         display: flex;
         gap: 20px;
         width: 75%;
         .imgItem {
             width: 80px;
+            flex-shrink: 0;
         }
         .info {
             display: flex;
@@ -75,6 +80,8 @@
             display: flex;
             align-items: center;
             width: 15%;
+            font-weight: 500;
+            gap: 6px;
         }
     }
 }

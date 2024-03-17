@@ -23,7 +23,6 @@ import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import { statusOptions } from "@/constants/masterData";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
-  console.log(dataDetail);
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
@@ -59,10 +58,11 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
         method: "GET",
       });
       const data = await res.json();
+
       if (!data) {
         throw new Error("Failed to fetch data");
       }
-      const dataOption = data?.data?.map((item: any) => ({
+      const dataOption = data?.map((item: any) => ({
         value: item.id.toString(),
         label: item.title,
       }));
@@ -80,7 +80,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       machineNumber: "",
       description: "",
       status: isEditing ? dataDetail?.status : "PUBLIC",
-      garageId: 1,
       carStyleId: 1,
     },
     validate: {},
@@ -262,9 +261,9 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     size="lg"
                     radius={0}
                     {...form.getInputProps("vinNumber")}
-                    label="vinNumber"
+                    label="Số vin"
                     type="text"
-                    placeholder="vinNumber"
+                    placeholder="Số vin"
                   />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
@@ -272,9 +271,9 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     size="lg"
                     radius={0}
                     {...form.getInputProps("machineNumber")}
-                    label="machineNumber"
+                    label="Số máy"
                     type="text"
-                    placeholder="machineNumber"
+                    placeholder="Số máy"
                   />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>

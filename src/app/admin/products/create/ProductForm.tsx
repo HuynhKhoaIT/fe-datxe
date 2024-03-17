@@ -23,7 +23,6 @@ import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
-import DateTimeField from "@/app/components/form/DateTimeField";
 import axios, { AxiosRequestConfig } from "axios";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
 
@@ -31,36 +30,42 @@ export default function ProductForm({
   isEditing = false,
   dataDetail,
   isDirection = false,
-  user,
 }: any) {
   const [loading, handlers] = useDisclosure();
   const [catOptions, setCatOptions] = useState<any>([]);
-  const [productBrandOptions, setProductBrandOptions] = useState<any>([]);
-  const [supplierOptions, setSuppliersOptions] = useState<any>([]);
   const [valueRTE, setValueRTE] = useState("");
   const [images, setImages] = useState<any>();
-  const form = useForm({
+
+  const form = useForm<{
+    name: string;
+    salePrice: number | undefined;
+    price: number | undefined;
+    categories: any;
+  }>({
+    validateInputOnChange: true,
     initialValues: {
       name: "",
       categories: [],
-      // supplierId: 1,
-      // productBrandId: null,
+      salePrice: undefined,
+      price: undefined,
     },
-    validate: {
-      name: (value) => (value.length < 1 ? "Không được để trống" : null),
-      categories: (value) => (value.length < 1 ? "Không được để trống" : null),
-      // supplierId: (value) => (!value ? "Không được để trống" : null),
-      // productBrandId: (value) => (!value ? "Không được để trống" : null),
-    },
+    validate: (values) => ({
+      name: values.name.length < 1 ? "Không được để trống" : null,
+      categories: values.name.length < 1 ? "Không được để trống" : null,
+      salePrice:
+        values?.salePrice === undefined
+          ? null
+          : values?.price === undefined
+          ? null
+          : values?.salePrice > values?.price
+          ? "Giá giảm phải nhỏ hơn giá bán"
+          : null,
+    }),
   });
   useEffect(() => {
     if (!isEditing) {
-      form.setFieldValue("garageId", user?.id);
       form.setFieldValue("isProduct", "1");
       form.setFieldValue("status", "PUBLIC");
-
-      form.setFieldValue("supplierId", "5");
-      form.setFieldValue("productBrandId", "4");
     }
     if (isEditing && dataDetail) {
       form.setInitialValues(dataDetail?.product);
@@ -88,17 +93,14 @@ export default function ProductForm({
       setValueRTE(dataDetail?.metaDescription);
     }
     if (isDirection) {
-      form.setFieldValue("garageId", user?.id);
       form.setFieldValue("name", dataDetail?.product?.name);
       form.setFieldValue("price", dataDetail?.product?.price);
       form.setFieldValue("description", dataDetail?.product?.description);
       form.setFieldValue("status", "PUBLIC");
       form.setFieldValue("isProduct", "1");
-
-      form.setFieldValue("supplierId", "5");
-      form.setFieldValue("productBrandId", "4");
     }
   }, [dataDetail?.product]);
+
   const router = useRouter();
   const [car, setCar] = useState([{ brandId: "", nameId: "", yearId: "" }]);
 
@@ -116,10 +118,10 @@ export default function ProductForm({
     newCar[index].yearId = "";
     setCar(newCar);
   };
+
   const handleChangeYearCar = (index: number, value: any) => {
     const newCar = [...car];
     newCar[index].yearId = value.join(",");
-
     setCar(newCar);
   };
   const handleSubmit = async (values: any) => {
@@ -173,31 +175,6 @@ export default function ProductForm({
     }
   };
 
-  const getProductBrands = async () => {
-    const res = await fetch(`/api/product-brands`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.name,
-    }));
-    setProductBrandOptions(dataOption);
-  };
-  const getSuppliers = async () => {
-    const res = await fetch(`/api/suppliers`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setSuppliersOptions(dataOption);
-  };
-
   const getCategories = async () => {
     const res = await fetch(`/api/product-category`, { method: "GET" });
     const data = await res.json();
@@ -213,7 +190,7 @@ export default function ProductForm({
   useEffect(() => {
     const fetchData = async () => {
       handlers.open();
-      await Promise.all([getCategories(), getSuppliers(), getProductBrands()]);
+      await Promise.all([getCategories()]);
 
       handlers.close();
     };
@@ -222,7 +199,6 @@ export default function ProductForm({
       fetchData();
     }
   }, []);
-  console.log(valueRTE);
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -260,15 +236,6 @@ export default function ProductForm({
                     ]}
                   />
                 </Grid.Col>
-                {/* <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <Select size = 'md'
-                    withAsterisk
-                    {...form.getInputProps("productBrandId")}
-                    label="Thương hiệu sản phẩm"
-                    placeholder="Thương hiệu sản phẩm"
-                    data={productBrandOptions}
-                  />
-                </Grid.Col> */}
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <NumberInput
                     size="lg"
