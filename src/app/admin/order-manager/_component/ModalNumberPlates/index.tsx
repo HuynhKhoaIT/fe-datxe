@@ -23,12 +23,12 @@ export default function ModalNumberPlates({
   const handleSubmit = async (values: any) => {
     console.log(values);
     try {
-      const res = await fetch(`/car/number-plates/${values.numberPlates}`, {
+      const res = await fetch(`/api/car/number-plates/${values.numberPlates}`, {
         method: "GET",
       });
       console.log(res);
     } catch (error) {}
-    // close();
+    close();
   };
   return (
     <Modal

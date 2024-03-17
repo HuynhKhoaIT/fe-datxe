@@ -59,7 +59,12 @@ const DynamicModalNumberPlates = dynamic(
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
-  const [activeTab, setActiveTab] = useState<string | null>("customer");
+  const [activeTab, setActiveTab] = useState<string | null>(
+    !isEditing ? "numberPlates" : "customer"
+  );
+
+  const [isUser, handlersIsUser] = useDisclosure();
+
   const [errorPlate, handlersPlate] = useDisclosure();
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
@@ -111,7 +116,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     };
 
     if (!isEditing) {
-      openModalNumberPlates();
+      if (form.values.numberPlates.length == 0) {
+        openModalNumberPlates();
+      }
+
       fetchData();
     }
   }, []);
@@ -252,6 +260,42 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     }
   };
 
+  // lấy thông tin theo biển số xe
+  const handleGetInfo = async () => {
+    handlers.open();
+    try {
+      const res = await fetch(
+        `/api/car/number-plates/${form.values.numberPlates}`,
+        { method: "GET" }
+      );
+      const data = await res.json();
+      if (data?.data) {
+        handlersIsUser.open();
+        const [models, yearCars] = await Promise.all([
+          getOptionsModels(data?.data?.carBrandId),
+          getOptionsYearCar(data?.data?.carNameId),
+        ]);
+        setModelOptions(models);
+        setYearCarOptions(yearCars);
+        form.setFieldValue("carBrandId", data?.data?.carBrandId);
+        form.setFieldValue("carNameId", data?.data?.carNameId);
+        form.setFieldValue("carYearId", data?.data?.carYearId);
+        form.setFieldValue("carBrand", data?.data?.brandName.title);
+        form.setFieldValue("carName", data?.data?.modelName.title);
+        form.setFieldValue("carYear", data?.data?.yearName.title);
+      }
+      form.setFieldValue("customer.fullName", data?.data?.customer.fullName);
+      form.setFieldValue(
+        "customer.phoneNumber",
+        data?.data?.customer.phoneNumber
+      );
+      form.setFieldValue("customer.address", data?.data?.customer.address);
+    } catch (error) {
+    } finally {
+      handlers.close();
+      closeModalNumberPlates();
+    }
+  };
   const rows = form.values.detail.map((selectedRow: any, index: number) => {
     // const images = JSON.parse(selectedRow.images);
     return (
@@ -337,6 +381,12 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       </Table.Tr>
     );
   });
+  const handleKeyPress = (event: any) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      // Ngăn chặn hành động mặc định của phím Enter
+    }
+  };
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -344,7 +394,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleSubmit)} onKeyPress={handleKeyPress}>
         {isMobile ? (
           <Tabs
             value={activeTab}
@@ -357,18 +407,74 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             }}
           >
             <Tabs.List classNames={{ list: styles.list }}>
+              {!isEditing && (
+                <Tabs.Tab classNames={{ tab: styles.tab }} value="numberPlates">
+                  Xe
+                </Tabs.Tab>
+              )}
               <Tabs.Tab classNames={{ tab: styles.tab }} value="customer">
-                Thông tin khách hàng
+                Khách hàng
               </Tabs.Tab>
               <Tabs.Tab classNames={{ tab: styles.tab }} value="detailOrder">
                 Chi tiết đơn hàng
               </Tabs.Tab>
             </Tabs.List>
-            {/* <Tabs.Panel value="car">
-              
-              <Group justify="end" mt={20}>
-                
-            </Tabs.Panel> */}
+            {!isEditing && (
+              <Tabs.Panel value="numberPlates">
+                <TextInput
+                  size="lg"
+                  radius={0}
+                  withAsterisk
+                  {...form.getInputProps("numberPlates")}
+                  label="Biển số xe"
+                  type="text"
+                  onChange={(e) => {
+                    if (e.target.value.length > 0) {
+                      handlersPlate.close();
+                    }
+                    form.setFieldValue("numberPlates", e.target.value);
+                  }}
+                  error={errorPlate ? "Vui lòng nhập..." : false}
+                  placeholder="Biển số xe"
+                  readOnly={isUser}
+                />
+                <div className={styles.footer}>
+                  <Button
+                    size="lg"
+                    w={"48%"}
+                    radius={0}
+                    h={{ base: 42, md: 50, lg: 50 }}
+                    variant="outline"
+                    key="cancel"
+                    color="red"
+                    leftSection={<IconBan size={16} />}
+                    onClick={() => router.back()}
+                  >
+                    Huỷ bỏ
+                  </Button>
+                  <Button
+                    size="lg"
+                    radius={0}
+                    w={"48%"}
+                    h={{ base: 42, md: 50, lg: 50 }}
+                    loading={loadingButton}
+                    style={{ marginLeft: "12px" }}
+                    variant="filled"
+                    onClick={async () => {
+                      if (form.values.numberPlates.length === 0) {
+                        handlersPlate.open();
+                      } else {
+                        await handleGetInfo();
+                        setActiveTab("customer");
+                      }
+                    }}
+                    leftSection={<IconChevronRight size={16} />}
+                  >
+                    Tiếp tục
+                  </Button>
+                </div>
+              </Tabs.Panel>
+            )}
 
             <Tabs.Panel value="customer">
               <Grid gutter={12} className={styles.marketingInfo}>
@@ -391,55 +497,93 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   />
                 </Grid.Col>
                 <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carBrandId")}
-                    label="Hãng xe"
-                    type="text"
-                    data={brandOptions}
-                    placeholder="Hãng xe"
-                    onChange={async (value) => {
-                      const optionsData = await getOptionsModels(Number(value));
-                      setModelOptions(optionsData);
-                      form.setFieldValue("carBrandId", value);
-                      form.setFieldValue("carNameId", null);
-                      form.setFieldValue("carYearId", null);
-                    }}
-                  />
+                  {isUser ? (
+                    <TextInput
+                      size="lg"
+                      radius={0}
+                      {...form.getInputProps("carBrand")}
+                      label="Hãng xe"
+                      type="text"
+                      placeholder="Hãng xe"
+                      readOnly
+                    />
+                  ) : (
+                    <Select
+                      size="lg"
+                      radius={0}
+                      {...form.getInputProps("carBrandId")}
+                      label="Hãng xe"
+                      type="text"
+                      data={brandOptions}
+                      placeholder="Hãng xe"
+                      onChange={async (value) => {
+                        const optionsData = await getOptionsModels(
+                          Number(value)
+                        );
+                        setModelOptions(optionsData);
+                        form.setFieldValue("carBrandId", value);
+                        form.setFieldValue("carNameId", null);
+                        form.setFieldValue("carYearId", null);
+                      }}
+                    />
+                  )}
                 </Grid.Col>
                 <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carNameId")}
-                    label="Dòng xe"
-                    type="text"
-                    data={modelOptions}
-                    placeholder="Dòng xe"
-                    onChange={async (value) => {
-                      const optionsData = await getOptionsYearCar(
-                        Number(value)
-                      );
-                      setYearCarOptions(optionsData);
-                      form.setFieldValue("carNameId", value);
-                      form.setFieldValue("carYearId", null);
-                    }}
-                  />
+                  {isUser ? (
+                    <TextInput
+                      size="lg"
+                      radius={0}
+                      {...form.getInputProps("carName")}
+                      label="Dòng xe"
+                      type="text"
+                      placeholder="Dòng xe"
+                      readOnly
+                    />
+                  ) : (
+                    <Select
+                      size="lg"
+                      radius={0}
+                      {...form.getInputProps("carNameId")}
+                      label="Dòng xe"
+                      type="text"
+                      data={modelOptions}
+                      placeholder="Dòng xe"
+                      onChange={async (value) => {
+                        const optionsData = await getOptionsYearCar(
+                          Number(value)
+                        );
+                        setYearCarOptions(optionsData);
+                        form.setFieldValue("carNameId", value);
+                        form.setFieldValue("carYearId", null);
+                      }}
+                    />
+                  )}
                 </Grid.Col>
                 <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carYearId")}
-                    label="Năm SX"
-                    data={yearCarOptions}
-                    type="text"
-                    placeholder="Năm sản xuất"
-                    onChange={(value) => {
-                      form.setFieldValue("carYearId", value);
-                    }}
-                  />
+                  {isUser ? (
+                    <TextInput
+                      size="lg"
+                      radius={0}
+                      {...form.getInputProps("carYear")}
+                      label="Năm sản xuất"
+                      type="text"
+                      placeholder="Năm sản xuất"
+                      readOnly
+                    />
+                  ) : (
+                    <Select
+                      size="lg"
+                      radius={0}
+                      {...form.getInputProps("carYearId")}
+                      label="Năm SX"
+                      data={yearCarOptions}
+                      type="text"
+                      placeholder="Năm sản xuất"
+                      onChange={(value) => {
+                        form.setFieldValue("carYearId", value);
+                      }}
+                    />
+                  )}
                 </Grid.Col>
               </Grid>
               <Space h={30} />
@@ -873,17 +1017,23 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           </>
         )}
       </form>
-      <DynamicModalChooseProducts
-        openModal={openModalChoose}
-        close={closeModal}
-        setSelectedProducts={setSelectedProducts}
-        selectedProducts={selectedProducts}
-      />
-      <DynamicModalNumberPlates
-        openModal={openModalNubmberPlates}
-        close={closeModalNumberPlates}
-        formOrder={form}
-      />
+
+      {openModalChoose && (
+        <DynamicModalChooseProducts
+          openModal={openModalChoose}
+          close={closeModal}
+          setSelectedProducts={setSelectedProducts}
+          selectedProducts={selectedProducts}
+        />
+      )}
+
+      {!isMobile && (
+        <DynamicModalNumberPlates
+          openModal={openModalNubmberPlates}
+          close={closeModalNumberPlates}
+          formOrder={form}
+        />
+      )}
     </Box>
   );
 }

@@ -60,11 +60,13 @@ export default function ModalChooseProducts({
     setCategoryOptions(dataOption);
   }
   useEffect(() => {
-    if (openModal && !products) {
+    if (openModal) {
+      console.log("searchParams", searchParams);
       getData(searchParams.toString(), page);
       getDataCategories();
     }
   }, [openModal, searchParams]);
+
   const columns = [
     {
       label: (
