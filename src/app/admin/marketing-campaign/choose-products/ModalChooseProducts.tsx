@@ -6,6 +6,7 @@ import {
   Image,
   LoadingOverlay,
   Modal,
+  ScrollArea,
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import ImageDefult from "../../../../../public/assets/images/logoDatxe.png";
@@ -15,7 +16,8 @@ import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { useSearchParams } from "next/navigation";
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import ItemProductChoose from "../_component/ItemProductChoose";
 
 export default function ModalChooseProducts({
   openModal,
@@ -23,6 +25,8 @@ export default function ModalChooseProducts({
   selectedProducts,
   setSelectedProducts,
 }: any) {
+  const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
+
   const [selectedRows, setSelectedRows] = useState<any>(selectedProducts);
 
   useEffect(() => {
@@ -184,16 +188,17 @@ export default function ModalChooseProducts({
   ];
   const searchData = [
     {
-      name: "s",
-      placeholder: "Tên sản phẩm",
-      type: "input",
-    },
-    {
       name: "categoryId",
       placeholder: "Danh mục",
       type: "select",
       data: categoryOptions,
     },
+    {
+      name: "s",
+      placeholder: "Tên sản phẩm",
+      type: "input",
+    },
+
     {
       name: "isProduct",
       placeholder: "Loại",
@@ -211,43 +216,68 @@ export default function ModalChooseProducts({
 
   const [loading, handlers] = useDisclosure();
 
+  console.log(products?.data);
   return (
     <Modal
       title="Chọn sản phẩm"
       opened={openModal}
       onClose={close}
-      lockScroll={false}
+      lockScroll={isMobile}
       // size={"80%"}
+      radius={0}
       size="auto"
+      fullScreen={isMobile}
     >
       <LoadingOverlay
         visible={loading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
-      <ListPage
-        searchForm={
+      {isMobile ? (
+        <>
           <SearchForm
             searchData={searchData}
-            brandFilter={true}
+            brandFilter={false}
             initialValues={initialValuesSearch}
           />
-        }
-        style={{ height: "100%" }}
-        baseTable={
-          <TableBasic
-            loading={loading}
-            data={products?.data}
-            columns={columns}
-            totalPage={products?.totalPage}
-            setPage={setPage}
-            activePage={page}
-            selectRow={true}
-            selectedRows={selectedRows}
-            setSelectedRows={setSelectedRows}
-          />
-        }
-      />
+          <ScrollArea h={450}>
+            {products?.data?.map((item: any, index: number) => {
+              return (
+                <ItemProductChoose
+                  data={item}
+                  key={index}
+                  selectedRows={selectedRows}
+                  setSelectedRows={setSelectedRows}
+                />
+              );
+            })}
+          </ScrollArea>
+        </>
+      ) : (
+        <ListPage
+          searchForm={
+            <SearchForm
+              searchData={searchData}
+              brandFilter={true}
+              initialValues={initialValuesSearch}
+            />
+          }
+          style={{ height: "100%" }}
+          baseTable={
+            <TableBasic
+              loading={loading}
+              data={products?.data}
+              columns={columns}
+              totalPage={products?.totalPage}
+              setPage={setPage}
+              activePage={page}
+              selectRow={true}
+              selectedRows={selectedRows}
+              setSelectedRows={setSelectedRows}
+            />
+          }
+        />
+      )}
       <Group justify="end" style={{ marginTop: 10 }}>
         <Button
           size="lg"

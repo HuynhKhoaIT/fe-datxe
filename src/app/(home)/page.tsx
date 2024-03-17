@@ -13,6 +13,7 @@ import Reasons3 from "@/assets/images/reasson3.png";
 import { getProvinces } from "@/utils/notion";
 import { getCategories } from "../libs/prisma/category";
 import { getProducts } from "../libs/prisma/product";
+import { getCarModes } from "../libs/prisma/carName";
 const reassons = [
   {
     image: Reasons2.src,
@@ -65,12 +66,17 @@ export default async function Home() {
   const productsRelate = await getProducts(0, {});
   const servicesHot = await getProducts(0, { isProduct: "0" });
   const productsHot = await getProducts(0, { isProduct: "1" });
-  // const carsOption = await getCarData();
+  const carsData = await getCarModes({});
   const province: any = await getProvinces();
   const provinceData = province.map((item: any) => ({
     value: item.id.toString(),
     label: item.name,
   }));
+  const carsOption = carsData.map((item: any) => ({
+    value: item.id.toString(),
+    label: item.title,
+  }));
+  console.log(carsOption);
   return (
     <RenderContext
       components={{
@@ -87,7 +93,7 @@ export default async function Home() {
       servicesHot={servicesHot}
       productsHot={productsHot}
       blogs={blogs}
-      // carsOption={carsOption}
+      carsOption={carsOption}
       provinceData={provinceData}
     />
   );
