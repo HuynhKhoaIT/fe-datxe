@@ -2,7 +2,6 @@
 export const revalidate = 0;
 import React, { Fragment, useEffect, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Badge, Button, Flex, Image, Tabs, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";

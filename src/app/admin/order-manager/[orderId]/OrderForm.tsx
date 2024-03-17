@@ -11,6 +11,7 @@ import {
   Select,
   Switch,
   Table,
+  Tabs,
   Text,
   TextInput,
   Textarea,
@@ -22,13 +23,14 @@ import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { stepOrderOptions } from "@/constants/masterData";
 import dynamic from "next/dynamic";
 import ListPage from "@/app/components/layout/ListPage";
 import { notifications } from "@mantine/notifications";
 import Typo from "@/app/components/elements/Typo";
 import ItemProduct from "../_component/ItemProduct";
+
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
   {
@@ -63,6 +65,7 @@ const dataDemo = [
   },
 ];
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
+  const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
   const router = useRouter();
@@ -160,6 +163,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   useEffect(() => {
     if (!isEditing) {
       let updatedProducts = selectedProducts.map((detail: any) => ({
+        images: detail.images,
         name: detail.name,
         price: detail.price,
         productId: detail.id,
@@ -173,6 +177,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       form.setFieldValue("detail", updatedProducts);
     } else {
       let updatedProducts = selectedProducts.map((detail: any) => ({
+        images: detail.images,
         name: detail?.product?.name || detail?.name,
         price: detail.price,
         productId: detail.productId !== 0 ? detail.productId : detail.id,
@@ -284,6 +289,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     }
   };
 
+  console.log(form.values.detail);
   const rows = form.values.detail.map((selectedRow: any, index: number) => {
     // const images = JSON.parse(selectedRow.images);
     return (
@@ -378,261 +384,270 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         overlayProps={{ radius: "sm", blur: 2 }}
       />
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Grid gutter={12}>
-          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-            <div className={styles.card}>
-              <Typo
-                size="primary"
-                type="bold"
-                style={{ color: "var(--primary-orange)" }}
-                className={styles.title}
-              >
-                Thông tin xe
-              </Typo>
-              <Grid gutter={12} className={styles.marketingInfo}>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <TextInput
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("numberPlates")}
-                    label="Biển số xe"
-                    type="text"
-                    placeholder="Biển số xe"
-                  />
-                </Grid.Col>
-                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carBrandId")}
-                    label="Hãng xe"
-                    type="text"
-                    data={brandOptions}
-                    placeholder="Hãng xe"
-                    onChange={(value) => {
-                      getDataModels(Number(value));
-                      form.setFieldValue("carBrandId", value);
-                    }}
-                  />
-                </Grid.Col>
-                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carNameId")}
-                    label="Dòng xe"
-                    type="text"
-                    data={modelOptions}
-                    placeholder="Dòng xe"
-                    onChange={(value) => {
-                      getDataYearCar(Number(value));
-                      form.setFieldValue("carNameId", value);
-                    }}
-                  />
-                </Grid.Col>
-                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("carYearId")}
-                    label="Năm SX"
-                    data={yearCarOptions}
-                    type="text"
-                    placeholder="Năm sản xuất"
-                    onChange={(value) => {
-                      form.setFieldValue("carYearId", value);
-                    }}
-                  />
-                </Grid.Col>
-              </Grid>
-            </div>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-            <div className={styles.card}>
-              <Typo
-                size="primary"
-                type="bold"
-                style={{ color: "var(--primary-orange)" }}
-                className={styles.title}
-              >
-                Thông tin khách hàng
-              </Typo>
-              <Grid gutter={12} className={styles.marketingInfo}>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <TextInput
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("customer.fullName")}
-                    label="Tên khách hàng"
-                    type="text"
-                    placeholder="Tên khách hàng"
-                  />
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <TextInput
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("customer.phoneNumber")}
-                    label="Số điện thoại"
-                    type="text"
-                    placeholder="Số điện thoại"
-                  />
-                </Grid.Col>
-                <Grid.Col span={12}>
-                  <TextInput
-                    size="lg"
-                    radius={0}
-                    {...form.getInputProps("customer.address")}
-                    label="Địa chỉ"
-                    type="text"
-                    placeholder="Địa chỉ"
-                  />
-                </Grid.Col>
-              </Grid>
-            </div>
-          </Grid.Col>
-        </Grid>
-        <div style={{ marginTop: 20 }} className={styles.cardListProduct}>
-          <div className={styles.top}>
-            <Typo
-              className={styles.title}
-              size="primary"
-              type="bold"
-              style={{ color: "var(--primary-orange)" }}
-            >
-              Chi tiết đơn hàng
-            </Typo>
-            <Button
-              size="lg"
-              radius={0}
-              h={{ base: 42, md: 50, lg: 50 }}
-              onClick={(e) => {
-                openModal();
-              }}
-              leftSection={<IconPlus size={18} />}
-            >
-              Thêm
-            </Button>
-          </div>
-          <Grid className={styles.marketingInfo}>
-            <Grid.Col span={12}>
-              {/* <ListPage
-                style={{ height: "100%" }}
-                actionBar={
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "end",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Button
-                      size="lg"
-                      radius={0}
-                      h={{ base: 42, md: 50, lg: 50 }}
-                      onClick={(e) => {
-                        openModal();
-                      }}
-                      leftSection={<IconPlus size={18} />}
-                    >
-                      Thêm sản phẩm
-                    </Button>
-                  </div>
-                }
-                baseTable={
-                  <Table>
-                    <Table.Thead>
-                      <Table.Tr>
-                        <Table.Th>Tên sản phẩm</Table.Th>
-                        <Table.Th>Giá</Table.Th>
-                        <Table.Th>Số lượng</Table.Th>
-                        <Table.Th>Tổng tiền</Table.Th>
-                        <Table.Th>Hành động</Table.Th>
-                      </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{rows}</Table.Tbody>
-                  </Table>
-                }
-              /> */}
-              {dataDemo?.map((product: any, index: number) => {
-                return <ItemProduct data={product} key={index} />;
-              })}
-            </Grid.Col>
-          </Grid>
-        </div>
-        <div style={{ marginTop: 20 }} className={styles.card}>
-          <Typo
-            className={styles.title}
-            size="primary"
-            type="bold"
-            style={{ color: "var(--primary-orange)" }}
-          >
-            Thông tin đơn hàng
-          </Typo>
+        {isMobile ? (
+          <Tabs defaultValue="gallery">
+            <Tabs.List>
+              <Tabs.Tab value="gallery">Gallery</Tabs.Tab>
+              <Tabs.Tab value="messages">Messages</Tabs.Tab>
+              <Tabs.Tab value="settings">Settings</Tabs.Tab>
+            </Tabs.List>
 
-          <Grid gutter={12} mt={24} className={styles.marketingInfo}>
-            <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-              <NumberInput
+            <Tabs.Panel value="gallery">Gallery tab content</Tabs.Panel>
+
+            <Tabs.Panel value="messages">Messages tab content</Tabs.Panel>
+
+            <Tabs.Panel value="settings">Settings tab content</Tabs.Panel>
+          </Tabs>
+        ) : (
+          <>
+            <Grid gutter={12}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                <div className={styles.card}>
+                  <Typo
+                    size="primary"
+                    type="bold"
+                    style={{ color: "var(--primary-orange)" }}
+                    className={styles.title}
+                  >
+                    Thông tin xe
+                  </Typo>
+                  <Grid gutter={12} className={styles.marketingInfo}>
+                    <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                      <TextInput
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("numberPlates")}
+                        label="Biển số xe"
+                        type="text"
+                        placeholder="Biển số xe"
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                      <Select
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("carBrandId")}
+                        label="Hãng xe"
+                        type="text"
+                        data={brandOptions}
+                        placeholder="Hãng xe"
+                        onChange={(value) => {
+                          getDataModels(Number(value));
+                          form.setFieldValue("carBrandId", value);
+                        }}
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                      <Select
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("carNameId")}
+                        label="Dòng xe"
+                        type="text"
+                        data={modelOptions}
+                        placeholder="Dòng xe"
+                        onChange={(value) => {
+                          getDataYearCar(Number(value));
+                          form.setFieldValue("carNameId", value);
+                        }}
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                      <Select
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("carYearId")}
+                        label="Năm SX"
+                        data={yearCarOptions}
+                        type="text"
+                        placeholder="Năm sản xuất"
+                        onChange={(value) => {
+                          form.setFieldValue("carYearId", value);
+                        }}
+                      />
+                    </Grid.Col>
+                  </Grid>
+                </div>
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                <div className={styles.card}>
+                  <Typo
+                    size="primary"
+                    type="bold"
+                    style={{ color: "var(--primary-orange)" }}
+                    className={styles.title}
+                  >
+                    Thông tin khách hàng
+                  </Typo>
+                  <Grid gutter={12} className={styles.marketingInfo}>
+                    <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                      <TextInput
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("customer.fullName")}
+                        label="Tên khách hàng"
+                        type="text"
+                        placeholder="Tên khách hàng"
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                      <TextInput
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("customer.phoneNumber")}
+                        label="Số điện thoại"
+                        type="text"
+                        placeholder="Số điện thoại"
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={12}>
+                      <TextInput
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("customer.address")}
+                        label="Địa chỉ"
+                        type="text"
+                        placeholder="Địa chỉ"
+                      />
+                    </Grid.Col>
+                  </Grid>
+                </div>
+              </Grid.Col>
+            </Grid>
+            <div style={{ marginTop: 20 }} className={styles.cardListProduct}>
+              <div className={styles.top}>
+                <Typo
+                  className={styles.title}
+                  size="primary"
+                  type="bold"
+                  style={{ color: "var(--primary-orange)" }}
+                >
+                  Chi tiết đơn hàng
+                </Typo>
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  onClick={(e) => {
+                    openModal();
+                  }}
+                  leftSection={<IconPlus size={18} />}
+                >
+                  Thêm
+                </Button>
+              </div>
+              <Grid className={styles.marketingInfo}>
+                <Grid.Col span={12}>
+                  {!isMobile ? (
+                    <ListPage
+                      style={{ height: "100%" }}
+                      baseTable={
+                        <Table>
+                          <Table.Thead>
+                            <Table.Tr>
+                              <Table.Th>Tên sản phẩm</Table.Th>
+                              <Table.Th>Giá</Table.Th>
+                              <Table.Th>Số lượng</Table.Th>
+                              <Table.Th>Tổng tiền</Table.Th>
+                              <Table.Th>Hành động</Table.Th>
+                            </Table.Tr>
+                          </Table.Thead>
+                          <Table.Tbody>{rows}</Table.Tbody>
+                        </Table>
+                      }
+                    />
+                  ) : (
+                    form.values.detail?.map((product: any, index: number) => {
+                      return (
+                        <ItemProduct
+                          data={product}
+                          key={index}
+                          index={index}
+                          form={form}
+                          setSelectedProducts={setSelectedProducts}
+                          selectedProducts={selectedProducts}
+                        />
+                      );
+                    })
+                  )}
+                </Grid.Col>
+              </Grid>
+            </div>
+            <div style={{ marginTop: 20 }} className={styles.card}>
+              <Typo
+                className={styles.title}
+                size="primary"
+                type="bold"
+                style={{ color: "var(--primary-orange)" }}
+              >
+                Thông tin đơn hàng
+              </Typo>
+
+              <Grid gutter={12} mt={24} className={styles.marketingInfo}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                  <NumberInput
+                    size="lg"
+                    radius={0}
+                    label="Tổng đơn hàng"
+                    placeholder="Tổng đơn hàng"
+                    suffix="đ"
+                    readOnly
+                    thousandSeparator=","
+                    value={calculateSubTotal()}
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                  <Select
+                    size="lg"
+                    radius={0}
+                    label="Tình trạng đơn hàng"
+                    placeholder="Tình trạng đơn hàng"
+                    {...form.getInputProps("step")}
+                    data={stepOrderOptions}
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                  <Textarea
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("note")}
+                    label="Ghi chú của khách hàng"
+                    minRows={3}
+                    autosize={true}
+                    placeholder="Ghi chú của khách hàng"
+                  />
+                </Grid.Col>
+              </Grid>
+            </div>
+            <Group justify="end" mt={20}>
+              <Button
                 size="lg"
                 radius={0}
-                label="Tổng đơn hàng"
-                placeholder="Tổng đơn hàng"
-                suffix="đ"
-                readOnly
-                thousandSeparator=","
-                value={calculateSubTotal()}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-              <Select
+                h={{ base: 42, md: 50, lg: 50 }}
+                variant="outline"
+                key="cancel"
+                color="red"
+                leftSection={<IconBan size={16} />}
+                onClick={() => router.back()}
+              >
+                Huỷ bỏ
+              </Button>
+              <Button
                 size="lg"
                 radius={0}
-                label="Tình trạng đơn hàng"
-                placeholder="Tình trạng đơn hàng"
-                {...form.getInputProps("step")}
-                data={stepOrderOptions}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-              <Textarea
-                size="lg"
-                radius={0}
-                {...form.getInputProps("note")}
-                label="Ghi chú của khách hàng"
-                minRows={3}
-                autosize={true}
-                placeholder="Ghi chú của khách hàng"
-              />
-            </Grid.Col>
-          </Grid>
-        </div>
-        <Group justify="end" mt={20}>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
-            onClick={() => router.back()}
-          >
-            Huỷ bỏ
-          </Button>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            loading={loadingButton}
-            style={{ marginLeft: "12px" }}
-            key="submit"
-            type="submit"
-            variant="filled"
-            leftSection={<IconPlus size={16} />}
-          >
-            {isEditing ? "Cập nhật" : "Thêm"}
-          </Button>
-        </Group>
+                h={{ base: 42, md: 50, lg: 50 }}
+                loading={loadingButton}
+                style={{ marginLeft: "12px" }}
+                key="submit"
+                type="submit"
+                variant="filled"
+                leftSection={<IconPlus size={16} />}
+              >
+                {isEditing ? "Cập nhật" : "Thêm"}
+              </Button>
+            </Group>
+          </>
+        )}
       </form>
       <DynamicModalChooseProducts
         openModal={openModalChoose}
