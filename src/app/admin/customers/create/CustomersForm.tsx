@@ -21,6 +21,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { sexOptions, statusOptions } from "@/constants/masterData";
 import DateField from "@/app/components/form/DateField";
 import dayjs from "dayjs";
+import FooterSavePage from "../../_component/FooterSavePage";
 export default function CustomersForm({ isEditing, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const form = useForm({
@@ -330,34 +331,10 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
             </Card>
           </Grid.Col>
         </Grid>
-
-        <Group justify="end" style={{ marginTop: 60 }}>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
-            onClick={() => router.back()}
-          >
-            Huỷ
-          </Button>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            loading={loading}
-            style={{ marginLeft: "12px" }}
-            key="submit"
-            type="submit"
-            variant="filled"
-            leftSection={<IconPlus size={16} />}
-          >
-            {isEditing ? "Cập nhật" : "Thêm"}
-          </Button>
-        </Group>
+        <FooterSavePage
+          saveLoading={loading}
+          okText={isEditing ? "Cập nhật" : "Thêm"}
+        />
       </form>
     </Box>
   );

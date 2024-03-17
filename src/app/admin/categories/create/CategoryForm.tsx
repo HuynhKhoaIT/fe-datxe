@@ -21,6 +21,7 @@ import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
+import FooterSavePage from "../../_component/FooterSavePage";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
@@ -194,33 +195,10 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           </Grid.Col>
         </Grid>
 
-        <Group justify="end" mt={20}>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
-            onClick={() => router.back()}
-          >
-            Huỷ
-          </Button>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            loading={loading}
-            style={{ marginLeft: "12px" }}
-            key="submit"
-            type="submit"
-            variant="filled"
-            leftSection={<IconPlus size={16} />}
-          >
-            {isEditing ? "Cập nhật" : "Thêm"}
-          </Button>
-        </Group>
+        <FooterSavePage
+          saveLoading={loading}
+          okText={isEditing ? "Cập nhật" : "Thêm"}
+        />
       </form>
     </Box>
   );

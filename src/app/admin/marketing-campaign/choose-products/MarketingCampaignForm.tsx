@@ -283,35 +283,50 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
         overlayProps={{ radius: "sm", blur: 2 }}
       />
       <form className={styles.form} onSubmit={form.onSubmit(handleSubmit)}>
-        <div className={styles.marketingInfo}>
-          <Typo className={styles.title}>Thông tin chương trình</Typo>
-          <Grid gutter={16}>
-            <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-              <TextInput
-                size="lg"
-                radius={0}
-                withAsterisk
-                label="Tên chương trình"
-                type="text"
-                placeholder="Tên chương trình"
-                {...form.getInputProps("title")}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 6, sm: 3, md: 3, lg: 3 }}>
-              <DateTimeField
-                label="Ngày bắt đầu"
-                required
-                {...form.getInputProps("dateTimeStart")}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 6, sm: 3, md: 3, lg: 3 }}>
-              <DateTimeField
-                label="Ngày kết thúc"
-                required
-                {...form.getInputProps("dateTimeEnd")}
-              />
-            </Grid.Col>
-          </Grid>
+        <div className={styles.card}>
+          <Typo
+            size="primary"
+            type="bold"
+            style={{ color: "var(--primary-orange)" }}
+            className={styles.title}
+          >
+            Thông tin chương trình
+          </Typo>
+          <div className={styles.marketingInfo}>
+            <Grid gutter={16}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                <TextInput
+                  size="lg"
+                  radius={0}
+                  withAsterisk
+                  label="Tên chương trình"
+                  type="text"
+                  placeholder="Tên chương trình"
+                  {...form.getInputProps("title")}
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 6, sm: 3, md: 3, lg: 3 }}>
+                <DateTimeField
+                  size="lg"
+                  radius={0}
+                  placeholder="Ngày bắt đầu"
+                  label="Ngày bắt đầu"
+                  required
+                  {...form.getInputProps("dateTimeStart")}
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 6, sm: 3, md: 3, lg: 3 }}>
+                <DateTimeField
+                  size="lg"
+                  placeholder="Ngày kết thúc"
+                  radius={0}
+                  label="Ngày kết thúc"
+                  required
+                  {...form.getInputProps("dateTimeEnd")}
+                />
+              </Grid.Col>
+            </Grid>
+          </div>
         </div>
 
         <div style={{ borderRadius: 8 }}>
@@ -383,10 +398,11 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             </Grid>
           </div>
 
-          <Group justify="end" mt={20}>
+          <div className={styles.footer}>
             <Button
               size="lg"
               radius={0}
+              w={{ base: "48%", md: "200px", lg: "200px" }}
               h={{ base: 42, md: 50, lg: 50 }}
               variant="outline"
               key="cancel"
@@ -398,6 +414,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             </Button>
             <Button
               size="lg"
+              w={{ base: "48%", md: "200px", lg: "200px" }}
               radius={0}
               h={{ base: 42, md: 50, lg: 50 }}
               loading={loading}
@@ -409,7 +426,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             >
               Xác nhận
             </Button>
-          </Group>
+          </div>
         </div>
       </form>
       <DynamicModalChooseProducts

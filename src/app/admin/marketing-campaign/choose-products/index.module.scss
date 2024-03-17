@@ -8,8 +8,11 @@
     box-shadow: var(--box-shadow);
     margin: 10px;
     .title {
-        padding: 16px 32px;
+        display: flex;
+        align-items: center;
         border-bottom: 1px solid #eeeeee;
+        padding: 16px 32px;
+        color: var(--primary-orange);
     }
     .marketingInfo {
         padding: 30px;
@@ -17,6 +20,17 @@
     }
 }
 
+.footer {
+    width: 100%;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
 @media only screen and (max-width: 600px) {
     .form {
         .marketingInfo {

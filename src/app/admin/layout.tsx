@@ -20,7 +20,7 @@ export default function Layout({ children }: IProps) {
     <AppShell
       layout="alt"
       header={{ height: 60 }}
-      // footer={{ height: 70 }}
+      footer={{ height: 60 }}
       navbar={{
         width: 300,
         breakpoint: "sm",

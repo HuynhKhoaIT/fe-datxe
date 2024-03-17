@@ -28,7 +28,9 @@ import {
   getOptionsModels,
   getOptionsYearCar,
 } from "@/utils/util";
+import FooterSavePage from "../../_component/FooterSavePage";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
+  console.log(dataDetail);
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
@@ -46,7 +48,10 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       status: isEditing ? dataDetail?.status : "PUBLIC",
       carStyleId: 1,
     },
-    validate: {},
+    validate: {
+      numberPlates: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
+      customerId: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
+    },
   });
 
   const router = useRouter();
@@ -81,21 +86,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   };
 
   const [customerOptions, setCustomerOptions] = useState();
-  const getCustomers = async () => {
-    handlers.open();
-    const res = await fetch(`/api/customer`, { method: "GET" });
-    const data = await res.json();
-    handlers.close();
-
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.fullName,
-    }));
-    setCustomerOptions(dataOption);
-  };
   useEffect(() => {
     const fetchData = async () => {
       handlers.open();
@@ -118,11 +108,13 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
 
       if (isEditing && dataDetail) {
         try {
-          const [brands, models, yearCars] = await Promise.all([
+          const [customers, brands, models, yearCars] = await Promise.all([
+            getOptionsCustomers(),
             getOptionsBrands(),
-            getOptionsModels(dataDetail?.car?.carBrandId),
-            getOptionsYearCar(dataDetail?.car?.carNameId),
+            getOptionsModels(dataDetail?.carBrandId),
+            getOptionsYearCar(dataDetail?.carNameId),
           ]);
+          setCustomerOptions(customers);
           setBrandOptions(brands);
           setModelOptions(models);
           setYearCarOptions(yearCars);
@@ -159,6 +151,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                   <Select
                     size="lg"
                     radius={0}
+                    withAsterisk
                     {...form.getInputProps("customerId")}
                     label="Khách hàng"
                     type="text"
@@ -168,6 +161,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
+                    withAsterisk
                     {...form.getInputProps("numberPlates")}
                     size="lg"
                     radius={0}
@@ -282,34 +276,10 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
             </Card>
           </Grid.Col>
         </Grid>
-
-        <Group justify="end" style={{ marginTop: 60 }}>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
-            onClick={() => router.back()}
-          >
-            Huỷ
-          </Button>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            loading={loading}
-            style={{ marginLeft: "12px" }}
-            key="submit"
-            type="submit"
-            variant="filled"
-            leftSection={<IconPlus size={16} />}
-          >
-            {isEditing ? "Cập nhật" : "Thêm"}
-          </Button>
-        </Group>
+        <FooterSavePage
+          saveLoading={loading}
+          okText={isEditing ? "Cập nhật" : "Thêm"}
+        />
       </form>
     </Box>
   );
