@@ -365,7 +365,16 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       />
       <form onSubmit={form.onSubmit(handleSubmit)}>
         {isMobile ? (
-          <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tabs
+            value={activeTab}
+            onChange={(value) => {
+              if (form.values.numberPlates.length === 0) {
+                handlersPlate.open();
+              } else {
+                setActiveTab(value);
+              }
+            }}
+          >
             <Tabs.List classNames={{ list: styles.list }}>
               <Tabs.Tab classNames={{ tab: styles.tab }} value="car">
                 Xe
