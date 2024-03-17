@@ -215,8 +215,8 @@ export async function POST(request: Request) {
                     status: json.status,
                     createdBy: createdBy,
                     garageId: garageId,
-                    supplierId: Number(json.supplierId),
-                    productBrandId: Number(json.productBrandId),
+                    supplierId: Number(json.supplierId ?? 1),
+                    productBrandId: Number(json.productBrandId ?? 1),
                     isProduct: isProduct,
                     categories: {
                         create: catArr,
