@@ -18,7 +18,12 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan, IconTrash } from "@tabler/icons-react";
+import {
+  IconPlus,
+  IconBan,
+  IconTrash,
+  IconChevronRight,
+} from "@tabler/icons-react";
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -37,34 +42,9 @@ const DynamicModalChooseProducts = dynamic(
     ssr: false,
   }
 );
-
-const dataDemo = [
-  {
-    name: "san pham maam xe",
-    price: 130000,
-    id: 1,
-    quantity: 2,
-  },
-  {
-    name: "san pham 2",
-    price: 130000,
-    id: 2,
-    quantity: 2,
-  },
-  {
-    name: "san pham 3",
-    price: 130000,
-    id: 3,
-    quantity: 2,
-  },
-  {
-    name: "san pham 4",
-    price: 130000,
-    id: 4,
-    quantity: 1,
-  },
-];
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
+  const [activeTab, setActiveTab] = useState<string | null>("car");
+  const [errorPlate, handlersPlate] = useDisclosure();
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
@@ -85,8 +65,12 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const form = useForm({
     initialValues: {
       detail: selectedProducts,
+      numberPlates: "",
+      customer: {},
     },
-    validate: {},
+    validate: {
+      numberPlates: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
+    },
   });
 
   const [brandOptions, setBrandOptions] = useState<any>([]);
@@ -234,7 +218,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   // Tính tổng tiền
   const calculateSubTotal = () => {
     let subTotal = 0;
-    console.log(form.values?.detail);
     form.values?.detail?.forEach((item: any) => {
       subTotal += item.priceSale * item.quantity;
     });
@@ -243,7 +226,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   };
   const handleSubmit = async (values: any) => {
     values.total = calculateSubTotal();
-    values.garageId = 1;
     values.dateTime = new Date();
     handlersButton.open();
     try {
@@ -289,7 +271,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     }
   };
 
-  console.log(form.values.detail);
   const rows = form.values.detail.map((selectedRow: any, index: number) => {
     // const images = JSON.parse(selectedRow.images);
     return (
@@ -308,7 +289,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             suffix="đ"
             thousandSeparator=","
             onChange={(value: any) => {
-              console.log("value", value);
               form.setFieldValue(
                 `detail.${index}.subTotal`,
                 form.values.detail[index].quantity * Number(value)
@@ -385,18 +365,325 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       />
       <form onSubmit={form.onSubmit(handleSubmit)}>
         {isMobile ? (
-          <Tabs defaultValue="gallery">
-            <Tabs.List>
-              <Tabs.Tab value="gallery">Gallery</Tabs.Tab>
-              <Tabs.Tab value="messages">Messages</Tabs.Tab>
-              <Tabs.Tab value="settings">Settings</Tabs.Tab>
+          <Tabs value={activeTab} onChange={setActiveTab}>
+            <Tabs.List classNames={{ list: styles.list }}>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="car">
+                Xe
+              </Tabs.Tab>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="customer">
+                Khách hàng
+              </Tabs.Tab>
+              <Tabs.Tab classNames={{ tab: styles.tab }} value="detailOrder">
+                Chi tiết đơn hàng
+              </Tabs.Tab>
             </Tabs.List>
+            <Tabs.Panel value="car">
+              <Grid gutter={12} className={styles.marketingInfo}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                  <TextInput
+                    size="lg"
+                    radius={0}
+                    withAsterisk
+                    {...form.getInputProps("numberPlates")}
+                    label="Biển số xe"
+                    type="text"
+                    onChange={(e) => {
+                      if (e.target.value.length > 0) {
+                        handlersPlate.close();
+                      }
+                      form.setFieldValue("numberPlates", e.target.value);
+                    }}
+                    error={errorPlate ? "Vui lòng nhập..." : false}
+                    placeholder="Biển số xe"
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                  <Select
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("carBrandId")}
+                    label="Hãng xe"
+                    type="text"
+                    data={brandOptions}
+                    placeholder="Hãng xe"
+                    onChange={(value) => {
+                      getDataModels(Number(value));
+                      form.setFieldValue("carBrandId", value);
+                    }}
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                  <Select
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("carNameId")}
+                    label="Dòng xe"
+                    type="text"
+                    data={modelOptions}
+                    placeholder="Dòng xe"
+                    onChange={(value) => {
+                      getDataYearCar(Number(value));
+                      form.setFieldValue("carNameId", value);
+                    }}
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 4, sm: 6, md: 6, lg: 6 }}>
+                  <Select
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("carYearId")}
+                    label="Năm SX"
+                    data={yearCarOptions}
+                    type="text"
+                    placeholder="Năm sản xuất"
+                    onChange={(value) => {
+                      form.setFieldValue("carYearId", value);
+                    }}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Group justify="end" mt={20}>
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  variant="outline"
+                  key="cancel"
+                  color="red"
+                  leftSection={<IconBan size={16} />}
+                  onClick={() => router.back()}
+                >
+                  Huỷ bỏ
+                </Button>
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  loading={loadingButton}
+                  style={{ marginLeft: "12px" }}
+                  variant="filled"
+                  onClick={() => {
+                    if (form.values.numberPlates.length === 0) {
+                      handlersPlate.open();
+                    } else {
+                      setActiveTab("customer");
+                    }
+                  }}
+                  leftSection={<IconChevronRight size={16} />}
+                >
+                  Tiếp tục
+                </Button>
+              </Group>
+            </Tabs.Panel>
 
-            <Tabs.Panel value="gallery">Gallery tab content</Tabs.Panel>
+            <Tabs.Panel value="customer">
+              <Grid gutter={12} className={styles.marketingInfo}>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                  <TextInput
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("customer.fullName")}
+                    label="Tên khách hàng"
+                    type="text"
+                    placeholder="Tên khách hàng"
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                  <TextInput
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("customer.phoneNumber")}
+                    label="Số điện thoại"
+                    type="text"
+                    placeholder="Số điện thoại"
+                  />
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <TextInput
+                    size="lg"
+                    radius={0}
+                    {...form.getInputProps("customer.address")}
+                    label="Địa chỉ"
+                    type="text"
+                    placeholder="Địa chỉ"
+                  />
+                </Grid.Col>
+              </Grid>
+              <Group justify="end" mt={20}>
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  variant="outline"
+                  key="cancel"
+                  color="red"
+                  onClick={() => {
+                    setActiveTab("car");
+                  }}
+                  leftSection={<IconBan size={16} />}
+                >
+                  Quay lại
+                </Button>
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  loading={loadingButton}
+                  style={{ marginLeft: "12px" }}
+                  variant="filled"
+                  onClick={() => {
+                    setActiveTab("detailOrder");
+                  }}
+                  leftSection={<IconChevronRight size={16} />}
+                >
+                  Tiếp tục
+                </Button>
+              </Group>
+            </Tabs.Panel>
 
-            <Tabs.Panel value="messages">Messages tab content</Tabs.Panel>
+            <Tabs.Panel value="detailOrder">
+              <>
+                <div
+                  style={{ marginTop: 20 }}
+                  className={styles.cardListProduct}
+                >
+                  <div className={styles.top}>
+                    <Typo
+                      className={styles.title}
+                      size="primary"
+                      type="bold"
+                      style={{ color: "var(--primary-orange)" }}
+                    >
+                      Chi tiết đơn hàng
+                    </Typo>
+                    <Button
+                      size="lg"
+                      radius={0}
+                      h={{ base: 42, md: 50, lg: 50 }}
+                      onClick={(e) => {
+                        openModal();
+                      }}
+                      leftSection={<IconPlus size={18} />}
+                    >
+                      Thêm
+                    </Button>
+                  </div>
+                  <Grid className={styles.marketingInfo}>
+                    <Grid.Col span={12}>
+                      {!isMobile ? (
+                        <ListPage
+                          style={{ height: "100%" }}
+                          baseTable={
+                            <Table>
+                              <Table.Thead>
+                                <Table.Tr>
+                                  <Table.Th>Tên sản phẩm</Table.Th>
+                                  <Table.Th>Giá</Table.Th>
+                                  <Table.Th>Số lượng</Table.Th>
+                                  <Table.Th>Tổng tiền</Table.Th>
+                                  <Table.Th>Hành động</Table.Th>
+                                </Table.Tr>
+                              </Table.Thead>
+                              <Table.Tbody>{rows}</Table.Tbody>
+                            </Table>
+                          }
+                        />
+                      ) : (
+                        form.values.detail?.map(
+                          (product: any, index: number) => {
+                            return (
+                              <ItemProduct
+                                data={product}
+                                key={index}
+                                index={index}
+                                form={form}
+                                setSelectedProducts={setSelectedProducts}
+                                selectedProducts={selectedProducts}
+                              />
+                            );
+                          }
+                        )
+                      )}
+                    </Grid.Col>
+                  </Grid>
+                </div>
+                <div style={{ marginTop: 20 }} className={styles.card}>
+                  <Typo
+                    className={styles.title}
+                    size="primary"
+                    type="bold"
+                    style={{ color: "var(--primary-orange)" }}
+                  >
+                    Thông tin đơn hàng
+                  </Typo>
 
-            <Tabs.Panel value="settings">Settings tab content</Tabs.Panel>
+                  <Grid gutter={12} mt={24} className={styles.marketingInfo}>
+                    <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                      <NumberInput
+                        size="lg"
+                        radius={0}
+                        label="Tổng đơn hàng"
+                        placeholder="Tổng đơn hàng"
+                        suffix="đ"
+                        readOnly
+                        thousandSeparator=","
+                        value={calculateSubTotal()}
+                      />
+                    </Grid.Col>
+                    {isEditing && (
+                      <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                        <Select
+                          size="lg"
+                          radius={0}
+                          label="Tình trạng đơn hàng"
+                          placeholder="Tình trạng đơn hàng"
+                          {...form.getInputProps("step")}
+                          data={stepOrderOptions}
+                        />
+                      </Grid.Col>
+                    )}
+                    <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                      <Textarea
+                        size="lg"
+                        radius={0}
+                        {...form.getInputProps("note")}
+                        label="Ghi chú của khách hàng"
+                        minRows={3}
+                        autosize={true}
+                        placeholder="Ghi chú của khách hàng"
+                      />
+                    </Grid.Col>
+                  </Grid>
+                  <Group justify="end" mt={20}>
+                    <Button
+                      size="lg"
+                      radius={0}
+                      h={{ base: 42, md: 50, lg: 50 }}
+                      variant="outline"
+                      key="cancel"
+                      color="red"
+                      leftSection={<IconBan size={16} />}
+                      onClick={() => router.back()}
+                    >
+                      Huỷ bỏ
+                    </Button>
+                    <Button
+                      size="lg"
+                      radius={0}
+                      h={{ base: 42, md: 50, lg: 50 }}
+                      loading={loadingButton}
+                      style={{ marginLeft: "12px" }}
+                      key="submit"
+                      type="submit"
+                      variant="filled"
+                      leftSection={<IconPlus size={16} />}
+                    >
+                      {isEditing ? "Cập nhật" : "Hoàn thành"}
+                    </Button>
+                  </Group>
+                </div>
+              </>
+            </Tabs.Panel>
           </Tabs>
         ) : (
           <>
@@ -414,8 +701,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   <Grid gutter={12} className={styles.marketingInfo}>
                     <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                       <TextInput
+                        withAsterisk
                         size="lg"
                         radius={0}
+                        error="vui lòng nhập"
                         {...form.getInputProps("numberPlates")}
                         label="Biển số xe"
                         type="text"
@@ -596,16 +885,18 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     value={calculateSubTotal()}
                   />
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    label="Tình trạng đơn hàng"
-                    placeholder="Tình trạng đơn hàng"
-                    {...form.getInputProps("step")}
-                    data={stepOrderOptions}
-                  />
-                </Grid.Col>
+                {isEditing && (
+                  <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                    <Select
+                      size="lg"
+                      radius={0}
+                      label="Tình trạng đơn hàng"
+                      placeholder="Tình trạng đơn hàng"
+                      {...form.getInputProps("step")}
+                      data={stepOrderOptions}
+                    />
+                  </Grid.Col>
+                )}
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <Textarea
                     size="lg"
@@ -643,7 +934,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 variant="filled"
                 leftSection={<IconPlus size={16} />}
               >
-                {isEditing ? "Cập nhật" : "Thêm"}
+                {isEditing ? "Cập nhật" : "Hoàn thành"}
               </Button>
             </Group>
           </>

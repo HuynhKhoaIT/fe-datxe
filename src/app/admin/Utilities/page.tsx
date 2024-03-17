@@ -3,7 +3,6 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import styles from "./index.module.scss";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import FooterAdmin from "@/app/components/page/footer/footer-admin";
 import { apiUrl } from "@/constants";
 
 async function getData() {
