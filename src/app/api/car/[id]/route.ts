@@ -12,7 +12,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
             return new NextResponse("Missing 'id' parameter");
         }
         const session = await getServerSession(authOptions);
-        if (1) {
+
+        if (session) {
             const cars = await prisma.car.findUnique({
                 where: {
                     id: parseInt(id.toString()),
