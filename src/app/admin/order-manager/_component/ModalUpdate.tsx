@@ -11,7 +11,6 @@ export default function ModalUpdate({
   form,
   index,
 }: any) {
-  console.log(form.values.detail);
   return (
     <div className={styles.modalWrapper}>
       <Modal

@@ -42,9 +42,16 @@ import {
   getOptionsModels,
   getOptionsYearCar,
 } from "@/utils/util";
+import FooterSavePage from "../../_component/FooterSavePage";
 
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
+  {
+    ssr: false,
+  }
+);
+const DynamicModalNumberPlates = dynamic(
+  () => import("../_component/ModalNumberPlates"),
   {
     ssr: false,
   }
@@ -75,6 +82,11 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     openModalChoose,
     { open: openModal, close: closeModal },
   ] = useDisclosure(false);
+  const [
+    openModalNubmberPlates,
+    { open: openModalNumberPlates, close: closeModalNumberPlates },
+  ] = useDisclosure(false);
+
   const form = useForm({
     initialValues: {
       detail: selectedProducts,
@@ -99,6 +111,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     };
 
     if (!isEditing) {
+      openModalNumberPlates();
       fetchData();
     }
   }, []);
@@ -611,35 +624,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       />
                     </Grid.Col>
                   </Grid>
-                  <div className={styles.footer}>
-                    <Button
-                      size="lg"
-                      radius={0}
-                      w={"48%"}
-                      h={{ base: 42, md: 50, lg: 50 }}
-                      variant="outline"
-                      key="cancel"
-                      color="red"
-                      leftSection={<IconBan size={16} />}
-                      onClick={() => router.back()}
-                    >
-                      Huỷ bỏ
-                    </Button>
-                    <Button
-                      size="lg"
-                      w={"48%"}
-                      radius={0}
-                      h={{ base: 42, md: 50, lg: 50 }}
-                      loading={loadingButton}
-                      style={{ marginLeft: "12px" }}
-                      key="submit"
-                      type="submit"
-                      variant="filled"
-                      leftSection={<IconPlus size={16} />}
-                    >
-                      {isEditing ? "Cập nhật" : "Hoàn thành"}
-                    </Button>
-                  </div>
+                  <FooterSavePage
+                    saveLoading={loading}
+                    okText={isEditing ? "Cập nhật" : "Hoàn thành"}
+                  />
                 </div>
               </>
             </Tabs.Panel>
@@ -878,33 +866,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
               </Grid>
             </div>
-            <div className={styles.footer}>
-              <Button
-                size="lg"
-                radius={0}
-                h={{ base: 42, md: 50, lg: 50 }}
-                variant="outline"
-                key="cancel"
-                color="red"
-                leftSection={<IconBan size={16} />}
-                onClick={() => router.back()}
-              >
-                Huỷ bỏ
-              </Button>
-              <Button
-                size="lg"
-                radius={0}
-                h={{ base: 42, md: 50, lg: 50 }}
-                loading={loadingButton}
-                style={{ marginLeft: "12px" }}
-                key="submit"
-                type="submit"
-                variant="filled"
-                leftSection={<IconPlus size={16} />}
-              >
-                {isEditing ? "Cập nhật" : "Hoàn thành"}
-              </Button>
-            </div>
+            <FooterSavePage
+              saveLoading={loading}
+              okText={isEditing ? "Cập nhật" : "Hoàn thành"}
+            />
           </>
         )}
       </form>
@@ -913,6 +878,11 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         close={closeModal}
         setSelectedProducts={setSelectedProducts}
         selectedProducts={selectedProducts}
+      />
+      <DynamicModalNumberPlates
+        openModal={openModalNubmberPlates}
+        close={closeModalNumberPlates}
+        formOrder={form}
       />
     </Box>
   );
