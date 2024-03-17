@@ -88,7 +88,6 @@ export default function CartComponent({ myAccount }: any) {
 
   const form = useForm({
     initialValues: {
-      customerId: 1,
       fullName: "",
       phoneNumber: "",
       address: "",
@@ -109,11 +108,8 @@ export default function CartComponent({ myAccount }: any) {
 
   const handleSubmit = async (values: any) => {
     setLoading(true);
-    const session = await getServerSession(authOptions);
-    if(session?.user){
-      values.dateTime = new Date();
+    values.dateTime = new Date();
       values.total = calculateSubTotal();
-    }
     
     try {
       const res = await fetch(`/api/orders`, {

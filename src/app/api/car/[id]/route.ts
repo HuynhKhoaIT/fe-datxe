@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { getCarNameById } from '@/app/libs/prisma/carName';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -11,17 +12,25 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
             return new NextResponse("Missing 'id' parameter");
         }
         const session = await getServerSession(authOptions);
-        if (1) {
+
+        if (session) {
             const cars = await prisma.car.findUnique({
                 where: {
                     id: parseInt(id.toString()),
                 },
-                include:{
+                include: {
                     customer: true,
-                    carStyle: true                    
-                }
+                    carStyle: true,
+                },
             });
-            return NextResponse.json(cars);
+            let carRs = JSON.parse(JSON.stringify(cars));
+            let br = await getCarNameById(carRs.carBrandId);
+            let md = await getCarNameById(carRs.carNameId);
+            let y = await getCarNameById(carRs.carYearId);
+            carRs.brandName = br;
+            carRs.modelName = md;
+            carRs.yearName = y;
+            return NextResponse.json(carRs);
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {
@@ -51,16 +60,16 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 description: json.description,
                 status: json.status,
                 garageId: parseInt(json.garageId),
-            }
+            };
             const updatedCar = await prisma.car.update({
                 where: {
                     id: Number(id),
                 },
                 data: updateData,
-                include:{
+                include: {
                     customer: true,
-                    carStyle: true
-                }
+                    carStyle: true,
+                },
             });
 
             return new NextResponse(JSON.stringify(updatedCar), {
