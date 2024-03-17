@@ -10,6 +10,7 @@ export default function UpdateCar({ params }: { params: { carId: number } }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/api/car/${params?.carId}`);
+        console.log(response);
         setCar(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

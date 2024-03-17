@@ -17,6 +17,7 @@ export default function DateTimeField({
   required = false,
   defaultValue,
   size = "md",
+  radius,
 }: any) {
   return (
     <DateTimePicker
@@ -33,6 +34,7 @@ export default function DateTimeField({
       disabled={disabled}
       locale={locale}
       required={required}
+      radius={radius}
     />
   );
 }

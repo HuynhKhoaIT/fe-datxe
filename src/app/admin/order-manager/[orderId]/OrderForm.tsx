@@ -9,6 +9,7 @@ import {
   MultiSelect,
   NumberInput,
   Select,
+  Space,
   Switch,
   Table,
   Tabs,
@@ -51,7 +52,7 @@ const DynamicModalChooseProducts = dynamic(
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
-  const [activeTab, setActiveTab] = useState<string | null>("car");
+  const [activeTab, setActiveTab] = useState<string | null>("customer");
   const [errorPlate, handlersPlate] = useDisclosure();
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
@@ -118,13 +119,13 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       form.setFieldValue("detail", updatedProducts);
     } else {
       let updatedProducts = selectedProducts.map((detail: any) => ({
-        images: detail.images,
+        images: detail.product.images,
         name: detail?.product?.name || detail?.name,
         price: detail.price,
         productId: detail.productId !== 0 ? detail.productId : detail.id,
-        quantity: 1,
+        quantity: detail.quantity,
         priceSale: detail?.priceSale || detail?.salePrice,
-        subTotal: detail?.priceSale || detail?.salePrice,
+        subTotal: detail?.subTotal,
         status: detail?.status,
         saleType: detail?.saleType || "FIXED",
         saleValue: detail?.saleValue || 0,
@@ -139,11 +140,13 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
 
       if (isEditing && dataDetail) {
         try {
-          const [brands, models, yearCars] = await Promise.all([
+          const [customers, brands, models, yearCars] = await Promise.all([
+            getOptionsCustomers(),
             getOptionsBrands(),
             getOptionsModels(dataDetail?.car?.carBrandId),
             getOptionsYearCar(dataDetail?.car?.carNameId),
           ]);
+          setCustomerOptions(customers);
           setBrandOptions(brands);
           setModelOptions(models);
           setYearCarOptions(yearCars);
@@ -151,6 +154,11 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           form.setInitialValues(dataDetail);
           form.setValues(dataDetail);
           form.setFieldValue("customerId", dataDetail?.customerId.toString());
+          form.setFieldValue(
+            "numberPlates",
+            dataDetail?.car?.numberPlates.toString()
+          );
+
           form.setFieldValue(
             "carBrandId",
             dataDetail?.car?.carBrandId.toString()
@@ -234,7 +242,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const rows = form.values.detail.map((selectedRow: any, index: number) => {
     // const images = JSON.parse(selectedRow.images);
     return (
-      <Table.Tr key={selectedRow.id}>
+      <Table.Tr key={index}>
         <Table.Td miw={200}>
           {selectedRow.name || selectedRow?.product?.name || ""}
         </Table.Td>
@@ -336,17 +344,20 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             }}
           >
             <Tabs.List classNames={{ list: styles.list }}>
-              <Tabs.Tab classNames={{ tab: styles.tab }} value="car">
-                Xe
-              </Tabs.Tab>
               <Tabs.Tab classNames={{ tab: styles.tab }} value="customer">
-                Khách hàng
+                Thông tin khách hàng
               </Tabs.Tab>
               <Tabs.Tab classNames={{ tab: styles.tab }} value="detailOrder">
                 Chi tiết đơn hàng
               </Tabs.Tab>
             </Tabs.List>
-            <Tabs.Panel value="car">
+            {/* <Tabs.Panel value="car">
+              
+              <Group justify="end" mt={20}>
+                
+            </Tabs.Panel> */}
+
+            <Tabs.Panel value="customer">
               <Grid gutter={12} className={styles.marketingInfo}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <TextInput
@@ -418,41 +429,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   />
                 </Grid.Col>
               </Grid>
-              <Group justify="end" mt={20}>
-                <Button
-                  size="lg"
-                  radius={0}
-                  h={{ base: 42, md: 50, lg: 50 }}
-                  variant="outline"
-                  key="cancel"
-                  color="red"
-                  leftSection={<IconBan size={16} />}
-                  onClick={() => router.back()}
-                >
-                  Huỷ bỏ
-                </Button>
-                <Button
-                  size="lg"
-                  radius={0}
-                  h={{ base: 42, md: 50, lg: 50 }}
-                  loading={loadingButton}
-                  style={{ marginLeft: "12px" }}
-                  variant="filled"
-                  onClick={() => {
-                    if (form.values.numberPlates.length === 0) {
-                      handlersPlate.open();
-                    } else {
-                      setActiveTab("customer");
-                    }
-                  }}
-                  leftSection={<IconChevronRight size={16} />}
-                >
-                  Tiếp tục
-                </Button>
-              </Group>
-            </Tabs.Panel>
-
-            <Tabs.Panel value="customer">
+              <Space h={30} />
               <Grid gutter={12} className={styles.marketingInfo}>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                   <TextInput
@@ -485,36 +462,40 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   />
                 </Grid.Col>
               </Grid>
-              <Group justify="end" mt={20}>
+              <div className={styles.footer}>
                 <Button
                   size="lg"
+                  w={"48%"}
                   radius={0}
                   h={{ base: 42, md: 50, lg: 50 }}
                   variant="outline"
                   key="cancel"
                   color="red"
-                  onClick={() => {
-                    setActiveTab("car");
-                  }}
                   leftSection={<IconBan size={16} />}
+                  onClick={() => router.back()}
                 >
-                  Quay lại
+                  Huỷ bỏ
                 </Button>
                 <Button
                   size="lg"
                   radius={0}
+                  w={"48%"}
                   h={{ base: 42, md: 50, lg: 50 }}
                   loading={loadingButton}
                   style={{ marginLeft: "12px" }}
                   variant="filled"
                   onClick={() => {
-                    setActiveTab("detailOrder");
+                    if (form.values.numberPlates.length === 0) {
+                      handlersPlate.open();
+                    } else {
+                      setActiveTab("detailOrder");
+                    }
                   }}
                   leftSection={<IconChevronRight size={16} />}
                 >
                   Tiếp tục
                 </Button>
-              </Group>
+              </div>
             </Tabs.Panel>
 
             <Tabs.Panel value="detailOrder">
@@ -630,10 +611,11 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       />
                     </Grid.Col>
                   </Grid>
-                  <Group justify="end" mt={20}>
+                  <div className={styles.footer}>
                     <Button
                       size="lg"
                       radius={0}
+                      w={"48%"}
                       h={{ base: 42, md: 50, lg: 50 }}
                       variant="outline"
                       key="cancel"
@@ -645,6 +627,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     </Button>
                     <Button
                       size="lg"
+                      w={"48%"}
                       radius={0}
                       h={{ base: 42, md: 50, lg: 50 }}
                       loading={loadingButton}
@@ -656,7 +639,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     >
                       {isEditing ? "Cập nhật" : "Hoàn thành"}
                     </Button>
-                  </Group>
+                  </div>
                 </div>
               </>
             </Tabs.Panel>
@@ -895,7 +878,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
               </Grid>
             </div>
-            <Group justify="end" mt={20}>
+            <div className={styles.footer}>
               <Button
                 size="lg"
                 radius={0}
@@ -921,7 +904,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               >
                 {isEditing ? "Cập nhật" : "Hoàn thành"}
               </Button>
-            </Group>
+            </div>
           </>
         )}
       </form>

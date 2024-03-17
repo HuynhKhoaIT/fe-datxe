@@ -71,15 +71,15 @@ export default function CarsListPage({
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hãng xe</span>
       ),
-      name: "carBrandId",
-      dataIndex: ["carBrandId"],
+      name: "brandName",
+      dataIndex: ["brandName", "title"],
     },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Dòng xe</span>
       ),
-      name: "carNameId",
-      dataIndex: ["carNameId"],
+      name: "modelName",
+      dataIndex: ["modelName", "title"],
     },
     {
       label: (
@@ -87,15 +87,15 @@ export default function CarsListPage({
           Năm sản xuất
         </span>
       ),
-      name: "carYearId",
-      dataIndex: ["carYearId"],
+      name: "yearName",
+      dataIndex: ["yearName", "title"],
     },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Loại xe</span>
       ),
-      name: "carYearId",
-      dataIndex: ["carYearId"],
+      name: "carStyle",
+      dataIndex: ["carStyle", "name"],
     },
     {
       label: (

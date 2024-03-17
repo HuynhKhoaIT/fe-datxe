@@ -30,6 +30,7 @@ export default function ItemProduct({
   setSelectedProducts,
   selectedProducts,
 }: any) {
+  console.log(data);
   const [
     openModalChoose,
     { open: openModal, close: closeModal },
