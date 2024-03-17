@@ -201,8 +201,13 @@ export async function createOrder(json: any) {
                 if (customerFind) {
                     customerId = customerFind.id;
                 } else {
-                    let customerJson = json;
-                    customerJson.garageId = garageId;
+                    let customerJson = {
+                        fullName: json.fullName,
+                        phoneNumber: json.phoneNumber,
+                        address: json.address,
+                        garageId: Number(garageId),
+                        status: 'PUBLIC',
+                    };
                     let cusNew = await createCustomer(customerJson);
                     if (cusNew) {
                         customerId = cusNew.customer?.id ?? 0;
@@ -232,6 +237,19 @@ export async function createOrder(json: any) {
                 delete carNewData.id;
                 let carNew = await createCar(carNewData);
                 carId = Number(carNew?.car?.id);
+            }
+        }else{
+            const carNew = await createCar({                
+                customerId: Number(customerId),
+                numberPlates: json.numberPlates,
+                carBrandId: Number(json.carBrandId),
+                carNameId: Number(json.carNameId),
+                carYearId: Number(json.carYearId),
+                status: 'PUBLIC',
+                garageId: Number(garageId),
+            });
+            if(carNew){
+                carId = Number(carNew.car?.id);
             }
         }
         
