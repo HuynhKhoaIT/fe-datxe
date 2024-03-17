@@ -182,21 +182,28 @@ export async function getOrderBySlug(slug: string){
 export async function createOrder(json: any) {
     try {
         let customerId = 1;
-        let carId = 1;
-        if ((!json.customerId || json.customerId == 0) && json.phoneNumber) {
-            
+        let garageId = 2;
+        if(json.detail[0].garageId){
+            garageId = Number(json.detail[0].garageId)
+        }
+        if ((!json.customerId || json.customerId == 0) && json.phoneNumber) {            
             // check and create customer
             // check customer via phone number
             let phoneNumber = json.phoneNumber;
             if (phoneNumber) {
                 const customerFind = await prisma.customer.findFirst({
-                    where: { phoneNumber: phoneNumber },
+                    where: { 
+                        phoneNumber: phoneNumber,
+                        status:'PUBLIC',
+                        garageId: garageId
+                    },
                 });
                 if (customerFind) {
                     customerId = customerFind.id;
                 } else {
-                    
-                    let cusNew = await createCustomer(json);
+                    let customerJson = json;
+                    customerJson.garageId = garageId;
+                    let cusNew = await createCustomer(customerJson);
                     if (cusNew) {
                         customerId = cusNew.customer?.id ?? 0;
                     }
@@ -206,38 +213,28 @@ export async function createOrder(json: any) {
         }else{
             customerId = json.customerId;
         }
-        if (!json.carId) {
-            // begin check isset car
-            let numberPlates = json.numberPlates;
-            if (numberPlates) {
-                const carFind = await prisma.car.findFirst({
-                    where: { numberPlates: numberPlates },
-                });
-                if (carFind) {
-                    carId = carFind.id;
-                } else {
-                    let jsonCar = json;
-                    jsonCar.customerId = customerId;
-                    let carNew = await createCar(jsonCar);
-                    if (carNew) {
-                        carId = carNew?.car?.id ?? 0;
+        //get carID
+        let carId = Number(json.carId);
+        if(carId){
+            let carOrder = await prisma.car.findFirst(
+                {
+                    where: {
+                        id: Number(carId),
+                        status: 'PUBLIC',
                     }
                 }
+            );
+            
+            if(carOrder?.garageId != Number(garageId)){
+                const carNewData = JSON.parse(JSON.stringify(carOrder));
+                carNewData.garageId = garageId;
+                carNewData.customerId = customerId;
+                delete carNewData.id;
+                let carNew = await createCar(carNewData);
+                carId = Number(carNew?.car?.id);
             }
-            
-            // end check car
-        }else{
-            carId = json.carId;
         }
-        let garageId = 2;
-        if(json.detail.garageId){
-            garageId = Number(json.detail.garageId)
-        }
-
-        if(json.user){
-            
-        }
-
+        
         let orderDetails: any = [];
         if(json.detail){
             json.detail.forEach(function (data: any) {
@@ -250,14 +247,14 @@ export async function createOrder(json: any) {
                     saleValue: data.saleValue.toString(),
                     quantity: Number(data.quantity ?? 1),
                     subTotal: Number(data.subTotal ?? 0),
-                    garageId: Number(json.garageId ?? 1),
+                    garageId: Number(garageId ?? 1),
                     createdBy: Number(json.createdBy ?? 1),
                 });
             });
         }
         
         let data = {
-            code: (await codeGeneration(json.garageId)).toString(),
+            code: (await codeGeneration(garageId)).toString(),
             slug: await getSlugForOrder(),
             customerId: Number(customerId),
             carId: Number(carId),
@@ -272,7 +269,7 @@ export async function createOrder(json: any) {
             yearId: Number(json.carYearId),
             subTotal: Number(json.subTotal),
             total: Number(json.total),
-            garageId: Number(json.garageId ?? 1),
+            garageId: Number(garageId),
             serviceAdvisorId: Number(json.serviceAdvisorId ?? 1),
             orderDetails: {
                 createMany : {

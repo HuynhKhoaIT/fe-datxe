@@ -38,8 +38,8 @@ export async function POST(request: Request) {
     try {
         const json = await request.json();
         const session = await getServerSession(authOptions);
-        if (session) {
-            json.garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+        if (1) {
+            json.garageId = await getGarageIdByDLBDID(14);
             const order = await createOrder(json);
             return new NextResponse(JSON.stringify(order), {
                 status: 201,
