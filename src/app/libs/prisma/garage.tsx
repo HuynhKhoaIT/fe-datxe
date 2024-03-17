@@ -17,7 +17,7 @@ export async function getGarages(requestData: any) {
     }
     let garageId = 0;
     if(requestData.garageId){
-      garageId = requestData.garageId;
+      garageId = Number(requestData.garageId);
     }
     const skip = take * (currentPage - 1);
     const [data, total] = await prisma.$transaction([
