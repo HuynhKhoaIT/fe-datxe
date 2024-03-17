@@ -76,7 +76,6 @@ export default async function Home() {
     value: item.id.toString(),
     label: item.title,
   }));
-  console.log(carsOption);
   return (
     <RenderContext
       components={{

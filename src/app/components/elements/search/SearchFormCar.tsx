@@ -6,6 +6,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { getBrands, getModels, getYears } from "@/utils/branch";
 import { useRouter } from "next/navigation";
+import { getOptionsModels, getOptionsYearCar } from "@/utils/util";
 export default function SearchFormCar({ brandsOption }: any) {
   const router = useRouter();
   const [opened, handlers] = useDisclosure(false);
@@ -17,29 +18,6 @@ export default function SearchFormCar({ brandsOption }: any) {
     initialValues: {},
     validate: {},
   });
-
-  async function getModelsData(brandId: number) {
-    const res = await fetch(`/api/car-model/${brandId}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setModels(dataOption);
-  }
-  async function getYearsData(nameId: number) {
-    const res = await fetch(`/api/car-model/${nameId}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setYearCar(dataOption);
-  }
 
   const handleSubmit = async (values: any) => {
     let queryString = "";
@@ -66,8 +44,9 @@ export default function SearchFormCar({ brandsOption }: any) {
             placeholder="Hãng xe"
             data={brandsOption}
             clearable
-            onChange={(value) => {
-              getModelsData(Number(value));
+            onChange={async (value) => {
+              const optionsData = await getOptionsModels(Number(value));
+              setModels(optionsData);
               form.setFieldValue("car_name_id", null);
               form.setFieldValue("brand_id", Number(value));
               form.setFieldValue("year_id", null);
@@ -83,8 +62,9 @@ export default function SearchFormCar({ brandsOption }: any) {
             placeholder="Dòng xe"
             data={models}
             clearable
-            onChange={(value) => {
-              getYearsData(Number(value));
+            onChange={async (value) => {
+              const optionsData = await getOptionsYearCar(Number(value));
+              setYearCar(optionsData);
               form.setFieldValue("car_name_id", Number(value));
               form.setFieldValue("year_id", null);
             }}

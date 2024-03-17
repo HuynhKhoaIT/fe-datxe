@@ -24,19 +24,20 @@ import dayjs from "dayjs";
 import { addCar, getCars, setCarDefault, updateCar } from "@/utils/car";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-export default function CarForm({
-  isEditing = false,
-  dataDetail = [],
-  brandOptions = [],
-  modelOption = [],
-}: any) {
+import {
+  getOptionsBrands,
+  getOptionsModels,
+  getOptionsYearCar,
+} from "@/utils/util";
+export default function CarForm({ isEditing = false, dataDetail = [] }: any) {
   const { data: session } = useSession();
   const token = session?.user?.token;
   const router = useRouter();
 
   const [loading, handlers] = useDisclosure();
-  const [models, setModels] = useState<any>(modelOption);
-  const [yearCar, setYearCar] = useState<any>([]);
+  const [brandOptions, setBrandOptions] = useState<any>([]);
+  const [modelOptions, setModelOptions] = useState<any>([]);
+  const [yearCarOptions, setYearCarOptions] = useState<any>([]);
 
   const form = useForm({
     initialValues: {
@@ -47,28 +48,11 @@ export default function CarForm({
     validate: {},
   });
 
-  const selectBrand = async (value: number) => {
-    try {
-      const dong_xe: IBrand[] = await getModels(value);
-      const newModels = dong_xe?.map((model) => ({
-        value: model.id?.toString() || "",
-        label: model.name || "",
-      }));
-      setModels(newModels);
-    } catch (error) {}
-  };
-  const selectYearCar = async (value: number) => {
-    try {
-      const yearCarData: IBrand[] = await getYears(value);
-      const newYearCar = yearCarData?.map((year) => ({
-        value: year.id?.toString() || "",
-        label: year.name || "",
-      }));
-      setYearCar(newYearCar);
-    } catch (error) {}
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const brands = await getOptionsBrands();
+      setBrandOptions(brands);
+    };
     if (isEditing) {
       form.setInitialValues(dataDetail);
       form.setValues(dataDetail);
@@ -97,8 +81,8 @@ export default function CarForm({
           dayjs(dataDetail?.registrationDate).add(1, "day")
         );
       }
-      selectYearCar(dataDetail?.carNameId);
     }
+    fetchData();
   }, [dataDetail]);
   const handleSubmit = async (values: any) => {
     handlers.open();
@@ -174,9 +158,10 @@ export default function CarForm({
               label="Hãng xe"
               checkIconPosition="right"
               placeholder="Chọn hãng xe"
-              onChange={(value) => {
+              onChange={async (value) => {
+                const optionsData = await getOptionsModels(Number(value));
+                setModelOptions(optionsData);
                 form.setFieldValue("automakerId", value);
-                selectBrand(Number(value));
               }}
             />
           </Grid.Col>
@@ -188,10 +173,11 @@ export default function CarForm({
               label="Dòng xe"
               checkIconPosition="right"
               placeholder="Chọn dòng xe"
-              data={models}
-              onChange={(value) => {
+              data={modelOptions}
+              onChange={async (value) => {
+                const optionsData = await getOptionsYearCar(Number(value));
+                setYearCarOptions(optionsData);
                 form.setFieldValue("carNameId", value);
-                selectYearCar(Number(value));
               }}
             ></Select>
           </Grid.Col>
@@ -204,7 +190,7 @@ export default function CarForm({
               label="Năm sản xuất"
               checkIconPosition="right"
               placeholder="Năm sản xuất"
-              data={yearCar}
+              data={yearCarOptions}
               {...form.getInputProps("yearCarName")}
             ></Select>
           </Grid.Col>

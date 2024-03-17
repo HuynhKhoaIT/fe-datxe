@@ -22,55 +22,19 @@ import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import { statusOptions } from "@/constants/masterData";
+import {
+  getOptionsBrands,
+  getOptionsCustomers,
+  getOptionsModels,
+  getOptionsYearCar,
+} from "@/utils/util";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
-  async function getDataBrands() {
-    const res = await fetch(`/api/car-model`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setBrandOptions(dataOption);
-  }
-  async function getDataModels(brandId: number) {
-    if (brandId) {
-      const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setModelOptions(dataOption);
-    }
-  }
-  async function getDataYearCar(modelId: number) {
-    if (modelId) {
-      const res = await fetch(`/api/car-model/${modelId}`, {
-        method: "GET",
-      });
-      const data = await res.json();
-
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setYearCarOptions(dataOption);
-    }
-  }
 
   const [loading, handlers] = useDisclosure();
+
   const form = useForm({
     initialValues: {
       customerId: "",
@@ -135,7 +99,12 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   useEffect(() => {
     const fetchData = async () => {
       handlers.open();
-      await Promise.all([getCustomers(), getDataBrands()]);
+      const [customer, brands] = await Promise.all([
+        getOptionsCustomers(),
+        getOptionsBrands(),
+      ]);
+      setCustomerOptions(customer);
+      setBrandOptions(brands);
       handlers.close();
     };
 
@@ -149,12 +118,14 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
 
       if (isEditing && dataDetail) {
         try {
-          await Promise.all([
-            getCustomers(),
-            getDataBrands(),
-            getDataModels(dataDetail?.carBrandId),
-            getDataYearCar(dataDetail?.carNameId),
+          const [brands, models, yearCars] = await Promise.all([
+            getOptionsBrands(),
+            getOptionsModels(dataDetail?.car?.carBrandId),
+            getOptionsYearCar(dataDetail?.car?.carNameId),
           ]);
+          setBrandOptions(brands);
+          setModelOptions(models);
+          setYearCarOptions(yearCars);
 
           form.setInitialValues(dataDetail);
           form.setValues(dataDetail);
@@ -223,9 +194,12 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     label="Hãng xe"
                     placeholder="Hãng xe"
                     data={brandOptions}
-                    onChange={(value) => {
-                      getDataModels(Number(value));
+                    onChange={async (value) => {
+                      const optionsData = await getOptionsModels(Number(value));
+                      setModelOptions(optionsData);
                       form.setFieldValue("carBrandId", value);
+                      form.setFieldValue("carNameId", null);
+                      form.setFieldValue("carYearId", null);
                     }}
                   />
                 </Grid.Col>
@@ -237,9 +211,13 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     label="Dòng xe"
                     placeholder="Dòng xe"
                     data={modelOptions}
-                    onChange={(value) => {
-                      getDataYearCar(Number(value));
+                    onChange={async (value) => {
+                      const optionsData = await getOptionsYearCar(
+                        Number(value)
+                      );
+                      setYearCarOptions(optionsData);
                       form.setFieldValue("carNameId", value);
+                      form.setFieldValue("carYearId", null);
                     }}
                   />
                 </Grid.Col>

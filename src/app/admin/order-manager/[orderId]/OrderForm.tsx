@@ -35,6 +35,12 @@ import ListPage from "@/app/components/layout/ListPage";
 import { notifications } from "@mantine/notifications";
 import Typo from "@/app/components/elements/Typo";
 import ItemProduct from "../_component/ItemProduct";
+import {
+  getOptionsBrands,
+  getOptionsCustomers,
+  getOptionsModels,
+  getOptionsYearCar,
+} from "@/utils/util";
 
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
@@ -42,10 +48,11 @@ const DynamicModalChooseProducts = dynamic(
     ssr: false,
   }
 );
+
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
+  const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const [activeTab, setActiveTab] = useState<string | null>("car");
   const [errorPlate, handlersPlate] = useDisclosure();
-  const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
   const router = useRouter();
@@ -57,6 +64,11 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         }))
       : []
   );
+
+  const [brandOptions, setBrandOptions] = useState<any>([]);
+  const [modelOptions, setModelOptions] = useState<any>([]);
+  const [yearCarOptions, setYearCarOptions] = useState<any>([]);
+  const [customerOptions, setCustomerOptions] = useState();
 
   const [
     openModalChoose,
@@ -73,70 +85,15 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     },
   });
 
-  const [brandOptions, setBrandOptions] = useState<any>([]);
-  const [modelOptions, setModelOptions] = useState<any>([]);
-  const [yearCarOptions, setYearCarOptions] = useState<any>([]);
-  const [customerOptions, setCustomerOptions] = useState();
-
-  async function getDataBrands() {
-    const res = await fetch(`/api/car-model`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setBrandOptions(dataOption);
-  }
-  async function getDataModels(brandId: number) {
-    if (brandId) {
-      const res = await fetch(`/api/car-model/${brandId}`, { method: "GET" });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setModelOptions(dataOption);
-    }
-  }
-  async function getDataYearCar(modelId: number) {
-    if (modelId) {
-      const res = await fetch(`/api/car-model/${modelId}`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      const dataOption = data?.map((item: any) => ({
-        value: item.id.toString(),
-        label: item.title,
-      }));
-      setYearCarOptions(dataOption);
-    }
-  }
-
-  async function getCustomers() {
-    const res = await fetch(`/api/customer`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.fullName,
-    }));
-    setCustomerOptions(dataOption);
-  }
   useEffect(() => {
     const fetchData = async () => {
       handlers.open();
-      await Promise.all([getCustomers(), getDataBrands()]);
+      const [customer, brands] = await Promise.all([
+        getOptionsCustomers(),
+        getOptionsBrands(),
+      ]);
+      setCustomerOptions(customer);
+      setBrandOptions(brands);
       handlers.close();
     };
 
@@ -182,11 +139,14 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
 
       if (isEditing && dataDetail) {
         try {
-          await Promise.all([
-            getDataBrands(),
-            getDataModels(dataDetail?.car?.carBrandId),
-            getDataYearCar(dataDetail?.car?.carNameId),
+          const [brands, models, yearCars] = await Promise.all([
+            getOptionsBrands(),
+            getOptionsModels(dataDetail?.car?.carBrandId),
+            getOptionsYearCar(dataDetail?.car?.carNameId),
           ]);
+          setBrandOptions(brands);
+          setModelOptions(models);
+          setYearCarOptions(yearCars);
 
           form.setInitialValues(dataDetail);
           form.setValues(dataDetail);
@@ -415,9 +375,12 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     type="text"
                     data={brandOptions}
                     placeholder="Hãng xe"
-                    onChange={(value) => {
-                      getDataModels(Number(value));
+                    onChange={async (value) => {
+                      const optionsData = await getOptionsModels(Number(value));
+                      setModelOptions(optionsData);
                       form.setFieldValue("carBrandId", value);
+                      form.setFieldValue("carNameId", null);
+                      form.setFieldValue("carYearId", null);
                     }}
                   />
                 </Grid.Col>
@@ -430,9 +393,13 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     type="text"
                     data={modelOptions}
                     placeholder="Dòng xe"
-                    onChange={(value) => {
-                      getDataYearCar(Number(value));
+                    onChange={async (value) => {
+                      const optionsData = await getOptionsYearCar(
+                        Number(value)
+                      );
+                      setYearCarOptions(optionsData);
                       form.setFieldValue("carNameId", value);
+                      form.setFieldValue("carYearId", null);
                     }}
                   />
                 </Grid.Col>
@@ -729,9 +696,14 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         type="text"
                         data={brandOptions}
                         placeholder="Hãng xe"
-                        onChange={(value) => {
-                          getDataModels(Number(value));
+                        onChange={async (value) => {
+                          const optionsData = await getOptionsModels(
+                            Number(value)
+                          );
+                          setModelOptions(optionsData);
                           form.setFieldValue("carBrandId", value);
+                          form.setFieldValue("carNameId", null);
+                          form.setFieldValue("carYearId", null);
                         }}
                       />
                     </Grid.Col>
@@ -744,9 +716,13 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         type="text"
                         data={modelOptions}
                         placeholder="Dòng xe"
-                        onChange={(value) => {
-                          getDataYearCar(Number(value));
+                        onChange={async (value) => {
+                          const optionsData = await getOptionsYearCar(
+                            Number(value)
+                          );
+                          setYearCarOptions(optionsData);
                           form.setFieldValue("carNameId", value);
+                          form.setFieldValue("carYearId", null);
                         }}
                       />
                     </Grid.Col>
