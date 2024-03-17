@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
         if (session) {
-            let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            let garageId = session.user?.garageId;
             const { searchParams } = new URL(request.url);
             let requestData = {
                 limit: 10,
@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
             if (searchParams.get('page')) {
                 requestData.page = Number(searchParams.get('page'));
             }
-
             const garages = await getGarages(requestData);
+
             return NextResponse.json(garages);
         }
         throw new Error('Chua dang nhap');
