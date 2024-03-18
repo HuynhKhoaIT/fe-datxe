@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 
 import { IconEdit } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import ComboboxField from "./ComboboxField";
 const DynamicModalAddCar = dynamic(() => import("../_component/ModalAddCar"), {
   ssr: false,
 });
@@ -64,7 +65,7 @@ export default function InfoCar({
 
           <Grid gutter={16}>
             <Grid.Col span={12}>
-              <Select
+              {/* <Select
                 size="lg"
                 radius={0}
                 {...form.getInputProps("numberPlates")}
@@ -77,7 +78,9 @@ export default function InfoCar({
                   getCarDetail(Number(value));
                   form.setFieldValue("numberPlates", value);
                 }}
-              />
+                nothingFoundMessage="Nothing found..."
+              /> */}
+              <ComboboxField label="Biển số" />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
               <TextInput
