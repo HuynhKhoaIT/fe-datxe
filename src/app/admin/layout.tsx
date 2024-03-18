@@ -1,6 +1,6 @@
 "use client";
 import { AppShell, Burger, Group, Skeleton, Text } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import Link from "next/link";
 import { ReactNode } from "react";
 import logo from "@/assets/images/logo.png";
@@ -15,6 +15,7 @@ interface IProps {
 export default function Layout({ children }: IProps) {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { toggle }] = useDisclosure();
+  const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
 
   return (
     <AppShell
@@ -37,7 +38,7 @@ export default function Layout({ children }: IProps) {
             visibleFrom="sm"
             size="sm"
           />
-          {/* <SearchFormName /> */}
+          {!isMobile && <SearchFormName />}
           <SigninButton />
         </Group>
       </AppShell.Header>
@@ -45,9 +46,9 @@ export default function Layout({ children }: IProps) {
         <Group h={60} pl={"md"}>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           {/* <Text>Navbar</Text> */}
-          <Link href={"/"}>
+          <a href={"/"}>
             <img style={{ height: "60px" }} src={logo.src} alt="logo" />
-          </Link>
+          </a>
         </Group>
         <NavbarNested />
       </AppShell.Navbar>

@@ -9,8 +9,8 @@ import {
   Button,
   Image,
 } from "@mantine/core";
-import TableBasic from "../components/table/Tablebasic";
-import ImageDefult from "../../../public/assets/images/logoDatxe.png";
+import TableBasic from "../../components/table/Tablebasic";
+import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { IconPlus, IconMinus, IconTrash } from "@tabler/icons-react";
 import styles from "./InfoCart.module.scss";
 export default function InfoCart({

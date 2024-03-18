@@ -2,20 +2,16 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { Grid, Modal, Button, Group } from "@mantine/core";
+import { Grid, Modal, Button, Group, TextInput, Card } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
-import InfoCustomer from "./InfoCustomer";
-import InfoCar from "./InfoCar";
-import InfoCart from "./InfoCart";
-import InfoDate from "./InfoDate";
+import InfoCar from "./_component/InfoCar";
+import InfoCart from "./_component/InfoCart";
+import InfoDate from "./_component/InfoDate";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
-import { sendSMSOrder } from "@/utils/order";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default function CartComponent({ myAccount }: any) {
   console.log(myAccount);
@@ -89,9 +85,9 @@ export default function CartComponent({ myAccount }: any) {
 
   const form = useForm({
     initialValues: {
-      fullName: "",
-      phoneNumber: "",
-      address: "",
+      fullName: myAccount?.name || "",
+      phoneNumber: myAccount?.phone || "",
+      address: myAccount?.address || "",
       carId: 3,
       carYearId: "",
       carNameId: "",
@@ -150,63 +146,60 @@ export default function CartComponent({ myAccount }: any) {
   };
 
   const [visible, handlers] = useDisclosure(false);
-  const [customer, setCustomer] = useState();
-  const [carOptions, setCarOptions] = useState<any>([]);
   const [carDetail, setCarDetail] = useState<any>();
 
-  async function getCustomer() {
-    const res = await fetch(`/api/customer/${myAccount?.id}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    console.log(data);
-
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    console.log(data);
-    const dataOption = data?.cars?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.numberPlates,
-      otherData: {
-        carBrandId: item?.item,
-        carNameId: item?.carNameId,
-        carYearId: item?.carYearId,
-        numberPlates: item?.numberPlates,
-      },
-    }));
-    setCarOptions(dataOption);
-    setCarDetail(data?.cars[0]);
-    setCustomer(data);
-  }
-  useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([getCustomer()]);
-    };
-
-    fetchData();
-  }, []);
   return (
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className="shop-cart pt-60 pb-60">
           <Container>
             <Grid gutter={16}>
-              <InfoCustomer
+              <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
+                <div className="checkout-widget">
+                  <h4 className="checkout-widget-title">
+                    Thông tin khách hàng
+                  </h4>
+                  <Card>
+                    <Grid gutter={16}>
+                      <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
+                        <TextInput
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("fullName")}
+                          label="Họ Tên"
+                          placeholder="Họ Tên"
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
+                        <TextInput
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("phoneNumber")}
+                          label="Điện thoại"
+                          placeholder="Điện thoại"
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <TextInput
+                          size="lg"
+                          radius={0}
+                          {...form.getInputProps("address")}
+                          label="Địa chỉ"
+                          type="text"
+                          placeholder="Địa chỉ"
+                        />
+                      </Grid.Col>
+                    </Grid>
+                  </Card>
+                </div>
+              </Grid.Col>
+              <InfoCar
                 myAccount={myAccount}
-                dataDetail={customer}
+                visible={visible}
                 form={form}
+                // carDetail={carDetail}
+                // setCarDetail={setCarDetail}
               />
-              <Suspense fallback={<p>loading...</p>}>
-                <InfoCar
-                  myAccount={myAccount}
-                  visible={visible}
-                  form={form}
-                  carOptions={carOptions}
-                  carDetail={carDetail}
-                  setCarDetail={setCarDetail}
-                />
-              </Suspense>
             </Grid>
             <InfoDate setDate={setDate} setTime={setTime} />
             <Suspense fallback={<p>loading...</p>}>

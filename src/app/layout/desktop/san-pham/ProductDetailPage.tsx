@@ -14,6 +14,7 @@ const Breadcrumbs = [
   { title: "Chi tiết sản phẩm" },
 ];
 const ProductDetailPageDesktop = ({ product, productRelate }: any) => {
+  console.log(product);
   return (
     <div className={styles.wrapper}>
       <Container>

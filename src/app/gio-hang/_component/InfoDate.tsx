@@ -5,7 +5,7 @@ import { TimeInput } from "@mantine/dates";
 import { IconClock12 } from "@tabler/icons-react";
 import { ActionIcon } from "@mantine/core";
 import dayjs from "dayjs";
-import DateField from "../components/form/DateField";
+import DateField from "../../components/form/DateField";
 
 export default function InfoDate({ setDate, setTime }: any) {
   const ref = useRef<HTMLInputElement>(null);

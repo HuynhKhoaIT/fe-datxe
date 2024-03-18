@@ -2,6 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { Grid, TextInput, Card, Avatar, Select } from "@mantine/core";
 import { LoadingOverlay } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import styles from "../index.module.scss";
+import dynamic from "next/dynamic";
+
+import { IconEdit } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+const DynamicModalAddCar = dynamic(() => import("../_component/ModalAddCar"), {
+  ssr: false,
+});
+
 export default function InfoCar({
   myAccount,
   visible,
@@ -10,6 +20,10 @@ export default function InfoCar({
   carDetail,
   setCarDetail,
 }: any) {
+  const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
+    false
+  );
+
   useEffect(() => {
     const fetchData = async () => {
       form.setFieldValue("carId", carDetail?.id);
@@ -35,7 +49,12 @@ export default function InfoCar({
   return (
     <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
       <div className="checkout-widget">
-        <h4 className="checkout-widget-title">Thông tin Xe</h4>
+        <div className={styles.titleCard}>
+          <h4 className={styles.title}>Thông tin Xe</h4>
+          <i className={styles.action} onClick={openModal}>
+            <IconEdit color="var(--primary-color)" />
+          </i>
+        </div>
         <Card pos="relative">
           <LoadingOverlay
             visible={visible}
@@ -93,6 +112,7 @@ export default function InfoCar({
           </Grid>
         </Card>
       </div>
+      <DynamicModalAddCar openModal={openedModal} close={closeModal} />
     </Grid.Col>
   );
 }
