@@ -46,6 +46,10 @@ export async function getCars(requestData:any) {
     if(requestData.garageId){
         garageId = requestData.garageId;
     }
+    let customerId = {};
+    if(requestData.customerId){
+        customerId = Number(requestData.customerId)
+    }
     let status = {
         contains: 'PUBLIC',
     };
@@ -69,7 +73,9 @@ export async function getCars(requestData:any) {
                         numberPlates: {
                             contains: titleFilter
                         },
+                        customerId: customerId,
                         garageId: garageId,
+                        status: 'PUBLIC'
                     },
                 ],
             },
@@ -85,7 +91,9 @@ export async function getCars(requestData:any) {
                         numberPlates: {
                             contains: titleFilter
                         },
+                        customerId: customerId,
                         garageId: garageId,
+                        status: 'PUBLIC'
                     },
                 ],
             },

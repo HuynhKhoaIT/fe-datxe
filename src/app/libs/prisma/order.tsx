@@ -239,6 +239,15 @@ export async function createOrder(json: any) {
                 carId = Number(carNew?.car?.id);
             }
         }else{
+            const carAdmin = await createCar({                
+                customerId: Number(customerId),
+                numberPlates: json.numberPlates,
+                carBrandId: Number(json.carBrandId),
+                carNameId: Number(json.carNameId),
+                carYearId: Number(json.carYearId),
+                status: 'PUBLIC',
+                garageId: Number(process.env.GARAGE_DEFAULT),
+            });
             const carNew = await createCar({                
                 customerId: Number(customerId),
                 numberPlates: json.numberPlates,
