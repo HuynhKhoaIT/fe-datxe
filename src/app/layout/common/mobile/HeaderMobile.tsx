@@ -51,8 +51,6 @@ const HeaderMobile = () => {
           className={styles.searchForm}
         >
           <Input
-            size="lg"
-            radius={0}
             {...form.getInputProps("searchValue")}
             leftSectionPointerEvents="all"
             leftSection={
@@ -67,11 +65,11 @@ const HeaderMobile = () => {
           <Link href={"/gio-hang"} className={styles.cart}>
             <img src={IconCart.src} alt="bell" />
           </Link>
-          <div className={styles.avatar}>
-            <Link href={"/admin"}>
+          {session?.user && (
+            <Link href={"/dashboard"}>
               <img src={logo.src} alt="avatar" />
             </Link>
-          </div>
+          )}
           <div className={styles.menu} onClick={() => setOpenNav(true)}>
             <img src={IconMenu.src} alt="menu" />
           </div>
