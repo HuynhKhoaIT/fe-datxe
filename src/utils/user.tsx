@@ -20,6 +20,7 @@ import { signIn } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { createGarage } from "@/app/libs/prisma/garage";
+import { createCustomer } from "@/app/libs/prisma/customer";
 // import ForgotPassword from '@/app/forgot-password/page';
 /**
  * Get getMyAccount.
@@ -109,6 +110,12 @@ export const register = async (
     );
 
     if (res.status === 200) {
+      await createCustomer({
+        fullName: name,
+        phoneNumber: phone,
+        garageId: process.env.GARAGE_DEFAULT,
+        status: 'PUBLIC',
+      });
       signIn("credentials", {
         phone: phone,
         password: password,
