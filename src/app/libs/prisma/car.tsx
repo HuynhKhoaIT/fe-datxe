@@ -119,6 +119,16 @@ export async function getCars(requestData:any) {
     };
 }
 
+export async function getMyCars(requestData:any) {
+    const rs = {
+        garageId: Number(process.env.GARAGE_DEFAULT),
+        customerId: requestData.id,
+        status: 'PUBLIC',
+    };
+    return await getCars(rs);
+}
+
+
 
 export async function syncCarFromDLBD(carData:any,customerData: any) {
     try {
