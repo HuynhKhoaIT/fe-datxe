@@ -69,10 +69,6 @@ export function NavbarNested() {
         <div className={classes.linksInner}>{links}</div>
       </ScrollArea>
       <div className={classes.footer}>
-        {/* <div className={classes.link} onClick={() => signOut()}>
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </div> */}
         <FooterAdmin />
       </div>
     </nav>

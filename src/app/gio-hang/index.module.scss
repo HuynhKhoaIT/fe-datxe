@@ -1,0 +1,13 @@
+.titleCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+        padding-bottom: 1rem;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .action {
+        cursor: pointer;
+    }
+}

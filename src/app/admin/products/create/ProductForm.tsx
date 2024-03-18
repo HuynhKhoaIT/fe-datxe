@@ -25,6 +25,7 @@ import { useDisclosure } from "@mantine/hooks";
 import axios, { AxiosRequestConfig } from "axios";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
 import InfoCar from "../[productId]/InfoCar";
+import FooterSavePage from "../../_component/FooterSavePage";
 
 export default function ProductForm({
   isEditing = false,
@@ -396,34 +397,10 @@ export default function ProductForm({
             </Card>
           </Grid.Col>
         </Grid>
-
-        <Group justify="end" mt={20}>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            variant="outline"
-            key="cancel"
-            color="red"
-            leftSection={<IconBan size={16} />}
-            onClick={() => router.back()}
-          >
-            Huỷ bỏ
-          </Button>
-          <Button
-            size="lg"
-            radius={0}
-            h={{ base: 42, md: 50, lg: 50 }}
-            loading={loading}
-            style={{ marginLeft: "12px" }}
-            key="submit"
-            type="submit"
-            variant="filled"
-            leftSection={<IconPlus size={16} />}
-          >
-            {isEditing ? "Cập nhật" : isDirection ? "Điều hướng" : "Thêm"}
-          </Button>
-        </Group>
+        <FooterSavePage
+          saveLoading={loading}
+          okText={isEditing ? "Cập nhật" : isDirection ? "Điều hướng" : "Thêm"}
+        />
       </form>
     </Box>
   );

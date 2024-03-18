@@ -632,9 +632,9 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   key="cancel"
                   color="red"
                   leftSection={<IconBan size={16} />}
-                  onClick={() => router.back()}
+                  onClick={() => setActiveTab("numberPlates")}
                 >
-                  Huỷ bỏ
+                  Quay lại
                 </Button>
                 <Button
                   size="lg"
@@ -771,10 +771,38 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       />
                     </Grid.Col>
                   </Grid>
-                  <FooterSavePage
+                  <div className={styles.footer}>
+                    <Button
+                      size="lg"
+                      w={"48%"}
+                      radius={0}
+                      h={{ base: 42, md: 50, lg: 50 }}
+                      variant="outline"
+                      key="cancel"
+                      color="red"
+                      leftSection={<IconBan size={16} />}
+                      onClick={() => setActiveTab("customer")}
+                    >
+                      Quay lại
+                    </Button>
+                    <Button
+                      size="lg"
+                      radius={0}
+                      w={"48%"}
+                      h={{ base: 42, md: 50, lg: 50 }}
+                      loading={loadingButton}
+                      style={{ marginLeft: "12px" }}
+                      variant="filled"
+                      type="submit"
+                      leftSection={<IconChevronRight size={16} />}
+                    >
+                      {isEditing ? "Cập nhật" : "Hoàn thành"}
+                    </Button>
+                  </div>
+                  {/* <FooterSavePage
                     saveLoading={loading}
                     okText={isEditing ? "Cập nhật" : "Hoàn thành"}
-                  />
+                  /> */}
                 </div>
               </>
             </Tabs.Panel>
