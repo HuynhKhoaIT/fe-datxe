@@ -13,7 +13,7 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
 
-export default function CartComponent({ myAccount }: any) {
+export default function CartComponent({ myAccount, carsData }: any) {
   console.log(myAccount);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
