@@ -27,18 +27,18 @@ export function LoginFormAccuracy() {
       pin: hasLength({ min: 6, max: 6 }, "Mã xác thực phải đủ 6 ký tự"),
     },
   });
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (countdown > 0) {
-      timer = setInterval(() => {
-        setCountdown((prevCountdown) => prevCountdown - 1);
-      }, 1000);
-    }
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout;
+  //   if (countdown > 0) {
+  //     timer = setInterval(() => {
+  //       setCountdown((prevCountdown) => prevCountdown - 1);
+  //     }, 1000);
+  //   }
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, [countdown]);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, [countdown]);
   const onLogin = async () => {
     const { phone, pin } = form.values;
     let password = phone + "@@Datxe.com@@";

@@ -18,6 +18,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default function CartComponent({ myAccount }: any) {
+  console.log(myAccount);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(dayjs().format("HH:mm:ss"));
@@ -109,8 +110,8 @@ export default function CartComponent({ myAccount }: any) {
   const handleSubmit = async (values: any) => {
     setLoading(true);
     values.dateTime = new Date();
-      values.total = calculateSubTotal();
-    
+    values.total = calculateSubTotal();
+
     try {
       const res = await fetch(`/api/orders`, {
         method: "POST",
@@ -154,11 +155,16 @@ export default function CartComponent({ myAccount }: any) {
   const [carDetail, setCarDetail] = useState<any>();
 
   async function getCustomer() {
-    const res = await fetch(`/api/customer/1`, { method: "GET" });
+    const res = await fetch(`/api/customer/${myAccount?.id}`, {
+      method: "GET",
+    });
     const data = await res.json();
+    console.log(data);
+
     if (!data) {
       throw new Error("Failed to fetch data");
     }
+    console.log(data);
     const dataOption = data?.cars?.map((item: any) => ({
       value: item.id.toString(),
       label: item.numberPlates,

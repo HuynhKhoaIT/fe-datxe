@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import IconCart from "@/assets/icons/cart.svg";
 import dynamic from "next/dynamic";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const DynamicMenu = dynamic(() => import("./NavDrawer"), {
   ssr: false,
@@ -84,12 +84,16 @@ const HeaderMobile = () => {
       >
         <ul className={styles.nav}>
           <li className={styles.navItem}>
-            <IconUser size={18} />
-            Hồ sơ
+            <Link href="/admin/profile">
+              <IconUser size={18} />
+              Hồ sơ
+            </Link>
           </li>
           <li className={styles.navItem}>
-            <img src={IconCart.src} alt="bell" />
-            Giỏ hàng
+            <Link href="/admin/cart">
+              <img src={IconCart.src} alt="bell" />
+              Giỏ hàng
+            </Link>
           </li>
           {!session?.user ? (
             <Link href="/dang-nhap" className={styles.title}>
@@ -99,10 +103,14 @@ const HeaderMobile = () => {
               </li>
             </Link>
           ) : (
-            <li className={styles.navLogout}>
+            <Link
+              href={"/"}
+              onClick={() => signOut()}
+              className={styles.navLogout}
+            >
               <IconLogout size={18} />
               Đăng xuất
-            </li>
+            </Link>
           )}
         </ul>
       </DynamicMenu>
