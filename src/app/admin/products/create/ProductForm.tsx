@@ -18,13 +18,13 @@ import { useForm } from "@mantine/form";
 import { IconPlus, IconBan } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
-import InfoCar from "../[productId]/InfoCar";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
 import axios, { AxiosRequestConfig } from "axios";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
+import InfoCar from "../[productId]/InfoCar";
 
 export default function ProductForm({
   isEditing = false,

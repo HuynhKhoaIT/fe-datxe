@@ -27,10 +27,9 @@ export default function SearchFormName() {
       <Grid style={{ position: "relative" }}>
         <Grid.Col span={12}>
           <Input
-            // size={"56"}
-            // radius={0}
-            // size={"56px"}
-
+            classNames={{
+              input: styles.inputSearch,
+            }}
             {...form.getInputProps("searchValue")}
             placeholder="Tìm tên sản phẩm, dịch vụ, mã phụ tùng,..."
             rightSectionPointerEvents="all"

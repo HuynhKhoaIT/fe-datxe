@@ -8,28 +8,9 @@ export default function ModalNumberPlates({
   openModal,
   close,
   formOrder,
+  handleGetInfo,
 }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
-
-  const form = useForm({
-    initialValues: {
-      numberPlates: "",
-    },
-    validate: {
-      numberPlates: (value) =>
-        value.length < 1 ? "Không được để trống" : null,
-    },
-  });
-  const handleSubmit = async (values: any) => {
-    console.log(values);
-    try {
-      const res = await fetch(`/car/number-plates/${values.numberPlates}`, {
-        method: "GET",
-      });
-      console.log(res);
-    } catch (error) {}
-    // close();
-  };
   return (
     <Modal
       opened={openModal}
@@ -45,33 +26,36 @@ export default function ModalNumberPlates({
     >
       <Box h={200} w={"100%"}>
         <Typo style={{ fontSize: 24, fontWeight: 500 }}>Nhập biển số xe</Typo>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput
-            w={"100%"}
-            size="lg"
-            radius={0}
-            withAsterisk
-            {...form.getInputProps("numberPlates")}
-            type="text"
-            placeholder="Biển số xe"
-          />
-          <div
-            style={{
-              width: "100%",
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              display: "flex",
-              justifyContent: "end",
-              padding: 10,
-              borderTop: "1px solid #ddd",
+        <TextInput
+          w={"100%"}
+          size="lg"
+          radius={0}
+          withAsterisk
+          {...formOrder.getInputProps("numberPlates")}
+          type="text"
+          placeholder="Biển số xe"
+        />
+        <div
+          style={{
+            width: "100%",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            display: "flex",
+            justifyContent: "end",
+            padding: 10,
+            borderTop: "1px solid #ddd",
+          }}
+        >
+          <Button
+            onClick={() => {
+              handleGetInfo();
+              close();
             }}
           >
-            <Button key={"submit"} type="submit">
-              Ok
-            </Button>
-          </div>
-        </form>
+            Ok
+          </Button>
+        </div>
       </Box>
     </Modal>
   );
