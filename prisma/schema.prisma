@@ -250,6 +250,7 @@ model Customer{
   status              STATUS @default(PUBLIC)
   garage              Garage @relation(fields: [garageId], references: [id])
   garageId            Int @default(1)
+  userId              Int @default(0)
   cars                Car[]
   customerGroup       CustomerGroupsOnCustomers[]
   orders              Order[]

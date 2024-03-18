@@ -186,6 +186,7 @@ export async function createOrder(json: any) {
         if(json.detail[0].garageId){
             garageId = Number(json.detail[0].garageId)
         }
+
         if ((!json.customerId || json.customerId == 0) && json.phoneNumber) {            
             // check and create customer
             // check customer via phone number
@@ -215,7 +216,8 @@ export async function createOrder(json: any) {
                 }
             }
             // end check customer
-        }else{
+        }
+        else{
             customerId = json.customerId;
         }
         //get carID
