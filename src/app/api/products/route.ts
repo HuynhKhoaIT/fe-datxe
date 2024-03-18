@@ -42,7 +42,11 @@ export async function GET(request: NextRequest) {
 
             let isProduct = {};
             if (searchParams.get('isProduct')?.length) {
-                isProduct = searchParams.get('isProduct') == '1' ? true : false;
+                if (searchParams.get('isProduct') == 'true' || Number(searchParams.get('isProduct')) == 1) {
+                    isProduct = true;
+                } else {
+                    isProduct = false;
+                }
             }
 
             const requestData = {
@@ -52,42 +56,9 @@ export async function GET(request: NextRequest) {
                 limit: limit,
                 page: page,
                 garageId: garageId,
+                isProduct: isProduct,
             };
             const products = await getProducts(garageId, requestData);
-
-            // const [products, total] = await prisma.$transaction([
-            //     prisma.product.findMany({
-            //         take: take,
-            //         skip: skip,
-            //         orderBy: {
-            //             id: 'desc',
-            //         },
-            //         where: {
-            //             AND: [
-            //                 {
-            //                     categories,
-            //                     name: {
-            //                         contains: titleFilter!,
-            //                     },
-            //                     brands,
-            //                     status: {
-            //                         not: 'DELETE',
-            //                     },
-            //                     garageId,
-            //                     isProduct,
-            //                 },
-            //             ],
-            //         },
-            //         include: {
-            //             reviews: true,
-            //             categories: true,
-            //             garage: true,
-            //         },
-            //     }),
-            //     prisma.product.count(),
-            // ]);
-
-            // const totalPage = Math.ceil(total / limit);
 
             return NextResponse.json(products);
         }
