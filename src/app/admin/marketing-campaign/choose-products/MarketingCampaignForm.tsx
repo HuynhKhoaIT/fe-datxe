@@ -22,6 +22,7 @@ import { IconBan, IconPlus, IconTrash } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import Typo from "@/app/components/elements/Typo";
+import FooterSavePage from "../../_component/FooterSavePage";
 const DynamicModalChooseProducts = dynamic(
   () => import("./ModalChooseProducts"),
   {
@@ -398,35 +399,7 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
             </Grid>
           </div>
 
-          <div className={styles.footer}>
-            <Button
-              size="lg"
-              radius={0}
-              w={{ base: "48%", md: "200px", lg: "200px" }}
-              h={{ base: 42, md: 50, lg: 50 }}
-              variant="outline"
-              key="cancel"
-              color="red"
-              leftSection={<IconBan size={16} />}
-              onClick={() => router.back()}
-            >
-              Huỷ bỏ
-            </Button>
-            <Button
-              size="lg"
-              w={{ base: "48%", md: "200px", lg: "200px" }}
-              radius={0}
-              h={{ base: 42, md: 50, lg: 50 }}
-              loading={loading}
-              style={{ marginLeft: "12px" }}
-              key="submit"
-              type="submit"
-              variant="filled"
-              leftSection={<IconPlus size={16} />}
-            >
-              Xác nhận
-            </Button>
-          </div>
+          <FooterSavePage okText="Xác nhận" saveLoading={loading} />
         </div>
       </form>
       <DynamicModalChooseProducts
