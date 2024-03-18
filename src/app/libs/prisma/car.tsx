@@ -120,9 +120,10 @@ export async function getCars(requestData:any) {
 }
 
 export async function getMyCars(requestData:any) {
+    const customer = await getCustomerByPhone(requestData.phoneNumber, Number(process.env.GARAGE_DEFAULT));
     const rs = {
         garageId: Number(process.env.GARAGE_DEFAULT),
-        customerId: requestData.id,
+        customerId: customer?.phoneNumber,
         status: 'PUBLIC',
     };
     return await getCars(rs);
