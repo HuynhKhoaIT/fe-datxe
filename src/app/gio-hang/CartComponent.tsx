@@ -13,8 +13,7 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
 
-export default function CartComponent({ myAccount }: any) {
-  console.log(myAccount);
+export default function CartComponent({ myAccount, carsData }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(dayjs().format("HH:mm:ss"));
@@ -197,6 +196,7 @@ export default function CartComponent({ myAccount }: any) {
                 myAccount={myAccount}
                 visible={visible}
                 form={form}
+                carsData={carsData}
                 // carDetail={carDetail}
                 // setCarDetail={setCarDetail}
               />

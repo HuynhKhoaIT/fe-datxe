@@ -30,7 +30,6 @@ export default function HeaderTopMobile() {
             <div
               className={styles.menu}
               onClick={() => {
-                console.log("123");
                 setOpenNav(true);
               }}
             >

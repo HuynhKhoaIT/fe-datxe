@@ -208,7 +208,11 @@ export default function CarListPage({ carsData, myAccount }: any) {
         </div>
         <div className="col-lg-12">
           <div className="table-responsive" style={{ overflowY: "hidden" }}>
-            <TableBasic data={paginatedData} columns={columns} loading={true} />
+            <TableBasic
+              data={paginatedData}
+              columns={columns}
+              loading={false}
+            />
             <Pagination
               style={{
                 marginTop: "16px",
