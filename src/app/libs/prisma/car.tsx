@@ -133,6 +133,31 @@ export async function getMyCars(requestData: any) {
   return await getCars(rs);
 }
 
+export async function createMyCars(json:any) {
+    const customer = await getCustomerByPhone(
+        json.phoneNumber,
+        Number(process.env.GARAGE_DEFAULT)
+    );
+    
+    const data = {
+        customerId: Number(customer?.id),
+        numberPlates: json.numberPlates,
+        carBrandId: Number(json.carBrandId),
+        carNameId: Number(json.carNameId),
+        carYearId: Number(json.carYearId),
+        carStyleId: json.carStyleId,
+        color: json.color,
+        vinNumber: json.vinNumber,
+        machineNumber: json.machineNumber,
+        description: json.description,
+        status: json.status,
+        garageId: Number(process.env.GARAGE_DEFAULT),
+      }
+
+    const car = await createCar(data);
+    return car;
+}
+
 export async function syncCarFromDLBD(carData: any, customerData: any) {
   try {
     const garage = await getGarageByDlbdId(carData.garage_id);
