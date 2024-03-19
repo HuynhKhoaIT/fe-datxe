@@ -155,7 +155,7 @@ export async function createMyCars(json:any) {
     }
 
     const car = await createCar(data);
-    let carRs = JSON.parse(JSON.stringify(car));
+    let carRs = JSON.parse(JSON.stringify(car.car));
     let br = await getCarNameById(carRs.carBrandId);
     let md = await getCarNameById(carRs.carNameId);
     let y = await getCarNameById(carRs.carYearId);
