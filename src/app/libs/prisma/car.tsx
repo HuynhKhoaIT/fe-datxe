@@ -133,36 +133,36 @@ export async function getMyCars(requestData: any) {
   return await getCars(rs);
 }
 
-export async function createMyCars(json:any) {
-    const customer = await getCustomerByPhone(
-        json.phoneNumber,
-        Number(process.env.GARAGE_DEFAULT)
-    );
-    
-    const data = {
-        customerId: Number(customer?.id),
-        numberPlates: json.numberPlates,
-        carBrandId: Number(json.carBrandId),
-        carNameId: Number(json.carNameId),
-        carYearId: Number(json.carYearId),
-        carStyleId: json.carStyleId,
-        color: json.color,
-        vinNumber: json.vinNumber,
-        machineNumber: json.machineNumber,
-        description: json.description,
-        status: json.status,
-        garageId: Number(process.env.GARAGE_DEFAULT),
-    }
+export async function createMyCars(json: any) {
+  const customer = await getCustomerByPhone(
+    json.phoneNumber,
+    Number(process.env.GARAGE_DEFAULT)
+  );
 
-    const car = await createCar(data);
-    let carRs = JSON.parse(JSON.stringify(car));
-    let br = await getCarNameById(carRs.carBrandId);
-    let md = await getCarNameById(carRs.carNameId);
-    let y = await getCarNameById(carRs.carYearId);
-    carRs.brandName = br;
-    carRs.modelName = md;
-    carRs.yearName = y;
-    return carRs;
+  const data = {
+    customerId: Number(customer?.id),
+    numberPlates: json.numberPlates,
+    carBrandId: Number(json.carBrandId),
+    carNameId: Number(json.carNameId),
+    carYearId: Number(json.carYearId),
+    carStyleId: json.carStyleId,
+    color: json.color,
+    vinNumber: json.vinNumber,
+    machineNumber: json.machineNumber,
+    description: json.description,
+    status: json.status,
+    garageId: Number(process.env.GARAGE_DEFAULT),
+  };
+
+  const car = await createCar(data);
+  let carRs = JSON.parse(JSON.stringify(car.car));
+  let br = await getCarNameById(carRs.carBrandId);
+  let md = await getCarNameById(carRs.carNameId);
+  let y = await getCarNameById(carRs.carYearId);
+  carRs.brandName = br;
+  carRs.modelName = md;
+  carRs.yearName = y;
+  return carRs;
 }
 
 export async function syncCarFromDLBD(carData: any, customerData: any) {

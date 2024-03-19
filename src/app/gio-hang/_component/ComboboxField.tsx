@@ -14,15 +14,17 @@ export default function ComboboxField({
   form,
   carsData,
   openModal,
+  value,
+  setValue,
 }: any) {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
-  const [value, setValue] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
   const handleSetValueCar = (data: any) => {
+    form.setFieldValue("carId", data?.id);
     form.setFieldValue("carBrandId", data?.carBrandId);
     form.setFieldValue("carNameId", data?.carNameId);
     form.setFieldValue("carYearId", data?.carYearId);
@@ -51,7 +53,6 @@ export default function ComboboxField({
     <Combobox
       store={combobox}
       onOptionSubmit={(val) => {
-        console.log(val);
         setValue(val);
         setSearch(val);
         combobox.closeDropdown();
