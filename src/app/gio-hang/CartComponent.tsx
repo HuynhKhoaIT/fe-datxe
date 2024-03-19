@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
 
 export default function CartComponent({ myAccount, carsData }: any) {
-  console.log(myAccount);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(dayjs().format("HH:mm:ss"));
@@ -197,6 +196,7 @@ export default function CartComponent({ myAccount, carsData }: any) {
                 myAccount={myAccount}
                 visible={visible}
                 form={form}
+                carsData={carsData}
                 // carDetail={carDetail}
                 // setCarDetail={setCarDetail}
               />

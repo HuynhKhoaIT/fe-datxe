@@ -27,96 +27,92 @@ export async function createCustomer(json: any) {
   }
 }
 
-export async function getCustomers(requestData:any) {
-    let customerGroup = {};
-    let currentPage = 1;
-    if(requestData.page){
-      currentPage = Number(requestData.page)
-    }
-    let take = 10;
-    let limit = 10;
-    if(requestData.limit){
-      take = parseInt(requestData.limit)
-    }
-    const skip = take * (currentPage - 1);
-    let titleFilter = '';
-    if(requestData.s){
-        titleFilter = requestData.s;
-    }
-    let garageId = {};
-    if(requestData.garageId){
-      garageId = requestData.garageId;
-    }
+export async function getCustomers(requestData: any) {
+  let customerGroup = {};
+  let currentPage = 1;
+  if (requestData.page) {
+    currentPage = Number(requestData.page);
+  }
+  let take = 10;
+  let limit = 10;
+  if (requestData.limit) {
+    take = parseInt(requestData.limit);
+  }
+  const skip = take * (currentPage - 1);
+  let titleFilter = "";
+  if (requestData.s) {
+    titleFilter = requestData.s;
+  }
+  let garageId = {};
+  if (requestData.garageId) {
+    garageId = requestData.garageId;
+  }
+  let status = {
+    not: "DELETE",
+  };
+  if (requestData.status == "NOT_DELETE") {
     let status = {
       not: "DELETE",
     };
-    if(requestData.status == 'NOT_DELETE'){
-        let status = {
-            not: 'DELETE',
-        };
-    }else if(requestData.status){
-        let status = {
-            contains: requestData.status,
-        };
-    }
-
-    if(requestData.customerGroup){
-        customerGroup = {
-            some: {
-                customerGroup: {
-                    id: Number(requestData.customerGroup)
-                }
-            }
-        }
-    }
-    const [customers, total] = await prisma.$transaction([
-        prisma.customer.findMany({
-            take: take,
-            skip: skip,
-            orderBy:{
-                id: 'desc'
-            },
-            where: {              
-              
-              AND: [
-                {
-                  
-                  garageId: garageId,
-                  customerGroup
-                },
-                
-              ]
-              
-            },
-            include: {
-                cars: true,
-            },
-        }),
-        prisma.customer.count({
-            where: {
-                AND: [
-                    {
-                        fullName: {
-                            contains: titleFilter
-                        },
-                        garageId: garageId,
-                        customerGroup
-                        // status: ,
-                    },
-                ],
-            },
-          }),
-    ])
-    const totalPage = Math.ceil(total / limit);
-
-    return {
-      data: customers,
-      total: total,
-      currentPage: currentPage,
-      limit: limit,
-      totalPage: totalPage,
-      status: 200,
+  } else if (requestData.status) {
+    let status = {
+      contains: requestData.status,
     };
+  }
+
+  if (requestData.customerGroup) {
+    customerGroup = {
+      some: {
+        customerGroup: {
+          id: Number(requestData.customerGroup),
+        },
+      },
+    };
+  }
+  const [customers, total] = await prisma.$transaction([
+    prisma.customer.findMany({
+      take: take,
+      skip: skip,
+      orderBy: {
+        id: "desc",
+      },
+      where: {
+        AND: [
+          {
+            garageId: garageId,
+            customerGroup,
+          },
+        ],
+      },
+      include: {
+        cars: true,
+      },
+    }),
+    prisma.customer.count({
+      where: {
+        AND: [
+          {
+            fullName: {
+              contains: titleFilter,
+            },
+            garageId: garageId,
+            customerGroup,
+            // status: ,
+          },
+        ],
+      },
+    }),
+  ]);
+  const totalPage = Math.ceil(total / limit);
+
+  return {
+    data: customers,
+    total: total,
+    currentPage: currentPage,
+    limit: limit,
+    totalPage: totalPage,
+    status: 200,
+  };
 }
 
 export async function syncCustomerFromDLBD(requestData: any) {
@@ -160,9 +156,7 @@ export async function getCustomerByPhone(
 ) {
   const customer = await prisma.customer.findFirst({
     where: {
-      phoneNumber: {
-        contains: phoneNumber,
-      },
+      phoneNumber,
       garageId: Number(garageId),
       status: {
         not: "DELETE",

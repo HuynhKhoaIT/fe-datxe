@@ -18,24 +18,13 @@ export default function InfoCar({
   visible,
   form,
   carOptions,
-  carDetail,
+  carsData,
   setCarDetail,
 }: any) {
+  console.log(myAccount);
   const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
     false
   );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      form.setFieldValue("carId", carDetail?.id);
-      form.setFieldValue("carBrandId", carDetail?.carBrandId);
-      form.setFieldValue("carNameId", carDetail?.carNameId);
-      form.setFieldValue("carYearId", carDetail?.carYearId);
-      form.setFieldValue("numberPlates", carDetail?.id.toString());
-    };
-
-    if (carDetail) fetchData();
-  }, [carDetail]);
 
   async function getCarDetail(carId: number) {
     if (carId) {
@@ -52,9 +41,6 @@ export default function InfoCar({
       <div className="checkout-widget">
         <div className={styles.titleCard}>
           <h4 className={styles.title}>Thông tin Xe</h4>
-          <i className={styles.action} onClick={openModal}>
-            <IconEdit color="var(--primary-color)" />
-          </i>
         </div>
         <Card pos="relative">
           <LoadingOverlay
@@ -80,7 +66,12 @@ export default function InfoCar({
                 }}
                 nothingFoundMessage="Nothing found..."
               /> */}
-              <ComboboxField label="Biển số" />
+              <ComboboxField
+                form={form}
+                label="Biển số"
+                carsData={carsData}
+                openModal={openModal}
+              />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
               <TextInput
@@ -89,14 +80,14 @@ export default function InfoCar({
                 label="Hãng Xe"
                 placeholder="Hãng Xe"
                 readOnly
-                {...form.getInputProps("carBrandId")}
+                {...form.getInputProps("carBrandName")}
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
               <TextInput
                 size="lg"
                 radius={0}
-                {...form.getInputProps("carNameId")}
+                {...form.getInputProps("carModelName")}
                 label="Dòng xe"
                 placeholder="Dòng xe"
                 readOnly
@@ -106,7 +97,7 @@ export default function InfoCar({
               <TextInput
                 size="lg"
                 radius={0}
-                {...form.getInputProps("carYearId")}
+                {...form.getInputProps("carYear")}
                 label="Năm sản xuất"
                 placeholder="Năm sản xuất"
                 readOnly
@@ -115,7 +106,11 @@ export default function InfoCar({
           </Grid>
         </Card>
       </div>
-      <DynamicModalAddCar openModal={openedModal} close={closeModal} />
+      <DynamicModalAddCar
+        openModal={openedModal}
+        close={closeModal}
+        myAccount={myAccount}
+      />
     </Grid.Col>
   );
 }
