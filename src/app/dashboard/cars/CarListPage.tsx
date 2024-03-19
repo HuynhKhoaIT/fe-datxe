@@ -72,16 +72,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
     setOpenModalCarDefault(false);
   };
 
-  // pagination
-  const itemsPerPage: number = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const paginatedData = carsData?.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
+  console.log(carsData);
+
   const columns = [
     {
       label: (
@@ -107,8 +99,8 @@ export default function CarListPage({ carsData, myAccount }: any) {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Biển số</span>
       ),
-      name: "licensePlates",
-      dataIndex: ["licensePlates"],
+      name: "numberPlates",
+      dataIndex: ["numberPlates"],
     },
     {
       label: (
@@ -122,20 +114,24 @@ export default function CarListPage({ carsData, myAccount }: any) {
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hãng xe</span>
       ),
       name: "bandName",
-      dataIndex: ["brandCarName", "name"],
+      dataIndex: ["brandName", "title"],
     },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Dòng xe</span>
       ),
       name: "modelName",
-      dataIndex: ["modelCarName", "name"],
+      dataIndex: ["modelName", "title"],
     },
-    // {
-    //   label: <span style={{ whiteSpace: "nowrap",fontSize:"16px" }}>Năm sản xuất</span>,
-    //   name: "color",
-    //   dataIndex: ["color"],
-    // },
+    {
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
+          Năm sản xuất
+        </span>
+      ),
+      name: "yearName",
+      dataIndex: ["yearName", "title"],
+    },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
@@ -208,20 +204,7 @@ export default function CarListPage({ carsData, myAccount }: any) {
         </div>
         <div className="col-lg-12">
           <div className="table-responsive" style={{ overflowY: "hidden" }}>
-            <TableBasic
-              data={paginatedData}
-              columns={columns}
-              loading={false}
-            />
-            <Pagination
-              style={{
-                marginTop: "16px",
-                display: "flex",
-                justifyContent: "end",
-              }}
-              total={Math.ceil(carsData?.length / itemsPerPage)}
-              onChange={handlePageChange}
-            />
+            <TableBasic data={carsData} columns={columns} loading={false} />
           </div>
         </div>
       </div>

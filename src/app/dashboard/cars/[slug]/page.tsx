@@ -1,25 +1,27 @@
+"use client";
 import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { getCarSsr } from "@/utils/car";
 import { LoadingComponent } from "@/app/components/loading";
 import CarForm from "../create/CarForm";
+import axios from "axios";
+export default function CarSavePage({ params }: { params: { slug: number } }) {
+  const [car, setCar] = useState(null);
 
-async function getCarData(carId: number) {
-  const car = await getCarSsr(carId);
-  if (!car) {
-    throw new Error("Failed to fetch data");
-  }
-  return car;
-}
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/car/${params?.slug}`);
+        setCar(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-export default async function CarSavePage({
-  params,
-}: {
-  params: { slug: number };
-}) {
-  const carDetail: any = await getCarData(Number(params.slug));
+    fetchData();
+  }, [params?.slug]);
   return (
     <>
       <Box maw={"100%"} mx="auto" className={styles.content}>
@@ -28,7 +30,7 @@ export default async function CarSavePage({
         </Typo>
         <Space h="md" />
         <Suspense fallback={<LoadingComponent />}>
-          <CarForm isEditing={true} dataDetail={carDetail} />
+          <CarForm isEditing={true} dataDetail={car} />
         </Suspense>
       </Box>
     </>
