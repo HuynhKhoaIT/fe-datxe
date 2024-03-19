@@ -1,4 +1,4 @@
-import { createCar, getCars } from '@/app/libs/prisma/car';
+import { createCar, createMyCars, getCars } from '@/app/libs/prisma/car';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
             const json = await request.json();
             let garageId = Number(process.env.GARAGE_DEFAULT);
             json.garageId = garageId;
-            const car = await createCar(json);
+            const car = await createMyCars(json);
             return new NextResponse(JSON.stringify(car), {
                 status: 201,
                 headers: { 'Content-Type': 'application/json' },
