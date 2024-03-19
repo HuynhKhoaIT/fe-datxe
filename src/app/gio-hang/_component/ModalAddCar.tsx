@@ -1,4 +1,3 @@
-import { addCar } from "@/utils/car";
 import {
   getOptionsBrands,
   getOptionsModels,
@@ -17,14 +16,16 @@ import {
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ModalAddCar({ openModal, close, myAccount }: any) {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const token = session?.user?.token;
+export default function ModalAddCar({
+  openModal,
+  close,
+  myAccount,
+  formData,
+  setValue,
+}: any) {
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
@@ -34,10 +35,7 @@ export default function ModalAddCar({ openModal, close, myAccount }: any) {
   const form = useForm({
     initialValues: {
       numberPlates: "",
-      customerId: myAccount.id || "",
-      // carBrandId: "",
-      // carNameId: "",
-      // carYearId: "",
+      phoneNumber: myAccount?.phone || "",
     },
     validate: {
       numberPlates: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
@@ -57,17 +55,23 @@ export default function ModalAddCar({ openModal, close, myAccount }: any) {
   }, [openModal]);
 
   const handleSubmit = async () => {
-    const values: any = form.values;
-    const newCar = {
-      number_plates: values.numberPlates,
-      brand_id: values.carBrandId,
-      year_car_name: values.carNameId,
-      car_name_id: values.carYearId,
-    };
     try {
       handlers.open();
-      const res = await addCar(newCar, token ?? "");
-      console.log(res);
+      const res = await fetch(`/api/car/my-car`, {
+        method: "POST",
+        body: JSON.stringify(form.values),
+      });
+      const data = await res.json();
+      setValue(data.numberPlates);
+      formData.setFieldValue("carId", data?.id);
+      formData.setFieldValue("carBrandId", data?.carBrandId);
+      formData.setFieldValue("carNameId", data?.carNameId);
+      formData.setFieldValue("carYearId", data?.carYearId);
+      formData.setFieldValue("carBrandName", data?.brandName?.title);
+      formData.setFieldValue("carBrandName", data?.brandName?.title);
+      formData.setFieldValue("carModelName", data?.modelName?.title);
+      formData.setFieldValue("carYear", data?.yearName?.title);
+      close();
     } catch (error) {
     } finally {
       handlers.close();

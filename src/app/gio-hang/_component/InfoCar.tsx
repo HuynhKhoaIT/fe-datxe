@@ -21,10 +21,10 @@ export default function InfoCar({
   carsData,
   setCarDetail,
 }: any) {
-  console.log(myAccount);
   const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
     false
   );
+  const [value, setValue] = useState<string | null>(null);
 
   async function getCarDetail(carId: number) {
     if (carId) {
@@ -71,6 +71,8 @@ export default function InfoCar({
                 label="Biển số"
                 carsData={carsData}
                 openModal={openModal}
+                value={value}
+                setValue={setValue}
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4, xl: 4 }}>
@@ -110,6 +112,8 @@ export default function InfoCar({
         openModal={openedModal}
         close={closeModal}
         myAccount={myAccount}
+        formData={form}
+        setValue={setValue}
       />
     </Grid.Col>
   );
