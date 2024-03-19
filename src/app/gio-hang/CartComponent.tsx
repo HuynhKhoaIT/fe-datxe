@@ -131,7 +131,7 @@ export default function CartComponent({ myAccount, carsData }: any) {
         //   body: JSON.stringify(data?.order),
         // });
         localStorage.setItem("cartData", JSON.stringify([]));
-        router.push(`/dashboard/order/${data?.order?.slug}`);
+        router.push(`/order/${data?.order?.slug}`);
       }
     } catch (error) {
       console.error("Error during API call:", error);
