@@ -152,10 +152,17 @@ export async function createMyCars(json:any) {
         description: json.description,
         status: json.status,
         garageId: Number(process.env.GARAGE_DEFAULT),
-      }
+    }
 
     const car = await createCar(data);
-    return car;
+    let carRs = JSON.parse(JSON.stringify(car));
+    let br = await getCarNameById(carRs.carBrandId);
+    let md = await getCarNameById(carRs.carNameId);
+    let y = await getCarNameById(carRs.carYearId);
+    carRs.brandName = br;
+    carRs.modelName = md;
+    carRs.yearName = y;
+    return carRs;
 }
 
 export async function syncCarFromDLBD(carData: any, customerData: any) {

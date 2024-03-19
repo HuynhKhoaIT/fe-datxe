@@ -32,6 +32,7 @@ export async function POST(request: Request) {
             const json = await request.json();
             let garageId = Number(process.env.GARAGE_DEFAULT);
             json.garageId = garageId;
+            json.phoneNumber = session.user?.phone;
             const car = await createMyCars(json);
             return new NextResponse(JSON.stringify(car), {
                 status: 201,
