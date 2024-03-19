@@ -19,9 +19,13 @@ import { IconPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ModalAddCar({ openModal, close, myAccount }: any) {
-  const router = useRouter();
-  console.log(myAccount);
+export default function ModalAddCar({
+  openModal,
+  close,
+  myAccount,
+  formData,
+  setValue,
+}: any) {
   const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
@@ -58,6 +62,15 @@ export default function ModalAddCar({ openModal, close, myAccount }: any) {
         body: JSON.stringify(form.values),
       });
       const data = await res.json();
+      setValue(data.numberPlates);
+      formData.setFieldValue("carId", data?.id);
+      formData.setFieldValue("carBrandId", data?.carBrandId);
+      formData.setFieldValue("carNameId", data?.carNameId);
+      formData.setFieldValue("carYearId", data?.carYearId);
+      formData.setFieldValue("carBrandName", data?.brandName?.title);
+      formData.setFieldValue("carBrandName", data?.brandName?.title);
+      formData.setFieldValue("carModelName", data?.modelName?.title);
+      formData.setFieldValue("carYear", data?.yearName?.title);
       close();
     } catch (error) {
     } finally {

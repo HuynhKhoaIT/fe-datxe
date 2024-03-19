@@ -12,7 +12,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
-
+import styles from "./index.module.scss";
 export default function CartComponent({ myAccount, carsData }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -102,7 +102,15 @@ export default function CartComponent({ myAccount, carsData }: any) {
     form.setFieldValue("detail", cartData);
   }, [cartData]);
 
+  console.log(cartData);
   const handleSubmit = async (values: any) => {
+    if (cartData?.length == 0) {
+      notifications.show({
+        title: "Thất bại",
+        message: "Vui lòng thêm sản phẩm vào giỏ hàng",
+      });
+      return;
+    }
     setLoading(true);
     values.dateTime = new Date();
     values.total = calculateSubTotal();
@@ -121,7 +129,6 @@ export default function CartComponent({ myAccount, carsData }: any) {
           message: "Đặt hàng thất bại: " + (data?.error || "Unknown error"),
         });
       } else {
-        console.log(data?.order);
         notifications.show({
           title: "Thành công",
           message: "Đặt hàng thành công",
@@ -145,7 +152,6 @@ export default function CartComponent({ myAccount, carsData }: any) {
   };
 
   const [visible, handlers] = useDisclosure(false);
-  const [carDetail, setCarDetail] = useState<any>();
 
   return (
     <>
@@ -155,9 +161,9 @@ export default function CartComponent({ myAccount, carsData }: any) {
             <Grid gutter={16}>
               <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
                 <div className="checkout-widget">
-                  <h4 className="checkout-widget-title">
-                    Thông tin khách hàng
-                  </h4>
+                  <div className={styles.titleCard}>
+                    <h4 className={styles.title}>Thông tin khách hàng</h4>
+                  </div>
                   <Card>
                     <Grid gutter={16}>
                       <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
@@ -194,7 +200,6 @@ export default function CartComponent({ myAccount, carsData }: any) {
               </Grid.Col>
               <InfoCar
                 myAccount={myAccount}
-                visible={visible}
                 form={form}
                 carsData={carsData}
                 // carDetail={carDetail}
