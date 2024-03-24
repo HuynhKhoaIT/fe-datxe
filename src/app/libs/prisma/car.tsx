@@ -37,6 +37,10 @@ export async function getCars(requestData: any) {
   if (requestData.limit) {
     take = parseInt(requestData.limit);
   }
+  let page = requestData.page;
+  if (page) {
+    currentPage = Number(page);
+  }
   const skip = take * (currentPage - 1);
   let titleFilter = "";
   if (requestData.s) {
@@ -64,6 +68,8 @@ export async function getCars(requestData: any) {
   }
   const [cars, total] = await prisma.$transaction([
     prisma.car.findMany({
+      take: take,
+      skip: skip,
       orderBy: {
         id: "desc",
       },
