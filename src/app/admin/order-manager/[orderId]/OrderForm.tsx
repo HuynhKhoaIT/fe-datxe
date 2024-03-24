@@ -28,7 +28,7 @@ import {
 } from "@tabler/icons-react";
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { stepOrderOptions } from "@/constants/masterData";
@@ -47,6 +47,8 @@ import {
 } from "@/utils/until";
 import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
+import axios from "axios";
+import { getOrders } from "../until";
 
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
@@ -62,7 +64,19 @@ const DynamicModalNumberPlates = dynamic(
 );
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
-  console.log(dataDetail);
+  const searchParams = useSearchParams();
+  const {
+    data: orders,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["orders", searchParams.toString(), 1],
+    queryFn: () => getOrders(searchParams.toString(), 1),
+  });
+
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const [activeTab, setActiveTab] = useState<string | null>(
     !isEditing ? "numberPlates" : "customer"
@@ -245,6 +259,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           });
         }
         router.back();
+        refetch();
         router.refresh();
       }
     } catch (error) {
@@ -387,20 +402,47 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     }
   };
 
-  const UpdateConfirm = () => {
+  // Câp nhật trạng thái đơn hàng
+  const handleUpdateStep = async (step: any) => {
+    try {
+      await axios.post(`/api/orders/step`, {
+        id: dataDetail?.id,
+        step,
+      });
+      notifications.show({
+        title: "Thành công",
+        message: "Cập nhật trạng thái đơn hàng thành công",
+      });
+      router.push("/admin/order-manager");
+      refetch();
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
+  const UpdateConfirm = (step: any) => {
+    console.log(step);
+    var subTitle = "";
+    if (step == "0") {
+      subTitle = "huỷ đơn hàng";
+    } else if (step == "1") {
+      subTitle = "tiếp nhận đơn hàng";
+    } else if (step == "4") {
+      subTitle = "hoàn thành đơn hàng";
+    }
     modals.openConfirmModal({
       title: (
         <Typo size="small" type="semi-bold" style={{ color: "red" }}>
           Xác nhận
         </Typo>
       ),
-      children: <Typo size="sub">Bạn có muốn huỷ đơn hàng này không?</Typo>,
+      children: <Typo size="sub">Bạn có muốn {subTitle} này không?</Typo>,
       size: "350px",
       centered: true,
       zIndex: 999,
       withCloseButton: false,
       labels: { confirm: "Có", cancel: "Không" },
-      onConfirm: () => console.log("123"),
+      onConfirm: () => handleUpdateStep(step),
     });
   };
   return (
@@ -803,7 +845,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         key="cancel"
                         color="red"
                         // leftSection={<IconBan size={16} />}
-                        onClick={UpdateConfirm}
+                        onClick={() => UpdateConfirm("0")}
                       >
                         Huỷ đơn
                       </Button>
@@ -816,6 +858,14 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         color="green"
                         style={{ marginLeft: "12px" }}
                         variant="filled"
+                        onClick={() => {
+                          if (dataDetail?.step == "-1") {
+                            UpdateConfirm("1");
+                          } else {
+                            UpdateConfirm("4");
+                          }
+                        }}
+
                         // leftSection={<IconPlus size={16} />}
                       >
                         {dataDetail?.step == "-1"
@@ -1156,7 +1206,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   key="cancel"
                   color="red"
                   // leftSection={<IconBan size={16} />}
-                  onClick={() => router.back()}
+                  onClick={() => UpdateConfirm("0")}
                 >
                   Huỷ đơn
                 </Button>
@@ -1168,6 +1218,13 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   color="green"
                   style={{ marginLeft: "12px" }}
                   variant="filled"
+                  onClick={() => {
+                    if (dataDetail?.step == "-1") {
+                      UpdateConfirm("1");
+                    } else {
+                      UpdateConfirm("4");
+                    }
+                  }}
                   // leftSection={<IconPlus size={16} />}
                 >
                   {dataDetail?.step == "-1"

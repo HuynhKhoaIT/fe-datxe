@@ -18,6 +18,7 @@ import useFetch from "@/app/hooks/useFetch";
 import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import FilterStepOrder from "@/app/components/common/FilterStepOrder/FilterCategories";
+import { getOrders } from "./until";
 const DynamicModalDeleteItem = dynamic(
   () => import("../board/ModalDeleteItem"),
   {
@@ -37,15 +38,6 @@ export default function OrdersManaga() {
   const [page, setPage] = useState<number>(1);
   const [deleteRow, setDeleteRow] = useState();
 
-  async function getData(searchParams: any, page: number) {
-    try {
-      const res = await axios.get(`/api/orders?${searchParams}&page=${page}`);
-      return res.data;
-    } catch (error) {
-      console.error("error:", error);
-    }
-  }
-
   const {
     data: orders,
     isLoading,
@@ -54,15 +46,15 @@ export default function OrdersManaga() {
     isPlaceholderData,
     refetch,
   } = useFetch({
-    queryKey: ["orders", page],
-    queryFn: () => getData(searchParams.toString(), page),
+    queryKey: ["orders", searchParams.toString(), page],
+    queryFn: () => getOrders(searchParams.toString(), page),
   });
 
   useEffect(() => {
     if (!isPlaceholderData) {
       queryClient.prefetchQuery({
-        queryKey: ["orders", page],
-        queryFn: () => getData(searchParams.toString(), page),
+        queryKey: ["orders", searchParams.toString(), page],
+        queryFn: () => getOrders(searchParams.toString(), page),
         staleTime: Infinity,
       });
     }
