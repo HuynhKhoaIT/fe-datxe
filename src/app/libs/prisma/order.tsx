@@ -36,6 +36,14 @@ export async function getOrders(garage: Number,requestData: any){
     if(requestData.createdById){
         createdById = 1
     }
+    let step = {};
+    if(requestData.step){
+        step = requestData.step;
+    }
+    let method = {}
+    if(requestData.method){
+        method = requestData.method;
+    }
     const [data,total] = await prisma.$transaction([   
         prisma.order.findMany({
             take: take,
@@ -48,6 +56,8 @@ export async function getOrders(garage: Number,requestData: any){
                     not: 'DELETE',
                 },
                 createdById,
+                step,
+                method,
                 garageId: garageId
             },
             include: {
