@@ -423,7 +423,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const UpdateConfirm = (step: any) => {
     console.log(step);
     var subTitle = "";
-    if (step == "0") {
+    if (step == "-1") {
       subTitle = "huỷ đơn hàng";
     } else if (step == "1") {
       subTitle = "tiếp nhận đơn hàng";
@@ -845,7 +845,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         key="cancel"
                         color="red"
                         // leftSection={<IconBan size={16} />}
-                        onClick={() => UpdateConfirm("0")}
+                        onClick={() => UpdateConfirm("-1")}
                       >
                         Huỷ đơn
                       </Button>
@@ -859,7 +859,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         style={{ marginLeft: "12px" }}
                         variant="filled"
                         onClick={() => {
-                          if (dataDetail?.step == "-1") {
+                          if (dataDetail?.step == "0") {
                             UpdateConfirm("1");
                           } else {
                             UpdateConfirm("4");
@@ -868,7 +868,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
 
                         // leftSection={<IconPlus size={16} />}
                       >
-                        {dataDetail?.step == "-1"
+                        {dataDetail?.step == "0"
                           ? "Tiếp nhận"
                           : dataDetail?.step == 1 && "Hoàn thành"}
                       </Button>
@@ -1206,7 +1206,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   key="cancel"
                   color="red"
                   // leftSection={<IconBan size={16} />}
-                  onClick={() => UpdateConfirm("0")}
+                  onClick={() => UpdateConfirm("-1")}
                 >
                   Huỷ đơn
                 </Button>
@@ -1219,7 +1219,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   style={{ marginLeft: "12px" }}
                   variant="filled"
                   onClick={() => {
-                    if (dataDetail?.step == "-1") {
+                    if (dataDetail?.step == "0") {
                       UpdateConfirm("1");
                     } else {
                       UpdateConfirm("4");
@@ -1227,7 +1227,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   }}
                   // leftSection={<IconPlus size={16} />}
                 >
-                  {dataDetail?.step == "-1"
+                  {dataDetail?.step == "0"
                     ? "Tiếp nhận"
                     : dataDetail?.step == 1 && "Hoàn thành"}
                 </Button>

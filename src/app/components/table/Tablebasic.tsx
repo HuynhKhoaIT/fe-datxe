@@ -21,7 +21,7 @@ export default function TableBasic({
     <div className={classNames(styles.tableBasic, className)}>
       <LoadingOverlay visible={loading} loaderProps={{ type: "bars" }} />
       <Table
-        mih={300}
+        mih={loading ? 300 : 0}
         classNames={{
           table: styles.rootTable,
           tr: styles.trTable,

@@ -1,0 +1,33 @@
+.itemProduct {
+    display: flex;
+    gap: 20px;
+}
+.listProduct {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.rating {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: rating;
+    margin: 12px 0;
+}
+.title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+.review {
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+.labelTextArea {
+    color: #000;
+    font-size: 18px;
+    font-weight: 500;
+}
+.iputTextArea {
+    font-size: 18px;
+}
