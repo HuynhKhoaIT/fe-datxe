@@ -44,6 +44,9 @@ model Garage {
   districtId          Int @default(1)
   ward                Wards @relation(fields: [wardId], references: [id])
   wardId              Int @default(1)
+  bitlyTitle          String?
+  bitlyLongUrl        String?
+  groupGuid           String?
 }
 model Provinces{
   id Int @id @default(autoincrement())
@@ -193,7 +196,8 @@ model Order{
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt  
   orderDetails      OrderDetail[]
-  reviews         ReviewsProduct[]
+  reviews           ReviewsProduct[]
+  method            ORDERMETHOD @default(OFFLINE)
 }
 model OrderCategory{
   id              Int @id @default(autoincrement())
@@ -445,4 +449,9 @@ enum CARBRAND {
   CARBRAND
   CARNAME
   CARYEAR
+}
+
+enum ORDERMETHOD {
+  ONLINE
+  OFFLINE
 }
