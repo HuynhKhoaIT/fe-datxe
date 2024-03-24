@@ -56,3 +56,12 @@ export const getEmployees = async (id: string) => {
     throw new Error("Lỗi trong quá trình lấy danh sách CVDV"); // Xử lý lỗi và thông báo lỗi cho phía front-end
   }
 };
+
+export const createQrCodeGarage = async(data:any) => {
+  try {
+    
+  } catch (error) {
+    console.error(error);
+    throw new Error("Lỗi trong quá trình Tạo Qr Code");
+  }
+}
