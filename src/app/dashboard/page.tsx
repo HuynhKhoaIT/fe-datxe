@@ -1,15 +1,11 @@
 import { getOrders } from "@/utils/order";
 import Orders from "../components/elements/dashboard/order/orders";
 import React from "react";
-import { getCarsSsr } from "@/utils/car";
-import { getMyAccount } from "@/utils/user";
-import OrdersListPage from "../layout/dashboard/order/OrdersListPage";
+import styles from "./index.module.scss";
 export default async function Dashboard() {
   const orders = await getOrders(1);
-  const fetchedCars = await getCarsSsr();
-  const account: any = await getMyAccount();
   return (
-    <div>
+    <div className={styles.page}>
       <div className="row">
         <div className="col-md-6 col-lg-4">
           <div className="dashboard-widget dashboard-widget-color-1">

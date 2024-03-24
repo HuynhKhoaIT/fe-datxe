@@ -14,8 +14,11 @@ import { useDisclosure } from "@mantine/hooks";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import ListPage from "@/app/components/layout/ListPage";
-const DynamicModalDeleteProduct = dynamic(
-  () => import("../board/ModalDeleteProduct"),
+import useFetch from "@/app/hooks/useFetch";
+import { QueryClient } from "@tanstack/react-query";
+import axios from "axios";
+const DynamicModalDeleteItem = dynamic(
+  () => import("../board/ModalDeleteItem"),
   {
     ssr: false,
   }
@@ -24,43 +27,61 @@ const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Quản lý đơn hàng" },
 ];
+const queryClient = new QueryClient();
+
 export default function OrdersManaga() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [loadingTable, handlers] = useDisclosure(false);
 
-  const [orders, setOrders] = useState<any>();
   const [page, setPage] = useState<number>(1);
   const [deleteRow, setDeleteRow] = useState();
 
   async function getData(searchParams: any, page: number) {
-    handlers.open();
-    const res = await fetch(`/api/orders?${searchParams}&page=${page}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    setOrders(data);
-    handlers.close();
+    try {
+      const res = await axios.get(`/api/orders?${searchParams}&page=${page}`);
+      return res.data;
+    } catch (error) {
+      console.error("error:", error);
+    }
   }
 
-  useEffect(() => {
-    getData(searchParams.toString(), page);
-  }, [searchParams, page]);
+  const {
+    data: orders,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["orders", page],
+    queryFn: () => getData(searchParams.toString(), page),
+  });
 
-  const handleDeleteProduct = async (idProduct: any) => {
-    await fetch(`/api/orders/${idProduct}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá đơn hàng thành công",
-    });
-    getData(searchParams, page);
-    router.refresh();
+  useEffect(() => {
+    if (!isPlaceholderData) {
+      queryClient.prefetchQuery({
+        queryKey: ["orders", page],
+        queryFn: () => getData(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
+    }
+  }, [orders, searchParams, isPlaceholderData, page, queryClient]);
+
+  const handleDeleteItem = async (idProduct: any) => {
+    try {
+      await axios.delete(`/api/orders/${idProduct}`);
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá đơn hàng thành công",
+      });
+      refetch();
+    } catch (error) {
+      console.error("error:", error);
+    }
   };
   const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
+    openedDeleteItem,
+    { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
   const columns = [
     {
@@ -210,6 +231,7 @@ export default function OrdersManaga() {
     nameId: null,
     yearId: null,
   };
+
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
@@ -245,17 +267,17 @@ export default function OrdersManaga() {
           <TableBasic
             data={orders?.data}
             columns={columns}
-            loading={loadingTable}
+            loading={isLoading}
             totalPage={orders?.totalPage}
             setPage={setPage}
             activePage={page}
           />
         }
       />
-      <DynamicModalDeleteProduct
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteProduct}
+      <DynamicModalDeleteItem
+        openedDeleteItem={openedDeleteItem}
+        closeDeleteItem={closeDeleteItem}
+        handleDeleteItem={handleDeleteItem}
         deleteRow={deleteRow}
       />
     </Fragment>

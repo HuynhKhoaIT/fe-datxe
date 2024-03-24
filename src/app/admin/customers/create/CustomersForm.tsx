@@ -22,6 +22,12 @@ import { sexOptions, statusOptions } from "@/constants/masterData";
 import DateField from "@/app/components/form/DateField";
 import dayjs from "dayjs";
 import FooterSavePage from "../../_component/FooterSavePage";
+import useFetch from "@/app/hooks/useFetch";
+import {
+  getOptionsDistrict,
+  getOptionsProvince,
+  getOptionsWard,
+} from "@/utils/until";
 export default function CustomersForm({ isEditing, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
   const form = useForm({
@@ -77,77 +83,28 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
     }
   };
 
-  const [provinceOptions, setProvinceOptions] = useState<any>([]);
   const [districtOptions, setDistrictOptions] = useState<any>([]);
   const [wardOptions, setWardOptions] = useState<any>([]);
   const [province, setProvince] = useState<string>();
   const [district, setDistrict] = useState<string>();
   const [ward, setWard] = useState<string>();
 
-  const getProvinces = async () => {
-    const res = await fetch(`${process.env.apiGuest}/provinces`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.name,
-    }));
-    setProvinceOptions(dataOption);
-  };
-  const getDistricts = async (provinceId: number) => {
-    const res = await fetch(
-      `${process.env.apiGuest}/get-districts/${provinceId}`,
-      {
-        method: "GET",
-      }
-    );
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.name,
-    }));
-    setDistrictOptions(dataOption);
-  };
-  const getWards = async (districtId: number) => {
-    const res = await fetch(`${process.env.apiGuest}/get-wards/${districtId}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.name,
-    }));
-    setWardOptions(dataOption);
-  };
+  const { data: provinceOptions, isLoading: isLoading } = useFetch({
+    queryKey: ["provinceOptions"],
+    queryFn: () => getOptionsProvince(),
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      handlers.open();
-      await Promise.all([getProvinces()]);
-      handlers.close();
-    };
-    if (!isEditing) fetchData();
-  }, []);
   useEffect(() => {
     const fetchData = async () => {
       handlers.open();
       if (isEditing && dataDetail) {
         try {
-          await Promise.all([
-            getProvinces(),
-            getDistricts(Number(dataDetail?.cityId)),
-            getWards(Number(dataDetail?.districtId)),
+          const [districts, wards] = await Promise.all([
+            getOptionsDistrict(Number(dataDetail?.cityId)),
+            getOptionsWard(Number(dataDetail?.districtId)),
           ]);
+          setDistrictOptions(districts);
+          setWardOptions(wards);
 
           form.setInitialValues(dataDetail);
           form.setValues(dataDetail);
@@ -231,9 +188,12 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     label="Tỉnh/Thành phố"
                     placeholder="Tỉnh/Thành phố"
                     data={provinceOptions}
-                    onOptionSubmit={(value) => {
+                    onOptionSubmit={async (value) => {
+                      const optionsData = await getOptionsDistrict(
+                        Number(value)
+                      );
+                      setDistrictOptions(optionsData);
                       form.setFieldValue("cityId", value);
-                      getDistricts(Number(value));
                       form.setFieldValue("districtId", "");
                       form.setFieldValue("wardId", "");
                       setDistrict("");
@@ -255,8 +215,9 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                     label="Huyện/Phường"
                     placeholder="Huyện/Phường"
                     data={districtOptions}
-                    onOptionSubmit={(value) => {
-                      getWards(Number(value));
+                    onOptionSubmit={async (value) => {
+                      const optionsData = await getOptionsWard(Number(value));
+                      setWardOptions(optionsData);
                       form.setFieldValue("districtId", value);
                       form.setFieldValue("wardId", "");
                       setWard("");

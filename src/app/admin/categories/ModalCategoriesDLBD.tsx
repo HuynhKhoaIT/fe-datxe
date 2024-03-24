@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBarUp } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-import convertToSlug from "@/utils/util";
+import convertToSlug from "@/utils/until";
 import { syncCategoryFromDlbd } from "@/app/libs/prisma/category";
 import { getGarageByDlbdId } from "@/app/libs/prisma/garage";
 import axios from "axios";

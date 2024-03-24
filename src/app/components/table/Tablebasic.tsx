@@ -16,7 +16,7 @@ export default function TableBasic({
   setSelectedRows,
 }: any) {
   return (
-    <div style={{ overflowX: "auto" }} className={styles.tableBasic}>
+    <div className={styles.tableBasic}>
       <Skeleton visible={loading} mih={300}>
         <Table
           classNames={{

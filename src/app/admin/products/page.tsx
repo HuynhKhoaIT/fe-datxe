@@ -9,7 +9,6 @@ import { kindProductOptions, statusOptions } from "@/constants/masterData";
 import Link from "next/link";
 import {
   IconArrowUp,
-  IconCopy,
   IconPencil,
   IconPlus,
   IconTrash,
@@ -20,85 +19,98 @@ import { useDisclosure } from "@mantine/hooks";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import ListPage from "@/app/components/layout/ListPage";
-import Typo from "@/app/components/elements/Typo";
 import styles from "./index.module.scss";
-import { IconFilter } from "@tabler/icons-react";
 import axios from "axios";
-const DynamicModalDeleteProduct = dynamic(
-  () => import("../board/ModalDeleteProduct"),
+import useFetch from "@/app/hooks/useFetch";
+import { QueryClient } from "@tanstack/react-query";
+import { getOptionsCategories } from "@/utils/until";
+import { getProducts, getProductsDLBD } from "./until";
+const DynamicModalDeleteItem = dynamic(
+  () => import("../board/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
+const queryClient = new QueryClient();
+const Breadcrumbs = [
+  { title: "Tổng quan", href: "/admin" },
+  { title: "Sản phẩm" },
+];
+
 export default function ProductsManaga() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string | null>("first");
-  const [loadingTable, handlers] = useDisclosure(false);
-  const [products, setProducts] = useState<any>([]);
-  const [categoryOptions, setCategoryOptions] = useState<any>([]);
   const [page, setPage] = useState<number>(1);
 
-  const Breadcrumbs = [
-    { title: "Tổng quan", href: "/admin" },
-    { title: "Sản phẩm" },
-  ];
-  async function getData(searchParams: any, page: number) {
-    const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    setProducts(data);
-    handlers.close();
-  }
-  async function getDataDLBD(searchParams: any, page: number) {
-    const res = await axios.get(
-      `/api/products/dlbd?${searchParams}&page=${page}`
-    );
-    setProducts(res?.data);
-    handlers.close();
-  }
-  async function getDataCategories() {
-    const res = await fetch(`/api/product-category`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setCategoryOptions(dataOption);
-  }
-  useEffect(() => {
-    handlers.open();
-    getDataCategories();
-    if (activeTab == "first") {
-      getData(searchParams.toString(), page);
-    } else if (activeTab == "second") {
-      getDataDLBD(searchParams.toString(), page);
-    }
-  }, [searchParams, page, activeTab]);
-
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteProduct = async (idProduct: any) => {
-    await fetch(`/api/products/${idProduct}`, {
-      method: "DELETE",
-    });
-    const deleteProduct = fetch(`/api/products/${idProduct}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá sản phẩm thành công",
-    });
-    getData(searchParams, page);
-    router.refresh();
-  };
   const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
+    openedDeleteItem,
+    { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
+
+  const { data: categoryOptions } = useFetch({
+    queryKey: ["categoryOptions"],
+    queryFn: () => getOptionsCategories(),
+  });
+
+  const {
+    data: products,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["products", page],
+    queryFn: () => getProducts(searchParams.toString(), page),
+  });
+  const {
+    data: productsDlbd,
+    isLoading: isLoadingDlbd,
+    isPlaceholderData: isPlaceholderDataDlbd,
+  } = useFetch({
+    queryKey: ["productsDlbd", page],
+    queryFn: () => getProductsDLBD(searchParams.toString(), page),
+  });
+
+  useEffect(() => {
+    if (activeTab == "first" && !isPlaceholderData) {
+      queryClient.prefetchQuery({
+        queryKey: ["products", page],
+        queryFn: () => getProducts(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
+    } else if (activeTab == "second" && !isPlaceholderDataDlbd) {
+      queryClient.prefetchQuery({
+        queryKey: ["productsDlbd", page],
+        queryFn: () => getProductsDLBD(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
+    }
+  }, [
+    searchParams,
+    isPlaceholderData,
+    page,
+    queryClient,
+    activeTab,
+    products,
+    isPlaceholderDataDlbd,
+  ]);
+
+  const handleDeleteItem = async (idProduct: any) => {
+    try {
+      await axios.delete(`/api/products/${idProduct}`);
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá sản phẩm thành công",
+      });
+      refetch();
+    } catch (error) {
+      console.error("error:", error);
+    }
+  };
+
   const columns = [
     {
       label: (
@@ -323,6 +335,7 @@ export default function ProductsManaga() {
     nameId: null,
     yearId: null,
   };
+
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
@@ -393,7 +406,7 @@ export default function ProductsManaga() {
                   <TableBasic
                     data={products?.data}
                     columns={columns}
-                    loading={loadingTable}
+                    loading={isLoading}
                     totalPage={products?.totalPage}
                     setPage={setPage}
                     activePage={page}
@@ -406,10 +419,10 @@ export default function ProductsManaga() {
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={products?.data}
+                    data={productsDlbd?.data}
                     columns={columns}
-                    loading={loadingTable}
-                    totalPage={products?.last_page}
+                    loading={isLoadingDlbd}
+                    totalPage={productsDlbd?.last_page}
                     setPage={setPage}
                     activePage={page}
                   />
@@ -419,10 +432,10 @@ export default function ProductsManaga() {
           </Tabs>
         </div>
       </div>
-      <DynamicModalDeleteProduct
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteProduct}
+      <DynamicModalDeleteItem
+        openedDeleteItem={openedDeleteItem}
+        closeDeleteItem={closeDeleteItem}
+        handleDeleteItem={handleDeleteItem}
         deleteRow={deleteRow}
       />
     </Fragment>
