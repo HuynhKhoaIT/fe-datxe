@@ -1,0 +1,36 @@
+.container {
+    position: relative;
+    max-width: 1920px;
+    margin: auto;
+    position: relative;
+    background-color: var(--white-background);
+    .title {
+        padding: 1rem 30px;
+        color: var(--primary-orange);
+    }
+    .content {
+        padding: 10px 30px;
+    }
+}
+
+.banner {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(50%);
+    z-index: 0;
+    position: absolute;
+    top: 0;
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        .title {
+            padding: 1rem 0;
+            color: var(--primary-orange);
+        }
+        .content {
+            padding: 0;
+        }
+    }
+}

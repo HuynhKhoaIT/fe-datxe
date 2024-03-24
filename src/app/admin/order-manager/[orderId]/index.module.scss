@@ -76,6 +76,22 @@
     justify-content: end;
 }
 
+.subTotal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .titleSubTotal {
+        font-size: var(--primary-font-size);
+        font-weight: 600;
+        color: #3d4465;
+    }
+    .valueSubTotal {
+        font-size: 18px;
+        font-weight: 600;
+        color: #3d4465;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .card,
     .cardListProduct {

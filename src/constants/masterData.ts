@@ -19,6 +19,7 @@ import {
     MARKETING_ALL,
     MARKETING_COMING,
     MARKETING_PENDING,
+    ORDER_PENDING,
 } from './index';
 
 export const statusOptions = [
@@ -41,6 +42,7 @@ export const sexOptions = [
 ];
 
 export const stepOrderOptions = [
+    { value: ORDER_PENDING, label: 'Đang xử lý', color: 'pink' },
     { value: ORDER_ACCEPT, label: 'Tiếp nhận', color: 'blue' },
     { value: ORDER_QUOTE, label: 'Báo giá', color: 'yellow' },
     { value: ORDER_REPAIR, label: 'Đang sửa chữa', color: 'orange' },

@@ -6,14 +6,15 @@ import { Suspense } from "react";
 import { LoadingComponent } from "@/app/components/loading";
 export default function CreateCar() {
   return (
-    <Box maw={"100%"} mx="auto" className={styles.content}>
-      <Typo size="small" type="bold" style={{ color: "var(--theme-color)" }}>
-        Thêm xe
-      </Typo>
-      <Space h="md" />
-      <Suspense fallback={<LoadingComponent />}>
+    <Box maw={"100%"} mx="auto" className={styles.wrapper}>
+      <div style={{ borderBottom: "1px solid #eeeeee" }}>
+        <Typo size="18px" type="bold" className={styles.title}>
+          Thêm xe
+        </Typo>
+      </div>
+      <div className={styles.content}>
         <CarForm />
-      </Suspense>
+      </div>
     </Box>
   );
 }
