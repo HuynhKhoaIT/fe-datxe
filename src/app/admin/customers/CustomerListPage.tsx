@@ -17,38 +17,41 @@ import SearchForm from "@/app/components/form/SearchForm";
 import dayjs from "dayjs";
 import ListPage from "@/app/components/layout/ListPage";
 import styles from "./index.module.scss";
-import Typo from "@/app/components/elements/Typo";
-const DynamicModalDeleteProduct = dynamic(
-  () => import("../board/ModalDeleteProduct"),
+import axios from "axios";
+const DynamicModalDeleteItem = dynamic(
+  () => import("../board/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
 
-// const DynamicModalCustomers = dynamic(() => import("./ModalCustomersDLBD"), {
-//   ssr: false,
-// });
 export default function CustomerListPage({
-  dataSource,
+  customers,
+  customersDlbd,
   activeTab,
   setActiveTab,
   page,
   setPage,
-  loadingTable,
+  isLoading,
+  isLoadingDlbd,
+  refetch,
 }: any) {
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteCustomer = async (id: any) => {
-    await fetch(`/api/customer/${id}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá thành công",
-    });
+  const handleDeleteItem = async (id: any) => {
+    try {
+      await axios.delete(`/api/customer/${id}`);
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá thành công",
+      });
+      refetch();
+    } catch (error) {
+      console.error("error: ", error);
+    }
   };
   const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
+    openedDeleteItem,
+    { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
 
   const [
@@ -232,17 +235,6 @@ export default function CustomerListPage({
         </Flex>
       </div>
       <div style={{ background: "#fff", position: "relative" }}>
-        {/* <div style={{ borderBottom: "1px solid #eeeeee" }}>
-          <Typo
-            size="18px"
-            type="bold"
-            style={{ color: "var(--primary-orange)", padding: "16px 30px" }}
-          >
-            <IconFilter size={22} />
-            Danh sách
-          </Typo>
-        </div> */}
-
         <div>
           <Tabs variant="pills" value={activeTab} onChange={setActiveTab}>
             <Tabs.List classNames={{ list: styles.list }}>
@@ -266,10 +258,10 @@ export default function CustomerListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource?.data}
+                    data={customers?.data}
                     columns={columns}
-                    loading={loadingTable}
-                    totalPage={dataSource?.totalPage}
+                    loading={isLoading}
+                    totalPage={customers?.totalPage}
                     setPage={setPage}
                     activePage={page}
                   />
@@ -281,9 +273,9 @@ export default function CustomerListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource?.data}
+                    data={customersDlbd?.data}
                     columns={columns}
-                    loading={loadingTable}
+                    loading={isLoadingDlbd}
                     // totalPage={marketing?.totalPage}
                     // setPage={setPage}
                     // activePage={page}
@@ -295,18 +287,12 @@ export default function CustomerListPage({
         </div>
       </div>
 
-      <DynamicModalDeleteProduct
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteCustomer}
+      <DynamicModalDeleteItem
+        openedDeleteItem={openedDeleteItem}
+        closeDeleteItem={closeDeleteItem}
+        handleDeleteItem={handleDeleteItem}
         deleteRow={deleteRow}
       />
-      {/* {openedModalCustomers && (
-        <DynamicModalCustomers
-          openedModalCustomers={openedModalCustomers}
-          closeModalCustomers={closeModalCustomers}
-        />
-      )} */}
     </div>
   );
 }

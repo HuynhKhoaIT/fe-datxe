@@ -196,17 +196,11 @@ export default function CarListPage({ carsData, myAccount }: any) {
               <div className="form-group"></div>
             </div>
             <Link href={{ pathname: `/dashboard/cars/create` }}>
-              <Button size="lg" radius={0} className="theme-btn btn-add-car">
-                Thêm xe
-              </Button>
+              <Button className="theme-btn btn-add-car">Thêm xe</Button>
             </Link>
           </div>
         </div>
-        <div className="col-lg-12">
-          <div className="table-responsive" style={{ overflowY: "hidden" }}>
-            <TableBasic data={carsData} columns={columns} loading={false} />
-          </div>
-        </div>
+        <TableBasic data={carsData} columns={columns} loading={false} />
       </div>
       <Modal title="Delete" opened={openedDeleteCar} onClose={closeDeleteCar}>
         <div>Bạn có muốn xoá không?</div>

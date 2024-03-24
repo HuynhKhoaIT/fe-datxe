@@ -31,16 +31,17 @@ export default async function Orders() {
   }));
 
   const carsData = await getCarsSsr();
+  console.log(carsData);
   const carOptions = carsData?.map((car) => ({
     value: car.id?.toString() || "",
     label: car.licensePlates || "",
     otherData: {
       carId: car.id?.toString() || "",
-      brandId: car.brandCarName.id,
-      brandName: car.brandCarName.name,
-      modelId: car.modelCarName.id,
-      modelName: car.modelCarName.name,
-      yearCarName: car.yearCarName,
+      brandId: car?.brandCarName.id,
+      brandName: car?.brandCarName?.name,
+      modelId: car?.modelCarName?.id,
+      modelName: car?.modelCarName?.name,
+      yearCarName: car?.yearCarName,
     },
   }));
 

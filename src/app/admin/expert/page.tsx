@@ -13,13 +13,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
+import axios from "axios";
+import useFetch from "@/app/hooks/useFetch";
+import { QueryClient } from "@tanstack/react-query";
+import { getExperts } from "./until";
+const queryClient = new QueryClient();
 
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Chuyên gia" },
 ];
-const DynamicModalDeleteProduct = dynamic(
-  () => import("../board/ModalDeleteProduct"),
+const DynamicModalDeleteItem = dynamic(
+  () => import("../board/ModalDeleteItem"),
   {
     ssr: false,
   }
@@ -30,23 +35,22 @@ const Expert = () => {
   const [deleteRow, setDeleteRow] = useState();
   const [loadingTable, handlers] = useDisclosure(false);
 
-  const [experts, setExperts] = useState<any>();
-
   const [page, setPage] = useState<number>(1);
-  const handleDeleteProduct = async (idProduct: any) => {
-    await fetch(`/api/garage/${idProduct}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá sản phẩm thành công",
-    });
-    getData(searchParams, page);
-    router.refresh();
+  const handleDeleteItem = async (idProduct: any) => {
+    try {
+      await axios.delete(`/api/garage/${idProduct}`);
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá sản phẩm thành công",
+      });
+      refetch();
+    } catch (error) {
+      console.error("error: ", error);
+    }
   };
   const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
+    openedDeleteItem,
+    { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
 
   const columns = [
@@ -213,14 +217,7 @@ const Expert = () => {
       },
     },
   ];
-  async function getData(searchParams: any, page: number) {
-    const res = await fetch(`/api/garage?${searchParams}&page=${page}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    setExperts(data);
-    handlers.close();
-  }
+
   const searchData = [
     {
       name: "s",
@@ -228,10 +225,28 @@ const Expert = () => {
       type: "input",
     },
   ];
+  const {
+    data: experts,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["experts", page],
+    queryFn: () => getExperts(searchParams.toString(), page),
+  });
+
   useEffect(() => {
-    handlers.open();
-    getData(searchParams.toString(), page);
-  }, [searchParams, page]);
+    if (!isPlaceholderData) {
+      queryClient.prefetchQuery({
+        queryKey: ["experts", page],
+        queryFn: () => getExperts(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
+    }
+  }, [experts, searchParams, isPlaceholderData, page, queryClient]);
+
   const initialValuesSearch = {
     s: "",
   };
@@ -270,18 +285,18 @@ const Expert = () => {
           <TableBasic
             data={experts?.data}
             columns={columns}
-            loading={loadingTable}
+            loading={isLoading}
             totalPage={experts?.totalPage}
             setPage={setPage}
             activePage={page}
           />
         }
       />
-      {openedDeleteProduct && (
-        <DynamicModalDeleteProduct
-          openedDeleteProduct={openedDeleteProduct}
-          closeDeleteProduct={closeDeleteProduct}
-          handleDeleteProduct={handleDeleteProduct}
+      {openedDeleteItem && (
+        <DynamicModalDeleteItem
+          openedDeleteItem={openedDeleteItem}
+          closeDeleteItem={closeDeleteItem}
+          handleDeleteItem={handleDeleteItem}
           deleteRow={deleteRow}
         />
       )}

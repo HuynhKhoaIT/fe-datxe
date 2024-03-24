@@ -19,12 +19,17 @@ import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dayjs from "dayjs";
-const DynamicModalDelete = dynamic(
-  () => import("../board/ModalDeleteProduct"),
+import { QueryClient } from "@tanstack/react-query";
+import useFetch from "@/app/hooks/useFetch";
+import { getMarketing } from "./until";
+import axios from "axios";
+const DynamicModalDeleteItem = dynamic(
+  () => import("../board/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
+const queryClient = new QueryClient();
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Danh sách chương trình" },
@@ -32,43 +37,50 @@ const Breadcrumbs = [
 export default function Discounts() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [loadingTable, handlers] = useDisclosure(true);
-
-  const [marketing, setMarketing] = useState<any>();
   const [page, setPage] = useState<number>(1);
-  async function getData(searchParams: any, page: number) {
-    const res = await fetch(
-      `/api/marketing-campaign?${searchParams}&page=${page}`,
-      {
-        method: "GET",
-      }
-    );
-    const data = await res.json();
-    setMarketing(data);
-    handlers.close();
-  }
+
+  const [
+    openedDeleteItem,
+    { open: openDeleteProduct, close: closeDeleteItem },
+  ] = useDisclosure(false);
+
+  const {
+    data: marketing,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["marketing", page],
+    queryFn: () => getMarketing(searchParams.toString(), page),
+  });
 
   useEffect(() => {
-    handlers.open();
-    getData(searchParams.toString(), page);
-  }, [searchParams, page]);
+    if (!isPlaceholderData) {
+      queryClient.prefetchQuery({
+        queryKey: ["marketing", page],
+        queryFn: () => getMarketing(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
+    }
+  }, [marketing, searchParams, isPlaceholderData, page, queryClient]);
 
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteMarketing = async (marketingId: any) => {
-    await fetch(`/api/marketing-campaign/${marketingId}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá chương trình thành công",
-    });
-    getData(searchParams, page);
-    router.refresh();
+
+  const handleDeleteItem = async (marketingId: any) => {
+    try {
+      await axios.delete(`/api/marketing-campaign/${marketingId}`);
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá chương trình thành công",
+      });
+      refetch();
+    } catch (error) {
+      console.error("error: ", error);
+    }
   };
-  const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
-  ] = useDisclosure(false);
+
   const columns = [
     {
       label: (
@@ -258,17 +270,17 @@ export default function Discounts() {
           <TableBasic
             data={marketing?.data}
             columns={columns}
-            loading={loadingTable}
+            loading={isLoading}
             totalPage={marketing?.totalPage}
             setPage={setPage}
             activePage={page}
           />
         }
       />
-      <DynamicModalDelete
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteMarketing}
+      <DynamicModalDeleteItem
+        openedDeleteItem={openedDeleteItem}
+        closeDeleteItem={closeDeleteItem}
+        handleDeleteItem={handleDeleteItem}
         deleteRow={deleteRow}
       />
     </Fragment>

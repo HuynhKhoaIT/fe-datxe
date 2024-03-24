@@ -11,27 +11,29 @@ import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
 import { statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
-const DynamicModalDeleteProduct = dynamic(
-  () => import("../board/ModalDeleteProduct"),
+import axios from "axios";
+const DynamicModalDeleteItem = dynamic(
+  () => import("../board/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
 export default function UtilitiesListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteCategory = async (id: any) => {
-    await fetch(`/api/product-category/${id}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá danh mục thành công",
-    });
+  const handleDeleteItem = async (id: any) => {
+    try {
+      await axios.delete(`/api/product-category/${id}`);
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá danh mục thành công",
+      });
+    } catch (error) {}
   };
   const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
+    openedDeleteItem,
+    { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
+
   const columns = [
     {
       label: (
@@ -189,10 +191,10 @@ export default function UtilitiesListPage({ dataSource }: any) {
           <TableBasic data={dataSource} columns={columns} />
         </div>
       </div>
-      <DynamicModalDeleteProduct
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteCategory}
+      <DynamicModalDeleteItem
+        openedDeleteItem={openedDeleteItem}
+        closeDeleteItem={closeDeleteItem}
+        handleDeleteItem={handleDeleteItem}
         deleteRow={deleteRow}
       />
     </div>

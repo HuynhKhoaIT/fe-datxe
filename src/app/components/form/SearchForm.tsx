@@ -11,7 +11,8 @@ import {
   getOptionsBrands,
   getOptionsModels,
   getOptionsYearCar,
-} from "@/utils/util";
+} from "@/utils/until";
+import useFetch from "@/app/hooks/useFetch";
 export default function SearchForm({
   searchData,
   brandFilter = false,
@@ -19,19 +20,16 @@ export default function SearchForm({
 }: any) {
   const router = useRouter();
   const pathname = usePathname();
-  const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const brands = await getOptionsBrands();
-      setBrandOptions(brands);
-    };
-    if (brandFilter) {
-      fetchData();
-    }
-  }, [brandFilter]);
+  if (brandFilter) {
+    var { data: brandOptions } = useFetch({
+      queryKey: ["brandOptions"],
+      queryFn: () => getOptionsBrands(),
+    });
+  }
+
   const form = useForm({
     initialValues: initialValues,
     validate: {},

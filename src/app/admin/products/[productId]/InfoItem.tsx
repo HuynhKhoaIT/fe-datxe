@@ -1,9 +1,10 @@
 "use client";
+import useFetch from "@/app/hooks/useFetch";
 import {
   getOptionsBrands,
   getOptionsModels,
   getOptionsYearCar,
-} from "@/utils/util";
+} from "@/utils/until";
 import { Button, Flex, MultiSelect, Select } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -17,7 +18,6 @@ export default function InfoItem({
   handleChangeNameCar,
   handleChangeYearCar,
 }: any) {
-  const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
 
@@ -26,12 +26,11 @@ export default function InfoItem({
     newCar.splice(index, 1);
     setCar(newCar);
   };
-
+  const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
+    queryKey: ["brandOptions"],
+    queryFn: () => getOptionsBrands(),
+  });
   useEffect(() => {
-    const fetchBrands = async () => {
-      const brands = await getOptionsBrands();
-      setBrandOptions(brands);
-    };
     const fetchModels = async (data: any) => {
       const models = await getOptionsModels(data);
       setModelOptions(models);
@@ -40,7 +39,6 @@ export default function InfoItem({
       const yearCars = await getOptionsYearCar(data);
       setYearCarOptions(yearCars);
     };
-    fetchBrands();
     if (dataDetail?.brandId && dataDetail?.nameId) {
       fetchModels(dataDetail?.brandId);
       fetchYearCars(dataDetail?.nameId);
