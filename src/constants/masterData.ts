@@ -42,12 +42,12 @@ export const sexOptions = [
 ];
 
 export const stepOrderOptions = [
-    { value: ORDER_PENDING, label: 'Đang xử lý', color: 'pink' },
+    { value: ORDER_PENDING, label: 'Đang chờ', color: 'pink' },
     { value: ORDER_ACCEPT, label: 'Tiếp nhận', color: 'blue' },
     { value: ORDER_QUOTE, label: 'Báo giá', color: 'yellow' },
     { value: ORDER_REPAIR, label: 'Đang sửa chữa', color: 'orange' },
-    { value: ORDER_DONE, label: 'Hoàn thành', color: 'cyan' },
-    { value: ORDER_FINISH, label: 'Xuất Xưởng', color: 'green' },
+    { value: ORDER_DONE, label: 'Hoàn thành', color: 'green' },
+    { value: ORDER_FINISH, label: 'Xuất Xưởng', color: 'cyan' },
     { value: ORDER_CANCEL, label: 'Đã huỷ', color: 'red' },
 ];
 

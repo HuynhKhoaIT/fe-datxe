@@ -1,5 +1,6 @@
 import RenderContext from "@/app/components/elements/RenderContext";
-import OrderDetailPage from "@/app/layout/dashboard/order/OrderDetailPage";
+import OrderDetailPage from "@/app/layout/desktop/gio-hang/OrderDetailPage";
+import OrderDetailPageMobile from "@/app/layout/mobile/gio-hang/OrderDetailPageMobile";
 import { findOrders, getOrderBySlug } from "@/app/libs/prisma/order";
 import { apiUrl } from "@/constants";
 import { getOrderDetail } from "@/utils/order";
@@ -17,7 +18,7 @@ export default async function Products({
   params: { orderId: string };
 }) {
   const orderDetail = await getOrderBySlug(params.orderId);
-  console.log(orderDetail)
+  console.log(orderDetail);
   return (
     <RenderContext
       components={{
@@ -25,7 +26,7 @@ export default async function Products({
           defaultTheme: OrderDetailPage,
         },
         mobile: {
-          defaultTheme: OrderDetailPage,
+          defaultTheme: OrderDetailPageMobile,
         },
       }}
       dataSource={orderDetail}

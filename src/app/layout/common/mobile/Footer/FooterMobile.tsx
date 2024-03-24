@@ -40,8 +40,6 @@ const FooterMobile = () => {
         </ul>
       </div>
       <Input
-        size="lg"
-        radius={0}
         placeholder="Nhập địa chỉ email"
         classNames={{
           input: styles.input,
@@ -49,8 +47,6 @@ const FooterMobile = () => {
         rightSectionWidth={180}
         rightSection={
           <Button
-            size="lg"
-            radius={0}
             mr={8}
             color={"var(--yellow-btn)"}
             rightSection={<img src={Send.src} />}

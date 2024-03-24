@@ -113,6 +113,8 @@ export default function CartComponent({ myAccount, carsData }: any) {
     }
     setLoading(true);
     values.dateTime = new Date();
+    values.subTotal = calculateSubTotal();
+
     values.total = calculateSubTotal();
 
     try {
