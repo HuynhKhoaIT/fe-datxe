@@ -15,6 +15,7 @@ function ListPage({
   style,
   titleTable = false,
   isBoxShadow = true,
+  filterCategory,
 }: any) {
   return (
     <div className={styles.baseListPage} style={{ ...style }}>
@@ -22,6 +23,9 @@ function ListPage({
       <div className={styles.baseListPageList}>
         <div className={styles.searchForm}>{searchForm}</div>
         {actionBar && <div className={styles.actionBar}>{actionBar}</div>}
+        {filterCategory && (
+          <div className={styles.filterCategory}>{filterCategory}</div>
+        )}
         <div
           className={styles.baseTable}
           style={{ boxShadow: isBoxShadow ? "var(--box-shadow)" : "none" }}

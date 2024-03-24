@@ -39,6 +39,7 @@ export default function ModalNumberPlates({
           style={{
             width: "100%",
             position: "fixed",
+            gap: "20px",
             bottom: 0,
             left: 0,
             display: "flex",
@@ -47,6 +48,13 @@ export default function ModalNumberPlates({
             borderTop: "1px solid #ddd",
           }}
         >
+          <Button
+            onClick={() => {
+              close();
+            }}
+          >
+            Cancel
+          </Button>
           <Button
             onClick={() => {
               handleGetInfo();

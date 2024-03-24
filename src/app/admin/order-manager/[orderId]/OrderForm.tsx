@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Card,
+  Flex,
   Grid,
   Group,
   LoadingOverlay,
@@ -36,6 +37,8 @@ import ListPage from "@/app/components/layout/ListPage";
 import { notifications } from "@mantine/notifications";
 import Typo from "@/app/components/elements/Typo";
 import ItemProduct from "../_component/ItemProduct";
+import { modals } from "@mantine/modals";
+
 import {
   getOptionsBrands,
   getOptionsCustomers,
@@ -59,6 +62,7 @@ const DynamicModalNumberPlates = dynamic(
 );
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
+  console.log(dataDetail);
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const [activeTab, setActiveTab] = useState<string | null>(
     !isEditing ? "numberPlates" : "customer"
@@ -181,6 +185,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             "carYearId",
             dataDetail?.car?.carYearId.toString()
           );
+          form.setFieldValue("fullName", dataDetail?.customer?.fullName);
+          form.setFieldValue("phoneNumber", dataDetail?.customer?.phoneNumber);
+          form.setFieldValue("address", dataDetail?.customer?.address);
+
           form.setFieldValue("step", dataDetail?.step.toString());
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -377,6 +385,23 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       event.preventDefault();
       // Ngăn chặn hành động mặc định của phím Enter
     }
+  };
+
+  const UpdateConfirm = () => {
+    modals.openConfirmModal({
+      title: (
+        <Typo size="small" type="semi-bold" style={{ color: "red" }}>
+          Xác nhận
+        </Typo>
+      ),
+      children: <Typo size="sub">Bạn có muốn huỷ đơn hàng này không?</Typo>,
+      size: "350px",
+      centered: true,
+      zIndex: 999,
+      withCloseButton: false,
+      labels: { confirm: "Có", cancel: "Không" },
+      onConfirm: () => console.log("123"),
+    });
   };
   return (
     <Box pos="relative">
@@ -723,19 +748,15 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   </Typo>
 
                   <Grid gutter={12} mt={24} className={styles.marketingInfo}>
-                    <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
-                      <NumberInput
-                        size="lg"
-                        radius={0}
-                        label="Tổng đơn hàng"
-                        placeholder="Tổng đơn hàng"
-                        suffix="đ"
-                        readOnly
-                        thousandSeparator=","
-                        value={calculateSubTotal()}
-                      />
+                    <Grid.Col span={12}>
+                      <div className={styles.subTotal}>
+                        <span className={styles.titleSubTotal}>Tiền hàng:</span>
+                        <span className={styles.valueSubTotal}>
+                          {calculateSubTotal().toLocaleString()}
+                        </span>
+                      </div>
                     </Grid.Col>
-                    {isEditing && (
+                    {/* {isEditing && (
                       <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                         <Select
                           size="lg"
@@ -746,47 +767,107 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                           data={stepOrderOptions}
                         />
                       </Grid.Col>
-                    )}
+                    )} */}
                     <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
                       <Textarea
                         size="lg"
+                        rows={2}
+                        radius={0}
+                        {...form.getInputProps("note")}
+                        label="Ghi chú nội bộ"
+                        autosize={true}
+                        placeholder="Ghi chú nội bộ"
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
+                      <Textarea
+                        size="lg"
+                        rows={2}
                         radius={0}
                         {...form.getInputProps("note")}
                         label="Ghi chú của khách hàng"
-                        minRows={3}
                         autosize={true}
                         placeholder="Ghi chú của khách hàng"
                       />
                     </Grid.Col>
                   </Grid>
-                  <div className={styles.footer}>
-                    <Button
-                      size="lg"
-                      w={"48%"}
-                      radius={0}
-                      h={{ base: 42, md: 50, lg: 50 }}
-                      variant="outline"
-                      key="cancel"
-                      color="red"
-                      leftSection={<IconBan size={16} />}
-                      onClick={() => setActiveTab("customer")}
-                    >
-                      Quay lại
-                    </Button>
-                    <Button
-                      size="lg"
-                      radius={0}
-                      w={"48%"}
-                      h={{ base: 42, md: 50, lg: 50 }}
-                      loading={loadingButton}
-                      style={{ marginLeft: "12px" }}
-                      variant="filled"
-                      type="submit"
-                      leftSection={<IconChevronRight size={16} />}
-                    >
-                      {isEditing ? "Cập nhật" : "Hoàn thành"}
-                    </Button>
-                  </div>
+                  {isEditing ? (
+                    <div className={styles.footer}>
+                      {" "}
+                      <Button
+                        size="md"
+                        w={"33%"}
+                        radius={0}
+                        h={{ base: 42, md: 50, lg: 50 }}
+                        // variant="outline"
+                        key="cancel"
+                        color="red"
+                        // leftSection={<IconBan size={16} />}
+                        onClick={UpdateConfirm}
+                      >
+                        Huỷ đơn
+                      </Button>
+                      <Button
+                        size="md"
+                        radius={0}
+                        w={"33%"}
+                        h={{ base: 42, md: 50, lg: 50 }}
+                        // loading={saveLoading}
+                        color="green"
+                        style={{ marginLeft: "12px" }}
+                        variant="filled"
+                        // leftSection={<IconPlus size={16} />}
+                      >
+                        {dataDetail?.step == "-1"
+                          ? "Tiếp nhận"
+                          : dataDetail?.step == 1 && "Hoàn thành"}
+                      </Button>
+                      <Button
+                        size="md"
+                        radius={0}
+                        w={"33%"}
+                        h={{ base: 42, md: 50, lg: 50 }}
+                        // loading={saveLoading}
+                        style={{ marginLeft: "12px" }}
+                        key="submit"
+                        type="submit"
+                        variant="filled"
+                        // leftSection={<IconPlus size={16} />}
+                      >
+                        Cập nhật
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className={styles.footer}>
+                      <Button
+                        size="lg"
+                        w={"48%"}
+                        radius={0}
+                        h={{ base: 42, md: 50, lg: 50 }}
+                        variant="outline"
+                        key="cancel"
+                        color="red"
+                        leftSection={<IconBan size={16} />}
+                        onClick={() => setActiveTab("customer")}
+                      >
+                        Quay lại
+                      </Button>
+                      <Button
+                        size="lg"
+                        radius={0}
+                        w={"48%"}
+                        h={{ base: 42, md: 50, lg: 50 }}
+                        loading={loadingButton}
+                        style={{ marginLeft: "12px" }}
+                        variant="filled"
+                        type="submit"
+                        leftSection={<IconChevronRight size={16} />}
+                      >
+                        {isEditing ? "Cập nhật" : "Hoàn thành"}
+                      </Button>
+                    </div>
+                  )}
+
                   {/* <FooterSavePage
                     saveLoading={loading}
                     okText={isEditing ? "Cập nhật" : "Hoàn thành"}
@@ -1065,10 +1146,51 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                 </Grid.Col>
               </Grid>
             </div>
-            <FooterSavePage
-              saveLoading={loading}
-              okText={isEditing ? "Cập nhật" : "Hoàn thành"}
-            />
+            {isEditing ? (
+              <Group justify="end">
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  // variant="outline"
+                  key="cancel"
+                  color="red"
+                  // leftSection={<IconBan size={16} />}
+                  onClick={() => router.back()}
+                >
+                  Huỷ đơn
+                </Button>
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  // loading={saveLoading}
+                  color="green"
+                  style={{ marginLeft: "12px" }}
+                  variant="filled"
+                  // leftSection={<IconPlus size={16} />}
+                >
+                  {dataDetail?.step == "-1"
+                    ? "Tiếp nhận"
+                    : dataDetail?.step == 1 && "Hoàn thành"}
+                </Button>
+                <Button
+                  size="lg"
+                  radius={0}
+                  h={{ base: 42, md: 50, lg: 50 }}
+                  // loading={saveLoading}
+                  style={{ marginLeft: "12px" }}
+                  key="submit"
+                  type="submit"
+                  variant="filled"
+                  // leftSection={<IconPlus size={16} />}
+                >
+                  Cập nhật
+                </Button>
+              </Group>
+            ) : (
+              <FooterSavePage saveLoading={loading} okText="Hoàn thành" />
+            )}
           </>
         )}
       </form>

@@ -3,24 +3,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./ItemProductChoose.module.scss";
 import ImageField from "@/app/components/form/ImageField";
 import ImageDefault from "@/assets/images/logo.png";
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Group,
-  Image,
-} from "@mantine/core";
+import { Checkbox, Image } from "@mantine/core";
 import { modals } from "@mantine/modals";
 
 import Typo from "@/app/components/elements/Typo";
-import {
-  IconMinus,
-  IconPlus,
-  IconShoppingCartPlus,
-  IconTrash,
-} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 export default function ItemProductChoose({
   data,

@@ -7,12 +7,6 @@ const CategoryCarouselList = ({ categories, shadow = false, loading }: any) => {
   return (
     <Box className="slick-mobile" mb={10}>
       <div className={styles.container}>
-        {/* <LoadingOverlay
-          visible={loading}
-          // zIndex={0}
-          overlayProps={{ radius: "sm" }}
-          loaderProps={{ type: "bars" }}
-        /> */}
         <Scroll>
           {categories?.map((item: any) => {
             return <CardCategory key={item?.id} category={item} garageId={0} />;

@@ -38,7 +38,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
 
   const form = useForm({
     initialValues: {
-      customerId: "",
       numberPlates: "",
       color: "",
       vinNumber: "",
@@ -49,7 +48,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     },
     validate: {
       numberPlates: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
-      customerId: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
     },
   });
 
@@ -120,7 +118,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
 
           form.setInitialValues(dataDetail);
           form.setValues(dataDetail);
-          form.setFieldValue("customerId", dataDetail?.customerId.toString());
           form.setFieldValue("carBrandId", dataDetail?.carBrandId.toString());
           form.setFieldValue("carNameId", dataDetail?.carNameId.toString());
           form.setFieldValue("carYearId", dataDetail?.carYearId.toString());
@@ -146,18 +143,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           <Grid.Col span={12}>
             <Card withBorder shadow="sm">
               <Grid gutter={10}>
-                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
-                  <Select
-                    size="lg"
-                    radius={0}
-                    withAsterisk
-                    {...form.getInputProps("customerId")}
-                    label="Khách hàng"
-                    type="text"
-                    placeholder="Khách hàng"
-                    data={customerOptions}
-                  />
-                </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
                   <TextInput
                     withAsterisk
@@ -275,10 +260,33 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
             </Card>
           </Grid.Col>
         </Grid>
-        <FooterSavePage
-          saveLoading={loading}
-          okText={isEditing ? "Cập nhật" : "Thêm"}
-        />
+        <Group justify="end" mt={20}>
+          <Button
+            size="lg"
+            radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
+            variant="outline"
+            key="cancel"
+            color="red"
+            leftSection={<IconBan size={16} />}
+            onClick={() => router.back()}
+          >
+            Huỷ
+          </Button>
+          <Button
+            size="lg"
+            radius={0}
+            h={{ base: 42, md: 50, lg: 50 }}
+            loading={loading}
+            style={{ marginLeft: "12px" }}
+            key="submit"
+            type="submit"
+            variant="filled"
+            leftSection={<IconPlus size={16} />}
+          >
+            {isEditing ? "Cập nhật" : "Thêm"}
+          </Button>
+        </Group>
       </form>
     </Box>
   );

@@ -63,7 +63,7 @@ export default function ItemProduct({
       <div className={styles.itemLeft}>
         <div className={styles.imgItem}>
           <Image
-            src={images[0]}
+            src={images?.[0]}
             alt="Relevant Image"
             width="80px"
             height={"80px"}

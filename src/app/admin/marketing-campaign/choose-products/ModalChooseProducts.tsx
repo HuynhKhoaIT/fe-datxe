@@ -22,6 +22,8 @@ import useFetch from "@/app/hooks/useFetch";
 import { getOptionsCategories } from "@/utils/until";
 import { getProducts } from "../../products/until";
 import { QueryClient } from "@tanstack/react-query";
+import FooterSavePage from "../../_component/FooterSavePage";
+import FilterCategories from "@/app/components/common/FilterCategory/FilterCategories";
 const queryClient = new QueryClient();
 
 export default function ModalChooseProducts({
@@ -57,14 +59,14 @@ export default function ModalChooseProducts({
     isPlaceholderData,
     refetch,
   } = useFetch({
-    queryKey: ["products", page],
+    queryKey: ["products", searchParams.toString(), page],
     queryFn: () => getProducts(searchParams.toString(), page),
   });
   useEffect(() => {
     if (!isPlaceholderData && page < products?.totalPage) {
       queryClient.prefetchQuery({
-        queryKey: ["products", page + 1],
-        queryFn: () => getProducts(searchParams.toString(), page + 1),
+        queryKey: ["products", searchParams.toString(), page],
+        queryFn: () => getProducts(searchParams.toString(), page),
         staleTime: Infinity,
       });
     }
@@ -193,12 +195,6 @@ export default function ModalChooseProducts({
   ];
   const searchData = [
     {
-      name: "categoryId",
-      placeholder: "Danh mục",
-      type: "select",
-      data: categoryOptions,
-    },
-    {
       name: "s",
       placeholder: "Tên sản phẩm",
       type: "input",
@@ -213,7 +209,6 @@ export default function ModalChooseProducts({
   ];
   const initialValuesSearch = {
     s: "",
-    categoryId: null,
     isProduct: null,
     brandId: null,
     nameId: null,
@@ -238,6 +233,7 @@ export default function ModalChooseProducts({
             brandFilter={false}
             initialValues={initialValuesSearch}
           />
+          <FilterCategories categories={categoryOptions} />
           <ScrollArea h={450}>
             {products?.data?.map((item: any, index: number) => {
               return (
@@ -260,6 +256,7 @@ export default function ModalChooseProducts({
               initialValues={initialValuesSearch}
             />
           }
+          filterCategory={<FilterCategories categories={categoryOptions} />}
           style={{ height: "100%" }}
           baseTable={
             <TableBasic

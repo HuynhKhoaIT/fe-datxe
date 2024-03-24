@@ -25,6 +25,7 @@ import useFetch from "@/app/hooks/useFetch";
 import { QueryClient } from "@tanstack/react-query";
 import { getOptionsCategories } from "@/utils/until";
 import { getProducts, getProductsDLBD } from "./until";
+import FilterCategories from "@/app/components/common/FilterCategory/FilterCategories";
 const DynamicModalDeleteItem = dynamic(
   () => import("../board/ModalDeleteItem"),
   {
@@ -42,6 +43,7 @@ export default function ProductsManaga() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string | null>("first");
   const [page, setPage] = useState<number>(1);
+  const [pageDlbd, setPageDlbd] = useState<number>(1);
 
   const [deleteRow, setDeleteRow] = useState();
   const [
@@ -62,7 +64,7 @@ export default function ProductsManaga() {
     isPlaceholderData,
     refetch,
   } = useFetch({
-    queryKey: ["products", page],
+    queryKey: ["products", searchParams.toString(), page],
     queryFn: () => getProducts(searchParams.toString(), page),
   });
   const {
@@ -70,31 +72,35 @@ export default function ProductsManaga() {
     isLoading: isLoadingDlbd,
     isPlaceholderData: isPlaceholderDataDlbd,
   } = useFetch({
-    queryKey: ["productsDlbd", page],
-    queryFn: () => getProductsDLBD(searchParams.toString(), page),
+    queryKey: ["productsDlbd", searchParams.toString(), pageDlbd],
+    queryFn: () => getProductsDLBD(searchParams.toString(), pageDlbd),
   });
 
   useEffect(() => {
+    console.log("searchParams", searchParams.toString());
     if (activeTab == "first" && !isPlaceholderData) {
       queryClient.prefetchQuery({
-        queryKey: ["products", page],
+        queryKey: ["products", searchParams.toString(), page],
         queryFn: () => getProducts(searchParams.toString(), page),
         staleTime: Infinity,
       });
-    } else if (activeTab == "second" && !isPlaceholderDataDlbd) {
+    }
+  }, [searchParams, isPlaceholderData, page, queryClient, activeTab, products]);
+  useEffect(() => {
+    console.log("searchParams", searchParams.toString());
+    if (activeTab == "second" && !isPlaceholderDataDlbd) {
       queryClient.prefetchQuery({
-        queryKey: ["productsDlbd", page],
-        queryFn: () => getProductsDLBD(searchParams.toString(), page),
+        queryKey: ["productsDlbd", searchParams.toString(), pageDlbd],
+        queryFn: () => getProductsDLBD(searchParams.toString(), pageDlbd),
         staleTime: Infinity,
       });
     }
   }, [
     searchParams,
-    isPlaceholderData,
-    page,
+    pageDlbd,
     queryClient,
     activeTab,
-    products,
+    productsDlbd,
     isPlaceholderDataDlbd,
   ]);
 
@@ -316,12 +322,6 @@ export default function ProductsManaga() {
       type: "input",
     },
     {
-      name: "categoryId",
-      placeholder: "Danh mục",
-      type: "select",
-      data: categoryOptions,
-    },
-    {
       name: "isProduct",
       placeholder: "Loại",
       type: "select",
@@ -330,12 +330,12 @@ export default function ProductsManaga() {
   ];
   const initialValuesSearch = {
     s: "",
-    categoryId: null,
     brandId: null,
     nameId: null,
     yearId: null,
   };
 
+  console.log(products?.data);
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />
@@ -364,6 +364,9 @@ export default function ProductsManaga() {
           </Link>
         </Flex>
       </div>
+
+      <FilterCategories categories={categoryOptions} />
+
       <div style={{ background: "#fff", position: "relative" }}>
         <div>
           <Tabs
@@ -372,6 +375,7 @@ export default function ProductsManaga() {
             onChange={(value) => {
               setActiveTab(value);
               setPage(1);
+              setPageDlbd(1);
             }}
           >
             <Tabs.List classNames={{ list: styles.list }}>
@@ -423,8 +427,8 @@ export default function ProductsManaga() {
                     columns={columns}
                     loading={isLoadingDlbd}
                     totalPage={productsDlbd?.last_page}
-                    setPage={setPage}
-                    activePage={page}
+                    setPage={setPageDlbd}
+                    activePage={pageDlbd}
                   />
                 }
               />

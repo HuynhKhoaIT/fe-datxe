@@ -17,6 +17,7 @@ import ListPage from "@/app/components/layout/ListPage";
 import useFetch from "@/app/hooks/useFetch";
 import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import FilterStepOrder from "@/app/components/common/FilterStepOrder/FilterCategories";
 const DynamicModalDeleteItem = dynamic(
   () => import("../board/ModalDeleteItem"),
   {
@@ -173,7 +174,7 @@ export default function OrdersManaga() {
           <>
             <Link
               href={{
-                pathname: `/admin/order-manager/${record.id}`,
+                pathname: `/admin/order-manager/${record.slug}`,
               }}
             >
               <Tooltip label="Chi tiết" withArrow position="bottom">
@@ -217,16 +218,16 @@ export default function OrdersManaga() {
       placeholder: "Mã đơn hàng",
       type: "input",
     },
-    {
-      name: "step",
-      placeholder: "Tình trạng",
-      type: "select",
-      data: stepOrderOptions,
-    },
+    // {
+    //   name: "step",
+    //   placeholder: "Tình trạng",
+    //   type: "select",
+    //   data: stepOrderOptions,
+    // },
   ];
   const initialValuesSearch = {
     code: "",
-    step: null,
+    // step: null,
     brandId: null,
     nameId: null,
     yearId: null,
@@ -261,6 +262,7 @@ export default function OrdersManaga() {
             </Link>
           </Flex>
         }
+        filterCategory={<FilterStepOrder stepOptions={stepOrderOptions} />}
         style={{ height: "100%" }}
         titleTable={true}
         baseTable={

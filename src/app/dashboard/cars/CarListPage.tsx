@@ -8,16 +8,18 @@ import {
   IconPencil,
   IconTrash,
   IconBan,
+  IconPlus,
 } from "@tabler/icons-react";
 import PreviewModal from "./PreviewModal";
-import { Radio, Button, Modal, Group, Pagination } from "@mantine/core";
+import { Radio, Button, Modal, Group, Pagination, Flex } from "@mantine/core";
 import { getModels, getYears } from "@/utils/branch";
 import { useDisclosure } from "@mantine/hooks";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { notifications } from "@mantine/notifications";
-
+import Typo from "@/app/components/elements/Typo";
+import styles from "./index.module.scss";
 export default function CarListPage({ carsData, myAccount }: any) {
   const router = useRouter();
   const { data: session } = useSession();
@@ -187,20 +189,38 @@ export default function CarListPage({ carsData, myAccount }: any) {
     },
   ];
   return (
-    <div className="user-profile-wrapper">
-      <div className="user-profile-card profile-ad">
-        <div className="user-profile-card-header">
-          <h4 className="user-profile-card-title">Xe của tôi</h4>
-          <div className="user-profile-card-header-right">
-            <div className="user-profile-search">
-              <div className="form-group"></div>
-            </div>
-            <Link href={{ pathname: `/dashboard/cars/create` }}>
-              <Button className="theme-btn btn-add-car">Thêm xe</Button>
-            </Link>
-          </div>
+    <div className={styles.wrapper}>
+      <div style={{ marginBottom: 20 }}>
+        <Flex justify={"end"} align={"center"}>
+          <Link
+            href={{
+              pathname: `/dashboard/cars/create`,
+            }}
+          >
+            <Button
+              size="lg"
+              h={{ base: 42, md: 50, lg: 50 }}
+              radius={0}
+              leftSection={<IconPlus size={18} />}
+            >
+              Thêm mới
+            </Button>
+          </Link>
+        </Flex>
+      </div>
+
+      <div className={styles.content}>
+        <div style={{ borderBottom: "1px solid #eeeeee" }}>
+          <Typo size="18px" type="bold" className={styles.title}>
+            Xe của tôi
+          </Typo>
         </div>
-        <TableBasic data={carsData} columns={columns} loading={false} />
+        <TableBasic
+          className={styles.table}
+          data={carsData}
+          columns={columns}
+          loading={false}
+        />
       </div>
       <Modal title="Delete" opened={openedDeleteCar} onClose={closeDeleteCar}>
         <div>Bạn có muốn xoá không?</div>

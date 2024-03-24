@@ -19,7 +19,8 @@ export const FEMALE = 'FEMALE';
 export const COMPANY = 'COMPANY';
 export const OTHER = 'OTHER';
 
-export const ORDER_CANCEL = '0';
+export const ORDER_PENDING = '0';
+export const ORDER_CANCEL = '-1';
 export const ORDER_ACCEPT = '1';
 export const ORDER_QUOTE = '2';
 export const ORDER_REPAIR = '3';

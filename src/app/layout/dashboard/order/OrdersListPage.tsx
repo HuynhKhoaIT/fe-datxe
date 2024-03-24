@@ -7,9 +7,10 @@ import TableBasic from "@/app/components/table/Tablebasic";
 import { stepOrderOptions } from "@/constants/masterData";
 import { IconEye } from "@tabler/icons-react";
 import Link from "next/link";
-
+import Typo from "@/app/components/elements/Typo";
+import styles from "./index.module.scss";
 export default function OrdersListPage({ dataSource }: any) {
-  const router = useRouter();
+  console.log(dataSource);
   // pagination
   const itemsPerPage: number = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -121,19 +122,17 @@ export default function OrdersListPage({ dataSource }: any) {
   ];
 
   return (
-    <div className="user-profile-wrapper">
-      <div className="row">
-        <div className="col-lg-12">
-          <div className="user-profile-card">
-            <div className="user-profile-card-header">
-              <h4 className="user-profile-card-title">Danh sách đơn hàng</h4>
-            </div>
-            <div className="table-responsive" style={{ overflowY: "hidden" }}>
-              <TableBasic columns={columns} data={paginatedData} />
-            </div>
-          </div>
-        </div>
+    <div className={styles.wrapper}>
+      <div style={{ borderBottom: "1px solid #eeeeee" }}>
+        <Typo size="18px" type="bold" className={styles.title}>
+          Đơn hàng của tôi
+        </Typo>
       </div>
+      <TableBasic
+        className={styles.table}
+        columns={columns}
+        data={paginatedData}
+      />
     </div>
   );
 }

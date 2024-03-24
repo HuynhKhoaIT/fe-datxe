@@ -1,6 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Grid, TextInput, Select, Group, Box } from "@mantine/core";
+import {
+  Button,
+  Grid,
+  TextInput,
+  Select,
+  Group,
+  Box,
+  Card,
+} from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -10,6 +18,8 @@ import { notifications } from "@mantine/notifications";
 import dayjs from "dayjs";
 import DateField from "../../form/DateField";
 import { useRouter } from "next/navigation";
+import styles from "./index.module.scss";
+import Typo from "../Typo";
 export default function UserProfile({
   myAccount,
   provinceData,
@@ -73,107 +83,112 @@ export default function UserProfile({
     }
   };
   return (
-    <div className="user-profile-card profile-ad">
-      <div className="user-profile-card-header">
-        <h4 className="user-profile-card-title">Cập nhật thông tin</h4>
+    <div className={styles.wrapper}>
+      <div>
+        <div style={{ borderBottom: "1px solid #eeeeee" }}>
+          <Typo size="18px" type="bold" className={styles.title}>
+            Cập nhật thông tin
+          </Typo>
+        </div>
+
+        <Card w={"100%"} px={20}>
+          <form
+            name="userProfileForm"
+            onSubmit={form.onSubmit((values) => handleUpdateProfile(values))}
+          >
+            <Grid gutter={16} w={"100%"}>
+              <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
+                <TextInput
+                  size="lg"
+                  radius={0}
+                  w={"100%"}
+                  withAsterisk
+                  {...form.getInputProps("name")}
+                  label="Họ tên"
+                  placeholder="Nguyễn Văn A"
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
+                <DateField
+                  {...form.getInputProps("dob")}
+                  label="Ngày sinh"
+                  placeholder="Ngày sinh"
+                  clearable={true}
+                  maxDate={new Date()}
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
+                <TextInput
+                  size="lg"
+                  radius={0}
+                  type="tel"
+                  disabled={true}
+                  {...form.getInputProps("phone")}
+                  label="Điện thoại"
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
+                <TextInput
+                  size="lg"
+                  radius={0}
+                  {...form.getInputProps("address")}
+                  label="Địa chỉ"
+                  placeholder="1234 Main St"
+                />
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
+                <Select
+                  size="lg"
+                  radius={0}
+                  {...form.getInputProps("province_id")}
+                  label="Tỉnh/Thành phố"
+                  placeholder="Chọn tỉnh"
+                  data={provinceData}
+                  onChange={(value) => {
+                    form.setFieldValue("province_id", value);
+                    form.setFieldValue("ward_id", null);
+                    form.setFieldValue("district_id", null);
+                    handleProvince(Number(value));
+                  }}
+                ></Select>
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
+                <Select
+                  size="lg"
+                  radius={0}
+                  {...form.getInputProps("district_id")}
+                  label="Huyện/Quận"
+                  placeholder="Chọn huyện/quận"
+                  data={districtData}
+                  onChange={(value) => {
+                    form.setFieldValue("district_id", value);
+                    form.setFieldValue("ward_id", null);
+                    handleDistrict(Number(value));
+                  }}
+                ></Select>
+              </Grid.Col>
+              <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
+                <Select
+                  size="lg"
+                  radius={0}
+                  {...form.getInputProps("ward_id")}
+                  label="Xã/Phường"
+                  placeholder="Chọn xã/phường"
+                  data={wardData}
+                  onChange={(value) => {
+                    form.setFieldValue("ward_id", value);
+                  }}
+                ></Select>
+              </Grid.Col>
+            </Grid>
+            <Group pt={20} justify="end" className="col-12 text-right ">
+              <Button size="lg" radius={0} type="submit">
+                Cập nhật
+              </Button>
+            </Group>
+          </form>
+        </Card>
       </div>
-      <Box w={"100%"} px={10}>
-        <form
-          name="userProfileForm"
-          onSubmit={form.onSubmit((values) => handleUpdateProfile(values))}
-        >
-          <Grid gutter={16} w={"100%"}>
-            <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
-              <TextInput
-                size="lg"
-                radius={0}
-                w={"100%"}
-                withAsterisk
-                {...form.getInputProps("name")}
-                label="Họ tên"
-                placeholder="Nguyễn Văn A"
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
-              <DateField
-                {...form.getInputProps("dob")}
-                label="Ngày sinh"
-                placeholder="Ngày sinh"
-                clearable={true}
-                maxDate={new Date()}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
-              <TextInput
-                size="lg"
-                radius={0}
-                type="tel"
-                disabled={true}
-                {...form.getInputProps("phone")}
-                label="Điện thoại"
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
-              <TextInput
-                size="lg"
-                radius={0}
-                {...form.getInputProps("address")}
-                label="Địa chỉ"
-                placeholder="1234 Main St"
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
-              <Select
-                size="lg"
-                radius={0}
-                {...form.getInputProps("province_id")}
-                label="Tỉnh/Thành phố"
-                placeholder="Chọn tỉnh"
-                data={provinceData}
-                onChange={(value) => {
-                  form.setFieldValue("province_id", value);
-                  form.setFieldValue("ward_id", null);
-                  form.setFieldValue("district_id", null);
-                  handleProvince(Number(value));
-                }}
-              ></Select>
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
-              <Select
-                size="lg"
-                radius={0}
-                {...form.getInputProps("district_id")}
-                label="Huyện/Quận"
-                placeholder="Chọn huyện/quận"
-                data={districtData}
-                onChange={(value) => {
-                  form.setFieldValue("district_id", value);
-                  form.setFieldValue("ward_id", null);
-                  handleDistrict(Number(value));
-                }}
-              ></Select>
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6, lg: 6, xs: 12 }}>
-              <Select
-                size="lg"
-                radius={0}
-                {...form.getInputProps("ward_id")}
-                label="Xã/Phường"
-                placeholder="Chọn xã/phường"
-                data={wardData}
-                onChange={(value) => {
-                  form.setFieldValue("ward_id", value);
-                }}
-              ></Select>
-            </Grid.Col>
-          </Grid>
-          <Group pt={20} justify="end" className="col-12 text-right ">
-            <Button size="lg" radius={0} type="submit">
-              Cập nhật
-            </Button>
-          </Group>
-        </form>
-      </Box>
     </div>
   );
 }

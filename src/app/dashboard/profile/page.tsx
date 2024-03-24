@@ -3,6 +3,7 @@ import InfoProfile from "../../components/elements/profile/Info";
 import UserProfile from "../../components/elements/profile/User";
 import { getMyAccount } from "@/utils/user";
 import { getDistricts, getProvinces, getWards } from "@/utils/notion";
+import { Space } from "@mantine/core";
 export default async function ProfilePage() {
   const myAccount: any = await getMyAccount();
   const province: any = await getProvinces();
@@ -23,6 +24,7 @@ export default async function ProfilePage() {
   return (
     <div className="user-profile-wrapper">
       <InfoProfile />
+      <Space h="md" />
       <UserProfile
         myAccount={myAccount}
         provinceData={provinceData}
