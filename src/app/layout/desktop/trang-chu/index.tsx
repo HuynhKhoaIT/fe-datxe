@@ -24,7 +24,6 @@ const LandingPageDesktop = ({
   carsOption,
   provinceData,
 }: any) => {
-  console.log(categories);
   const slideshowData = [
     {
       image: image1.src,

@@ -26,16 +26,6 @@ export default function InfoCar({
   );
   const [value, setValue] = useState<string | null>(null);
 
-  async function getCarDetail(carId: number) {
-    if (carId) {
-      const res = await fetch(`/api/car/${carId}`, { method: "GET" });
-      const data = await res.json();
-      if (!data) {
-        throw new Error("Failed to fetch data");
-      }
-      setCarDetail(data);
-    }
-  }
   return (
     <Grid.Col span={{ base: 12, md: 12, lg: 6, xl: 6 }}>
       <div className="checkout-widget">

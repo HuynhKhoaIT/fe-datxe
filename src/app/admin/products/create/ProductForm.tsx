@@ -26,6 +26,8 @@ import axios, { AxiosRequestConfig } from "axios";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
 import InfoCar from "../[productId]/InfoCar";
 import FooterSavePage from "../../_component/FooterSavePage";
+import useFetch from "@/app/hooks/useFetch";
+import { getOptionsCategories } from "@/utils/until";
 
 export default function ProductForm({
   isEditing = false,
@@ -33,7 +35,7 @@ export default function ProductForm({
   isDirection = false,
 }: any) {
   const [loading, handlers] = useDisclosure();
-  const [catOptions, setCatOptions] = useState<any>([]);
+  // const [catOptions, setCatOptions] = useState<any>([]);
   const [valueRTE, setValueRTE] = useState("");
   const [images, setImages] = useState<any>();
 
@@ -51,8 +53,8 @@ export default function ProductForm({
       price: undefined,
     },
     validate: (values) => ({
-      name: values.name.length < 1 ? "Không được để trống" : null,
-      categories: values.name.length < 1 ? "Không được để trống" : null,
+      name: values?.name?.length < 1 ? "Không được để trống" : null,
+      categories: values?.name?.length < 1 ? "Không được để trống" : null,
       salePrice:
         values?.salePrice === undefined
           ? null
@@ -176,34 +178,39 @@ export default function ProductForm({
     }
   };
 
-  const getCategories = async () => {
-    const res = await fetch(`/api/product-category`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setCatOptions(dataOption);
-  };
-  useEffect(() => {
-    const fetchData = async () => {
-      handlers.open();
-      await Promise.all([getCategories()]);
+  const { data: catOptions, isLoading } = useFetch({
+    queryKey: ["categoryOptions"],
+    queryFn: () => getOptionsCategories(),
+  });
 
-      handlers.close();
-    };
+  // const getCategories = async () => {
+  //   const res = await fetch(`/api/product-category`, { method: "GET" });
+  //   const data = await res.json();
+  //   if (!data) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const dataOption = data?.data?.map((item: any) => ({
+  //     value: item.id.toString(),
+  //     label: item.title,
+  //   }));
+  //   setCatOptions(dataOption);
+  // };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     handlers.open();
+  //     await Promise.all([getCategories()]);
 
-    if (!isEditing) {
-      fetchData();
-    }
-  }, []);
+  //     handlers.close();
+  //   };
+
+  //   if (!isEditing) {
+  //     fetchData();
+  //   }
+  // }, []);
   return (
     <Box pos="relative">
       <LoadingOverlay
-        visible={loading}
+        visible={loading || isLoading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />

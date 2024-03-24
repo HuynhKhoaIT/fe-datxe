@@ -27,14 +27,12 @@ import {
   getOptionsCustomers,
   getOptionsModels,
   getOptionsYearCar,
-} from "@/utils/util";
+} from "@/utils/until";
 import FooterSavePage from "../../_component/FooterSavePage";
+import useFetch from "@/app/hooks/useFetch";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
-  console.log(dataDetail);
-  const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
-
   const [loading, handlers] = useDisclosure();
 
   const form = useForm({
@@ -69,7 +67,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           body: JSON.stringify(values),
         });
       }
-      handlers.close();
       router.back();
       router.refresh();
       notifications.show({
@@ -77,45 +74,33 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
         message: "Thành công",
       });
     } catch (error) {
-      handlers.close();
       notifications.show({
         title: "Thất bại",
         message: "Thất bại",
       });
+    } finally {
+      handlers.close();
     }
   };
 
-  const [customerOptions, setCustomerOptions] = useState();
+  const { data: customerOptions, isLoading: isLoadingCustomer } = useFetch({
+    queryKey: ["customerOptions"],
+    queryFn: () => getOptionsCustomers(),
+  });
+
+  const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
+    queryKey: ["brandOptions"],
+    queryFn: () => getOptionsBrands(),
+  });
+
   useEffect(() => {
     const fetchData = async () => {
-      handlers.open();
-      const [customer, brands] = await Promise.all([
-        getOptionsCustomers(),
-        getOptionsBrands(),
-      ]);
-      setCustomerOptions(customer);
-      setBrandOptions(brands);
-      handlers.close();
-    };
-
-    if (!isEditing) {
-      fetchData();
-    }
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      handlers.open();
-
       if (isEditing && dataDetail) {
         try {
-          const [customers, brands, models, yearCars] = await Promise.all([
-            getOptionsCustomers(),
-            getOptionsBrands(),
+          const [models, yearCars] = await Promise.all([
             getOptionsModels(dataDetail?.carBrandId),
             getOptionsYearCar(dataDetail?.carNameId),
           ]);
-          setCustomerOptions(customers);
-          setBrandOptions(brands);
           setModelOptions(models);
           setYearCarOptions(yearCars);
 
@@ -127,8 +112,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           form.setFieldValue("carYearId", dataDetail?.carYearId.toString());
         } catch (error) {
           console.error("Error fetching data:", error);
-        } finally {
-          handlers.close();
         }
       }
     };
@@ -138,7 +121,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   return (
     <Box pos="relative">
       <LoadingOverlay
-        visible={loading}
+        visible={isLoadingBrand || isLoadingCustomer}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />

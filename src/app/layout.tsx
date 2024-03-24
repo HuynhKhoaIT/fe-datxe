@@ -14,6 +14,10 @@ import { Notifications } from "@mantine/notifications";
 import ProviderAuth from "./Provider";
 import { ReactNode } from "react";
 import { MantineProvider, createTheme } from "@mantine/core";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryProvider } from "./QueryProvider";
+
 // import StoreProvider from "./StoreProvider";
 export const dynamic = "force-dynamic";
 const inter = Inter({ subsets: ["latin"] });
@@ -59,16 +63,18 @@ export default function RootLayout({ children }: IProps) {
   return (
     <html lang="vi">
       <body className={inter.className}>
-        <MantineProvider theme={theme}>
-          <ModalsProvider>
-            <ProviderAuth>
-              {/* <StoreProvider> */}
-              <Notifications position="top-right" />
-              {children}
-              {/* </StoreProvider> */}
-            </ProviderAuth>
-          </ModalsProvider>
-        </MantineProvider>
+        <QueryProvider>
+          <MantineProvider theme={theme}>
+            <ModalsProvider>
+              <ProviderAuth>
+                {/* <StoreProvider> */}
+                <Notifications position="top-right" />
+                {children}
+                {/* </StoreProvider> */}
+              </ProviderAuth>
+            </ModalsProvider>
+          </MantineProvider>
+        </QueryProvider>
       </body>
     </html>
   );

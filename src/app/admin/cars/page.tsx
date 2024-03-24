@@ -7,57 +7,79 @@ import Breadcrumb from "@/app/components/form/Breadcrumb";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
+import { QueryClient } from "@tanstack/react-query";
+import useFetch from "@/app/hooks/useFetch";
+import { getCars, getCarsDLBD } from "./until";
+const queryClient = new QueryClient();
+
+const breadcrumbs = [
+  { title: "Tổng quan", href: "/admin" },
+  { title: "Danh sách xe" },
+];
 
 export default function Cars() {
   const searchParams = useSearchParams();
-  const [loadingTable, handlers] = useDisclosure(true);
-
   const [page, setPage] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string | null>("first");
-  const [cars, setCars] = useState([]);
+
+  const {
+    data: cars,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["cars", page],
+    queryFn: () => getCars(searchParams.toString(), page),
+  });
+
+  const {
+    data: carsDlbd,
+    isLoading: isLoadingDlbd,
+    isPlaceholderData: isPlaceholderDataDlbd,
+  } = useFetch({
+    queryKey: ["carsDlbd", page],
+    queryFn: () => getCarsDLBD(searchParams.toString(), page),
+  });
+
   useEffect(() => {
-    const fetchData = async (searchParams: any, page: number) => {
-      try {
-        const response = await axios.get(
-          `/api/car?${searchParams}&page=${page}`
-        );
-        setCars(response?.data);
-      } catch (error) {
-      } finally {
-        handlers.close();
-      }
-    };
-    const fetchDataDLBD = async () => {
-      try {
-        const response = await axios.get(`/api/car/dlbd`);
-        setCars(response.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        handlers.close();
-      }
-    };
-    handlers.open();
-    if (activeTab === "first") {
-      fetchData(searchParams, page);
-    } else if (activeTab === "second") {
-      fetchDataDLBD();
+    console.log(activeTab == "second" && !isPlaceholderDataDlbd);
+    if (activeTab == "first" && !isPlaceholderData) {
+      queryClient.prefetchQuery({
+        queryKey: ["cars", page],
+        queryFn: () => getCars(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
+    } else if (activeTab == "second" && !isPlaceholderDataDlbd) {
+      queryClient.prefetchQuery({
+        queryKey: ["carsDlbd", page],
+        queryFn: () => getCarsDLBD(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
     }
-  }, [activeTab, page, searchParams]);
-  const breadcrumbs = [
-    { title: "Tổng quan", href: "/admin" },
-    { title: "Danh sách xe" },
-  ];
+  }, [
+    searchParams,
+    isPlaceholderData,
+    page,
+    queryClient,
+    activeTab,
+    cars,
+    isPlaceholderDataDlbd,
+  ]);
+
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={breadcrumbs} />
       <CarsListPage
-        dataSource={cars}
+        cars={cars}
+        carsDlbd={carsDlbd}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         page={page}
         setPage={setPage}
-        loadingTable={loadingTable}
+        loading={isLoading || isLoadingDlbd}
+        refetch={refetch}
       />
     </Fragment>
   );

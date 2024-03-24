@@ -41,8 +41,9 @@ import {
   getOptionsCustomers,
   getOptionsModels,
   getOptionsYearCar,
-} from "@/utils/util";
+} from "@/utils/until";
 import FooterSavePage from "../../_component/FooterSavePage";
+import useFetch from "@/app/hooks/useFetch";
 
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
@@ -78,10 +79,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       : []
   );
 
-  const [brandOptions, setBrandOptions] = useState<any>([]);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
-  const [customerOptions, setCustomerOptions] = useState();
 
   const [
     openModalChoose,
@@ -104,24 +103,16 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     },
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      handlers.open();
-      const [customer, brands] = await Promise.all([
-        getOptionsCustomers(),
-        getOptionsBrands(),
-      ]);
-      setCustomerOptions(customer);
-      setBrandOptions(brands);
-      handlers.close();
-    };
+  const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
+    queryKey: ["brandOptions"],
+    queryFn: () => getOptionsBrands(),
+  });
 
+  useEffect(() => {
     if (!isEditing) {
       if (form.values.numberPlates.length == 0) {
         openModalNumberPlates();
       }
-
-      fetchData();
     }
   }, []);
   useEffect(() => {
@@ -162,14 +153,11 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
 
       if (isEditing && dataDetail) {
         try {
-          const [customers, brands, models, yearCars] = await Promise.all([
-            getOptionsCustomers(),
-            getOptionsBrands(),
+          const [models, yearCars] = await Promise.all([
             getOptionsModels(dataDetail?.car?.carBrandId),
             getOptionsYearCar(dataDetail?.car?.carNameId),
           ]);
-          setCustomerOptions(customers);
-          setBrandOptions(brands);
+
           setModelOptions(models);
           setYearCarOptions(yearCars);
 

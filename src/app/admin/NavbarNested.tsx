@@ -26,7 +26,7 @@ const mockdata = [
     initiallyOpened: true,
     links: [
       { label: "Danh sách đơn hàng", link: "/admin/order-manager" },
-      { label: "Đặt lịch", link: "/admin/orders" },
+      { label: "Công việc & Lịch hẹn", link: "/admin/orders" },
     ],
   },
 

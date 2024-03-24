@@ -18,34 +18,39 @@ import SearchForm from "@/app/components/form/SearchForm";
 import ListPage from "@/app/components/layout/ListPage";
 import styles from "./index.module.scss";
 import Typo from "@/app/components/elements/Typo";
-const DynamicModalDeleteProduct = dynamic(
-  () => import("../board/ModalDeleteProduct"),
+import axios from "axios";
+const DynamicModalDeleteItem = dynamic(
+  () => import("../board/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
 export default function CarsListPage({
-  dataSource,
+  cars,
+  carsDlbd,
   activeTab,
   setActiveTab,
   page,
   setPage,
-  loadingTable,
+  loading,
+  refetch,
 }: any) {
-  console.log(dataSource);
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteCategory = async (id: any) => {
-    await fetch(`/api/cars/${id}`, {
-      method: "DELETE",
-    });
-    notifications.show({
-      title: "Thành công",
-      message: "Xoá xe thành công",
-    });
+  const handleDeleteItem = async (id: any) => {
+    try {
+      await axios.delete(`/api/cars/${id}`);
+      notifications.show({
+        title: "Thành công",
+        message: "Xoá xe thành công",
+      });
+      refetch();
+    } catch (error) {
+      console.error("error: ", error);
+    }
   };
   const [
-    openedDeleteProduct,
-    { open: openDeleteProduct, close: closeDeleteProduct },
+    openedDeleteItem,
+    { open: openDeleteItem, close: closeDeleteItem },
   ] = useDisclosure(false);
   const columns = [
     {
@@ -161,7 +166,7 @@ export default function CarsListPage({
               variant="transparent"
               color="red"
               onClick={(e) => {
-                openDeleteProduct();
+                openDeleteItem();
                 setDeleteRow(record.id);
               }}
             >
@@ -244,10 +249,10 @@ export default function CarsListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource?.data}
+                    data={cars?.data}
                     columns={columns}
-                    loading={loadingTable}
-                    totalPage={dataSource?.totalPage}
+                    loading={loading}
+                    totalPage={cars?.totalPage}
                     setPage={setPage}
                     activePage={page}
                   />
@@ -259,9 +264,9 @@ export default function CarsListPage({
                 style={{ height: "100%" }}
                 baseTable={
                   <TableBasic
-                    data={dataSource?.data}
+                    data={carsDlbd?.data}
                     columns={columns}
-                    loading={loadingTable}
+                    loading={loading}
                     // totalPage={marketing?.totalPage}
                     // setPage={setPage}
                     // activePage={page}
@@ -273,10 +278,10 @@ export default function CarsListPage({
         </div>
       </div>
 
-      <DynamicModalDeleteProduct
-        openedDeleteProduct={openedDeleteProduct}
-        closeDeleteProduct={closeDeleteProduct}
-        handleDeleteProduct={handleDeleteCategory}
+      <DynamicModalDeleteItem
+        openedDeleteItem={openedDeleteItem}
+        closeDeleteItem={closeDeleteItem}
+        handleDeleteItem={handleDeleteItem}
         deleteRow={deleteRow}
       />
     </Fragment>

@@ -5126,7 +5126,7 @@ body.rtl-mode .price-wrapper {
     border-radius: 10px;
     margin-bottom: 25px;
     padding: 20px;
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.17);
 }
 
 .user-profile-sidebar-top {
@@ -6647,9 +6647,9 @@ body.rtl-mode .price-wrapper {
     color: var(--color-white);
     background-color: #555;
 }
-.table-responsive {
+/* .table-responsive {
     padding: 15px 20px 20px;
-}
+} */
 
 .btn-add-car {
     margin-right: 20px;

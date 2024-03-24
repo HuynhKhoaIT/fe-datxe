@@ -1,17 +1,17 @@
 import { Button, Group, Modal } from "@mantine/core";
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
 
-export default function ModalDeleteProduct({
-  openedDeleteProduct,
-  closeDeleteProduct,
-  handleDeleteProduct,
+export default function ModalDeleteItem({
+  openedDeleteItem,
+  closeDeleteItem,
+  handleDeleteItem,
   deleteRow,
 }: any) {
   return (
     <Modal
       title="Xoá sản phẩm"
-      opened={openedDeleteProduct}
-      onClose={closeDeleteProduct}
+      opened={openedDeleteItem}
+      onClose={closeDeleteItem}
       lockScroll={false}
     >
       <div>Bạn có muốn xoá không?</div>
@@ -22,7 +22,7 @@ export default function ModalDeleteProduct({
           h={{ base: 42, md: 50, lg: 50 }}
           variant="filled"
           key="cancel"
-          onClick={closeDeleteProduct}
+          onClick={closeDeleteItem}
           color="red"
           leftSection={<IconBan />}
         >
@@ -34,8 +34,8 @@ export default function ModalDeleteProduct({
           h={{ base: 42, md: 50, lg: 50 }}
           style={{ marginLeft: "12px" }}
           onClick={() => {
-            closeDeleteProduct();
-            handleDeleteProduct(deleteRow);
+            closeDeleteItem();
+            handleDeleteItem(deleteRow);
           }}
           variant="filled"
           leftSection={<IconChevronRight />}

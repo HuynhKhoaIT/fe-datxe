@@ -18,6 +18,11 @@ import { useSearchParams } from "next/navigation";
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import ItemProductChoose from "../_component/ItemProductChoose";
+import useFetch from "@/app/hooks/useFetch";
+import { getOptionsCategories } from "@/utils/until";
+import { getProducts } from "../../products/until";
+import { QueryClient } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 export default function ModalChooseProducts({
   openModal,
@@ -32,39 +37,38 @@ export default function ModalChooseProducts({
   useEffect(() => {
     if (selectedProducts) setSelectedRows(selectedProducts);
   }, [selectedProducts]);
-  const [products, setProducts] = useState<any>();
-  const [categoryOptions, setCategoryOptions] = useState<any>([]);
   const searchParams = useSearchParams();
   const [page, setPage] = useState<number>(1);
-  async function getData(searchParams: any, page: number) {
-    handlers.open();
 
-    const res = await fetch(`/api/products?${searchParams}&page=${page}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    handlers.close();
+  const {
+    data: categoryOptions,
+    isLoading: isLoadingCategory,
+    isError,
+  } = useFetch({
+    queryKey: ["categoryOptions"],
+    queryFn: () => getOptionsCategories(),
+  });
 
-    setProducts(data);
-  }
-  async function getDataCategories() {
-    const res = await fetch(`/api/product-category`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setCategoryOptions(dataOption);
-  }
+  const {
+    data: products,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["products", page],
+    queryFn: () => getProducts(searchParams.toString(), page),
+  });
   useEffect(() => {
-    if (openModal) {
-      getData(searchParams.toString(), page);
-      getDataCategories();
+    if (!isPlaceholderData && page < products?.totalPage) {
+      queryClient.prefetchQuery({
+        queryKey: ["products", page + 1],
+        queryFn: () => getProducts(searchParams.toString(), page + 1),
+        staleTime: Infinity,
+      });
     }
-  }, [openModal, searchParams]);
+  }, [searchParams, isPlaceholderData, page, queryClient, products]);
 
   const columns = [
     {
@@ -216,7 +220,6 @@ export default function ModalChooseProducts({
     yearId: null,
   };
 
-  const [loading, handlers] = useDisclosure();
   return (
     <Modal
       title="Chọn sản phẩm"
@@ -228,11 +231,6 @@ export default function ModalChooseProducts({
       size="auto"
       fullScreen={isMobile}
     >
-      <LoadingOverlay
-        visible={loading}
-        zIndex={1000}
-        overlayProps={{ radius: "sm", blur: 2 }}
-      />
       {isMobile ? (
         <>
           <SearchForm
@@ -265,7 +263,7 @@ export default function ModalChooseProducts({
           style={{ height: "100%" }}
           baseTable={
             <TableBasic
-              loading={loading}
+              loading={isLoading}
               data={products?.data}
               columns={columns}
               totalPage={products?.totalPage}

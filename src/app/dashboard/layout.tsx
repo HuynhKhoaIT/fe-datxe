@@ -31,10 +31,12 @@ export default function DashboardLayout({ children }: IProps) {
         <main>
           <Header />
           <div className={styles.wrapper}>
-            <div className={styles.navBar}>
-              <Menu />
-            </div>
-            <div className={styles.content}>{children}</div>
+            <Container className={styles.container}>
+              <div className={styles.navBar}>
+                <Menu />
+              </div>
+              <div className={styles.content}>{children}</div>
+            </Container>
           </div>
           <MyFooter />
         </main>
