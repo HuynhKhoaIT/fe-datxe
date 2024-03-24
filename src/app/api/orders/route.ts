@@ -21,6 +21,8 @@ export async function GET(request: Request) {
             }
             const requestData = {
                 s: searchParams.get('s'),
+                step: searchParams.get('step'),
+                method: searchParams.get('method'),
                 createdById: searchParams.get('user'),
                 limit: limit,
                 page: page,
