@@ -2,7 +2,7 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { updateGarage } from '@/app/libs/prisma/garage';
+import { showGarage, updateGarage } from '@/app/libs/prisma/garage';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -12,19 +12,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
             return new NextResponse("Missing 'id' parameter");
         }
         const session = await getServerSession(authOptions);
-        if (1) {
-            const garage = await prisma.garage.findUnique({
-                where: {
-                    id: parseInt(id.toString()),
-                },
-                include: {
-                    amenities: {
-                        include: {
-                            amenities: true,
-                        },
-                    },
-                },
-            });
+        if (session) {
+            const garage = await showGarage(id);
             return NextResponse.json(garage);
         }
         throw new Error('Chua dang nhap');

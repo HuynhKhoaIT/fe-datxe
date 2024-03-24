@@ -47,6 +47,7 @@ model Garage {
   bitlyTitle          String?
   bitlyLongUrl        String?
   groupGuid           String?
+  bitlyUrl            String?
 }
 model Provinces{
   id Int @id @default(autoincrement())
