@@ -60,7 +60,7 @@ export default function CarsListPage({
         </span>
       ),
       name: "title",
-      dataIndex: ["numberPlates"],
+      dataIndex: activeTab == "first" ? ["numberPlates"] : ["licensePlates"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
@@ -77,14 +77,20 @@ export default function CarsListPage({
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hãng xe</span>
       ),
       name: "brandName",
-      dataIndex: ["brandName", "title"],
+      dataIndex:
+        activeTab == "first"
+          ? ["brandName", "title"]
+          : ["brandCarName", "name"],
     },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Dòng xe</span>
       ),
       name: "modelName",
-      dataIndex: ["modelName", "title"],
+      dataIndex:
+        activeTab == "first"
+          ? ["modelName", "title"]
+          : ["modelCarName", "name"],
     },
     {
       label: (

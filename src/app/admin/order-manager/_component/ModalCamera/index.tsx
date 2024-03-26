@@ -4,11 +4,11 @@ import Tesseract, { createWorker } from "tesseract.js";
 import { Modal, Box, Button } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import cv from "@techstark/opencv-js";
-
+import axios from "axios";
+import img from "@/assets/images/banner.png";
 const ModalCamera = ({ openModal, close }: any) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [licensePlate, setLicensePlate] = useState("");
-  const [chassisNumber, setChassisNumber] = useState("");
   const [processedImage, setProcessedImage] = useState("");
   const webcamRef = useRef<Webcam>(null);
 
@@ -52,29 +52,40 @@ const ModalCamera = ({ openModal, close }: any) => {
       ctx.putImageData(imageData, 0, 0);
 
       const image = canvas.toDataURL("image/jpeg");
-
+      setProcessedImage(image);
+      const ai = {
+        requests: [
+          {
+            image: { content: image },
+            features: [
+              {
+                type: "DOCUMENT_TEXT_DETECTION",
+              },
+            ],
+          },
+        ],
+      };
+      const KEY =
+        "1081535431992-ann37vgoqg5vqt4ei2qninubr62m167c.apps.googleusercontent.com";
+      const res = await axios.post(
+        `https://vision.googleapis.com/v1/images:annotate?key=${KEY}`,
+        ai,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(res);
       const licensePlate = await doOCR(
         image,
         "-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
       );
-      const chassisNumber = await doOCR(
-        image,
-        "()ABCDEFGHJKLMNPRSTUVWXYZ0123456789"
-      );
 
-      setLicensePlate(licensePlate);
-      setChassisNumber(chassisNumber);
-      setProcessedImage(canvas.toDataURL("image/jpeg"));
+      // setLicensePlate(licensePlate);
+      // setProcessedImage(canvas.toDataURL("image/jpeg"));
     }
   };
-
-  useEffect(() => {
-    if (openModal) {
-      setLicensePlate("");
-      setChassisNumber("");
-      setProcessedImage("");
-    }
-  }, [openModal]);
 
   return (
     <Modal
@@ -112,13 +123,6 @@ const ModalCamera = ({ openModal, close }: any) => {
           onChange={(e) => setLicensePlate(e.target.value)}
         />
         <br />
-        <input
-          id="chassisnumber"
-          type="text"
-          placeholder="Chassis Number"
-          value={chassisNumber}
-          onChange={(e) => setChassisNumber(e.target.value)}
-        />
         <div
           style={{
             width: "100%",
