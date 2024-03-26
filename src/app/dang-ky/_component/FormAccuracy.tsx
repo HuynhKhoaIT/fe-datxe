@@ -5,6 +5,7 @@ import { useForm, hasLength } from "@mantine/form";
 import { CheckOtp, register } from "@/utils/user";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
+import { createCustomer } from "@/app/libs/prisma/customer";
 export function FormAccuracy() {
   const [opened, handlers] = useDisclosure(false);
 
@@ -37,7 +38,7 @@ export function FormAccuracy() {
         });
         try {
           await register(name, phone, password, passwordConfirmation);
-
+          
           notifications.show({
             title: "Thành công",
             message: "Đăng ký thành công",

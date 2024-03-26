@@ -1,7 +1,7 @@
 import RenderContext from "@/app/components/elements/RenderContext";
 import ExpertDetailPageDesktop from "@/app/layout/desktop/chuyen-gia/ExpertDetailPage";
 import ExpertDetailPageMobile from "@/app/layout/mobile/chuyen-gia/ExpertDetailPage";
-import { getProductById, getProducts } from "@/app/libs/prisma/product";
+import {  getProducts } from "@/app/libs/prisma/product";
 import { apiUrl } from "@/constants";
 import BlogImage1 from "@/assets/images/blog/blog1.png";
 import BlogImage2 from "@/assets/images/blog/blog2.png";
@@ -11,17 +11,9 @@ import IconFaceBook from "@/assets/icons/faceBook.svg";
 import IconZalo from "@/assets/icons/zalo.svg";
 import IconIg from "@/assets/icons/instagram.svg";
 import { getCategories } from "@/app/libs/prisma/category";
+import { getGarageByCode, showGarage } from "@/app/libs/prisma/garage";
 
-async function getExpertDetail(garageId: number) {
-  const res = await fetch(`${apiUrl}/api/garage/${garageId}`, {
-    method: "GET",
-  });
-  if (!res.ok) {
-    throw new Error(`HTTP error! Status: ${res.status}`);
-  }
-  const data = await res.json();
-  return data;
-}
+
 
 const blogs = [
   {
@@ -99,16 +91,16 @@ const convenients = [
   { id: "4", name: "Giặc giũ", image: BlogImage4.src, properties: 129768 },
   { id: "5", name: "Bi-a", image: BlogImage4.src, properties: 129768 },
 ];
-export default async function DetailProduct({
+export default async function DetailGarage({
   params,
 }: {
-  params: { slug: number };
+  params: { slug: string };
 }) {
-  const expertDetail: any = await getExpertDetail(9);
-  const categories = await getCategories({});
-  const services = await getProducts(0, { isProduct: "0" });
-  const products = await getProducts(0, { isProduct: "1" });
-
+  const expertDetail: any = await getGarageByCode(params.slug);
+  console.log('expertDetail',expertDetail)
+  const categories = await getCategories({garageId: expertDetail.id});
+  const services = await getProducts( { isProduct: "0", garageId: expertDetail.id });
+  const products = await getProducts({ isProduct: "1",garageId: expertDetail.id });
   return (
     <RenderContext
       components={{
