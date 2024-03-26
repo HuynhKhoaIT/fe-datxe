@@ -13,16 +13,24 @@ import { statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import ListPage from "@/app/components/layout/ListPage";
 import axios from "axios";
+import useFetch from "@/app/hooks/useFetch";
+import { useSearchParams } from "next/navigation";
+import { getCategories } from "./until";
+import { QueryClient } from "@tanstack/react-query";
+const queryClient = new QueryClient();
+
 const DynamicModalDeleteItem = dynamic(
-  () => import("../board/ModalDeleteItem"),
+  () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
 const DynamicModalCategories = dynamic(() => import("./ModalCategoriesDLBD"));
-export default function CategoryListPage({ dataSource, profile }: any) {
+export default function CategoryListPage({ profile }: any) {
+  const searchParams = useSearchParams();
+  const [page, setPage] = useState<number>(1);
+
   const [deleteRow, setDeleteRow] = useState();
-  const [loadingTable, handlers] = useDisclosure(true);
 
   const handleDeleteItem = async (id: any) => {
     try {
@@ -31,16 +39,12 @@ export default function CategoryListPage({ dataSource, profile }: any) {
         title: "Thành công",
         message: "Xoá danh mục thành công",
       });
+      refetch();
     } catch (error) {
       console.error("error: ", error);
     }
   };
 
-  useEffect(() => {
-    if (dataSource?.data) {
-      handlers.close();
-    }
-  }, [dataSource]);
   const [
     openedDeleteItem,
     { open: openDeleteProduct, close: closeDeleteItem },
@@ -177,6 +181,28 @@ export default function CategoryListPage({ dataSource, profile }: any) {
     s: "",
     status: null,
   };
+
+  const {
+    data: categories,
+    isLoading: loadingCategories,
+    isPlaceholderData,
+    isFetching: isFetchingCategories,
+    refetch,
+  } = useFetch({
+    queryKey: ["categories", searchParams.toString(), page],
+    queryFn: () => getCategories(searchParams.toString(), page),
+  });
+
+  useEffect(() => {
+    if (!isPlaceholderData) {
+      queryClient.prefetchQuery({
+        queryKey: ["categories", searchParams.toString(), page],
+        queryFn: () => getCategories(searchParams.toString(), page),
+        staleTime: Infinity,
+      });
+    }
+  }, [searchParams, isPlaceholderData, page, queryClient, categories]);
+  console.log(isFetchingCategories);
   return (
     <div>
       <ListPage
@@ -218,12 +244,12 @@ export default function CategoryListPage({ dataSource, profile }: any) {
         titleTable={true}
         baseTable={
           <TableBasic
-            data={dataSource?.data}
+            data={categories?.data}
             columns={columns}
-            loading={loadingTable}
-            // totalPage={marketing?.totalPage}
-            // setPage={setPage}
-            // activePage={page}
+            loading={loadingCategories || isFetchingCategories}
+            totalPage={categories?.totalPage}
+            setPage={setPage}
+            activePage={page}
           />
         }
       />

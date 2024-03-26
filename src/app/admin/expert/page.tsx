@@ -24,7 +24,7 @@ const Breadcrumbs = [
   { title: "Chuyên gia" },
 ];
 const DynamicModalDeleteItem = dynamic(
-  () => import("../board/ModalDeleteItem"),
+  () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }

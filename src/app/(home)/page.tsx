@@ -66,16 +66,7 @@ export default async function Home() {
   const productsRelate = await getProducts(0, {});
   const servicesHot = await getProducts(0, { isProduct: "0" });
   const productsHot = await getProducts(0, { isProduct: "1" });
-  const carsData = await getCarModes({});
-  const province: any = await getProvinces();
-  const provinceData = province.map((item: any) => ({
-    value: item.id.toString(),
-    label: item.name,
-  }));
-  const carsOption = carsData.map((item: any) => ({
-    value: item.id.toString(),
-    label: item.title,
-  }));
+
   return (
     <RenderContext
       components={{
@@ -92,8 +83,6 @@ export default async function Home() {
       servicesHot={servicesHot}
       productsHot={productsHot}
       blogs={blogs}
-      carsOption={carsOption}
-      provinceData={provinceData}
     />
   );
 }

@@ -20,7 +20,7 @@ import styles from "./index.module.scss";
 import Typo from "@/app/components/elements/Typo";
 import axios from "axios";
 const DynamicModalDeleteItem = dynamic(
-  () => import("../board/ModalDeleteItem"),
+  () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }

@@ -1,5 +1,6 @@
 "use client";
 import {
+  ActionIcon,
   Box,
   Button,
   Card,
@@ -25,6 +26,7 @@ import {
   IconBan,
   IconTrash,
   IconChevronRight,
+  IconCamera,
 } from "@tabler/icons-react";
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
@@ -49,7 +51,9 @@ import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
 import axios from "axios";
 import { getOrders } from "../until";
-
+const DynamicModalCamera = dynamic(() => import("../_component/ModalCamera"), {
+  ssr: false,
+});
 const DynamicModalChooseProducts = dynamic(
   () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
   {
@@ -108,7 +112,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     openModalNubmberPlates,
     { open: openModalNumberPlates, close: closeModalNumberPlates },
   ] = useDisclosure(false);
-
+  const [
+    openedModalCamera,
+    { open: openModalCamera, close: closeModalCamera },
+  ] = useDisclosure(false);
   const form = useForm({
     initialValues: {
       detail: selectedProducts,
@@ -479,22 +486,42 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             </Tabs.List>
             {!isEditing && (
               <Tabs.Panel value="numberPlates">
-                <TextInput
-                  size="lg"
-                  radius={0}
-                  withAsterisk
-                  {...form.getInputProps("numberPlates")}
-                  label="Biển số xe"
-                  type="text"
-                  onChange={(e) => {
-                    if (e.target.value.length > 0) {
-                      handlersPlate.close();
-                    }
-                    form.setFieldValue("numberPlates", e.target.value);
-                  }}
-                  error={errorPlate ? "Vui lòng nhập..." : false}
-                  placeholder="Biển số xe"
-                />
+                <Grid gutter={12}>
+                  <Grid.Col span={10}>
+                    <TextInput
+                      size="lg"
+                      radius={0}
+                      withAsterisk
+                      {...form.getInputProps("numberPlates")}
+                      // label="Biển số xe"
+                      type="text"
+                      onChange={(e) => {
+                        if (e.target.value.length > 0) {
+                          handlersPlate.close();
+                        }
+                        form.setFieldValue("numberPlates", e.target.value);
+                      }}
+                      error={errorPlate ? "Vui lòng nhập..." : false}
+                      placeholder="Biển số xe"
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={2}>
+                    <ActionIcon
+                      onClick={openModalCamera}
+                      size="lg"
+                      h={50}
+                      w={50}
+                      variant="filled"
+                      aria-label="Settings"
+                    >
+                      <IconCamera
+                        style={{ width: "70%", height: "70%" }}
+                        stroke={1.5}
+                      />
+                    </ActionIcon>
+                  </Grid.Col>
+                </Grid>
+
                 <div className={styles.footer}>
                   <Button
                     size="lg"
@@ -1269,6 +1296,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
           handleGetInfo={handleGetInfo}
         />
       )}
+      <DynamicModalCamera
+        openModal={openedModalCamera}
+        close={closeModalCamera}
+      />
     </Box>
   );
 }

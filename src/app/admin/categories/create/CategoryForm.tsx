@@ -18,11 +18,15 @@ import { IconPlus, IconBan } from "@tabler/icons-react";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
 import { notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import FooterSavePage from "../../_component/FooterSavePage";
+import useFetch from "@/app/hooks/useFetch";
+import { getCategories } from "../until";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
+  const searchParams = useSearchParams();
+
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
@@ -42,6 +46,19 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       // image: (value) => (value.length < 1 ? "Không được để trống" : null),
     },
   });
+
+  const {
+    data: categories,
+    isLoading: loadingCategories,
+    isPlaceholderData,
+    isFetching: isFetchingCategories,
+    refetch,
+  } = useFetch({
+    queryKey: ["categories", searchParams.toString(), 1],
+    queryFn: () => getCategories(searchParams.toString(), 1),
+  });
+
+  console.log(categories);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -95,13 +112,13 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
           body: JSON.stringify(values),
         });
       }
-      handlers.close();
-      router.back();
-      router.refresh();
       notifications.show({
         title: "Thành công",
         message: "Thành công",
       });
+      router.back();
+
+      refetch();
     } catch (error) {
       handlers.close();
       notifications.show({
