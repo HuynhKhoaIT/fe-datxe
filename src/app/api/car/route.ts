@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
+import axios from 'axios';
+import { getPlatesNumberFromImg } from '@/utils/car';
 
 export async function GET(request: NextRequest) {
     try {
