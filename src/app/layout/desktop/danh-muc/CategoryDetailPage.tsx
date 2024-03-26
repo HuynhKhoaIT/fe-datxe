@@ -30,8 +30,8 @@ const CategoryDetailPageDesktop = ({
     isFetching: isFetchingCategories,
     refetch,
   } = useFetch({
-    queryKey: ["categories", searchParams.toString(), page],
-    queryFn: () => getCategories(searchParams.toString(), page),
+    queryKey: ["categories", , 1],
+    queryFn: () => getCategories(searchParams.toString(), 1),
   });
   return (
     <div className={styles.wrapper}>

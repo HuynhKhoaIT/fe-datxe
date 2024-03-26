@@ -1,3 +1,4 @@
+"use client";
 import Container from "@/app/components/common/Container";
 import { FilterRadio } from "@/app/components/elements/filterRadio";
 import styles from "./CategoryDetailPage.module.scss";
@@ -8,9 +9,12 @@ import Blogs from "./Blogs";
 import Hero from "../trang-chu/Hero";
 import Reassons from "../trang-chu/Reasons";
 import Filter from "./Filter";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import useFetch from "@/app/hooks/useFetch";
+import { getCategories } from "@/app/admin/categories/until";
 
 const CategoryDetailPageMobile = ({
-  categories,
   kindProduct,
   slideshowData,
   products,
@@ -21,7 +25,7 @@ const CategoryDetailPageMobile = ({
   return (
     <div className={styles.wrapper}>
       <Hero slideshowData={slideshowData} height={135} />
-      <Filter kindProduct={kindProduct} />
+      <Filter kindProduct={kindProduct.data} />
       <Container>
         <Products products={products?.data} />
       </Container>
