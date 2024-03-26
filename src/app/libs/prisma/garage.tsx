@@ -1,4 +1,6 @@
+import { createBitlyGarage } from "@/utils/garage";
 import prisma from "../prismadb";
+import { randomString } from "@/utils";
 
 export async function getGarages(requestData: any) {
   try {
@@ -77,11 +79,19 @@ export async function getGarageIdByDLBDID(dlbdId:number) {
 
 
 export async function showGarage(id:number) {
-    return await prisma.garage.findFirst({
+    const garage = await prisma.garage.findFirst({
         where:{
-            id: id,
-        }
+            id: Number(id),
+        },
+        include: {
+          amenities: {
+              include: {
+                  amenities: true,
+              },
+          },
+      },
     });
+    return garage;
 }
 
 export async function getGarageByDlbdId(garageId: number){
@@ -109,10 +119,11 @@ export async function createGarage(data: any) {
         });
       });
     }
+    const code = await getRandomCodeForGarage();
     const garage = await prisma.garage.create({
       data: {
         routeId: Number(data.routeId),
-        code: "111222",
+        code: code ?? '',
         name: data.name,
         shortName: data.shortName,
         logo: data.logo,
@@ -131,6 +142,19 @@ export async function createGarage(data: any) {
         amenities: true,
       },
     });
+    if(garage){
+      const createBitly = await createBitlyGarage(garage);
+      if(createBitly){
+        await  prisma.garage.update({
+          where: {
+            id: Number(garage.id),
+          },
+          data: {
+            bitlyUrl: createBitly.id
+          },
+        })
+      }
+    }
     return garage;
   } catch (error) {
     return { error };
@@ -185,4 +209,27 @@ export async function deleteGarage(id: number) {
   } catch (error) {
     return { error };
   }
+}
+
+export async function getRandomCodeForGarage() {
+  let str = randomString(5).toLocaleUpperCase();
+  const c = await getGarageByCode(str);
+  if(!c){
+      return str;
+  }
+  await getRandomCodeForGarage();
+}
+
+export async function getGarageByCode(code: string){
+  try {
+      const rs = await prisma.garage.findFirst({
+          where: {
+              code: code,
+          }
+      });
+      return rs;
+  } catch (error) {
+      return { error };
+  }
+  
 }

@@ -106,14 +106,26 @@ export const getOrderDetail = async (orderId = 0) => {
 export function showStatus(status: any) {
   let s = "Đang tiếp nhận";
   switch (status) {
+    case "0":
+      s = "Đang chờ";
+      break;
     case "1":
       s = "Tiếp nhận";
       break;
     case "2":
       s = "Báo giá";
       break;
-    case "7":
+    case "3":
+      s = "Đang sửa chữa";
+      break;
+    case "4":
       s = "Hoàn thành";
+      break;    
+    case "5":
+      s = "Xuất xưởng";
+      break;    
+    case "-1":
+      s = "Đã hủy";
       break;
     default:
       s = "Đang xử lý";

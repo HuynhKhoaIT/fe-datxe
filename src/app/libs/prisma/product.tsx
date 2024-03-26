@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "../prismadb";
 
-export async function getProducts(garage: Number,requestData:any) {
+export async function getProducts(requestData:any) {
   try {
-    
     let currentPage = 1;
     let take = 10;
     if(requestData.limit){
@@ -52,8 +51,7 @@ export async function getProducts(garage: Number,requestData:any) {
     if (searchText) {
         titleFilter = searchText;
     }
-
-    if (garage) {
+    if(requestData.garageId){
       garageId = requestData.garageId;
     }
 
@@ -91,7 +89,7 @@ export async function getProducts(garage: Number,requestData:any) {
                       },
                       brands,
                       status: {
-                          not: 'DELETE',
+                        not: 'DELETE',
                       },
                       garageId,
                       isProduct,

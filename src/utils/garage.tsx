@@ -56,3 +56,27 @@ export const getEmployees = async (id: string) => {
     throw new Error("Lỗi trong quá trình lấy danh sách CVDV"); // Xử lý lỗi và thông báo lỗi cho phía front-end
   }
 };
+
+export const createBitlyGarage = async(data:any) => {
+  try {
+    const bitlyURL = `https://oga.datxe.com/chuyen-gia/${data.code}`;
+    const config = {
+      headers: { Authorization: `Bearer ${process.env.BITLY_TOKEN}` },
+    };
+    const res = await axios.post(
+      `https://api-ssl.bitly.com/v4/shorten`,
+      {
+        "group_guid": "Bk7pfJpZbxY",
+        "domain": "bit.ly",
+        "long_url": bitlyURL,
+        "title": data.name
+      },
+      config
+    );
+    return res.data as Promise<any>;
+  } catch (error) {
+    console.error(error);
+    return error;
+    throw new Error("Lỗi trong quá trình Tạo Qr Code");
+  }
+}
