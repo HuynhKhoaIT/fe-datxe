@@ -11,6 +11,7 @@ import {
   IconLogout,
   IconUsers,
   IconCar,
+  IconClipboard,
 } from "@tabler/icons-react";
 import classes from "./NavbarNested.module.scss";
 import { LinksGroup } from "../components/NavBarLinksGroup/NavBarLinksGroup";
@@ -39,6 +40,8 @@ const mockdata = [
       { label: "Danh mục", link: "/admin/categories" },
     ],
   },
+  { link: "/admin/blogs", label: "Danh sách bài viết", icon: IconClipboard },
+
   { link: "/admin/cars", label: "Danh sách xe", icon: IconCar },
   // {
   //   link: "/admin/productBrand",

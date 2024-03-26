@@ -174,12 +174,12 @@ const kindProduct = {
     {
       id: "1",
       value: true,
-      title: "Sản phẩm",
+      name: "Sản phẩm",
     },
     {
       id: "2",
       value: false,
-      title: "Dịch  vụ",
+      name: "Dịch  vụ",
     },
   ],
 };
