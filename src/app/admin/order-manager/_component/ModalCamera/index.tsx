@@ -57,6 +57,7 @@ const ModalCamera = ({ openModal, close }: any) => {
       const res = await axios.post(`/api/car/take-plates-number`, {
         img: processedBase64,
       });
+      setLicensePlate(res?.data?.data);
       console.log(res);
     }
   };
