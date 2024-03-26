@@ -53,37 +53,11 @@ const ModalCamera = ({ openModal, close }: any) => {
 
       const image = canvas.toDataURL("image/jpeg");
       setProcessedImage(image);
-      const ai = {
-        requests: [
-          {
-            image: { content: image },
-            features: [
-              {
-                type: "DOCUMENT_TEXT_DETECTION",
-              },
-            ],
-          },
-        ],
-      };
-      const KEY =
-        "1081535431992-ann37vgoqg5vqt4ei2qninubr62m167c.apps.googleusercontent.com";
-      const res = await axios.post(
-        `https://vision.googleapis.com/v1/images:annotate?key=${KEY}`,
-        ai,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const processedBase64 = image.substring(image.indexOf(",") + 1);
+      const res = await axios.post(`/api/car/take-plates-number`, {
+        img: processedBase64,
+      });
       console.log(res);
-      const licensePlate = await doOCR(
-        image,
-        "-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-      );
-
-      // setLicensePlate(licensePlate);
-      // setProcessedImage(canvas.toDataURL("image/jpeg"));
     }
   };
 
