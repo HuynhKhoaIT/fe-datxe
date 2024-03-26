@@ -63,9 +63,17 @@ const blogs = [
 ];
 export default async function Home() {
   const categories = await getCategories({});
-  const productsRelate = await getProducts(0, {});
-  const servicesHot = await getProducts(0, { isProduct: "0" });
-  const productsHot = await getProducts(0, { isProduct: "1" });
+  const productsRelate = await getProducts({
+    garageId: 0,
+  });
+  const servicesHot = await getProducts({
+    garageId: 0,
+    isProduct: "0",
+  });
+  const productsHot = await getProducts({
+    garageId: 0,
+    isProduct: "1",
+  });
 
   return (
     <RenderContext
