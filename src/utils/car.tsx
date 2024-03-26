@@ -178,3 +178,35 @@ export async function getCarsFromDLBD(token : string){
   const data = await res.json();
   return data;
 }
+
+export async function getPlatesNumberFromImg(img:string) {
+  const res = await fetch(
+    'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyBOzbQ6x2QGBERqj6a-aAPrAmtmcs6KUn0',
+    {
+        method: 'POST',
+        body: `{
+        "requests":[
+          {
+            "image":{
+              "content":
+                  "${img}"
+              
+            },
+            "features":[
+              {
+                "type":"DOCUMENT_TEXT_DETECTION",
+                "maxResults":2
+              }
+            ]
+          }
+        ]
+      }`,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    },
+    );
+  const data = await res.json();
+  
+  return data.responses[0].textAnnotations[0].description;
+}

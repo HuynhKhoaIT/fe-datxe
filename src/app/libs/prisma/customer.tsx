@@ -115,6 +115,19 @@ export async function getCustomers(requestData: any) {
   };
 }
 
+export async function getMyCustomers(phoneNumber: string) {
+  const rs = await prisma.customer.findMany({
+    where: {
+      phoneNumber,
+      status: {
+        not: 'DELETE'
+      }
+    }
+  });
+  return rs;
+}
+
+
 export async function syncCustomerFromDLBD(requestData: any) {
   try {
     const customer = await prisma.customer.findFirst({

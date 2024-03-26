@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import prisma from "../prismadb";
 import { createCar } from "./car";
-import { createCustomer } from "./customer";
+import { createCustomer, getMyCustomers } from "./customer";
 import { randomString } from "@/utils";
 
 
@@ -102,6 +102,113 @@ export async function getOrders(garage: Number,requestData: any){
         totalPage: Math.ceil(total / limit),
         status: 200
     };
+    } catch (error) {
+        return { error };
+    }
+    
+}
+export async function getMyOrders(requestData: any){
+    
+    try {        
+        const customers = await getMyCustomers(requestData.phoneNumber);
+        let customerIdArray:[number] = [0];
+        customers.forEach(c => {
+            customerIdArray.push(c.id);
+        });
+        if(customers){
+            let titleFilter = '';
+            const searchText = requestData.s;
+            if (searchText) {
+                titleFilter = searchText;
+            }
+            let garageId = {};
+            let currentPage = 1;
+            let take = 10;
+            let limit = Number(requestData.limit);
+            let page = requestData.page;
+
+            if (page) {
+                currentPage = Number(page);
+            }
+            if (limit) {
+                take = Number(limit);
+            } else {
+                limit = 10;
+            }
+            const skip = take * (currentPage - 1); 
+            let createdById = {};
+            if(requestData.createdById){
+                createdById = 1
+            }
+            let step = {};
+            if(requestData.step){
+                step = requestData.step;
+            }
+            let method = {}
+            if(requestData.method){
+                method = requestData.method;
+            }
+            const [data,total] = await prisma.$transaction([   
+                prisma.order.findMany({
+                    take: take,
+                    skip: skip,
+                    orderBy: {
+                        id: 'desc',
+                    },
+                    where: {
+                        status: {
+                            not: 'DELETE',
+                        },
+                        createdById,
+                        step,
+                        method,
+                        customerId: {
+                            in: customerIdArray
+                        }
+                    },
+                    include: {
+                        serviceAdvisor: true,
+                        car: true,
+                        customer: true,
+                        orderDetails: {
+                            select: {
+                                productId:true,
+                                note: true,
+                                priceSale: true,
+                                price: true,
+                                subTotal: true,
+                                saleType: true,
+                                quantity: true,
+                                product: {
+                                    select:{
+                                        name: true,
+                                        sku: true,
+                                        images:true
+                                    }
+                                }
+                            }
+                        },
+                    },
+                }),
+                prisma.order.count({
+                    where: {
+                        status: {
+                            not: 'DELETE',
+                        },
+                        createdById,
+                    },
+                })
+            ]);
+            return {
+                data: data,
+                total: total,
+                currentPage: currentPage,
+                limit: limit,
+                totalPage: Math.ceil(total / limit),
+                status: 200
+            };
+        } 
+    
     } catch (error) {
         return { error };
     }
