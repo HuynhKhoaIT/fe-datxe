@@ -13,7 +13,7 @@ import { statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import axios from "axios";
 const DynamicModalDeleteItem = dynamic(
-  () => import("../board/ModalDeleteItem"),
+  () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }

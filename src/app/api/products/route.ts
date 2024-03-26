@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
                 garageId: garageId,
                 isProduct: isProduct,
             };
-            const products = await getProducts(garageId, requestData);
+            const products = await getProducts(requestData);
 
             return NextResponse.json(products);
         }

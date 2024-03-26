@@ -169,18 +169,20 @@ const reassons = [
       "Từ dịch vụ rửa xe, mâm & lốp, chăm sóc toàn diện, ắc quy, phụ tùng và cả việc bảo dưỡng định kỳ nữa. Ban có thể so sánh và tìm kiếm hệ thống Chuyên gia trên cả nước.",
   },
 ];
-const kindProduct = [
-  {
-    id: "1",
-    value: true,
-    name: "Sản phẩm",
-  },
-  {
-    id: "2",
-    value: false,
-    name: "Dịch  vụ",
-  },
-];
+const kindProduct = {
+  data: [
+    {
+      id: "1",
+      value: true,
+      title: "Sản phẩm",
+    },
+    {
+      id: "2",
+      value: false,
+      title: "Dịch  vụ",
+    },
+  ],
+};
 const slideshowData = [
   {
     image: Banner1.src,
@@ -195,10 +197,8 @@ export default async function DetailCategory({
 }: {
   params: { slug: number };
 }) {
-  const categoryDetail: any = getCategoryById(params?.slug);
-  const categories = await getCategories({});
-  const products = await getProducts(0, { category: params?.slug });
-  const productRelate: any = await getProducts(0, {});
+  const products = await getProducts({ category: params?.slug });
+  const productRelate: any = await getProducts({});
 
   return (
     <RenderContext
@@ -210,8 +210,6 @@ export default async function DetailCategory({
           defaultTheme: CategoryDetailPageMobile,
         },
       }}
-      categoryDetail={categoryDetail}
-      categories={categories}
       products={products}
       blogs={blogs}
       kindProduct={kindProduct}

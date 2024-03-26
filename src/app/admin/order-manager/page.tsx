@@ -20,7 +20,7 @@ import axios from "axios";
 import FilterStepOrder from "@/app/components/common/FilterStepOrder/FilterCategories";
 import { getOrders } from "./until";
 const DynamicModalDeleteItem = dynamic(
-  () => import("../board/ModalDeleteItem"),
+  () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }

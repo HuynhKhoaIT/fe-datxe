@@ -4,14 +4,28 @@ import styles from "./index.module.scss";
 import { useRouter } from "next/navigation";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
-import { getOptionsModels, getOptionsYearCar } from "@/utils/until";
-const Book = ({ carsOption, provinceData }: any) => {
+import {
+  getOptionsBrands,
+  getOptionsModels,
+  getOptionsProvince,
+  getOptionsYearCar,
+} from "@/utils/until";
+import useFetch from "@/app/hooks/useFetch";
+const Book = () => {
   const router = useRouter();
   const form = useForm({
     initialValues: {},
     validate: {},
   });
+  const { data: provinceOptions, isLoading: isLoading } = useFetch({
+    queryKey: ["provinceOptions"],
+    queryFn: () => getOptionsProvince(),
+  });
 
+  const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
+    queryKey: ["brandOptions"],
+    queryFn: () => getOptionsBrands(),
+  });
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
 
@@ -38,7 +52,7 @@ const Book = ({ carsOption, provinceData }: any) => {
               label="Vị trí"
               variant="unstyled"
               placeholder="Chọn vị trí"
-              data={provinceData}
+              data={provinceOptions}
             />
           </li>
           <li className={styles.item}>
@@ -48,7 +62,7 @@ const Book = ({ carsOption, provinceData }: any) => {
               variant="unstyled"
               label="Hãng xe"
               placeholder="Chọn hãng xe"
-              data={carsOption}
+              data={brandOptions}
               onChange={async (value) => {
                 const optionsData = await getOptionsModels(Number(value));
                 setModelOptions(optionsData);
