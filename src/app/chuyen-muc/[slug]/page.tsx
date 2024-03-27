@@ -197,6 +197,7 @@ export default async function DetailCategory({
 }: {
   params: { slug: number };
 }) {
+
   const products = await getProducts({ category: params?.slug });
   const productRelate: any = await getProducts({});
 
