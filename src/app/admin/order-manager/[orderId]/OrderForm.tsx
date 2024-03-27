@@ -1329,6 +1329,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         openModal={openedModalCamera}
         close={closeModalCamera}
         formOrder={form}
+        setNumberPlate={setNumberPlate}
       />
     </Box>
   );
