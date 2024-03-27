@@ -52,35 +52,35 @@ interface formData {
     status: any;
 }
 
-export async function POST(request: Request) {
+export async function POST(json: any) {
     try {
         const session = await getServerSession(authOptions);
         if (session) {
             let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
-            const json: formData = await request.json();
-            const errors: string[] = [];
-            const validationSchame = [
-                {
-                    valid: validator.isLength(json.fullName, {
-                        min: 4,
-                    }),
-                    errorMessage: 'Fullname is invalid',
-                },
-                {
-                    valid: validator.isLength(json.phoneNumber, {
-                        min: 1,
-                    }),
-                    errorMessage: 'phoneNumber is invalid',
-                },
-            ];
-            validationSchame.forEach((check) => {
-                if (!check.valid) {
-                    errors.push(check.errorMessage);
-                }
-            });
-            if (errors.length) {
-                return NextResponse.json({ errorMessage: errors });
-            }
+            // const json: formData = await request.json();
+            // const errors: string[] = [];
+            // const validationSchame = [
+            //     {
+            //         valid: validator.isLength(json.fullName, {
+            //             min: 3,
+            //         }),
+            //         errorMessage: 'Họ tên ít nhất 3 ký tự',
+            //     },
+            //     {
+            //         valid: validator.isLength(json.phoneNumber, {
+            //             min: 1,
+            //         }),
+            //         errorMessage: 'phoneNumber is invalid',
+            //     },
+            // ];
+            // validationSchame.forEach((check) => {
+            //     if (!check.valid) {
+            //         errors.push(check.errorMessage);
+            //     }
+            // });
+            // if (errors.length) {
+            //     return NextResponse.json({ errorMessage: errors });
+            // }
 
             const customer = await prisma.customer.create({
                 data: {
