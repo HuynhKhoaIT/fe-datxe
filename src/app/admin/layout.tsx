@@ -42,7 +42,7 @@ export default function Layout({ children }: IProps) {
           <SigninButton />
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar zIndex={99999}>
+      <AppShell.Navbar zIndex={99}>
         <Group h={60} pl={"md"}>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           {/* <Text>Navbar</Text> */}

@@ -41,8 +41,8 @@ export default function ModalNumberPlates({
       setCarOptions(data);
       return data;
     };
-    if (debounced?.length >= 3) {
-      console.log(fetchData());
+    if (debounced?.length >= 1) {
+      fetchData();
     }
   }, [debounced]);
   const [
@@ -71,15 +71,6 @@ export default function ModalNumberPlates({
         <Typo style={{ fontSize: 24, fontWeight: 500 }}>Nhập biển số xe</Typo>
         <Grid gutter={12}>
           <Grid.Col span={10}>
-            {/* <TextInput
-              w={"100%"}
-              size="lg"
-              radius={0}
-              withAsterisk
-              {...formOrder.getInputProps("numberPlates")}
-              type="text"
-              placeholder="Biển số xe"
-            /> */}
             <Autocomplete
               size="lg"
               radius={0}
@@ -89,6 +80,10 @@ export default function ModalNumberPlates({
               value={numberPlate}
               onChange={(value) => {
                 setNumberPlate(value);
+                formOrder.setFieldValue("numberPlates", value);
+              }}
+              onOptionSubmit={(value) => {
+                console.log(value);
               }}
               // data={["React", "Angular", "Vue", "Svelte"]}
             />
