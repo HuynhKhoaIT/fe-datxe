@@ -6,7 +6,7 @@ import { getCategories } from "../libs/prisma/category";
 import { getProducts } from "../libs/prisma/product";
 
 export default async function Products() {
-  const products = await getProducts(0, {});
+  const products = await getProducts({ garageId: 0 });
   const categroies = await getCategories({});
 
   return (

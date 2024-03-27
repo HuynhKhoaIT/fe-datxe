@@ -10,7 +10,7 @@ export default async function DetailProduct({
   params: { slug: number };
 }) {
   const product = await getProductById(params?.slug);
-  const productsRelate = await getProducts(0, {});
+  const productsRelate = await getProducts({ garageId: 0 });
 
   return (
     <RenderContext

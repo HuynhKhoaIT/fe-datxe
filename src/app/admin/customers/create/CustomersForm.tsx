@@ -7,12 +7,10 @@ import {
   TextInput,
   Textarea,
   Select,
-  Autocomplete,
   LoadingOverlay,
   Box,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan } from "@tabler/icons-react";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
 import { notifications } from "@mantine/notifications";
@@ -30,6 +28,10 @@ import {
 } from "@/utils/until";
 export default function CustomersForm({ isEditing, dataDetail }: any) {
   const [loading, handlers] = useDisclosure();
+  const [province, setProvince] = useState<any>();
+  const [district, setDistrict] = useState<any>();
+  const [ward, setWard] = useState<any>();
+
   const form = useForm({
     initialValues: {
       fullName: "",
@@ -85,9 +87,6 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
 
   const [districtOptions, setDistrictOptions] = useState<any>([]);
   const [wardOptions, setWardOptions] = useState<any>([]);
-  const [province, setProvince] = useState<string>();
-  const [district, setDistrict] = useState<string>();
-  const [ward, setWard] = useState<string>();
 
   const { data: provinceOptions, isLoading: isLoading } = useFetch({
     queryKey: ["provinceOptions"],
@@ -180,78 +179,65 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
                   />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
-                  <Autocomplete
+                  <Select
                     size="lg"
                     radius={0}
-                    withAsterisk
-                    {...form.getInputProps("cityId")}
+                    {...form.getInputProps("provinceId")}
                     label="Tỉnh/Thành phố"
-                    placeholder="Tỉnh/Thành phố"
+                    placeholder="Chọn tỉnh"
                     data={provinceOptions}
-                    onOptionSubmit={async (value) => {
+                    value={province}
+                    onChange={async (value) => {
                       const optionsData = await getOptionsDistrict(
                         Number(value)
                       );
                       setDistrictOptions(optionsData);
-                      form.setFieldValue("cityId", value);
+                      if (value)
+                        form.setFieldValue("cityId", value?.toString());
                       form.setFieldValue("districtId", "");
                       form.setFieldValue("wardId", "");
-                      setDistrict("");
-                      setWard("");
-                    }}
-                    onChange={(value) => {
                       setProvince(value);
+                      setDistrict(null);
+                      setWard(null);
                     }}
-                    value={province}
-                    selectFirstOptionOnChange
-                  />
+                  ></Select>
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
-                  <Autocomplete
+                  <Select
                     size="lg"
                     radius={0}
-                    withAsterisk
                     {...form.getInputProps("districtId")}
-                    label="Huyện/Phường"
-                    placeholder="Huyện/Phường"
+                    label="Huyện/Quận"
+                    placeholder="Chọn huyện/quận"
                     data={districtOptions}
-                    onOptionSubmit={async (value) => {
+                    value={district}
+                    onChange={async (value) => {
                       const optionsData = await getOptionsWard(Number(value));
                       setWardOptions(optionsData);
-                      form.setFieldValue("districtId", value);
+                      if (value)
+                        form.setFieldValue("districtId", value?.toString());
                       form.setFieldValue("wardId", "");
-                      setWard("");
-                    }}
-                    onChange={(value) => {
                       setDistrict(value);
+
+                      setWard(null);
                     }}
-                    value={district}
-                    disabled={!form.getInputProps("cityId").value}
-                    selectFirstOptionOnChange
-                  />
+                  ></Select>
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 4 }}>
-                  <Autocomplete
+                  <Select
                     size="lg"
                     radius={0}
-                    withAsterisk
                     {...form.getInputProps("wardId")}
-                    disabled={
-                      !form.getInputProps("cityId").value ||
-                      !form.getInputProps("districtId").value
-                    }
-                    label="Xã/Thị trấn"
-                    placeholder="Xã/Thị trấn"
+                    label="Xã/Phường"
+                    placeholder="Chọn xã/phường"
                     data={wardOptions}
-                    onOptionSubmit={(value) => {
-                      form.setFieldValue("wardId", value);
-                    }}
+                    value={ward}
                     onChange={(value) => {
+                      if (value)
+                        form.setFieldValue("wardId", value?.toString());
                       setWard(value);
                     }}
-                    value={ward}
-                    selectFirstOptionOnChange
-                  />
+                  ></Select>
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 8, md: 8, lg: 8 }}>
                   <TextInput

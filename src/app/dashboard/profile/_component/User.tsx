@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Grid,
@@ -10,34 +10,37 @@ import {
   Card,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
-import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { getDistricts, getWards } from "@/utils/notion";
 import { updateAccount } from "@/utils/user";
 import { notifications } from "@mantine/notifications";
 import dayjs from "dayjs";
-import DateField from "../../form/DateField";
 import { useRouter } from "next/navigation";
 import styles from "./index.module.scss";
-import Typo from "../Typo";
-export default function UserProfile({
-  myAccount,
-  provinceData,
-  districtData: dtData,
-  wardData: wData,
-}: any) {
+import {
+  getOptionsDistrict,
+  getOptionsProvince,
+  getOptionsWard,
+} from "@/utils/until";
+import useFetch from "@/app/hooks/useFetch";
+import Typo from "@/app/components/elements/Typo";
+import DateField from "@/app/components/form/DateField";
+export default function UserProfile({ myAccount }: any) {
+  const [districtOptions, setDistrictOptions] = useState<any>([]);
+  const [wardOptions, setWardOptions] = useState<any>([]);
+  const [province, setProvince] = useState<any>();
+  const [district, setDistrict] = useState<any>();
+  const [ward, setWard] = useState<any>();
+  const { data: provinceOptions, isLoading: isLoading } = useFetch({
+    queryKey: ["provinceOptions"],
+    queryFn: () => getOptionsProvince(),
+  });
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.token;
-  const [districtData, setDistrictData] = useState<any>(dtData);
-  const [wardData, setWardData] = useState<any>(wData);
   const form = useForm({
     initialValues: {
       name: myAccount.name,
       phone: myAccount.phone,
-      province_id: myAccount.provinceId,
-      district_id: myAccount.districtId,
-      ward_id: myAccount.wardId,
       dob: myAccount?.dob && dayjs(myAccount?.dob).toDate(),
       address: myAccount.address,
     },
@@ -46,26 +49,6 @@ export default function UserProfile({
       name: (value) => (value.length > 1 ? null : "Vui lòng nhập tên"),
     },
   });
-  const handleProvince = async (value: any) => {
-    try {
-      const district: any = await getDistricts(value);
-      const newDistrictData = district?.map((item: any) => ({
-        value: item.id?.toString() || "",
-        label: item.name || "",
-      }));
-      setDistrictData(newDistrictData);
-    } catch (error) {}
-  };
-  const handleDistrict = async (value: any) => {
-    try {
-      const ward: any = await getWards(value);
-      const newWardData = ward?.map((item: any) => ({
-        value: item.id?.toString() || "",
-        label: item.name || "",
-      }));
-      setWardData(newWardData);
-    } catch (error) {}
-  };
 
   const handleUpdateProfile = async (values: any) => {
     try {
@@ -82,6 +65,31 @@ export default function UserProfile({
       });
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (myAccount) {
+        try {
+          const [districts, wards] = await Promise.all([
+            getOptionsDistrict(Number(myAccount?.provinceId)),
+            getOptionsWard(Number(myAccount?.districtId)),
+          ]);
+          setDistrictOptions(districts);
+          setWardOptions(wards);
+
+          form.setFieldValue("province_id", myAccount?.provinceId?.toString());
+          form.setFieldValue("district_id", myAccount?.districtId?.toString());
+          form.setFieldValue("ward_id", myAccount?.wardId?.toString());
+          setProvince(myAccount?.provinceId?.toString());
+          setDistrict(myAccount?.districtId?.toString());
+          setWard(myAccount?.wardId?.toString());
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div className={styles.wrapper}>
       <div>
@@ -143,12 +151,17 @@ export default function UserProfile({
                   {...form.getInputProps("province_id")}
                   label="Tỉnh/Thành phố"
                   placeholder="Chọn tỉnh"
-                  data={provinceData}
-                  onChange={(value) => {
+                  data={provinceOptions}
+                  value={province}
+                  onChange={async (value) => {
+                    const optionsData = await getOptionsDistrict(Number(value));
+                    setDistrictOptions(optionsData);
                     form.setFieldValue("province_id", value);
-                    form.setFieldValue("ward_id", null);
-                    form.setFieldValue("district_id", null);
-                    handleProvince(Number(value));
+                    form.setFieldValue("district_id", "");
+                    form.setFieldValue("ward_id", "");
+                    setProvince(value);
+                    setDistrict(null);
+                    setWard(null);
                   }}
                 ></Select>
               </Grid.Col>
@@ -157,13 +170,18 @@ export default function UserProfile({
                   size="lg"
                   radius={0}
                   {...form.getInputProps("district_id")}
-                  label="Huyện/Quận"
-                  placeholder="Chọn huyện/quận"
-                  data={districtData}
-                  onChange={(value) => {
+                  label="Huyện/Phường"
+                  placeholder="Huyện/Phường"
+                  data={districtOptions}
+                  value={district}
+                  onChange={async (value) => {
+                    const optionsData = await getOptionsWard(Number(value));
+                    setWardOptions(optionsData);
                     form.setFieldValue("district_id", value);
-                    form.setFieldValue("ward_id", null);
-                    handleDistrict(Number(value));
+                    form.setFieldValue("ward_id", "");
+                    setDistrict(value);
+
+                    setWard(null);
                   }}
                 ></Select>
               </Grid.Col>
@@ -174,9 +192,11 @@ export default function UserProfile({
                   {...form.getInputProps("ward_id")}
                   label="Xã/Phường"
                   placeholder="Chọn xã/phường"
-                  data={wardData}
+                  data={wardOptions}
+                  value={ward}
                   onChange={(value) => {
                     form.setFieldValue("ward_id", value);
+                    setWard(value);
                   }}
                 ></Select>
               </Grid.Col>

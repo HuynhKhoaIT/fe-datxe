@@ -3,7 +3,6 @@ import { Box, Space } from "@mantine/core";
 import Typo from "@/app/components/elements/Typo";
 import styles from "../index.module.scss";
 import React, { Suspense, useEffect, useState } from "react";
-import { getCarSsr } from "@/utils/car";
 import { LoadingComponent } from "@/app/components/loading";
 import CarForm from "../create/CarForm";
 import axios from "axios";

@@ -23,9 +23,10 @@ import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
-import { getCategories } from "../until";
-export default function CategoryForm({ isEditing, dataDetail }: any) {
+import QuillEditor from "@/app/components/elements/RichTextEditor";
+export default function BlogForm({ isEditing, dataDetail }: any) {
   const searchParams = useSearchParams();
+  const [valueRTE, setValueRTE] = useState("");
 
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
@@ -47,18 +48,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     },
   });
 
-  const {
-    data: categories,
-    isLoading: loadingCategories,
-    isPlaceholderData,
-    isFetching: isFetchingCategories,
-    refetch,
-  } = useFetch({
-    queryKey: ["categories", searchParams.toString(), 1],
-    queryFn: () => getCategories(searchParams.toString(), 1),
-  });
-
-  console.log(categories);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -117,8 +106,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
         message: "Thành công",
       });
       router.back();
-
-      refetch();
     } catch (error) {
       handlers.close();
       notifications.show({
@@ -174,9 +161,9 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                     size="lg"
                     radius={0}
                     {...form.getInputProps("title")}
-                    label="Tên danh mục"
+                    label="Tên bài viết"
                     type="text"
-                    placeholder="Tên danh mục"
+                    placeholder="Tên bài viết"
                   />
                 </Grid.Col>
                 <Grid.Col span={4}>
@@ -197,14 +184,14 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
               </Grid>
               <Grid mt={24}>
                 <Grid.Col span={12}>
-                  <Textarea
-                    size="lg"
-                    radius={0}
-                    label="Mô tả chi tiết"
-                    minRows={4}
-                    autosize={true}
-                    {...form.getInputProps("description")}
-                    placeholder="Mô tả"
+                  <QuillEditor
+                    theme="snow"
+                    placeholder="Mô tả chi tiết"
+                    className={"quill"}
+                    defaultValue={dataDetail?.description || ""}
+                    setValue={setValueRTE}
+                    value={valueRTE}
+                    style={{ height: 600 }}
                   />
                 </Grid.Col>
               </Grid>

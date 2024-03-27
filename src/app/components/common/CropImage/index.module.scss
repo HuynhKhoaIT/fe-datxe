@@ -1,0 +1,41 @@
+.imagePreviewContaier{
+    position: relative;
+}
+.imagePreview {
+    display: none;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    transition: 0.3s;
+}
+
+.editIcon{
+    position: absolute;
+    cursor: pointer;
+    right: 5%;
+    bottom: 5%;
+}
+
+.imagePreview:hover,
+.round:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.imageUploader {
+    display: none;
+}
+
+.round {
+    display: block;
+    height: auto;
+    // width: 200px;
+    border-radius: 50%;
+    background: #e5e5e5;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.wrapper {
+    display: flex;
+}

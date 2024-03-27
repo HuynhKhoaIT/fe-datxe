@@ -39,7 +39,7 @@ const LandingPageMobile = ({
   return (
     <div>
       <Hero slideshowData={slideshowData} />
-      <Book provinceData={provinceData} carsOption={carsOption} />
+      <Book />
       <div
         style={{
           padding: "340px 0 30px 0",

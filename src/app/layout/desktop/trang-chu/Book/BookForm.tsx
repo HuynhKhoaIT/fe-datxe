@@ -8,8 +8,23 @@ import ArrowDown from "@/assets/icons/arrow-down.svg";
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
-import { getOptionsModels, getOptionsYearCar } from "@/utils/until";
-export default function BookForm({ carsOption, provinceData }: any) {
+import {
+  getOptionsBrands,
+  getOptionsModels,
+  getOptionsProvince,
+  getOptionsYearCar,
+} from "@/utils/until";
+import useFetch from "@/app/hooks/useFetch";
+export default function BookForm() {
+  const { data: provinceOptions, isLoading: isLoading } = useFetch({
+    queryKey: ["provinceOptions"],
+    queryFn: () => getOptionsProvince(),
+  });
+
+  const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
+    queryKey: ["brandOptions"],
+    queryFn: () => getOptionsBrands(),
+  });
   const router = useRouter();
   const icon = <img src={ArrowDown.src} />;
   const form = useForm({
@@ -57,7 +72,7 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       leftSectionPointerEvents="none"
                       rightSection={<></>}
                       placeholder="Vị trí"
-                      data={provinceData}
+                      data={provinceOptions}
                     />
                     <Select
                       {...form.getInputProps("carBrandId")}
@@ -67,7 +82,7 @@ export default function BookForm({ carsOption, provinceData }: any) {
                       leftSectionPointerEvents="none"
                       rightSection={<></>}
                       placeholder="Hãng xe"
-                      data={carsOption}
+                      data={brandOptions}
                       onChange={async (value) => {
                         const optionsData = await getOptionsModels(
                           Number(value)
