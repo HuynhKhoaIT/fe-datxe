@@ -111,7 +111,7 @@ export const register = async (
       signIn("credentials", {
         phone: phone,
         password: password,
-        callbackUrl: `/dashboard/auto-create-customer?phone=${phone}&name=${name}`,
+        callbackUrl: `/dashboard?isNewCustomer=1&phone=${phone}&name=${name}`,
       });
     } else {
       console.log("Regiter failed");

@@ -7,11 +7,20 @@ import { getOrders } from "../libs/prisma/order";
 import useFetch from "../hooks/useFetch";
 import { useSearchParams } from "next/navigation";
 import { QueryClient } from "@tanstack/react-query";
-import { getMyOrders } from "./until";
+import { CreateCustomer, getMyOrders } from "./until";
 const queryClient = new QueryClient();
 
 export default function Dashboard() {
   const searchParams = useSearchParams();
+  const name = searchParams.get("name");
+  const phone = searchParams.get("phone");
+  const isNewCustomer = searchParams.get("isNewCustomer");
+  if (isNewCustomer && name && phone) {
+    const { data } = useFetch({
+      queryFn: () => CreateCustomer(name, phone),
+    });
+  }
+
   const [page, setPage] = useState<number>(1);
 
   const {
