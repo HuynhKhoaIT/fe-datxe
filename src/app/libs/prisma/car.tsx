@@ -125,6 +125,25 @@ export async function getCars(requestData: any) {
   };
 }
 
+export async function getCarsByPlates(titleFilter:string,garageId: number) {
+  return await prisma.car.findMany({
+    orderBy: {
+      id: "desc",
+    },
+    where: {
+      AND: [
+        {
+          numberPlates: {
+            contains: titleFilter,
+          },
+          garageId: garageId,
+          status: "PUBLIC",
+        },
+      ],
+    },
+  });
+}
+
 export async function getMyCars(requestData: any) {
   const customer = await getCustomerByPhone(
     requestData.phoneNumber,

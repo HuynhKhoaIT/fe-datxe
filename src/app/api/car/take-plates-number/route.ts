@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 import { getPlatesNumberFromImg } from '@/utils/car';
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
     try {
         const json = await request.json();
         const data = await getPlatesNumberFromImg(json.img);
