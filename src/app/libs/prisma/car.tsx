@@ -127,6 +127,7 @@ export async function getCars(requestData: any) {
 
 export async function getCarsByPlates(titleFilter:string,garageId: number) {
   return await prisma.car.findMany({
+    take: 10,
     orderBy: {
       id: "desc",
     },

@@ -54,11 +54,10 @@ interface formData {
 
 export async function POST(request: Request) {
     try {
-        const json = await request.json();
         const session = await getServerSession(authOptions);
         if (session) {
             let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
-            // const json: formData = await request.json();
+            const json: formData = await request.json();
             // const errors: string[] = [];
             // const validationSchame = [
             //     {
