@@ -1,6 +1,7 @@
 "use client";
 import {
   ActionIcon,
+  Autocomplete,
   Box,
   Button,
   Card,
@@ -32,7 +33,11 @@ import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import {
+  useDebouncedValue,
+  useDisclosure,
+  useMediaQuery,
+} from "@mantine/hooks";
 import { stepOrderOptions } from "@/constants/masterData";
 import dynamic from "next/dynamic";
 import ListPage from "@/app/components/layout/ListPage";
@@ -50,7 +55,7 @@ import {
 import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
 import axios from "axios";
-import { getOrders } from "../until";
+import { getOptionsCar, getOrders } from "../until";
 const DynamicModalCamera = dynamic(() => import("../_component/ModalCamera"), {
   ssr: false,
 });
@@ -85,7 +90,20 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [activeTab, setActiveTab] = useState<string | null>(
     !isEditing ? "numberPlates" : "customer"
   );
+  const [carOptions, setCarOptions] = useState([]);
 
+  const [numberPlate, setNumberPlate] = useState("");
+  const [debounced] = useDebouncedValue(numberPlate, 400);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data: any = await getOptionsCar({ s: debounced });
+      setCarOptions(data);
+      return data;
+    };
+    if (debounced?.length >= 1) {
+      fetchData();
+    }
+  }, [debounced]);
   const [isUser, handlersIsUser] = useDisclosure();
 
   const [errorPlate, handlersPlate] = useDisclosure();
@@ -225,8 +243,9 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   // Tính tổng tiền
   const calculateSubTotal = () => {
     let subTotal = 0;
+    console.log(form.values?.detail);
     form.values?.detail?.forEach((item: any) => {
-      subTotal += item.priceSale * item.quantity;
+      subTotal += item?.priceSale * item.quantity;
     });
     return subTotal;
     // form.setFieldValue("total", subTotal);
@@ -267,7 +286,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         }
         router.back();
         refetch();
-        router.refresh();
       }
     } catch (error) {
       console.error("Error during API call:", error);
@@ -488,7 +506,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               <Tabs.Panel value="numberPlates">
                 <Grid gutter={12}>
                   <Grid.Col span={10}>
-                    <TextInput
+                    {/* <TextInput
                       size="lg"
                       radius={0}
                       withAsterisk
@@ -503,6 +521,17 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       }}
                       error={errorPlate ? "Vui lòng nhập..." : false}
                       placeholder="Biển số xe"
+                    /> */}
+                    <Autocomplete
+                      size="lg"
+                      radius={0}
+                      placeholder="Biển số xe"
+                      data={carOptions}
+                      value={numberPlate}
+                      onChange={(value) => {
+                        setNumberPlate(value);
+                        form.setFieldValue("numberPlates", value);
+                      }}
                     />
                   </Grid.Col>
                   <Grid.Col span={2}>
@@ -821,7 +850,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       <div className={styles.subTotal}>
                         <span className={styles.titleSubTotal}>Tiền hàng:</span>
                         <span className={styles.valueSubTotal}>
-                          {calculateSubTotal().toLocaleString()}
+                          {calculateSubTotal()?.toLocaleString()}
                         </span>
                       </div>
                     </Grid.Col>

@@ -42,13 +42,13 @@ export default function Layout({ children }: IProps) {
           <SigninButton />
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar zIndex={99}>
+      <AppShell.Navbar zIndex={100}>
         <Group h={60} pl={"md"}>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           {/* <Text>Navbar</Text> */}
-          <a href={"/"}>
+          <Link href={"/"}>
             <img style={{ height: "60px" }} src={logo.src} alt="logo" />
-          </a>
+          </Link>
         </Group>
         <NavbarNested />
       </AppShell.Navbar>

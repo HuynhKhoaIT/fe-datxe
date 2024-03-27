@@ -138,6 +138,7 @@ export default function ModalNumberPlates({
         openModal={openedModalCamera}
         close={closeModalCamera}
         formOrder={formOrder}
+        setNumberPlate={setNumberPlate}
       />
     </Modal>
   );
