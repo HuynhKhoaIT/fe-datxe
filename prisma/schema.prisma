@@ -390,17 +390,17 @@ model ReviewsProduct {
 }
 
 model Post{
-  id  Int  @id @default(autoincrement())
-  slug            String?
-  title String
-  description String
-  shortDescription String?
-  thumbnail String
-  categories      CategoriesOnPosts[]
-  status          STATUS @default(DRAFT)
-  createdBy       Int @default(1)
-  garage          Garage @relation(fields: [garageId], references: [id])
-  garageId        Int @default(1)
+  id                Int  @id @default(autoincrement())
+  slug              String?
+  title             String
+  description       String
+  shortDescription  String?
+  thumbnail         String
+  categories        CategoriesOnPosts[]
+  status            STATUS @default(DRAFT)
+  createdBy         Int @default(1)
+  garage            Garage @relation(fields: [garageId], references: [id])
+  garageId          Int @default(1)
 }
 
 model PostCategory{
