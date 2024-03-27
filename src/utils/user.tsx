@@ -28,20 +28,18 @@ import { createCustomer } from "@/app/libs/prisma/customer";
  * @return {Promise<void>}
  */
 
-
-export async function getUserByValidSessionToken(token : string){
-
-  const res = await fetch(GET_PROFILE_ENDPOINT,{
+export async function getUserByValidSessionToken(token: string) {
+  const res = await fetch(GET_PROFILE_ENDPOINT, {
     headers: {
       "Content-Type": "application/json",
-      "Authorization":"Bearer "+token
+      Authorization: "Bearer " + token,
     },
   });
 
   const data = await res.json();
   return {
-    username: data.name
-  }
+    username: data.name,
+  };
 }
 
 export const getMyAccount = async () => {
@@ -108,12 +106,12 @@ export const register = async (
         },
       }
     );
-    
+
     if (res.status === 200) {
       signIn("credentials", {
         phone: phone,
         password: password,
-        callbackUrl: `/auto-create-customer?phone=${phone}&name=${name}`,
+        callbackUrl: `/dashboard/auto-create-customer?phone=${phone}&name=${name}`,
       });
     } else {
       console.log("Regiter failed");
@@ -149,11 +147,11 @@ export const registerGarage = async (
         },
       }
     );
-    console.log(res.status)
-    console.log(res.data)
+    console.log(res.status);
+    console.log(res.data);
     if (res.status === 201 || res.status === 200) {
-      await fetch('/api/garage',{
-        method: 'POST',
+      await fetch("/api/garage", {
+        method: "POST",
         body: JSON.stringify({
           routeId: Number(res.data.id),
           code: "111222",
@@ -166,7 +164,7 @@ export const registerGarage = async (
           address: address,
           status: "PUBLIC",
           description: "",
-        })
+        }),
       });
       signIn("credentials", {
         phone: phone,
