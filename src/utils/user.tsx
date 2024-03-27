@@ -108,18 +108,13 @@ export const register = async (
         },
       }
     );
-
+    
     if (res.status === 200) {
-      await createCustomer({
-        fullName: name,
-        phoneNumber: phone,
-        garageId: process.env.GARAGE_DEFAULT,
-        status: 'PUBLIC',
-      });
+      
       signIn("credentials", {
         phone: phone,
         password: password,
-        callbackUrl: "/dashboard",
+        callbackUrl: "/auto-create-customer",
       });
     } else {
       console.log("Regiter failed");
