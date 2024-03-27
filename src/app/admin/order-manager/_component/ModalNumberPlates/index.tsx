@@ -1,7 +1,9 @@
 "use client";
 import Typo from "@/app/components/elements/Typo";
+import useFetch from "@/app/hooks/useFetch";
 import {
   ActionIcon,
+  Autocomplete,
   Box,
   Button,
   Grid,
@@ -13,6 +15,7 @@ import { useForm } from "@mantine/form";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconCamera } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
+import { getOptionsCar } from "../../until";
 
 const DynamicModalCamera = dynamic(() => import("../ModalCamera"), {
   ssr: false,
@@ -28,7 +31,10 @@ export default function ModalNumberPlates({
     openedModalCamera,
     { open: openModalCamera, close: closeModalCamera },
   ] = useDisclosure(false);
-
+  const { data: carOptions, isLoading } = useFetch({
+    queryKey: ["carOptions"],
+    queryFn: () => getOptionsCar(),
+  });
   return (
     <Modal
       opened={openModal}
@@ -37,7 +43,7 @@ export default function ModalNumberPlates({
       lockScroll
       centered
       radius={0}
-      zIndex={99999}
+      zIndex={99}
       closeOnEscape={false}
       closeOnClickOutside={false}
       size={isMobile ? "100%" : "400px"}
@@ -46,7 +52,7 @@ export default function ModalNumberPlates({
         <Typo style={{ fontSize: 24, fontWeight: 500 }}>Nhập biển số xe</Typo>
         <Grid gutter={12}>
           <Grid.Col span={10}>
-            <TextInput
+            {/* <TextInput
               w={"100%"}
               size="lg"
               radius={0}
@@ -54,6 +60,14 @@ export default function ModalNumberPlates({
               {...formOrder.getInputProps("numberPlates")}
               type="text"
               placeholder="Biển số xe"
+            /> */}
+            <Autocomplete
+              size="lg"
+              radius={0}
+              {...formOrder.getInputProps("numberPlates")}
+              placeholder="Biển số xe"
+              data={carOptions}
+              // data={["React", "Angular", "Vue", "Svelte"]}
             />
           </Grid.Col>
           <Grid.Col span={2}>

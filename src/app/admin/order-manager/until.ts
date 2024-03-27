@@ -8,3 +8,20 @@ export async function getOrders(searchParams: any, page: number) {
         console.error('error:', error);
     }
 }
+
+export async function getOptionsCar() {
+    try {
+        const res = await axios.get(`/api/car`);
+        if (!res.data) {
+            throw new Error('Failed to fetch data');
+        }
+        console.log(res.data);
+        const dataOption = res?.data?.map((item: any) => ({
+            value: item.id.toString(),
+            label: item.numberPlates,
+        }));
+        return dataOption;
+    } catch (error) {
+        console.error('error: ', error);
+    }
+}
