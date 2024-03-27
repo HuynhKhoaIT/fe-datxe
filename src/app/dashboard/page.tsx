@@ -17,7 +17,7 @@ export default function Dashboard() {
   const isNewCustomer = searchParams.get("isNewCustomer");
   if (isNewCustomer && name && phone) {
     const { data } = useFetch({
-      queryFn: () => CreateCustomer(name, phone),
+      queryFn: async () => await CreateCustomer(name, phone),
     });
   }
 
