@@ -208,6 +208,6 @@ export async function getPlatesNumberFromImg(img:string) {
     );
   const data = await res.json();
   
-  let rs = data.responses[0].textAnnotations[0].description.replace(/([^0-9a-z-\s])/g, '');
-  rs = rs.replace()
+  let rs = data.responses[0].textAnnotations[0].description;
+  return rs;
 }
