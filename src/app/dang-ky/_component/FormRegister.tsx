@@ -32,6 +32,7 @@ export function FormRegister() {
     const { name, phone } = form.values;
     const res = await CheckPhone(phone);
     if (!res) {
+      
       const genRs = await GenOTP(phone);
       if (genRs.CodeResult == 100) {
         router.push(`./dang-ky/xac-thuc?name=${name}&phone=${phone}`);

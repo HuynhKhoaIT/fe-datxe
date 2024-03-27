@@ -47,6 +47,9 @@ export async function getPosts(requestData: any){
                 id: 'desc',
             },
             where: {
+                title: {
+                    contains: titleFilter
+                },
                 status: {
                     not: 'DELETE',
                 },
@@ -60,6 +63,9 @@ export async function getPosts(requestData: any){
             where: {
                 status: {
                     not: 'DELETE',
+                },
+                title: {
+                    contains: titleFilter
                 },
                 garageId: garageId
             },

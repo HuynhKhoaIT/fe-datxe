@@ -9,6 +9,8 @@ import styles from "./index.module.scss";
 import SigninButton from "../layout/common/desktop/login-button";
 import SearchFormName from "../components/elements/search/SearchFormName";
 import FooterAdmin from "../layout/common/desktop/Footer/footer-admin";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 interface IProps {
   children: ReactNode;
 }
@@ -16,7 +18,8 @@ export default function Layout({ children }: IProps) {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [opened, { toggle }] = useDisclosure();
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
-
+  const { data: session } = useSession();
+  
   return (
     <AppShell
       layout="alt"
