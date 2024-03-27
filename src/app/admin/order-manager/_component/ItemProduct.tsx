@@ -75,7 +75,7 @@ export default function ItemProduct({
           <div className={styles.title}>{data?.name}</div>
           <div className={styles.price}>
             <p style={{ color: "var(--primary-color)" }}>
-              {(data?.priceSale).toLocaleString("vi", {
+              {data?.priceSale?.toLocaleString("vi", {
                 style: "currency",
                 currency: "VND",
               })}

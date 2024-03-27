@@ -4,7 +4,7 @@ import Webcam from "react-webcam";
 import { Modal, Box, Button } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import axios from "axios";
-const ModalCamera = ({ openModal, close, formOrder }: any) => {
+const ModalCamera = ({ openModal, close, formOrder, setNumberPlate }: any) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [licensePlate, setLicensePlate] = useState("");
   const webcamRef = useRef<Webcam>(null);
@@ -38,6 +38,7 @@ const ModalCamera = ({ openModal, close, formOrder }: any) => {
       const plate: any = await TakePlatesNumber(processedBase64);
       setLicensePlate(plate?.data);
       formOrder.setFieldValue("numberPlates", plate?.data);
+      setNumberPlate(plate?.data);
       close();
     }
   };

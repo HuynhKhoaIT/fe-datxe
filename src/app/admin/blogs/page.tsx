@@ -16,7 +16,7 @@ import dynamic from "next/dynamic";
 import axios from "axios";
 import useFetch from "@/app/hooks/useFetch";
 import { QueryClient } from "@tanstack/react-query";
-import { getExperts } from "./until";
+import { getBlogs } from "./until";
 const queryClient = new QueryClient();
 
 const Breadcrumbs = [
@@ -58,23 +58,20 @@ const Blogs = () => {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
       ),
-      name: "image",
-      dataIndex: ["logo"],
+      name: "thumbnail",
+      dataIndex: ["thumbnail"],
       width: "90px",
       render: (data: any) => {
-        const image = JSON.parse(data);
-        if (!image) {
-          return (
-            <Image
-              radius="md"
-              src={ImageDefult.src}
-              h={40}
-              w="auto"
-              fit="contain"
-            />
-          );
-        }
-        return <Image radius="md " h={40} w={80} fit="contain" src={image} />;
+        console.log(data);
+        return (
+          <Image
+            radius="md "
+            h={40}
+            w={80}
+            fit="contain"
+            src={data || ImageDefult.src}
+          />
+        );
       },
     },
 
@@ -85,7 +82,7 @@ const Blogs = () => {
         </span>
       ),
       name: "name",
-      dataIndex: ["name"],
+      dataIndex: ["title"],
       render: (dataRow: any) => {
         return <span>{dataRow}</span>;
       },
@@ -132,7 +129,7 @@ const Blogs = () => {
           <>
             <Link
               href={{
-                pathname: `/admin/expert/${record.id}`,
+                pathname: `/admin/blogs/${record.id}`,
               }}
             >
               <Tooltip label="Cập nhật" withArrow position="bottom">
@@ -174,31 +171,31 @@ const Blogs = () => {
   const searchData = [
     {
       name: "s",
-      placeholder: "Tên chuyên gia",
+      placeholder: "Tên bài viết",
       type: "input",
     },
   ];
   const {
-    data: experts,
+    data: blogs,
     isLoading,
     error,
     isFetching,
     isPlaceholderData,
     refetch,
   } = useFetch({
-    queryKey: ["experts", page],
-    queryFn: () => getExperts(searchParams.toString(), page),
+    queryKey: ["blogs", searchParams.toString(), page],
+    queryFn: () => getBlogs(searchParams.toString(), page),
   });
 
   useEffect(() => {
-    if (!isPlaceholderData) {
+    if (!isPlaceholderData && searchParams) {
       queryClient.prefetchQuery({
-        queryKey: ["experts", page],
-        queryFn: () => getExperts(searchParams.toString(), page),
+        queryKey: ["blogs", searchParams.toString(), page],
+        queryFn: () => getBlogs(searchParams.toString(), page),
         staleTime: Infinity,
       });
     }
-  }, [experts, searchParams, isPlaceholderData, page, queryClient]);
+  }, [blogs, searchParams, isPlaceholderData, page, queryClient]);
 
   const initialValuesSearch = {
     s: "",
@@ -236,10 +233,10 @@ const Blogs = () => {
         titleTable={true}
         baseTable={
           <TableBasic
-            data={experts?.data}
+            data={blogs?.data}
             columns={columns}
             loading={isLoading}
-            totalPage={experts?.totalPage}
+            totalPage={blogs?.totalPage}
             setPage={setPage}
             activePage={page}
           />

@@ -19,7 +19,11 @@ export default function TableBasic({
 }: any) {
   return (
     <div className={classNames(styles.tableBasic, className)}>
-      <LoadingOverlay visible={loading} loaderProps={{ type: "bars" }} />
+      <LoadingOverlay
+        visible={loading}
+        loaderProps={{ type: "bars" }}
+        zIndex={99}
+      />
       <Table
         mih={loading ? 300 : 0}
         classNames={{

@@ -24,6 +24,7 @@ import axios from "axios";
 import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
+import { getBlogs } from "../until";
 export default function BlogForm({ isEditing, dataDetail }: any) {
   const searchParams = useSearchParams();
   const [valueRTE, setValueRTE] = useState("");
@@ -38,7 +39,7 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
   };
   const form = useForm({
     initialValues: {
-      image: "",
+      thumbnail: "",
       title: "",
       description: "",
     },
@@ -65,6 +66,17 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
       fetchData();
     }
   }, [dataDetail]);
+  const {
+    data: blogs,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["blogs", searchParams.toString(), 1],
+    queryFn: () => getBlogs(searchParams.toString(), 1),
+  });
   const router = useRouter();
   function convertToSlug(str: string) {
     str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
@@ -82,21 +94,22 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
         formData.append("image", file);
       }
       const response = await axios.post(baseURL, formData, options);
-      values.image = response.data;
+      values.thumbnail = response.data;
     } catch (error) {
       console.error("Error:", error);
     }
 
     values.slug = convertToSlug(values?.title);
+    values.description = valueRTE;
     handlers.open();
     try {
       if (!isEditing) {
-        await fetch(`/api/product-category`, {
+        await fetch(`/api/posts`, {
           method: "POST",
           body: JSON.stringify(values),
         });
       } else {
-        await fetch(`/api/product-category/${dataDetail?.id}`, {
+        await fetch(`/api/posts/${dataDetail?.id}`, {
           method: "PUT",
           body: JSON.stringify(values),
         });
@@ -106,6 +119,7 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
         message: "Thành công",
       });
       router.back();
+      refetch();
     } catch (error) {
       handlers.close();
       notifications.show({
