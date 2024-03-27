@@ -197,8 +197,8 @@ export default async function DetailCategory({
 }) {
   const categoryDetail: any = getCategoryById(params?.slug);
   const categories = await getCategories({});
-  const products = await getProducts(0, { category: params?.slug });
-  const productRelate: any = await getProducts(0, {});
+  const products = await getProducts({ category: params?.slug });
+  const productRelate: any = await getProducts({});
 
   return (
     <RenderContext
