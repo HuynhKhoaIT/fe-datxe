@@ -38,7 +38,7 @@ export async function getOrders(garage: Number,requestData: any){
     }
     let step = {};
     if(requestData.step){
-        step = requestData.step;
+        step = Number(requestData.step);
     }
     let method = {}
     if(requestData.method){
@@ -90,6 +90,8 @@ export async function getOrders(garage: Number,requestData: any){
                     not: 'DELETE',
                 },
                 createdById,
+                step,
+                method,
                 garageId: garageId
             },
         })
