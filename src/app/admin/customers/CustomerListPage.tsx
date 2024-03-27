@@ -19,7 +19,7 @@ import ListPage from "@/app/components/layout/ListPage";
 import styles from "./index.module.scss";
 import axios from "axios";
 const DynamicModalDeleteItem = dynamic(
-  () => import("../board/ModalDeleteItem"),
+  () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }

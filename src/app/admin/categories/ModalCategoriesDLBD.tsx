@@ -19,6 +19,8 @@ import { syncCategoryFromDlbd } from "@/app/libs/prisma/category";
 import { getGarageByDlbdId } from "@/app/libs/prisma/garage";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { getCategoriesDlbd } from "./until";
+import useFetch from "@/app/hooks/useFetch";
 export default function ModalCategoriesDLBD({
   openedModalCategories,
   closeModalCategories,
@@ -26,24 +28,18 @@ export default function ModalCategoriesDLBD({
 }: any) {
   const router = useRouter();
 
-  const [opened, handlers] = useDisclosure(false);
-  const [data, setData] = useState();
-  const getCategories = async () => {
-    try {
-      const data: any = await getCategoriesFromDLBD(
-        profile?.session?.user?.garageId
-      );
-      setData(data);
-    } catch (error) {
-      console.error("error get categories");
-    } finally {
-      handlers.close();
-    }
-  };
-  useEffect(() => {
-    handlers.open();
-    if (openedModalCategories) getCategories();
-  }, [openedModalCategories]);
+  const {
+    data: categoriesDlbd,
+    isLoading,
+    error,
+    isFetching,
+    isPlaceholderData,
+    refetch,
+  } = useFetch({
+    queryKey: ["categoriesDlbd"],
+    queryFn: () => getCategoriesDlbd(profile),
+  });
+
   const columns = [
     {
       label: (
@@ -148,12 +144,12 @@ export default function ModalCategoriesDLBD({
     >
       <Box>
         <LoadingOverlay
-          visible={opened}
+          visible={isLoading}
           zIndex={1000}
-          overlayProps={{ radius: "sm", blur: 2 }}
+          loaderProps={{ type: "bars" }}
         />
 
-        <TableBasic data={data} columns={columns} />
+        <TableBasic data={categoriesDlbd} columns={columns} />
       </Box>
     </Modal>
   );

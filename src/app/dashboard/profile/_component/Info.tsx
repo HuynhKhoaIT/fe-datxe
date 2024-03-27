@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./index.module.scss";
-import Typo from "../Typo";
+import Typo from "@/app/components/elements/Typo";
 export default function InfoProfile() {
   return (
     <div className={styles.wrapper}>

@@ -1,9 +1,22 @@
 "use client";
 import Typo from "@/app/components/elements/Typo";
-import { Box, Button, Group, Modal, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Grid,
+  Group,
+  Modal,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useMediaQuery } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { IconCamera } from "@tabler/icons-react";
+import dynamic from "next/dynamic";
 
+const DynamicModalCamera = dynamic(() => import("../ModalCamera"), {
+  ssr: false,
+});
 export default function ModalNumberPlates({
   openModal,
   close,
@@ -11,6 +24,11 @@ export default function ModalNumberPlates({
   handleGetInfo,
 }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
+  const [
+    openedModalCamera,
+    { open: openModalCamera, close: closeModalCamera },
+  ] = useDisclosure(false);
+
   return (
     <Modal
       opened={openModal}
@@ -26,15 +44,34 @@ export default function ModalNumberPlates({
     >
       <Box h={200} w={"100%"}>
         <Typo style={{ fontSize: 24, fontWeight: 500 }}>Nhập biển số xe</Typo>
-        <TextInput
-          w={"100%"}
-          size="lg"
-          radius={0}
-          withAsterisk
-          {...formOrder.getInputProps("numberPlates")}
-          type="text"
-          placeholder="Biển số xe"
-        />
+        <Grid gutter={12}>
+          <Grid.Col span={10}>
+            <TextInput
+              w={"100%"}
+              size="lg"
+              radius={0}
+              withAsterisk
+              {...formOrder.getInputProps("numberPlates")}
+              type="text"
+              placeholder="Biển số xe"
+            />
+          </Grid.Col>
+          <Grid.Col span={2}>
+            <ActionIcon
+              onClick={openModalCamera}
+              size="lg"
+              h={50}
+              w={50}
+              variant="filled"
+              aria-label="Settings"
+            >
+              <IconCamera
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          </Grid.Col>
+        </Grid>
         <div
           style={{
             width: "100%",
@@ -65,6 +102,10 @@ export default function ModalNumberPlates({
           </Button>
         </div>
       </Box>
+      <DynamicModalCamera
+        openModal={openedModalCamera}
+        close={closeModalCamera}
+      />
     </Modal>
   );
 }

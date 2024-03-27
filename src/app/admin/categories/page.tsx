@@ -13,15 +13,11 @@ async function getData() {
   const requestData = {
     session: session,
   };
-  const res = await getCategories(requestData);
-  return {
-    categories: res,
-    requestData,
-  };
+  return requestData;
 }
 
 export default async function Categories() {
-  let categories = await getData();
+  let session = await getData();
 
   const breadcrumbs = [
     { title: "Tổng quan", href: "/admin" },
@@ -30,10 +26,7 @@ export default async function Categories() {
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={breadcrumbs} />
-      <CategoryListPage
-        dataSource={categories?.categories}
-        profile={categories?.requestData}
-      />
+      <CategoryListPage profile={session} />
     </Fragment>
   );
 }

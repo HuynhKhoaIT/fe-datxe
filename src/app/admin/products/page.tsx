@@ -27,7 +27,7 @@ import { getOptionsCategories } from "@/utils/until";
 import { getProducts, getProductsDLBD } from "./until";
 import FilterCategories from "@/app/components/common/FilterCategory/FilterCategories";
 const DynamicModalDeleteItem = dynamic(
-  () => import("../board/ModalDeleteItem"),
+  () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }

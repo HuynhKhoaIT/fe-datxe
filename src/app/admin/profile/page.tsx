@@ -1,8 +1,8 @@
 import React from "react";
 import { getMyAccount } from "@/utils/user";
 import { getDistricts, getProvinces, getWards } from "@/utils/notion";
-import UserProfile from "@/app/components/elements/profile/User";
 import styles from "./index.module.scss";
+import UserProfile from "@/app/dashboard/profile/_component/User";
 export default async function ProfilePageAdmin() {
   const accountData: any = await getMyAccount();
   const province: any = await getProvinces();
