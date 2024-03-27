@@ -94,7 +94,6 @@ const ModalCamera = ({ openModal, close, formOrder }: any) => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          mirrored={true} // Phản chiếu hình ảnh
           videoConstraints={{
             facingMode: "environment", // Lựa chọn camera sau
           }}
