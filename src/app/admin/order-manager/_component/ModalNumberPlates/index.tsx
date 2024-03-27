@@ -12,10 +12,15 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import {
+  useDebouncedValue,
+  useDisclosure,
+  useMediaQuery,
+} from "@mantine/hooks";
 import { IconCamera } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import { getOptionsCar } from "../../until";
+import { useEffect, useState } from "react";
 
 const DynamicModalCamera = dynamic(() => import("../ModalCamera"), {
   ssr: false,
@@ -27,14 +32,28 @@ export default function ModalNumberPlates({
   handleGetInfo,
 }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
+  const [carOptions, setCarOptions] = useState([]);
+  const [numberPlate, setNumberPlate] = useState("");
+  const [debounced] = useDebouncedValue(numberPlate, 400);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data: any = await getOptionsCar({ s: debounced });
+      setCarOptions(data);
+      return data;
+    };
+    if (debounced?.length >= 3) {
+      console.log(fetchData());
+    }
+  }, [debounced]);
   const [
     openedModalCamera,
     { open: openModalCamera, close: closeModalCamera },
   ] = useDisclosure(false);
-  const { data: carOptions, isLoading } = useFetch({
-    queryKey: ["carOptions"],
-    queryFn: () => getOptionsCar(),
-  });
+  // const { data: carOptions, isLoading } = useFetch({
+  //   queryKey: ["carOptions"],
+  //   queryFn: () => getOptionsCar(),
+  // });
+  console.log(carOptions);
   return (
     <Modal
       opened={openModal}
@@ -67,6 +86,10 @@ export default function ModalNumberPlates({
               {...formOrder.getInputProps("numberPlates")}
               placeholder="Biển số xe"
               data={carOptions}
+              value={numberPlate}
+              onChange={(value) => {
+                setNumberPlate(value);
+              }}
               // data={["React", "Angular", "Vue", "Svelte"]}
             />
           </Grid.Col>
