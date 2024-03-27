@@ -1,31 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import Webcam from "react-webcam";
-import Tesseract, { createWorker } from "tesseract.js";
 import { Modal, Box, Button } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import cv from "@techstark/opencv-js";
 import axios from "axios";
-import img from "@/assets/images/banner.png";
-const ModalCamera = ({ openModal, close }: any) => {
+const ModalCamera = ({ openModal, close, formOrder }: any) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [licensePlate, setLicensePlate] = useState("");
-  const [processedImage, setProcessedImage] = useState("");
   const webcamRef = useRef<Webcam>(null);
-
-  const doOCR = async (image: Tesseract.ImageLike, characters: string) => {
-    const worker = await createWorker("eng");
-    await worker.setParameters({
-      tessedit_char_whitelist: characters,
-      certainty_scale: 80,
-    });
-    const {
-      data: { text },
-    } = await worker.recognize(image);
-    console.log(text);
-    await worker.terminate();
-
-    return text || "";
-  };
 
   const handleCapture = async () => {
     const videoElement = webcamRef.current?.video as HTMLVideoElement;
@@ -52,12 +33,44 @@ const ModalCamera = ({ openModal, close }: any) => {
       ctx.putImageData(imageData, 0, 0);
 
       const image = canvas.toDataURL("image/jpeg");
-      setProcessedImage(image);
       const processedBase64 = image.substring(image.indexOf(",") + 1);
+      const plate: any = await TakePlatesNumber(processedBase64);
+      setLicensePlate(plate?.data);
+      formOrder.setFieldValue("numberPlates", plate?.data);
+      close();
+    }
+  };
+
+  const TakePlatesNumber = async (processedBase64: any) => {
+    try {
       const res = await axios.post(`/api/car/take-plates-number`, {
         img: processedBase64,
       });
-      console.log(res);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleFileChange = (e: any) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        const base64String: any = reader.result;
+        const processedBase64 = base64String.substring(
+          base64String.indexOf(",") + 1
+        );
+
+        const plate: any = await TakePlatesNumber(processedBase64);
+        const modifiedString = plate?.data.replace(/[-.\n' ']/g, ""); // Loại bỏ dấu gạch ngang và dấu chấm
+        for (let i = 0; i < modifiedString.length; i++) {}
+        formOrder.setFieldValue("numberPlates", "76C13976");
+        close();
+      };
+
+      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -81,14 +94,21 @@ const ModalCamera = ({ openModal, close }: any) => {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
+          mirrored={true} // Phản chiếu hình ảnh
+          videoConstraints={{
+            facingMode: "environment", // Lựa chọn camera sau
+          }}
         />
-        {processedImage && (
-          <img
-            src={processedImage}
-            alt="Processed Image"
-            style={{ display: "block", maxWidth: "100%", marginBottom: 20 }}
-          />
-        )}
+        {/* <label htmlFor="avatar">Choose a profile picture:</label>
+
+        <input
+          type="file"
+          id="avatar"
+          name="avatar"
+          onChange={handleFileChange}
+          accept="image/png, image/jpeg"
+        />
+
         <input
           id="licenseplate"
           type="text"
@@ -96,7 +116,7 @@ const ModalCamera = ({ openModal, close }: any) => {
           value={licensePlate}
           onChange={(e) => setLicensePlate(e.target.value)}
         />
-        <br />
+        <br /> */}
         <div
           style={{
             width: "100%",

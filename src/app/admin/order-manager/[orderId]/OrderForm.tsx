@@ -1299,6 +1299,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       <DynamicModalCamera
         openModal={openedModalCamera}
         close={closeModalCamera}
+        formOrder={form}
       />
     </Box>
   );
