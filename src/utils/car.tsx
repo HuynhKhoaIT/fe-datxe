@@ -9,6 +9,7 @@ import { GET_CARS_DLBD_ENDPOINT, GET_CAR_ENDPOINT, SET_CAR_DEFAULT } from "./con
 import { ICar } from "@/interfaces/car";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { convertToPlatesNumber } from "./until";
 /**
  * Get getCars.
  *
@@ -207,7 +208,11 @@ export async function getPlatesNumberFromImg(img:string) {
     },
     );
   const data = await res.json();
+  try{
+    let rs = data.responses[0].textAnnotations[0].description;
+    return convertToPlatesNumber(rs);
+  } catch (error) {
+    return '';
+  }
   
-  let rs = data.responses[0].textAnnotations[0].description;
-  return rs;
 }
