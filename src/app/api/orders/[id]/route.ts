@@ -2,7 +2,8 @@ import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { findOrders, updateOrder } from '@/app/libs/prisma/order';
+import { findOrder, updateOrder } from '@/app/libs/prisma/order';
+import { sendSMSOrder } from '@/utils/order';
 
 export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
     try {
@@ -12,8 +13,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
             return new NextResponse("Missing 'id' parameter");
         }
         const session = await getServerSession(authOptions);
-        if (1) {
-            const order = await findOrders(id, request);
+        if (session) {
+            const order = await findOrder(id, request);
             return NextResponse.json(order);
         }
         throw new Error('Chua dang nhap');
@@ -25,7 +26,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
 export async function PUT(request: NextRequest, { params }: { params: { id: number } }) {
     try {
         const session = await getServerSession(authOptions);
-        if (1) {
+        if (session) {
             const id = params.id;
             let createdBy = 1;
             let garageId = 1;
@@ -39,7 +40,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: numb
                 garageId = Number(session.user.garageId);
             }
             const updatedOrder = await updateOrder(id, json);
-
             return new NextResponse(JSON.stringify(updatedOrder), {
                 status: 201,
                 headers: { 'Content-Type': 'application/json' },

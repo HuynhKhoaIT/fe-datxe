@@ -24,6 +24,8 @@ export async function GET(request: Request) {
                 step: searchParams.get('step'),
                 method: searchParams.get('method'),
                 createdById: searchParams.get('user'),
+                customerId: searchParams.get('customerId'),
+                carId: searchParams.get('carId'),
                 limit: limit,
                 page: page,
                 garageId: garageId,
