@@ -89,7 +89,7 @@ export default function convertToSlug(str: string) {
 
 export function convertToPlatesNumber(str: string){
   str = str.toUpperCase().replace(/([^0-9A-Z\s])/g, '').replace(/(\s+)/g, '')
-  let platesNumberFormat = /^\(?([0-9]{2}[A-Z]{1,2}[0-9]{4,6})/;
+  let platesNumberFormat = /\(?([0-9]{2}[A-Z]{1,2}[0-9]{4,6})/;
   return str.match(platesNumberFormat)?.[0];
 }
 

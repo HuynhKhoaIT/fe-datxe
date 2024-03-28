@@ -209,7 +209,9 @@ export async function getPlatesNumberFromImg(img:string) {
     );
   const data = await res.json();
   try{
+    // return data;
     let rs = data.responses[0].textAnnotations[0].description;
+    // return rs;
     return convertToPlatesNumber(rs);
   } catch (error) {
     return '';

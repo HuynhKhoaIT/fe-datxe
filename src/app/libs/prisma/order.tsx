@@ -298,6 +298,48 @@ export async function getOrderBySlug(slug: string){
     }
     
 }
+export async function getOrderByCode(code: string){
+    try {
+        const rs = await prisma.order.findFirst({
+            where: {
+                code: code,
+            },
+            include: {
+                serviceAdvisor: true,
+                car: true,
+                customer: true,
+                orderDetails: {
+                    select: {
+                        productId:true,
+                        note: true,
+                        priceSale: true,
+                        price: true,
+                        subTotal: true,
+                        saleType: true,
+                        saleValue: true,
+                        quantity: true,
+                        product: {
+                            select:{
+                                name: true,
+                                sku: true,
+                                images:true
+                            }
+                        }
+                    }
+                },
+                garage: true
+            },
+            orderBy: {
+                id: 'desc',
+            },
+        });
+        return rs;
+    } catch (error) {
+        return { error };
+    }
+    
+}
+
 
 export async function createOrder(json: any) {
     try {
@@ -401,10 +443,10 @@ export async function createOrder(json: any) {
                 });
             });
         }
-        
+        let orderCode = await getCodeForOrder() ?? '';
         let data = {
-            code: (await codeGeneration(garageId)).toString(),
-            slug: await getSlugForOrder(),
+            code: orderCode,
+            slug: orderCode.toLowerCase(),
             customerId: Number(customerId),
             carId: Number(carId),
             dateTime: json.dateTime ?? new Date(),
@@ -639,12 +681,12 @@ export async function codeGeneration(garageId: Number){
     }
 }
 
-export async function getSlugForOrder() {
-    let str = randomString(9).toLowerCase();
+export async function getCodeForOrder() {
+    let str = randomString(9).toUpperCase();
     const c = await getOrderBySlug(str);
     if(!c){
         return str;
     }
-    await getSlugForOrder();
+    await getCodeForOrder();
 }
 
