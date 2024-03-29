@@ -3,26 +3,21 @@ import Breadcrumb from "@/app/components/form/Breadcrumb";
 import SearchForm from "@/app/components/form/SearchForm";
 import ListPage from "@/app/components/layout/ListPage";
 import TableBasic from "@/app/components/table/Tablebasic";
-import { kindProductOptions, statusOptions } from "@/constants/masterData";
+import { statusOptions } from "@/constants/masterData";
 import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import Link from "next/link";
-import { Fragment, Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Fragment, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
-import axios from "axios";
-import useFetch from "@/app/hooks/useFetch";
-import { QueryClient } from "@tanstack/react-query";
-import { getExperts } from "./until";
-const queryClient = new QueryClient();
+import { useExperts } from "../hooks/expert/useExpert";
 
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Chuyên gia" },
 ];
+
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
   {
@@ -30,24 +25,21 @@ const DynamicModalDeleteItem = dynamic(
   }
 );
 const Expert = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [deleteRow, setDeleteRow] = useState();
-  const [loadingTable, handlers] = useDisclosure(false);
+  const {
+    experts,
+    isLoading,
+    isFetching,
+    error,
+    page,
+    setPage,
+    deleteItem,
+  } = useExperts();
 
-  const [page, setPage] = useState<number>(1);
-  const handleDeleteItem = async (idProduct: any) => {
-    try {
-      await axios.delete(`/api/garage/${idProduct}`);
-      notifications.show({
-        title: "Thành công",
-        message: "Xoá sản phẩm thành công",
-      });
-      refetch();
-    } catch (error) {
-      console.error("error: ", error);
-    }
+  const [deleteRow, setDeleteRow] = useState();
+  const handleDeleteItem = (id: any) => {
+    deleteItem(id);
   };
+
   const [
     openedDeleteItem,
     { open: openDeleteProduct, close: closeDeleteItem },
@@ -225,27 +217,6 @@ const Expert = () => {
       type: "input",
     },
   ];
-  const {
-    data: experts,
-    isLoading,
-    error,
-    isFetching,
-    isPlaceholderData,
-    refetch,
-  } = useFetch({
-    queryKey: ["experts", page],
-    queryFn: () => getExperts(searchParams.toString(), page),
-  });
-
-  useEffect(() => {
-    if (!isPlaceholderData) {
-      queryClient.prefetchQuery({
-        queryKey: ["experts", page],
-        queryFn: () => getExperts(searchParams.toString(), page),
-        staleTime: Infinity,
-      });
-    }
-  }, [experts, searchParams, isPlaceholderData, page, queryClient]);
 
   const initialValuesSearch = {
     s: "",

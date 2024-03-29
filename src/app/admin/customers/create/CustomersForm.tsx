@@ -1,9 +1,7 @@
 "use client";
 import {
-  Button,
   Card,
   Grid,
-  Group,
   TextInput,
   Textarea,
   Select,
@@ -12,21 +10,22 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import "react-quill/dist/quill.snow.css";
-import { useEffect, useRef, useState } from "react";
-import { notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { sexOptions, statusOptions } from "@/constants/masterData";
 import DateField from "@/app/components/form/DateField";
 import dayjs from "dayjs";
 import FooterSavePage from "../../_component/FooterSavePage";
-import useFetch from "@/app/hooks/useFetch";
-import {
-  getOptionsDistrict,
-  getOptionsProvince,
-  getOptionsWard,
-} from "@/utils/until";
+import { getOptionsDistrict, getOptionsWard } from "@/utils/until";
+import { useAddCustomer } from "../../hooks/customer/useAddCustomer";
 export default function CustomersForm({ isEditing, dataDetail }: any) {
+  const {
+    addItem,
+    updateItem,
+    provinceOptions,
+    isLoadingProvince,
+  } = useAddCustomer();
+
   const [loading, handlers] = useDisclosure();
   const [province, setProvince] = useState<any>();
   const [district, setDistrict] = useState<any>();
@@ -53,45 +52,18 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
     },
   });
 
-  const router = useRouter();
-
   const handleSubmit = async (values: any) => {
     handlers.open();
-    try {
-      if (!isEditing) {
-        await fetch(`/api/customer`, {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-      } else {
-        await fetch(`/api/customer/${dataDetail?.id}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-        });
-      }
-      handlers.close();
-      router.back();
-      router.refresh();
-      notifications.show({
-        title: "Thành công",
-        message: "Thành công",
-      });
-    } catch (error) {
-      handlers.close();
-      notifications.show({
-        title: "Thất bại",
-        message: "Thất bại",
-      });
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
+    handlers.close();
   };
 
   const [districtOptions, setDistrictOptions] = useState<any>([]);
   const [wardOptions, setWardOptions] = useState<any>([]);
-
-  const { data: provinceOptions, isLoading: isLoading } = useFetch({
-    queryKey: ["provinceOptions"],
-    queryFn: () => getOptionsProvince(),
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,10 +99,10 @@ export default function CustomersForm({ isEditing, dataDetail }: any) {
   return (
     <Box pos="relative">
       <LoadingOverlay
-        visible={loading}
+        visible={isLoadingProvince}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
-      />{" "}
+      />
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Grid gutter={12}>
           <Grid.Col span={12}>

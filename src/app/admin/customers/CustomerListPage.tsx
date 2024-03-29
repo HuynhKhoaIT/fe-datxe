@@ -1,15 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Badge, Button, Flex, Image, Tabs } from "@mantine/core";
-import {
-  IconPencil,
-  IconFilter,
-  IconPlus,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
-import { notifications } from "@mantine/notifications";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
 import { sexOptions, statusOptions } from "@/constants/masterData";
@@ -17,7 +11,6 @@ import SearchForm from "@/app/components/form/SearchForm";
 import dayjs from "dayjs";
 import ListPage from "@/app/components/layout/ListPage";
 import styles from "./index.module.scss";
-import axios from "axios";
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
   {
@@ -34,30 +27,18 @@ export default function CustomerListPage({
   setPage,
   isLoading,
   isLoadingDlbd,
-  refetch,
+  deleteItem,
 }: any) {
   const [deleteRow, setDeleteRow] = useState();
-  const handleDeleteItem = async (id: any) => {
-    try {
-      await axios.delete(`/api/customer/${id}`);
-      notifications.show({
-        title: "Thành công",
-        message: "Xoá thành công",
-      });
-      refetch();
-    } catch (error) {
-      console.error("error: ", error);
-    }
+  const handleDeleteItem = (id: string) => {
+    deleteItem(id);
   };
+
   const [
     openedDeleteItem,
     { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
 
-  const [
-    openedModalCustomers,
-    { open: openModalCustomers, close: closeModalCustomers },
-  ] = useDisclosure(false);
   const columns = [
     {
       label: (

@@ -1,36 +1,30 @@
 "use client";
 import {
-  Button,
   Card,
-  FileButton,
   Grid,
-  Group,
-  Text,
   TextInput,
   Textarea,
-  Image,
   Select,
   Box,
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan } from "@tabler/icons-react";
 import "react-quill/dist/quill.snow.css";
-import { useEffect, useRef, useState } from "react";
-import { notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import axios from "axios";
 import { statusOptions } from "@/constants/masterData";
-import {
-  getOptionsBrands,
-  getOptionsCustomers,
-  getOptionsModels,
-  getOptionsYearCar,
-} from "@/utils/until";
+import { getOptionsModels, getOptionsYearCar } from "@/utils/until";
 import FooterSavePage from "../../_component/FooterSavePage";
-import useFetch from "@/app/hooks/useFetch";
+import { useAddCar } from "../../hooks/car/useAddCar";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
+  const {
+    addItem,
+    updateItem,
+    brandOptions,
+    isLoadingBrand,
+    customerOptions,
+    isLoadingCustomer,
+  } = useAddCar();
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
   const [loading, handlers] = useDisclosure();
@@ -52,51 +46,15 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     },
   });
 
-  const router = useRouter();
   const handleSubmit = async (values: any) => {
     handlers.open();
-    try {
-      if (!isEditing) {
-        await fetch(`/api/car`, {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-      } else {
-        await fetch(`/api/car/${dataDetail?.id}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-        });
-      }
-      router.back();
-      router.refresh();
-      notifications.show({
-        title: "Thành công",
-        message: "Thành công",
-      });
-    } catch (error) {
-      notifications.show({
-        title: "Thất bại",
-        message: "Thất bại",
-      });
-    } finally {
-      handlers.close();
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
+    handlers.close();
   };
-
-  const { data: customerOptions, isLoading: isLoadingCustomer } = useFetch({
-    queryKey: ["customerOptions"],
-    queryFn: () => getOptionsCustomers(),
-  });
-
-  const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
-    queryKey: ["brandOptions"],
-    queryFn: () => getOptionsBrands(),
-    options: {
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-      refetchInterval: false,
-    },
-  });
 
   useEffect(() => {
     const fetchData = async () => {

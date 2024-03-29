@@ -1,8 +1,8 @@
 "use client";
 export const revalidate = 0;
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Badge, Button, Flex, Image, Tabs, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { kindProductOptions, statusOptions } from "@/constants/masterData";
@@ -13,37 +13,44 @@ import {
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 import { useDisclosure } from "@mantine/hooks";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import ListPage from "@/app/components/layout/ListPage";
 import styles from "./index.module.scss";
-import axios from "axios";
-import useFetch from "@/app/hooks/useFetch";
-import { QueryClient } from "@tanstack/react-query";
-import { getOptionsCategories } from "@/utils/until";
-import { getProducts, getProductsDLBD } from "./until";
 import FilterCategories from "@/app/components/common/FilterCategory/FilterCategories";
+import { useProduct } from "../hooks/product/useProduct";
+
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
-const queryClient = new QueryClient();
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Sản phẩm" },
 ];
 
 export default function ProductsManaga() {
-  const searchParams = useSearchParams();
+  const {
+    products,
+    isLoading,
+    isFetching,
+    error,
+    page,
+    setPage,
+    pageDlbd,
+    setPageDlbd,
+    activeTab,
+    setActiveTab,
+    deleteItem,
+    categoryOptions,
+    productsDlbd,
+    isLoadingDlbd,
+  } = useProduct();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<string | null>("first");
-  const [page, setPage] = useState<number>(1);
-  const [pageDlbd, setPageDlbd] = useState<number>(1);
 
   const [deleteRow, setDeleteRow] = useState();
   const [
@@ -51,75 +58,8 @@ export default function ProductsManaga() {
     { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
 
-  const { data: categoryOptions } = useFetch({
-    queryKey: ["categoryOptions"],
-    queryFn: () => getOptionsCategories(),
-    options: {
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-      refetchInterval: false,
-    },
-  });
-
-  const {
-    data: products,
-    isLoading,
-    error,
-    isFetching,
-    isPlaceholderData,
-    refetch,
-  } = useFetch({
-    queryKey: ["products", searchParams.toString(), page],
-    queryFn: () => getProducts(searchParams.toString(), page),
-  });
-  const {
-    data: productsDlbd,
-    isLoading: isLoadingDlbd,
-    isPlaceholderData: isPlaceholderDataDlbd,
-  } = useFetch({
-    queryKey: ["productsDlbd", searchParams.toString(), pageDlbd],
-    queryFn: () => getProductsDLBD(searchParams.toString(), pageDlbd),
-  });
-
-  useEffect(() => {
-    console.log("searchParams", searchParams.toString());
-    if (activeTab == "first" && !isPlaceholderData) {
-      queryClient.prefetchQuery({
-        queryKey: ["products", searchParams.toString(), page],
-        queryFn: () => getProducts(searchParams.toString(), page),
-        staleTime: Infinity,
-      });
-    }
-  }, [searchParams, isPlaceholderData, page, queryClient, activeTab, products]);
-  useEffect(() => {
-    console.log("searchParams", searchParams.toString());
-    if (activeTab == "second" && !isPlaceholderDataDlbd) {
-      queryClient.prefetchQuery({
-        queryKey: ["productsDlbd", searchParams.toString(), pageDlbd],
-        queryFn: () => getProductsDLBD(searchParams.toString(), pageDlbd),
-        staleTime: Infinity,
-      });
-    }
-  }, [
-    searchParams,
-    pageDlbd,
-    queryClient,
-    activeTab,
-    productsDlbd,
-    isPlaceholderDataDlbd,
-  ]);
-
-  const handleDeleteItem = async (idProduct: any) => {
-    try {
-      await axios.delete(`/api/products/${idProduct}`);
-      notifications.show({
-        title: "Thành công",
-        message: "Xoá sản phẩm thành công",
-      });
-      refetch();
-    } catch (error) {
-      console.error("error:", error);
-    }
+  const handleDeleteItem = (id: any) => {
+    deleteItem(id);
   };
 
   const columns = [
@@ -340,7 +280,6 @@ export default function ProductsManaga() {
     yearId: null,
   };
 
-  console.log(products?.data);
   return (
     <Fragment>
       <Breadcrumb breadcrumbs={Breadcrumbs} />

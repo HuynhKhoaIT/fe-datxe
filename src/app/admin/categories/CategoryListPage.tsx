@@ -1,23 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./index.module.scss";
+import React, { useState } from "react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { Badge, Button, Flex, Image } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
-import { notifications } from "@mantine/notifications";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
 import { statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import ListPage from "@/app/components/layout/ListPage";
-import axios from "axios";
-import useFetch from "@/app/hooks/useFetch";
-import { useSearchParams } from "next/navigation";
-import { getCategories } from "./until";
-import { QueryClient } from "@tanstack/react-query";
-const queryClient = new QueryClient();
+import { useCategories } from "../hooks/category/useCategory";
 
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
@@ -26,23 +19,22 @@ const DynamicModalDeleteItem = dynamic(
   }
 );
 const DynamicModalCategories = dynamic(() => import("./ModalCategoriesDLBD"));
+
 export default function CategoryListPage({ profile }: any) {
-  const searchParams = useSearchParams();
-  const [page, setPage] = useState<number>(1);
+  const {
+    categories,
+    isLoading,
+    isFetching,
+    error,
+    page,
+    setPage,
+    deleteItem,
+  } = useCategories();
 
   const [deleteRow, setDeleteRow] = useState();
 
-  const handleDeleteItem = async (id: any) => {
-    try {
-      await axios.delete(`/api/product-category/${id}`);
-      notifications.show({
-        title: "Thành công",
-        message: "Xoá danh mục thành công",
-      });
-      refetch();
-    } catch (error) {
-      console.error("error: ", error);
-    }
+  const handleDeleteItem = (id: any) => {
+    deleteItem(id);
   };
 
   const [
@@ -182,27 +174,6 @@ export default function CategoryListPage({ profile }: any) {
     status: null,
   };
 
-  const {
-    data: categories,
-    isLoading: loadingCategories,
-    isPlaceholderData,
-    isFetching: isFetchingCategories,
-    refetch,
-  } = useFetch({
-    queryKey: ["categories", searchParams.toString(), page],
-    queryFn: () => getCategories(searchParams.toString(), page),
-  });
-
-  useEffect(() => {
-    if (!isPlaceholderData) {
-      queryClient.prefetchQuery({
-        queryKey: ["categories", searchParams.toString(), page],
-        queryFn: () => getCategories(searchParams.toString(), page),
-        staleTime: Infinity,
-      });
-    }
-  }, [searchParams, isPlaceholderData, page, queryClient, categories]);
-  console.log(isFetchingCategories);
   return (
     <div>
       <ListPage
@@ -246,7 +217,7 @@ export default function CategoryListPage({ profile }: any) {
           <TableBasic
             data={categories?.data}
             columns={columns}
-            loading={loadingCategories || isFetchingCategories}
+            loading={isLoading}
             totalPage={categories?.totalPage}
             setPage={setPage}
             activePage={page}

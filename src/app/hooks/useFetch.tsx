@@ -5,9 +5,6 @@ export default function useFetch({ queryKey, queryFn, options }: any) {
     queryKey: queryKey,
     queryFn: queryFn,
     ...options,
-    // refetchOnWindowFocus: false,
-    // staleTime: Infinity,
-    // refetchInterval: false,
   });
 
   return getListQuery;

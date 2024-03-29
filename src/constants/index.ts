@@ -44,11 +44,17 @@ export const QUERY_KEY = {
     optionsProvince: 'optionsProvince',
     optionsDistrict: 'optionsDistrict',
     optionsWard: 'optionsWard',
-
+    optionsultilities: 'optionsultilities',
     optionsBrandCar: 'optionsBrandCar',
     optionsModelCar: 'optionsModelCar',
     optionsYearCar: 'optionsYearCar',
 
     optionsNumberPlate: 'optionsNumberPlate',
     optionsCategory: 'optionsCategory',
+
+    optionsCustomer: 'optionsCustomer',
+    carsDlbd: 'carsDlbd',
+    productsDlbd: 'productsDlbd',
+    customersDlbd: 'customersDlbd',
+    categoriesDlbd: 'categoriesDlbd',
 };

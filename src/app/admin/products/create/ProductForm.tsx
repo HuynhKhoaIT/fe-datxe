@@ -1,41 +1,38 @@
 "use client";
 import {
   Box,
-  Button,
   Card,
   Grid,
-  Group,
   LoadingOverlay,
   MultiSelect,
   NumberInput,
   Select,
-  Switch,
-  Text,
   TextInput,
   Textarea,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { BasicDropzone } from "@/app/components/form/DropZone";
-import { notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
-import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
 import InfoCar from "../[productId]/InfoCar";
 import FooterSavePage from "../../_component/FooterSavePage";
-import useFetch from "@/app/hooks/useFetch";
-import { getOptionsCategories } from "@/utils/until";
+import { useAddProduct } from "../../hooks/product/useAddProduct";
 
 export default function ProductForm({
   isEditing = false,
   dataDetail,
   isDirection = false,
 }: any) {
+  const {
+    addItem,
+    updateItem,
+    isLoadingCategory,
+    categoryOptions,
+  } = useAddProduct();
+
   const [loading, handlers] = useDisclosure();
-  // const [catOptions, setCatOptions] = useState<any>([]);
   const [valueRTE, setValueRTE] = useState("");
   const [images, setImages] = useState<any>();
 
@@ -103,8 +100,6 @@ export default function ProductForm({
       form.setFieldValue("isProduct", "1");
     }
   }, [dataDetail?.product]);
-
-  const router = useRouter();
   const [car, setCar] = useState([{ brandId: "", nameId: "", yearId: "" }]);
 
   const handleChangeBrand = (index: number, value: any) => {
@@ -127,6 +122,7 @@ export default function ProductForm({
     newCar[index].yearId = value.join(",");
     setCar(newCar);
   };
+
   const handleSubmit = async (values: any) => {
     values.metaDescription = valueRTE;
     try {
@@ -151,69 +147,17 @@ export default function ProductForm({
     values.brands = car;
 
     handlers.open();
-
-    try {
-      const url = isEditing
-        ? `/api/products/${dataDetail?.product?.id}`
-        : `/api/products`;
-      await fetch(url, {
-        method: isEditing ? "PUT" : "POST",
-        body: JSON.stringify(values),
-      });
-
-      handlers.close();
-      router.back();
-      router.refresh();
-
-      notifications.show({
-        title: "Thành công",
-        message: "Thêm sản phẩm thành công",
-      });
-    } catch (error) {
-      handlers.close();
-      notifications.show({
-        title: "Thất bại",
-        message: "Thêm sản phẩm thất bại",
-      });
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
   };
 
-  const { data: catOptions, isLoading } = useFetch({
-    queryKey: ["categoryOptions"],
-    queryFn: () => getOptionsCategories(),
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-    refetchInterval: false,
-  });
-
-  // const getCategories = async () => {
-  //   const res = await fetch(`/api/product-category`, { method: "GET" });
-  //   const data = await res.json();
-  //   if (!data) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const dataOption = data?.data?.map((item: any) => ({
-  //     value: item.id.toString(),
-  //     label: item.title,
-  //   }));
-  //   setCatOptions(dataOption);
-  // };
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     handlers.open();
-  //     await Promise.all([getCategories()]);
-
-  //     handlers.close();
-  //   };
-
-  //   if (!isEditing) {
-  //     fetchData();
-  //   }
-  // }, []);
   return (
     <Box pos="relative">
       <LoadingOverlay
-        visible={loading || isLoading}
+        visible={loading || isLoadingCategory}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
@@ -278,7 +222,7 @@ export default function ProductForm({
                     label="Danh mục"
                     checkIconPosition="right"
                     placeholder="Danh mục"
-                    data={catOptions}
+                    data={categoryOptions}
                   />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6, md: 6, lg: 6 }}>
