@@ -44,6 +44,15 @@ export async function getOrders(garage: Number,requestData: any){
     if(requestData.method){
         method = requestData.method;
     }
+
+    let customerId = {};
+    if(Number(requestData.customerId)){
+        customerId = Number(requestData.customerId);
+    }
+    let carId = {};
+    if(Number(requestData.carId)){
+        carId = Number(requestData.carId);
+    }
     
     const [data,total] = await prisma.$transaction([   
         prisma.order.findMany({
@@ -58,6 +67,8 @@ export async function getOrders(garage: Number,requestData: any){
                 },
                 createdById,
                 step,
+                customerId,
+                carId,
                 // method,
                 garageId: garageId
             },
@@ -93,6 +104,8 @@ export async function getOrders(garage: Number,requestData: any){
                 createdById,
                 step,
                 // method,
+                customerId,
+                carId,
                 garageId: garageId
             },
         })
@@ -217,7 +230,7 @@ export async function getMyOrders(requestData: any){
     }
     
 }
-export async function findOrders(id: Number,request: any){
+export async function findOrder(id: Number,request: any){
     try {
         const rs = await prisma.order.findFirst({
             where: {

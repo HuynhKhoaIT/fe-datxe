@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
             }
             const requestData = {
                 s: searchParams.get('s'),
+                phoneNumber: searchParams.get('phoneNumber'),
                 limit: 10,
                 take: 10,
                 page: page,

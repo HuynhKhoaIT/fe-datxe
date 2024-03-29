@@ -434,6 +434,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         id: dataDetail?.id,
         step,
       });
+      
       notifications.show({
         title: "Thành công",
         message: "Cập nhật trạng thái đơn hàng thành công",
