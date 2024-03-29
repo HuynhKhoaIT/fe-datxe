@@ -12,17 +12,12 @@ export async function GET(request: NextRequest) {
         if (session) {
             let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
             const { searchParams } = new URL(request.url);
-            let page = 1;
-            if (searchParams.get('page')) {
-                page = Number(searchParams.get('page'));
-            }
             const requestData = {
-                s: searchParams.get('s'),
-                limit: 10,
-                take: 10,
-                page: page,
                 garageId: garageId,
-                status: 'PUBLIC',
+                s: searchParams.get('s'),
+                carBrandId: searchParams.get('carBrandId'),
+                carNameId: searchParams.get('carNameId'),
+                carYearId: searchParams.get('carYearId'),
             };
             const cars = await getCars(requestData);
 

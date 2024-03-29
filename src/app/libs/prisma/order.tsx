@@ -240,6 +240,7 @@ export async function findOrder(id: Number,request: any){
                 serviceAdvisor: true,
                 car: true,
                 customer: true,
+                garage: true,
                 orderDetails: {
                     select: {
                         productId:true,

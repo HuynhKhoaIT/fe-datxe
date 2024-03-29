@@ -11,6 +11,7 @@ model Garage {
   id                  Int @id @default(autoincrement())
   routeId             Int?
   code                String
+  uuId                String?
   name                String
   shortName           String?
   logo                String?
@@ -101,6 +102,7 @@ model ProductCategory {
 
 model Product {
   id              Int                    @id @default(autoincrement())
+  uuID            String?
   productId       Int                    @default(0)
   isProduct       Boolean                @default(true)
   name            String
@@ -243,6 +245,7 @@ model ServiceAdvisor{
 }
 model Customer{
   id                  Int @id @default(autoincrement())
+  uuId                String?
   fullName            String
   phoneNumber         String?
   cityId              Int?
@@ -287,6 +290,7 @@ model CustomerGroupsOnCustomers {
 
 model Car {
   id                  Int @id @default(autoincrement())
+  uuId                String?
   customer            Customer @relation(fields: [customerId], references: [id])
   customerId          Int @default(1)
   numberPlates        String
@@ -317,6 +321,7 @@ model ProductBrand{
 
 model Suppiler {
   id                  Int @id @default(autoincrement())
+  uuId                String?
   title               String
   description         String?
   garage              Garage @relation(fields: [garageId], references: [id])
@@ -336,6 +341,7 @@ model CarStyle {
 
 model MarketingCampaign {
   id              Int @id @default(autoincrement())
+  uuId            String?
   title           String
   dateTimeStart   DateTime @default(now())
   dateTimeEnd     DateTime @default(now())
@@ -391,6 +397,7 @@ model ReviewsProduct {
 
 model Post{
   id                Int  @id @default(autoincrement())
+  uuId                String?
   slug              String?
   title             String
   description       String
