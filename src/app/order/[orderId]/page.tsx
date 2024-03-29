@@ -1,7 +1,7 @@
 import RenderContext from "@/app/components/elements/RenderContext";
 import OrderDetailPage from "@/app/layout/desktop/gio-hang/OrderDetailPage";
 import OrderDetailPageMobile from "@/app/layout/mobile/gio-hang/OrderDetailPageMobile";
-import { findOrders, getOrderBySlug } from "@/app/libs/prisma/order";
+import { findOrder, getOrderBySlug } from "@/app/libs/prisma/order";
 import { apiUrl } from "@/constants";
 import { getOrderDetail } from "@/utils/order";
 // async function getDataProduct(productId: number) {

@@ -83,6 +83,9 @@ export async function getCustomers(requestData: any) {
       where: {
         AND: [
           {
+            fullName: {
+              contains: titleFilter
+            },
             phoneNumber,
             garageId: garageId,
             customerGroup,

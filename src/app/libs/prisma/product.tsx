@@ -59,19 +59,18 @@ export async function getProducts(requestData:any) {
       statusFilter = requestData.status.toUpperCase();
     }
 
-    if (requestData.isProduct?.length) {
-      isProduct = Number(requestData.isProduct) == 1 ? true : false;
+    if (requestData.isProduct) {
       if (requestData.isProduct == 'true' || Number(requestData.isProduct) == 1) {
         isProduct = true;
       } else {
         isProduct = false;
       }
-    }
+    };
 
     let page = requestData.page;
     if (page) {
         currentPage = Number(page);
-    } 
+    }
 
     const [products, total] = await prisma.$transaction([
       prisma.product.findMany({

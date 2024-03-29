@@ -3,11 +3,10 @@ import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { slugify } from '@/utils/index';
-import { getUserByValidSessionToken } from '@/utils/user';
 type ResponseBody = { errors: { message: string }[] } | { username: string };
-import { getToken } from 'next-auth/jwt';
 import { getProducts } from '@/app/libs/prisma/product';
 import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
+import { generateUUID } from '@/utils/until';
 export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
@@ -40,15 +39,6 @@ export async function GET(request: NextRequest) {
             }
             let garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
 
-            let isProduct = {};
-            if (searchParams.get('isProduct')?.length) {
-                if (searchParams.get('isProduct') == 'true' || Number(searchParams.get('isProduct')) == 1) {
-                    isProduct = true;
-                } else {
-                    isProduct = false;
-                }
-            }
-
             const requestData = {
                 category: categoryId,
                 brand: brandIdFilter,
@@ -56,7 +46,7 @@ export async function GET(request: NextRequest) {
                 limit: limit,
                 page: page,
                 garageId: garageId,
-                isProduct: isProduct,
+                isProduct: searchParams.get('isProduct'),
             };
             const products = await getProducts(requestData);
 
@@ -173,6 +163,7 @@ export async function POST(request: Request) {
             const product = await prisma.product.create({
                 data: {
                     name: json.title,
+                    uuID: generateUUID(),
                     slug: json.title,
                     price: json.price,
                     salePrice: json.salePrice,

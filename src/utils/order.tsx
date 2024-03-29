@@ -14,6 +14,7 @@ import {
 } from "./constants/endpoints";
 import { IOrder } from "@/interfaces/order";
 import { IOrderDetail } from "@/interfaces/orderDetail";
+import { convertViToEn } from "./until";
 /**
  * Get getOrders.
  *
@@ -159,10 +160,10 @@ export const checkOutCart = async (
   }
 };
 
-export const sendSMSOrder = async (order: any, step: number,customer: any) => {
+export const sendSMSOrder = async (order: any) => {
   try {
     let contentSMS = process.env.SMS_ORDER_RECEIVED;
-    switch (step) {
+    switch (Number(order.step)) {
       case 1:
         contentSMS = process.env.SMS_ORDER_RECEIVED
         break;
@@ -174,23 +175,26 @@ export const sendSMSOrder = async (order: any, step: number,customer: any) => {
         break;
     }
     contentSMS = contentSMS?.replaceAll('{order_code}',order?.code);
+    return order;
+    contentSMS = contentSMS?.replaceAll('{garage_short}',order?.garage.shortName);
     let dataSMS = {
-      Phone: customer.phoneNumber,
+      Phone: order.customer.phoneNumber,
       Content: contentSMS,
       ApiKey: process.env.SMS_APIKEY,
       SecretKey: process.env.SMS_SECRET,
       Brandname: process.env.SMS_BRANDNAME,
       SmsType: 2,
     };
+    
     const { data } = await axios({
       method: "POST",
       url: `${process.env.SMS_SMS_MKT}`,
       data: dataSMS,
     });
-    console.log('----data sms')
-    console.log(data)
     return data;
   } catch (error) {
     return error;
   }
 };
+
+

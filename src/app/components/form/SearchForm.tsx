@@ -40,16 +40,16 @@ export default function SearchForm({
     validate: {},
   });
   const handleSubmit = (values: any) => {
-    if (values?.brandId) {
-      values.brand = values?.brandId;
-      // values.brandId = null;
+    if (values?.carBrandId) {
+      values.carBrandId = values?.carBrandId;
+      // values.carBrandId = null;
     }
-    if (values?.nameId) {
-      values.brand = values?.nameId;
+    if (values?.carNameId) {
+      values.carNameId = values?.carNameId;
       // values.nameId = null;
     }
-    if (values?.yearId) {
-      values.brand = values?.yearId;
+    if (values?.carYearId) {
+      values.carYearId = values?.carYearId;
       // values.yearId = null;
     }
     const queryString = Object.keys(values)
@@ -106,28 +106,28 @@ export default function SearchForm({
                 size="lg"
                 radius={0}
                 w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
-                {...form.getInputProps("brandId")}
+                {...form.getInputProps("carBrandId")}
                 data={brandOptions}
                 placeholder={"Hãng xe"}
                 onChange={async (value) => {
                   const optionsData = await getOptionsModels(Number(value));
                   setModelOptions(optionsData);
-                  form.setFieldValue("brandId", String(value));
-                  form.setFieldValue("nameId", null);
-                  form.setFieldValue("yearId", null);
+                  form.setFieldValue("carBrandId", String(value));
+                  form.setFieldValue("carNameId", null);
+                  form.setFieldValue("carYearId", null);
                 }}
               />
               <Select
                 size="lg"
                 radius={0}
                 w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
-                {...form.getInputProps("nameId")}
+                {...form.getInputProps("carNameId")}
                 data={modelOptions}
                 onChange={async (value) => {
                   const optionsData = await getOptionsYearCar(Number(value));
                   setYearCarOptions(optionsData);
-                  form.setFieldValue("nameId", String(value));
-                  form.setFieldValue("yearId", null);
+                  form.setFieldValue("carNameId", String(value));
+                  form.setFieldValue("carYearId", null);
                 }}
                 placeholder={"Dòng xe"}
               />
@@ -135,10 +135,10 @@ export default function SearchForm({
                 size="lg"
                 radius={0}
                 w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
-                {...form.getInputProps("yearId")}
+                {...form.getInputProps("carYearId")}
                 data={yearCarOptions}
                 onChange={(value) => {
-                  form.setFieldValue("yearId", String(value));
+                  form.setFieldValue("carYearId", String(value));
                 }}
                 placeholder={"Năm sản xuất"}
               />

@@ -33,6 +33,7 @@ export async function createCar(json: any) {
 }
 
 export async function getCars(requestData: any) {
+  // return requestData;
   let currentPage = 1;
   let take = 10;
   let limit = 10;
@@ -68,6 +69,22 @@ export async function getCars(requestData: any) {
       contains: requestData.status,
     };
   }
+  let carBrandId = {};
+  if(requestData.carBrandId){
+    carBrandId = Number(requestData.carBrandId);
+  }
+  let carNameId = {};
+  if(requestData.carNameId){
+    carNameId = Number(requestData.carNameId);
+  }
+  let carYearId = {};
+  if(requestData.carYearId){
+    carYearId = Number(requestData.carYearId);
+  }
+  let carStyleId = {};
+  if(requestData.carStyleId){
+    carStyleId = Number(requestData.carStyleId);
+  }
   const [cars, total] = await prisma.$transaction([
     prisma.car.findMany({
       take: take,
@@ -82,6 +99,10 @@ export async function getCars(requestData: any) {
               contains: titleFilter,
             },
             customerId: customerId,
+            carBrandId,
+            carNameId,
+            carYearId,
+            carStyleId,
             garageId: garageId,
             status: "PUBLIC",
           },
@@ -100,11 +121,15 @@ export async function getCars(requestData: any) {
               contains: titleFilter,
             },
             customerId: customerId,
+            carBrandId,
+            carNameId,
+            carYearId,
+            carStyleId,
             garageId: garageId,
             status: "PUBLIC",
           },
         ],
-      },
+      }
     }),
   ]);
   let carRs = JSON.parse(JSON.stringify(cars));

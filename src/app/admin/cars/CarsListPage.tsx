@@ -171,7 +171,7 @@ export default function CarsListPage({
 
   const searchData = [
     {
-      name: "place",
+      name: "s",
       placeholder: "Biển số",
       type: "input",
     },
@@ -183,9 +183,9 @@ export default function CarsListPage({
     },
   ];
   const initialValuesSearch = {
-    place: "",
+    s: "",
     status: null,
-    brandId: null,
+    carBrandId: null,
     nameId: null,
     yearId: null,
   };
