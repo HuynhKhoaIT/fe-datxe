@@ -5,7 +5,11 @@ import Breadcrumb from "@/app/components/form/Breadcrumb";
 import { useRouter } from "next/navigation";
 import { Badge, Button, Flex, Image, Tabs, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import { kindProductOptions, statusOptions } from "@/constants/masterData";
+import {
+  FieldTypes,
+  kindProductOptions,
+  statusOptions,
+} from "@/constants/masterData";
 import Link from "next/link";
 import {
   IconArrowUp,
@@ -264,17 +268,18 @@ export default function ProductsManaga() {
     {
       name: "s",
       placeholder: "Tên sản phẩm",
-      type: "input",
+      type: FieldTypes.STRING,
     },
     {
       name: "isProduct",
       placeholder: "Loại",
-      type: "select",
+      type: FieldTypes.SELECT,
       data: kindProductOptions,
     },
   ];
   const initialValuesSearch = {
     s: "",
+    isProduct: null,
     brandId: null,
     nameId: null,
     yearId: null,

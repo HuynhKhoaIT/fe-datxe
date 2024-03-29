@@ -57,3 +57,12 @@ export const kindMarketingOptions = [
     { value: MARKETING_PENDING, label: 'Đang diễn ra', color: 'blue' },
     { value: MARKETING_CANCEL, label: 'Đã kết thúc', color: 'red' },
 ];
+
+export const FieldTypes = {
+    STRING: 'STRING_TYPE',
+    NUMBER: 'NUMBER_TYPE',
+    SELECT: 'SELECT',
+    AUTOCOMPLETE: 'AUTOCOMPLETE',
+    DATE: 'DATE',
+    DATE_RANGE: 'DATE_RANGE',
+};

@@ -1,7 +1,6 @@
 "use client";
 import {
   ActionIcon,
-  Autocomplete,
   Box,
   Button,
   Card,
@@ -53,6 +52,7 @@ import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
 import { getOptionsCar } from "../until";
 import { useAddOrder } from "../../hooks/order/useAddOrder";
+import AutocompleteField from "@/app/components/form/AutoCompleteField";
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
@@ -67,22 +67,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [activeTab, setActiveTab] = useState<string | null>(
     !isEditing ? "numberPlates" : "customer"
   );
-
-  const [carOptions, setCarOptions] = useState([]);
   const [numberPlate, setNumberPlate] = useState("");
-  const [debounced] = useDebouncedValue(numberPlate, 400);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data: any = await getOptionsCar({ s: debounced });
-      setCarOptions(data);
-      return data;
-    };
-    if (debounced?.length >= 3) {
-      fetchData();
-    }
-  }, [debounced]);
-
   const [isUser, handlersIsUser] = useDisclosure();
   const [errorPlate, handlersPlate] = useDisclosure();
   const [loading, handlers] = useDisclosure();
@@ -423,7 +408,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               <Tabs.Panel value="numberPlates">
                 <Grid gutter={12}>
                   <Grid.Col span={10}>
-                    <Autocomplete
+                    {/* <Autocomplete
                       size="lg"
                       radius={0}
                       placeholder="Biển số xe"
@@ -433,6 +418,18 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         setNumberPlate(value);
                         form.setFieldValue("numberPlates", value);
                       }}
+                    /> */}
+                    <AutocompleteField
+                      size="lg"
+                      radius={0}
+                      placeholder="Biển số xe"
+                      value={numberPlate}
+                      onChange={(value: any) => {
+                        setNumberPlate(value);
+                        form.setFieldValue("numberPlates", value);
+                      }}
+                      getOptionData={getOptionsCar}
+                      form={form}
                     />
                   </Grid.Col>
                   <Grid.Col span={2}>

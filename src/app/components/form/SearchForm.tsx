@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Flex, Input, Select } from "@mantine/core";
+import { Autocomplete, Box, Button, Flex, Input, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconSearch, IconTrash } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -13,6 +13,9 @@ import {
   getOptionsYearCar,
 } from "@/utils/until";
 import useFetch from "@/app/hooks/useFetch";
+import AutocompleteField from "./AutoCompleteField";
+import { FieldTypes } from "@/constants/masterData";
+import { AutocompleteClearable } from "./AutoCompleteClear";
 export default function SearchForm({
   searchData,
   brandFilter = false,
@@ -20,6 +23,7 @@ export default function SearchForm({
 }: any) {
   const router = useRouter();
   const pathname = usePathname();
+  console.log(pathname);
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);
 
@@ -39,6 +43,7 @@ export default function SearchForm({
     initialValues: initialValues,
     validate: {},
   });
+  console.log(form.values);
   const handleSubmit = (values: any) => {
     if (values?.carBrandId) {
       values.carBrandId = values?.carBrandId;
@@ -75,7 +80,7 @@ export default function SearchForm({
       >
         <Flex gap={10} style={{ flexWrap: "wrap" }}>
           {searchData?.map((item: any, index: number) => {
-            if (item?.type === "input") {
+            if (item?.type === FieldTypes.STRING) {
               return (
                 <Input
                   size="lg"
@@ -86,7 +91,7 @@ export default function SearchForm({
                   placeholder={item?.placeholder}
                 />
               );
-            } else if (item?.type === "select") {
+            } else if (item?.type === FieldTypes.SELECT) {
               return (
                 <Select
                   size="lg"
@@ -98,6 +103,30 @@ export default function SearchForm({
                   placeholder={item?.placeholder}
                 />
               );
+            } else if (item.type === FieldTypes.AUTOCOMPLETE) {
+              return (
+                // <AutocompleteField
+                //   size="lg"
+                //   radius={0}
+                //   placeholder={item.placeholder}
+                //   value={item.value}
+                //   onChange={(value: any) => {
+                //     item.setValue(value);
+                //   }}
+                //   onOptionSubmit={(value: any) => {
+                //     form.setFieldValue(item.name, value);
+                //   }}
+                //   getOptionData={item.getOptionsData}
+                //   form={form}
+                // />
+                <AutocompleteClearable
+                  getOptionData={item.getOptionsData}
+                  form={form}
+                  name={item.name}
+                  placeholder={item.placeholder}
+                  isCamera={item.isCamera}
+                />
+              );
             }
           })}
           {brandFilter && (
@@ -106,28 +135,28 @@ export default function SearchForm({
                 size="lg"
                 radius={0}
                 w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
-                {...form.getInputProps("carBrandId")}
+                {...form.getInputProps("brandId")}
                 data={brandOptions}
                 placeholder={"Hãng xe"}
                 onChange={async (value) => {
                   const optionsData = await getOptionsModels(Number(value));
                   setModelOptions(optionsData);
-                  form.setFieldValue("carBrandId", String(value));
-                  form.setFieldValue("carNameId", null);
-                  form.setFieldValue("carYearId", null);
+                  form.setFieldValue("brandId", String(value));
+                  form.setFieldValue("nameId", null);
+                  form.setFieldValue("yearId", null);
                 }}
               />
               <Select
                 size="lg"
                 radius={0}
                 w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
-                {...form.getInputProps("carNameId")}
+                {...form.getInputProps("nameId")}
                 data={modelOptions}
                 onChange={async (value) => {
                   const optionsData = await getOptionsYearCar(Number(value));
                   setYearCarOptions(optionsData);
-                  form.setFieldValue("carNameId", String(value));
-                  form.setFieldValue("carYearId", null);
+                  form.setFieldValue("nameId", String(value));
+                  form.setFieldValue("yearId", null);
                 }}
                 placeholder={"Dòng xe"}
               />
@@ -135,10 +164,10 @@ export default function SearchForm({
                 size="lg"
                 radius={0}
                 w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
-                {...form.getInputProps("carYearId")}
+                {...form.getInputProps("yearId")}
                 data={yearCarOptions}
                 onChange={(value) => {
-                  form.setFieldValue("carYearId", String(value));
+                  form.setFieldValue("yearId", String(value));
                 }}
                 placeholder={"Năm sản xuất"}
               />

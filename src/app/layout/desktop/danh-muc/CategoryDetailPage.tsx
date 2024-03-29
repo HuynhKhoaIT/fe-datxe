@@ -11,7 +11,7 @@ import Blogs from "./Blogs";
 import useFetch from "@/app/hooks/useFetch";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { getCategories } from "@/app/admin/categories/until";
+import { useCategories } from "@/app/admin/hooks/category/useCategory";
 
 const CategoryDetailPageDesktop = ({
   kindProduct,
@@ -21,18 +21,7 @@ const CategoryDetailPageDesktop = ({
   blogs,
   reassons,
 }: any) => {
-  const searchParams = useSearchParams();
-  const [page, setPage] = useState<number>(1);
-  const {
-    data: categories,
-    isLoading: loadingCategories,
-    isPlaceholderData,
-    isFetching: isFetchingCategories,
-    refetch,
-  } = useFetch({
-    queryKey: ["categories", , 1],
-    queryFn: () => getCategories(searchParams.toString(), 1),
-  });
+  const { categories } = useCategories();
   return (
     <div className={styles.wrapper}>
       <CarouselDesktop height={320} slideshowData={slideshowData} />

@@ -9,10 +9,6 @@ import Blogs from "./Blogs";
 import Hero from "../trang-chu/Hero";
 import Reassons from "../trang-chu/Reasons";
 import Filter from "./Filter";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import useFetch from "@/app/hooks/useFetch";
-import { getCategories } from "@/app/admin/categories/until";
 
 const CategoryDetailPageMobile = ({
   kindProduct,
