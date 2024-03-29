@@ -159,11 +159,24 @@ export const checkOutCart = async (
   }
 };
 
-export const sendSMSOrder = async (orderId: number, step: number) => {
+export const sendSMSOrder = async (order: any, step: number,customer: any) => {
   try {
+    let contentSMS = process.env.SMS_ORDER_RECEIVED;
+    switch (step) {
+      case 1:
+        contentSMS = process.env.SMS_ORDER_RECEIVED
+        break;
+      case 4:
+        contentSMS = process.env.SMS_ORDER_RECEIVED
+        break;
+      case -1:
+        contentSMS = process.env.SMS_ORDER_CANCEL
+        break;
+    }
+    contentSMS = contentSMS?.replaceAll('{order_code}',order?.code);
     let dataSMS = {
-      Phone: "0964824588",
-      Content: process.env.SMS_MESSAGE_OTP,
+      Phone: customer.phoneNumber,
+      Content: contentSMS,
       ApiKey: process.env.SMS_APIKEY,
       SecretKey: process.env.SMS_SECRET,
       Brandname: process.env.SMS_BRANDNAME,
@@ -174,6 +187,8 @@ export const sendSMSOrder = async (orderId: number, step: number) => {
       url: `${process.env.SMS_SMS_MKT}`,
       data: dataSMS,
     });
+    console.log('----data sms')
+    console.log(data)
     return data;
   } catch (error) {
     return error;

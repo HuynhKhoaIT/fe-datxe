@@ -89,7 +89,7 @@ export default function convertToSlug(str: string) {
 
 export function convertToPlatesNumber(str: string){
   str = str.toUpperCase().replace(/([^0-9A-Z\s])/g, '').replace(/(\s+)/g, '')
-  let platesNumberFormat = /^\(?([0-9]{2}[A-Z]{1,2}[0-9]{4,6})/;
+  let platesNumberFormat = /\(?([0-9]{2}[A-Z]{1,2}[0-9]{4,6})/g;
   return str.match(platesNumberFormat)?.[0];
 }
 
@@ -97,7 +97,6 @@ export function convertToPlatesNumber(str: string){
 export async function getOptionsBrands() {
   try {
     const res = await axios.get(`/api/car-model`);
-    console.log(res);
     const dataOption = res?.data?.map((item: any) => ({
       value: item.id.toString(),
       label: item.title,

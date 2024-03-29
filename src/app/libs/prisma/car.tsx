@@ -1,13 +1,15 @@
+import { convertToPlatesNumber } from "@/utils/until";
 import prisma from "../prismadb";
 import { getCarNameById } from "./carName";
 import { getCustomerByPhone } from "./customer";
 import { getGarageByDlbdId } from "./garage";
 export async function createCar(json: any) {
   try {
+    let platesNumber = convertToPlatesNumber(json.numberPlates);
     const car = await prisma.car.create({
       data: {
         customerId: Number(json.customerId),
-        numberPlates: json.numberPlates,
+        numberPlates: platesNumber ?? '',
         carBrandId: Number(json.carBrandId),
         carNameId: Number(json.carNameId),
         carYearId: Number(json.carYearId),

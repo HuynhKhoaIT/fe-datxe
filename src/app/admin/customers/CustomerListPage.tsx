@@ -209,7 +209,7 @@ export default function CustomerListPage({
   ];
   const initialValuesSearch = {
     s: "",
-    phone: "",
+    phoneNumber: "",
     group: "",
   };
 

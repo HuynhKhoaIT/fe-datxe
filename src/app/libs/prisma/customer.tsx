@@ -69,6 +69,10 @@ export async function getCustomers(requestData: any) {
       },
     };
   }
+  let phoneNumber = {}
+  if(requestData.phoneNumber){
+    phoneNumber = requestData.phoneNumber
+  }
   const [customers, total] = await prisma.$transaction([
     prisma.customer.findMany({
       take: take,
@@ -79,6 +83,7 @@ export async function getCustomers(requestData: any) {
       where: {
         AND: [
           {
+            phoneNumber,
             garageId: garageId,
             customerGroup,
           },
@@ -127,6 +132,17 @@ export async function getMyCustomers(phoneNumber: string) {
   return rs;
 }
 
+export async function showCustomer(id:number) {
+  return await prisma.customer.findFirst({
+    where: {
+      id
+    },
+    include:{
+      customerGroup: true,
+      cars: true
+    }
+  })
+}
 
 export async function syncCustomerFromDLBD(requestData: any) {
   try {
