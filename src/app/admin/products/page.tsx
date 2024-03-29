@@ -54,6 +54,11 @@ export default function ProductsManaga() {
   const { data: categoryOptions } = useFetch({
     queryKey: ["categoryOptions"],
     queryFn: () => getOptionsCategories(),
+    options: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchInterval: false,
+    },
   });
 
   const {

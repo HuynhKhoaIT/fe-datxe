@@ -27,6 +27,11 @@ export default function SearchForm({
     var { data: brandOptions } = useFetch({
       queryKey: ["brandOptions"],
       queryFn: () => getOptionsBrands(),
+      options: {
+        refetchOnWindowFocus: false,
+        staleTime: Infinity,
+        refetchInterval: false,
+      },
     });
   }
 

@@ -91,6 +91,11 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
     queryKey: ["brandOptions"],
     queryFn: () => getOptionsBrands(),
+    options: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchInterval: false,
+    },
   });
 
   useEffect(() => {

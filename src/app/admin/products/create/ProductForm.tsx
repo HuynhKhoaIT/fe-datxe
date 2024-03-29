@@ -181,6 +181,9 @@ export default function ProductForm({
   const { data: catOptions, isLoading } = useFetch({
     queryKey: ["categoryOptions"],
     queryFn: () => getOptionsCategories(),
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+    refetchInterval: false,
   });
 
   // const getCategories = async () => {

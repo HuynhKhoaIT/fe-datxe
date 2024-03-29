@@ -25,3 +25,12 @@ export async function getOptionsCar({ s }: any) {
         console.error('error: ', error);
     }
 }
+
+export async function deleteOrder(id: string) {
+    try {
+        const res = await axios.delete(`/api/orders/${id}`);
+        return res?.data;
+    } catch (error) {
+        console.error('error:', error);
+    }
+}

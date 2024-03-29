@@ -29,6 +29,11 @@ export default function InfoItem({
   const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
     queryKey: ["brandOptions"],
     queryFn: () => getOptionsBrands(),
+    options: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchInterval: false,
+    },
   });
   useEffect(() => {
     const fetchModels = async (data: any) => {

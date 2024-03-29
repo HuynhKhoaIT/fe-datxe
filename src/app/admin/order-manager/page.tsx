@@ -1,81 +1,52 @@
 "use client";
 export const revalidate = 0;
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import { useRouter, useSearchParams } from "next/navigation";
 import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import { stepOrderOptions } from "@/constants/masterData";
 import Link from "next/link";
-import { IconEye, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
+import { IconEye, IconPlus, IconTrash } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import { useDisclosure } from "@mantine/hooks";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import ListPage from "@/app/components/layout/ListPage";
-import useFetch from "@/app/hooks/useFetch";
-import { QueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import FilterStepOrder from "@/app/components/common/FilterStepOrder/FilterCategories";
-import { getOrders } from "./until";
+import { deleteOrder, getOrders } from "./until";
+import { useOrders } from "../hooks/order/useOrder";
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
+
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Quản lý đơn hàng" },
 ];
-const queryClient = new QueryClient();
-
 export default function OrdersManaga() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const [page, setPage] = useState<number>(1);
-  const [deleteRow, setDeleteRow] = useState();
-
   const {
-    data: orders,
+    orders: list,
     isLoading,
-    error,
     isFetching,
-    isPlaceholderData,
-    refetch,
-  } = useFetch({
-    queryKey: ["orders", searchParams.toString(), page],
-    queryFn: () => getOrders(searchParams.toString(), page),
-  });
+    error,
+    page,
+    setPage,
+    deleteItem,
+  } = useOrders();
 
-  useEffect(() => {
-    if (!isPlaceholderData) {
-      queryClient.prefetchQuery({
-        queryKey: ["orders", searchParams.toString(), page],
-        queryFn: () => getOrders(searchParams.toString(), page),
-        staleTime: Infinity,
-      });
-    }
-  }, [orders, searchParams, isPlaceholderData, page, queryClient]);
-
-  const handleDeleteItem = async (idProduct: any) => {
-    try {
-      await axios.delete(`/api/orders/${idProduct}`);
-      notifications.show({
-        title: "Thành công",
-        message: "Xoá đơn hàng thành công",
-      });
-      refetch();
-    } catch (error) {
-      console.error("error:", error);
-    }
+  const [deleteRow, setDeleteRow] = useState();
+  const handleDeleteItem = async (id: string) => {
+    deleteItem(id);
   };
+
   const [
     openedDeleteItem,
     { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
+
   const columns = [
     {
       label: (
@@ -204,6 +175,7 @@ export default function OrdersManaga() {
       },
     },
   ];
+
   const searchData = [
     {
       name: "code",
@@ -217,6 +189,7 @@ export default function OrdersManaga() {
     //   data: stepOrderOptions,
     // },
   ];
+
   const initialValuesSearch = {
     code: "",
     // step: null,
@@ -259,10 +232,10 @@ export default function OrdersManaga() {
         titleTable={true}
         baseTable={
           <TableBasic
-            data={orders?.data}
+            data={list?.data}
             columns={columns}
             loading={isLoading}
-            totalPage={orders?.totalPage}
+            totalPage={list?.totalPage}
             setPage={setPage}
             activePage={page}
           />
