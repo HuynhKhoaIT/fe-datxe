@@ -1,6 +1,5 @@
 "use client";
 import TableBasic from "@/app/components/table/Tablebasic";
-import { getCategoriesFromDLBD } from "@/utils/category";
 import {
   Box,
   Button,
@@ -10,17 +9,13 @@ import {
   Modal,
 } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import { useEffect, useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBarUp } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import convertToSlug from "@/utils/until";
-import { syncCategoryFromDlbd } from "@/app/libs/prisma/category";
-import { getGarageByDlbdId } from "@/app/libs/prisma/garage";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { getCategoriesDlbd } from "./until";
-import useFetch from "@/app/hooks/useFetch";
+import { QUERY_KEY } from "@/constants";
+import { useQuery } from "@tanstack/react-query";
 export default function ModalCategoriesDLBD({
   openedModalCategories,
   closeModalCategories,
@@ -35,8 +30,8 @@ export default function ModalCategoriesDLBD({
     isFetching,
     isPlaceholderData,
     refetch,
-  } = useFetch({
-    queryKey: ["categoriesDlbd"],
+  } = useQuery({
+    queryKey: [QUERY_KEY.categoriesDlbd],
     queryFn: () => getCategoriesDlbd(profile),
   });
 

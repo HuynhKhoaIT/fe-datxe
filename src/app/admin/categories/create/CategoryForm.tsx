@@ -1,11 +1,9 @@
 "use client";
 import {
   Box,
-  Button,
   Card,
   FileButton,
   Grid,
-  Group,
   Text,
   TextInput,
   Textarea,
@@ -14,19 +12,15 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan } from "@tabler/icons-react";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
-import { notifications } from "@mantine/notifications";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import FooterSavePage from "../../_component/FooterSavePage";
-import useFetch from "@/app/hooks/useFetch";
-import { getCategories } from "../until";
+import convertToSlug from "@/utils/until";
+import { useAddCategory } from "../../hooks/category/useAddCategory";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
-  const searchParams = useSearchParams();
-
+  const { addItem, updateItem } = useAddCategory();
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
@@ -35,6 +29,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     setFile(null);
     resetRef.current?.();
   };
+
   const form = useForm({
     initialValues: {
       image: "",
@@ -47,18 +42,6 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     },
   });
 
-  const {
-    data: categories,
-    isLoading: loadingCategories,
-    isPlaceholderData,
-    isFetching: isFetchingCategories,
-    refetch,
-  } = useFetch({
-    queryKey: ["categories", searchParams.toString(), 1],
-    queryFn: () => getCategories(searchParams.toString(), 1),
-  });
-
-  console.log(categories);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -76,13 +59,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
       fetchData();
     }
   }, [dataDetail]);
-  const router = useRouter();
-  function convertToSlug(str: string) {
-    str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
-    str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
-    str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
-    return str;
-  }
+
   const handleSubmit = async (values: any) => {
     try {
       const baseURL = "https://up-image.dlbd.vn/api/image";
@@ -100,32 +77,12 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
 
     values.slug = convertToSlug(values?.title);
     handlers.open();
-    try {
-      if (!isEditing) {
-        await fetch(`/api/product-category`, {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-      } else {
-        await fetch(`/api/product-category/${dataDetail?.id}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-        });
-      }
-      notifications.show({
-        title: "Thành công",
-        message: "Thành công",
-      });
-      router.back();
-
-      refetch();
-    } catch (error) {
-      handlers.close();
-      notifications.show({
-        title: "Thất bại",
-        message: "Thất bại",
-      });
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
+    handlers.close();
   };
 
   return (

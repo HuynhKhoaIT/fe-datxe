@@ -24,6 +24,11 @@ export default function BookForm() {
   const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
     queryKey: ["brandOptions"],
     queryFn: () => getOptionsBrands(),
+    options: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchInterval: false,
+    },
   });
   const router = useRouter();
   const icon = <img src={ArrowDown.src} />;

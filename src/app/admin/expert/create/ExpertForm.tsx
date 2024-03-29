@@ -1,11 +1,9 @@
 "use client";
 import {
   Box,
-  Button,
   Card,
   FileButton,
   Grid,
-  Group,
   Text,
   TextInput,
   Textarea,
@@ -15,50 +13,38 @@ import {
   MultiSelect,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan } from "@tabler/icons-react";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
-import { notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
-import { getDistricts, getWards } from "@/utils/notion";
 import FooterSavePage from "../../_component/FooterSavePage";
-export default function ExpertForm({
-  isEditing,
-  dataDetail,
-  provinceData,
-  districtData: dtData,
-  wardData: wData,
-}: any) {
-  console.log(dataDetail);
+import { useAddExpert } from "../../hooks/expert/useAddExpert";
+import {
+  getOptionsDistrict,
+  getOptionsWard,
+  getUltilities,
+} from "@/utils/until";
+export default function ExpertForm({ isEditing, dataDetail }: any) {
+  const {
+    addItem,
+    updateItem,
+    provinceOptions,
+    isLoadingProvince,
+    UltilitiesOptions,
+  } = useAddExpert();
+
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
-  const [districtData, setDistrictData] = useState<any>(dtData);
-  const [wardData, setWardData] = useState<any>(wData);
-  const [UltilitiesOptions, setUltilitiesOptions] = useState<any>([]);
 
-  const handleProvince = async (value: any) => {
-    try {
-      const district: any = await getDistricts(value);
-      const newDistrictData = district?.map((item: any) => ({
-        value: item.id?.toString() || "",
-        label: item.name || "",
-      }));
-      setDistrictData(newDistrictData);
-    } catch (error) {}
-  };
-  const handleDistrict = async (value: any) => {
-    try {
-      const ward: any = await getWards(value);
-      const newWardData = ward?.map((item: any) => ({
-        value: item.id?.toString() || "",
-        label: item.name || "",
-      }));
-      setWardData(newWardData);
-    } catch (error) {}
-  };
+  const [districtOptions, setDistrictOptions] = useState<any>([]);
+  const [wardOptions, setWardOptions] = useState<any>([]);
+
+  const [province, setProvince] = useState<any>();
+  const [district, setDistrict] = useState<any>();
+  const [ward, setWard] = useState<any>();
+  const [amenities, setAmenities] = useState<any>();
+
   const clearFile = () => {
     setFile(null);
     resetRef.current?.();
@@ -66,41 +52,49 @@ export default function ExpertForm({
   const form = useForm({
     initialValues: {
       logo: "",
-
       description: "",
     },
     validate: {},
   });
   useEffect(() => {
-    handlers.open();
-
     const fetchData = async () => {
-      try {
-        form.setInitialValues(dataDetail);
-        form.setValues(dataDetail);
-        if (isEditing && dataDetail) {
+      handlers.open();
+
+      if (isEditing && dataDetail) {
+        try {
+          form.setInitialValues(dataDetail);
+          form.setValues(dataDetail);
+          const [districts, wards] = await Promise.all([
+            getOptionsDistrict(Number(dataDetail?.provinceId)),
+            getOptionsWard(Number(dataDetail?.districtId)),
+          ]);
+          setDistrictOptions(districts);
+          setWardOptions(wards);
+          setProvince(dataDetail?.provinceId?.toString());
+          setDistrict(dataDetail?.districtId?.toString());
+          setWard(dataDetail?.wardId?.toString());
+
           form.setFieldValue("provinceId", dataDetail?.provinceId?.toString());
           form.setFieldValue("districtId", dataDetail?.districtId?.toString());
-          handleProvince(dataDetail?.provinceId?.toString());
-          handleDistrict(dataDetail?.districtId?.toString());
           form.setFieldValue("wardId", dataDetail?.wardId?.toString());
+
           if (dataDetail?.amenities?.length > 0) {
             const dataOption = dataDetail?.amenities?.map((item: any) =>
               item.amenityId.toString()
             );
+            setAmenities(dataOption);
             form.setFieldValue("amenities", dataOption);
           }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          handlers.close();
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        handlers.close();
       }
     };
 
     if (isEditing) fetchData();
   }, [dataDetail]);
-  const router = useRouter();
 
   const handleSubmit = async (values: any) => {
     try {
@@ -118,56 +112,13 @@ export default function ExpertForm({
     }
 
     handlers.open();
-    try {
-      if (!isEditing) {
-        await fetch(`/api/garage`, {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-      } else {
-        await fetch(`/api/garage/${dataDetail?.id}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-        });
-      }
-      handlers.close();
-      router.back();
-      router.refresh();
-      notifications.show({
-        title: "Thành công",
-        message: "Thành công",
-      });
-    } catch (error) {
-      handlers.close();
-      notifications.show({
-        title: "Thất bại",
-        message: "Thất bại",
-      });
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
+    handlers.close();
   };
-
-  const getUltilities = async () => {
-    const res = await fetch(`/api/amentity`, { method: "GET" });
-    const data = await res.json();
-    if (!data) {
-      throw new Error("Failed to fetch data");
-    }
-    const dataOption = data?.map((item: any) => ({
-      value: item.id.toString(),
-      label: item.title,
-    }));
-    setUltilitiesOptions(dataOption);
-  };
-  useEffect(() => {
-    const fetchData = async () => {
-      handlers.open();
-      await Promise.all([getUltilities()]);
-
-      handlers.close();
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <Box pos="relative">
@@ -275,7 +226,7 @@ export default function ExpertForm({
                     size="lg"
                     radius={0}
                     withAsterisk
-                    {...form.getInputProps("amenities")}
+                    value={amenities}
                     label="Tiện ích lân cận"
                     checkIconPosition="right"
                     placeholder="Tiện ích lân cận"
@@ -310,12 +261,20 @@ export default function ExpertForm({
                     {...form.getInputProps("provinceId")}
                     label="Tỉnh/Thành phố"
                     placeholder="Chọn tỉnh"
-                    data={provinceData}
-                    onChange={(value) => {
-                      form.setFieldValue("provinceId", value);
-                      form.setFieldValue("wardId", null);
-                      form.setFieldValue("districtId", null);
-                      handleProvince(Number(value));
+                    data={provinceOptions}
+                    value={province}
+                    onChange={async (value) => {
+                      const optionsData = await getOptionsDistrict(
+                        Number(value)
+                      );
+                      setDistrictOptions(optionsData);
+                      if (value)
+                        form.setFieldValue("provinceId", value?.toString());
+                      form.setFieldValue("districtId", "");
+                      form.setFieldValue("wardId", "");
+                      setProvince(value);
+                      setDistrict(null);
+                      setWard(null);
                     }}
                   ></Select>
                 </Grid.Col>
@@ -326,11 +285,17 @@ export default function ExpertForm({
                     {...form.getInputProps("districtId")}
                     label="Huyện/Quận"
                     placeholder="Chọn huyện/quận"
-                    data={districtData}
-                    onChange={(value) => {
-                      form.setFieldValue("districtId", value);
-                      form.setFieldValue("wardId", null);
-                      handleDistrict(Number(value));
+                    data={districtOptions}
+                    value={district}
+                    onChange={async (value) => {
+                      const optionsData = await getOptionsWard(Number(value));
+                      setWardOptions(optionsData);
+                      if (value)
+                        form.setFieldValue("districtId", value?.toString());
+                      form.setFieldValue("wardId", "");
+                      setDistrict(value);
+
+                      setWard(null);
                     }}
                   ></Select>
                 </Grid.Col>
@@ -341,9 +306,12 @@ export default function ExpertForm({
                     {...form.getInputProps("wardId")}
                     label="Xã/Phường"
                     placeholder="Chọn xã/phường"
-                    data={wardData}
+                    data={wardOptions}
+                    value={ward}
                     onChange={(value) => {
-                      form.setFieldValue("wardId", value);
+                      if (value)
+                        form.setFieldValue("wardId", value?.toString());
+                      setWard(value);
                     }}
                   ></Select>
                 </Grid.Col>

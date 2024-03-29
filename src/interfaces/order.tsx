@@ -16,4 +16,5 @@ export interface IOrder {
   car?: any;
   dateTime?: string;
   customerRequest?: string;
+  totalPage?: any;
 }

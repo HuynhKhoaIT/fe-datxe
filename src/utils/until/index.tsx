@@ -68,28 +68,38 @@ export const getDateInfo = (date: any) => {
 };
 export default function convertToSlug(str: string) {
   // Chuyển hết sang chữ thường
-	str = str.toLowerCase();
-	// xóa dấu
-	str = str
-		.normalize('NFD') // chuyển chuỗi sang unicode tổ hợp
-		.replace(/[\u0300-\u036f]/g, ''); // xóa các ký tự dấu sau khi tách tổ hợp
-	// Thay ký tự đĐ
-	str = str.replace(/[đĐ]/g, 'd');
-	// Xóa ký tự đặc biệt
-	str = str.replace(/([^0-9a-z-\s])/g, '');
-	// Xóa khoảng trắng thay bằng ký tự -
-	str = str.replace(/(\s+)/g, '-');
-	// Xóa ký tự - liên tiếp
-	str = str.replace(/-+/g, '-');
-	// xóa phần dư - ở đầu & cuối
-	str = str.replace(/^-+|-+$/g, '');
-	// return
-	return str;
+  str = str.toLowerCase();
+  // xóa dấu
+  str = str
+    .normalize("NFD") // chuyển chuỗi sang unicode tổ hợp
+    .replace(/[\u0300-\u036f]/g, ""); // xóa các ký tự dấu sau khi tách tổ hợp
+  // Thay ký tự đĐ
+  str = str.replace(/[đĐ]/g, "d");
+  // Xóa ký tự đặc biệt
+  str = str.replace(/([^0-9a-z-\s])/g, "");
+  // Xóa khoảng trắng thay bằng ký tự -
+  str = str.replace(/(\s+)/g, "-");
+  // Xóa ký tự - liên tiếp
+  str = str.replace(/-+/g, "-");
+  // xóa phần dư - ở đầu & cuối
+  str = str.replace(/^-+|-+$/g, "");
+  // return
+  return str;
 }
 
-export function convertToPlatesNumber(str: string){
-  str = str.toUpperCase().replace(/([^0-9A-Z\s])/g, '').replace(/(\s+)/g, '')
-  let platesNumberFormat = /\(?([0-9]{2}[A-Z]{1,2}[0-9]{4,6})/g;
+// Ngăn chặn hành động mặc định của phím Enter
+export const handleKeyPress = (event: any) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+  }
+};
+
+export function convertToPlatesNumber(str: string) {
+  str = str
+    .toUpperCase()
+    .replace(/([^0-9A-Z\s])/g, "")
+    .replace(/(\s+)/g, "");
+  let platesNumberFormat = /^\(?([0-9]{2}[A-Z]{1,2}[0-9]{4,6})/;
   return str.match(platesNumberFormat)?.[0];
 }
 
@@ -97,6 +107,7 @@ export function convertToPlatesNumber(str: string){
 export async function getOptionsBrands() {
   try {
     const res = await axios.get(`/api/car-model`);
+    console.log(res);
     const dataOption = res?.data?.map((item: any) => ({
       value: item.id.toString(),
       label: item.title,
@@ -218,6 +229,19 @@ export async function getOptionsWard(districtId: number) {
     console.error("error:", error);
   }
 }
+
+export const getUltilities = async () => {
+  try {
+    const res = await axios.get(`/api/amentity`);
+    const dataOption = res.data?.map((item: any) => ({
+      value: item.id.toString(),
+      label: item.title,
+    }));
+    return dataOption;
+  } catch (error) {
+    console.error("error:", error);
+  }
+};
 
 export const queryClientOptions = {
   defaultOptions: {

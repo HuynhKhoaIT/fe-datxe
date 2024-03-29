@@ -49,6 +49,11 @@ export default function ModalChooseProducts({
   } = useFetch({
     queryKey: ["categoryOptions"],
     queryFn: () => getOptionsCategories(),
+    options: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchInterval: false,
+    },
   });
 
   const {

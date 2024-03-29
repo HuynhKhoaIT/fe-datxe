@@ -31,8 +31,7 @@ import {
 } from "@tabler/icons-react";
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import {
   useDebouncedValue,
   useDisclosure,
@@ -41,75 +40,54 @@ import {
 import { stepOrderOptions } from "@/constants/masterData";
 import dynamic from "next/dynamic";
 import ListPage from "@/app/components/layout/ListPage";
-import { notifications } from "@mantine/notifications";
 import Typo from "@/app/components/elements/Typo";
 import ItemProduct from "../_component/ItemProduct";
 import { modals } from "@mantine/modals";
-
 import {
   getOptionsBrands,
-  getOptionsCustomers,
   getOptionsModels,
   getOptionsYearCar,
+  handleKeyPress,
 } from "@/utils/until";
 import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
-import axios from "axios";
-import { getOptionsCar, getOrders } from "../until";
-const DynamicModalCamera = dynamic(() => import("../_component/ModalCamera"), {
-  ssr: false,
-});
-const DynamicModalChooseProducts = dynamic(
-  () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
-  {
-    ssr: false,
-  }
-);
-const DynamicModalNumberPlates = dynamic(
-  () => import("../_component/ModalNumberPlates"),
-  {
-    ssr: false,
-  }
-);
+import { getOptionsCar } from "../until";
+import { useAddOrder } from "../../hooks/order/useAddOrder";
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
-  const searchParams = useSearchParams();
-  const {
-    data: orders,
-    isLoading,
-    error,
-    isFetching,
-    isPlaceholderData,
-    refetch,
-  } = useFetch({
-    queryKey: ["orders", searchParams.toString(), 1],
-    queryFn: () => getOrders(searchParams.toString(), 1),
-  });
-
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
+  const router = useRouter();
+  const {
+    addItem,
+    updateItem,
+    updateStep,
+    brandOptions,
+    isLoadingBrand,
+  } = useAddOrder();
   const [activeTab, setActiveTab] = useState<string | null>(
     !isEditing ? "numberPlates" : "customer"
   );
-  const [carOptions, setCarOptions] = useState([]);
 
+  const [carOptions, setCarOptions] = useState([]);
   const [numberPlate, setNumberPlate] = useState("");
   const [debounced] = useDebouncedValue(numberPlate, 400);
+
   useEffect(() => {
     const fetchData = async () => {
       const data: any = await getOptionsCar({ s: debounced });
       setCarOptions(data);
       return data;
     };
-    if (debounced?.length >= 1) {
+    if (debounced?.length >= 3) {
       fetchData();
     }
   }, [debounced]);
-  const [isUser, handlersIsUser] = useDisclosure();
 
+  const [isUser, handlersIsUser] = useDisclosure();
   const [errorPlate, handlersPlate] = useDisclosure();
   const [loading, handlers] = useDisclosure();
   const [loadingButton, handlersButton] = useDisclosure();
-  const router = useRouter();
+
   const [selectedProducts, setSelectedProducts] = useState<any>(
     dataDetail
       ? dataDetail?.orderDetails.map((item: any) => ({
@@ -126,14 +104,17 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     openModalChoose,
     { open: openModal, close: closeModal },
   ] = useDisclosure(false);
+
   const [
     openModalNubmberPlates,
     { open: openModalNumberPlates, close: closeModalNumberPlates },
   ] = useDisclosure(false);
+
   const [
     openedModalCamera,
     { open: openModalCamera, close: closeModalCamera },
   ] = useDisclosure(false);
+
   const form = useForm({
     initialValues: {
       detail: selectedProducts,
@@ -144,11 +125,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     validate: {
       numberPlates: (value) => (value?.length > 0 ? null : "Vui lòng nhập..."),
     },
-  });
-
-  const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
-    queryKey: ["brandOptions"],
-    queryFn: () => getOptionsBrands(),
   });
 
   useEffect(() => {
@@ -248,53 +224,18 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       subTotal += item?.priceSale * item.quantity;
     });
     return subTotal;
-    // form.setFieldValue("total", subTotal);
   };
+
+  // submit form
   const handleSubmit = async (values: any) => {
     values.subTotal = calculateSubTotal();
     values.total = calculateSubTotal();
     values.dateTime = new Date();
     handlersButton.open();
-    try {
-      const url = isEditing ? `/api/orders/${dataDetail?.id}` : `/api/orders`;
-      const res = await fetch(url, {
-        method: isEditing ? "PUT" : "POST",
-        body: JSON.stringify(values),
-      });
-
-      const data = await res.json();
-
-      if (!data?.order) {
-        notifications.show({
-          title: "Thất bại",
-          message: "Đặt hàng thất bại: ",
-        });
-      } else {
-        notifications.show({
-          title: "Thành công",
-          message: "Đặt hàng thành công",
-        });
-        if (isEditing) {
-          const body = {
-            dataBefore: dataDetail,
-            dataAfter: data?.order,
-          };
-          const sms = await fetch(`/api/orders/sendSMS`, {
-            method: "POST",
-            body: JSON.stringify(body),
-          });
-        }
-        router.back();
-        refetch();
-      }
-    } catch (error) {
-      console.error("Error during API call:", error);
-      notifications.show({
-        title: "Lỗi",
-        message: "Đã xảy ra lỗi trong quá trình xử lý yêu cầu.",
-      });
-    } finally {
-      handlersButton.close();
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
   };
 
@@ -318,7 +259,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
         setYearCarOptions(yearCars);
         form.setFieldValue("customerId", data?.data?.customer.id);
         form.setFieldValue("carId", data?.data?.id);
-
         form.setFieldValue("carBrandId", data?.data?.carBrandId);
         form.setFieldValue("carNameId", data?.data?.carNameId);
         form.setFieldValue("carYearId", data?.data?.carYearId);
@@ -335,6 +275,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       closeModalNumberPlates();
     }
   };
+
   const rows = form.values.detail.map((selectedRow: any, index: number) => {
     // const images = JSON.parse(selectedRow.images);
     return (
@@ -420,34 +361,8 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       </Table.Tr>
     );
   });
-  const handleKeyPress = (event: any) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      // Ngăn chặn hành động mặc định của phím Enter
-    }
-  };
-
-  // Câp nhật trạng thái đơn hàng
-  const handleUpdateStep = async (step: any) => {
-    try {
-      await axios.post(`/api/orders/step`, {
-        id: dataDetail?.id,
-        step,
-      });
-      
-      notifications.show({
-        title: "Thành công",
-        message: "Cập nhật trạng thái đơn hàng thành công",
-      });
-      router.push("/admin/order-manager");
-      refetch();
-    } catch (error) {
-      console.error("error", error);
-    }
-  };
 
   const UpdateConfirm = (step: any) => {
-    console.log(step);
     var subTitle = "";
     if (step == "-1") {
       subTitle = "huỷ đơn hàng";
@@ -468,9 +383,10 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       zIndex: 999,
       withCloseButton: false,
       labels: { confirm: "Có", cancel: "Không" },
-      onConfirm: () => handleUpdateStep(step),
+      onConfirm: () => updateStep({ step: step, id: dataDetail?.id }),
     });
   };
+
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -507,22 +423,6 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               <Tabs.Panel value="numberPlates">
                 <Grid gutter={12}>
                   <Grid.Col span={10}>
-                    {/* <TextInput
-                      size="lg"
-                      radius={0}
-                      withAsterisk
-                      {...form.getInputProps("numberPlates")}
-                      // label="Biển số xe"
-                      type="text"
-                      onChange={(e) => {
-                        if (e.target.value.length > 0) {
-                          handlersPlate.close();
-                        }
-                        form.setFieldValue("numberPlates", e.target.value);
-                      }}
-                      error={errorPlate ? "Vui lòng nhập..." : false}
-                      placeholder="Biển số xe"
-                    /> */}
                     <Autocomplete
                       size="lg"
                       radius={0}
@@ -1335,3 +1235,19 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     </Box>
   );
 }
+
+const DynamicModalCamera = dynamic(() => import("../_component/ModalCamera"), {
+  ssr: false,
+});
+const DynamicModalChooseProducts = dynamic(
+  () => import("../../marketing-campaign/choose-products/ModalChooseProducts"),
+  {
+    ssr: false,
+  }
+);
+const DynamicModalNumberPlates = dynamic(
+  () => import("../_component/ModalNumberPlates"),
+  {
+    ssr: false,
+  }
+);

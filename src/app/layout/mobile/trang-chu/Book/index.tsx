@@ -25,6 +25,11 @@ const Book = () => {
   const { data: brandOptions, isLoading: isLoadingBrand } = useFetch({
     queryKey: ["brandOptions"],
     queryFn: () => getOptionsBrands(),
+    options: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      refetchInterval: false,
+    },
   });
   const [modelOptions, setModelOptions] = useState<any>([]);
   const [yearCarOptions, setYearCarOptions] = useState<any>([]);

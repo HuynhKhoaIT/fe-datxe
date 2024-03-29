@@ -31,3 +31,30 @@ export const MARKETING_CANCEL = '0';
 export const MARKETING_PENDING = '1';
 export const MARKETING_COMING = '2';
 export const MARKETING_ALL = '3';
+export const QUERY_KEY = {
+    products: 'products',
+    categories: 'categories',
+    blogs: 'blogs',
+    orders: 'orders',
+    cars: 'cars',
+    customers: 'customers',
+    experts: 'experts',
+    marketing: 'marketing',
+
+    optionsProvince: 'optionsProvince',
+    optionsDistrict: 'optionsDistrict',
+    optionsWard: 'optionsWard',
+    optionsultilities: 'optionsultilities',
+    optionsBrandCar: 'optionsBrandCar',
+    optionsModelCar: 'optionsModelCar',
+    optionsYearCar: 'optionsYearCar',
+
+    optionsNumberPlate: 'optionsNumberPlate',
+    optionsCategory: 'optionsCategory',
+
+    optionsCustomer: 'optionsCustomer',
+    carsDlbd: 'carsDlbd',
+    productsDlbd: 'productsDlbd',
+    customersDlbd: 'customersDlbd',
+    categoriesDlbd: 'categoriesDlbd',
+};
