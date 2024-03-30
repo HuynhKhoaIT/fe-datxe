@@ -1,4 +1,4 @@
-import { createGarage, getGarageIdByDLBDID, getGarages } from '@/app/libs/prisma/garage';
+import { getGarageByDlbdId } from '@/app/libs/prisma/garage';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
@@ -8,7 +8,7 @@ export async function GET() {
         const session = await getServerSession(authOptions);
         if (session) {
             let garageId = Number(session.user?.garageId);
-            const garages = await getGarageIdByDLBDID(garageId);
+            const garages = await getGarageByDlbdId(garageId);
 
             return NextResponse.json(garages);
         }
