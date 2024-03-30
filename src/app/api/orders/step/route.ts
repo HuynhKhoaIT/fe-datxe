@@ -10,7 +10,8 @@ export async function POST(request: Request) {
         if (session) {
             const orderId = json.id;
             const orderStep = json.step;
-            const order = await updateOrderStep(orderId, orderStep);
+            const cancelReason = json.cancelReason;
+            const order = await updateOrderStep(orderId, orderStep, cancelReason);
             return new NextResponse(JSON.stringify(order), {
                 status: 201,
                 headers: { 'Content-Type': 'application/json' },
