@@ -41,7 +41,7 @@ export default function ModalNumberPlates({
       setCarOptions(data);
       return data;
     };
-    if (debounced?.length >= 1) {
+    if (debounced?.length >= 3) {
       fetchData();
     }
   }, [debounced]);
@@ -53,7 +53,6 @@ export default function ModalNumberPlates({
   //   queryKey: ["carOptions"],
   //   queryFn: () => getOptionsCar(),
   // });
-  console.log(carOptions);
   return (
     <Modal
       opened={openModal}

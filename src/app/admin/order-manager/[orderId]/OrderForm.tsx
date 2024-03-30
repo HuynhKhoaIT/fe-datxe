@@ -1,7 +1,6 @@
 "use client";
 import {
   ActionIcon,
-  Autocomplete,
   Box,
   Button,
   Card,
@@ -53,6 +52,7 @@ import FooterSavePage from "../../_component/FooterSavePage";
 import useFetch from "@/app/hooks/useFetch";
 import { getOptionsCar } from "../until";
 import { useAddOrder } from "../../hooks/order/useAddOrder";
+import AutocompleteField from "@/app/components/form/AutoCompleteField";
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
@@ -67,22 +67,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const [activeTab, setActiveTab] = useState<string | null>(
     !isEditing ? "numberPlates" : "customer"
   );
-
-  const [carOptions, setCarOptions] = useState([]);
   const [numberPlate, setNumberPlate] = useState("");
-  const [debounced] = useDebouncedValue(numberPlate, 400);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data: any = await getOptionsCar({ s: debounced });
-      setCarOptions(data);
-      return data;
-    };
-    if (debounced?.length >= 3) {
-      fetchData();
-    }
-  }, [debounced]);
-
   const [isUser, handlersIsUser] = useDisclosure();
   const [errorPlate, handlersPlate] = useDisclosure();
   const [loading, handlers] = useDisclosure();
@@ -397,6 +382,9 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       <form onSubmit={form.onSubmit(handleSubmit)} onKeyPress={handleKeyPress}>
         {isMobile ? (
           <Tabs
+            variant="outline"
+            // radius={0}
+            color="blue"
             value={activeTab}
             onChange={(value) => {
               if (form.values.numberPlates.length === 0) {
@@ -423,7 +411,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
               <Tabs.Panel value="numberPlates">
                 <Grid gutter={12}>
                   <Grid.Col span={10}>
-                    <Autocomplete
+                    {/* <Autocomplete
                       size="lg"
                       radius={0}
                       placeholder="Biển số xe"
@@ -433,6 +421,22 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         setNumberPlate(value);
                         form.setFieldValue("numberPlates", value);
                       }}
+                    /> */}
+                    <AutocompleteField
+                      size="lg"
+                      radius={0}
+                      placeholder="Biển số xe"
+                      value={numberPlate}
+                      onChange={(value: any) => {
+                        setNumberPlate(value);
+                        if (value.length > 0) {
+                          handlersPlate.close();
+                        }
+                        form.setFieldValue("numberPlates", value);
+                      }}
+                      error={errorPlate ? "Vui lòng nhập..." : false}
+                      getOptionData={getOptionsCar}
+                      form={form}
                     />
                   </Grid.Col>
                   <Grid.Col span={2}>
@@ -743,7 +747,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     type="bold"
                     style={{ color: "var(--primary-orange)" }}
                   >
-                    Thông tin đơn hàng
+                    Thông tin thanh toán
                   </Typo>
 
                   <Grid gutter={12} mt={24} className={styles.marketingInfo}>

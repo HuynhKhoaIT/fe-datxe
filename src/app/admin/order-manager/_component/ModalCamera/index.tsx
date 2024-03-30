@@ -4,7 +4,13 @@ import Webcam from "react-webcam";
 import { Modal, Box, Button } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import axios from "axios";
-const ModalCamera = ({ openModal, close, formOrder, setNumberPlate }: any) => {
+const ModalCamera = ({
+  openModal,
+  close,
+  formOrder,
+  setNumberPlate,
+  openDropdown,
+}: any) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [licensePlate, setLicensePlate] = useState("");
   const webcamRef = useRef<Webcam>(null);
@@ -37,8 +43,9 @@ const ModalCamera = ({ openModal, close, formOrder, setNumberPlate }: any) => {
       const processedBase64 = image.substring(image.indexOf(",") + 1);
       const plate: any = await TakePlatesNumber(processedBase64);
       setLicensePlate(plate?.data);
-      formOrder.setFieldValue("numberPlates", plate?.data);
+      formOrder?.setFieldValue("numberPlates", plate?.data);
       setNumberPlate(plate?.data);
+      openDropdown();
       close();
     }
   };
@@ -51,28 +58,6 @@ const ModalCamera = ({ openModal, close, formOrder, setNumberPlate }: any) => {
       return res.data;
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const handleFileChange = (e: any) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      const reader = new FileReader();
-
-      reader.onloadend = async () => {
-        const base64String: any = reader.result;
-        const processedBase64 = base64String.substring(
-          base64String.indexOf(",") + 1
-        );
-
-        const plate: any = await TakePlatesNumber(processedBase64);
-        const modifiedString = plate?.data.replace(/[-.\n' ']/g, ""); // Loại bỏ dấu gạch ngang và dấu chấm
-        for (let i = 0; i < modifiedString.length; i++) {}
-        formOrder.setFieldValue("numberPlates", "76C13976");
-        close();
-      };
-
-      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -100,24 +85,7 @@ const ModalCamera = ({ openModal, close, formOrder, setNumberPlate }: any) => {
             facingMode: "environment", // Lựa chọn camera sau
           }}
         />
-        {/* <label htmlFor="avatar">Choose a profile picture:</label>
 
-        <input
-          type="file"
-          id="avatar"
-          name="avatar"
-          onChange={handleFileChange}
-          accept="image/png, image/jpeg"
-        />
-
-        <input
-          id="licenseplate"
-          type="text"
-          placeholder="License Plate"
-          value={licensePlate}
-          onChange={(e) => setLicensePlate(e.target.value)}
-        />
-        <br /> */}
         <div
           style={{
             width: "100%",

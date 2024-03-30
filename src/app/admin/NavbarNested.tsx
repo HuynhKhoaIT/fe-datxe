@@ -61,9 +61,9 @@ const mockdata = [
   },
 ];
 
-export function NavbarNested() {
+export function NavbarNested({ toggle }: any) {
   const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <LinksGroup {...item} key={item.label} toggle={toggle} />
   ));
 
   return (

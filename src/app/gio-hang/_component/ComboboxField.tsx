@@ -1,13 +1,6 @@
 "use client";
 import { useState } from "react";
 import { InputBase, Combobox, useCombobox, Button, Input } from "@mantine/core";
-const groceries = [
-  "🍎 Apples",
-  "🍌 Bananas",
-  "🥦 Broccoli",
-  "🥕 Carrots",
-  "🍫 Chocolate",
-];
 
 export default function ComboboxField({
   label,

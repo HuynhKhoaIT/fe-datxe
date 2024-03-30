@@ -10,7 +10,11 @@ import {
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import ImageDefult from "../../../../../public/assets/images/logoDatxe.png";
-import { kindProductOptions, statusOptions } from "@/constants/masterData";
+import {
+  FieldTypes,
+  kindProductOptions,
+  statusOptions,
+} from "@/constants/masterData";
 import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
@@ -20,11 +24,20 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import ItemProductChoose from "../_component/ItemProductChoose";
 import useFetch from "@/app/hooks/useFetch";
 import { getOptionsCategories } from "@/utils/until";
-import { getProducts } from "../../products/until";
 import { QueryClient } from "@tanstack/react-query";
 import FooterSavePage from "../../_component/FooterSavePage";
 import FilterCategories from "@/app/components/common/FilterCategory/FilterCategories";
+import { QUERY_KEY } from "@/constants";
+import { ResponseError } from "@/utils/until/ResponseError";
 const queryClient = new QueryClient();
+
+const fetchProducts = async (searchParams: any, page: number): Promise<any> => {
+  const response = await fetch(`/api/products?${searchParams}&page=${page}`);
+  if (!response.ok) {
+    throw new ResponseError("Failed to fetch products", response);
+  }
+  return await response.json();
+};
 
 export default function ModalChooseProducts({
   openModal,
@@ -47,7 +60,7 @@ export default function ModalChooseProducts({
     isLoading: isLoadingCategory,
     isError,
   } = useFetch({
-    queryKey: ["categoryOptions"],
+    queryKey: [QUERY_KEY.optionsCategory],
     queryFn: () => getOptionsCategories(),
     options: {
       refetchOnWindowFocus: false,
@@ -64,14 +77,14 @@ export default function ModalChooseProducts({
     isPlaceholderData,
     refetch,
   } = useFetch({
-    queryKey: ["products", searchParams.toString(), page],
-    queryFn: () => getProducts(searchParams.toString(), page),
+    queryKey: [QUERY_KEY.products, searchParams.toString(), page],
+    queryFn: () => fetchProducts(searchParams.toString(), page),
   });
   useEffect(() => {
     if (!isPlaceholderData && page < products?.totalPage) {
       queryClient.prefetchQuery({
-        queryKey: ["products", searchParams.toString(), page],
-        queryFn: () => getProducts(searchParams.toString(), page),
+        queryKey: [QUERY_KEY.products, searchParams.toString(), page],
+        queryFn: () => fetchProducts(searchParams.toString(), page),
         staleTime: Infinity,
       });
     }
@@ -202,22 +215,19 @@ export default function ModalChooseProducts({
     {
       name: "s",
       placeholder: "Tên sản phẩm",
-      type: "input",
+      type: FieldTypes.STRING,
     },
 
     {
       name: "isProduct",
       placeholder: "Loại",
-      type: "select",
+      type: FieldTypes.SELECT,
       data: kindProductOptions,
     },
   ];
   const initialValuesSearch = {
     s: "",
     isProduct: null,
-    brandId: null,
-    nameId: null,
-    yearId: null,
   };
 
   return (
@@ -265,7 +275,7 @@ export default function ModalChooseProducts({
           style={{ height: "100%" }}
           baseTable={
             <TableBasic
-              loading={isLoading}
+              loading={isLoading || isFetching}
               data={products?.data}
               columns={columns}
               totalPage={products?.totalPage}

@@ -6,7 +6,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
-import { sexOptions, statusOptions } from "@/constants/masterData";
+import { FieldTypes, sexOptions, statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import dayjs from "dayjs";
 import ListPage from "@/app/components/layout/ListPage";
@@ -179,19 +179,17 @@ export default function CustomerListPage({
     {
       name: "s",
       placeholder: "Tên",
-      type: "input",
+      type: FieldTypes.STRING,
     },
     {
-      name: "group",
-      placeholder: "Nhóm khách hàng",
-      type: "select",
-      // dataSource
+      name: "phoneNumber",
+      placeholder: "Số điện thoại",
+      type: FieldTypes.STRING,
     },
   ];
   const initialValuesSearch = {
     s: "",
     phoneNumber: "",
-    group: "",
   };
 
   return (

@@ -4,7 +4,7 @@ import React, { Fragment, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
 import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import { stepOrderOptions } from "@/constants/masterData";
+import { FieldTypes, stepOrderOptions } from "@/constants/masterData";
 import Link from "next/link";
 import { IconEye, IconPlus, IconTrash } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
@@ -13,8 +13,9 @@ import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import ListPage from "@/app/components/layout/ListPage";
 import FilterStepOrder from "@/app/components/common/FilterStepOrder/FilterCategories";
-import { deleteOrder, getOrders } from "./until";
+import { deleteOrder, getOptionsCar, getOrders } from "./until";
 import { useOrders } from "../hooks/order/useOrder";
+import { getOptionsCustomers } from "@/utils/until";
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
   {
@@ -176,26 +177,36 @@ export default function OrdersManaga() {
     },
   ];
 
+  const [customer, setCustomer] = useState([]);
   const searchData = [
     {
-      name: "code",
+      name: "s",
       placeholder: "Mã đơn hàng",
-      type: "input",
+      type: FieldTypes?.STRING,
     },
-    // {
-    //   name: "step",
-    //   placeholder: "Tình trạng",
-    //   type: "select",
-    //   data: stepOrderOptions,
-    // },
+    {
+      name: "customerId",
+      placeholder: "Khách hàng",
+      type: FieldTypes?.AUTOCOMPLETE,
+      value: customer,
+      setValue: setCustomer,
+      getOptionsData: getOptionsCustomers,
+    },
+    {
+      name: "carId",
+      placeholder: "Biển số xe",
+      type: FieldTypes?.AUTOCOMPLETE,
+      value: customer,
+      setValue: setCustomer,
+      getOptionsData: getOptionsCar,
+      isCamera: true,
+    },
   ];
 
   const initialValuesSearch = {
-    code: "",
-    // step: null,
-    brandId: null,
-    nameId: null,
-    yearId: null,
+    s: "",
+    customerId: null,
+    carId: null,
   };
 
   return (

@@ -21,6 +21,7 @@ interface LinksGroupProps {
   initiallyOpened?: boolean;
   links?: { label: string; link: string }[];
   link?: string;
+  toggle?: any;
 }
 
 export function LinksGroup({
@@ -29,6 +30,7 @@ export function LinksGroup({
   initiallyOpened,
   links,
   link,
+  toggle,
 }: LinksGroupProps) {
   const hasLinks = Array.isArray(links);
   const pathname = usePathname();
@@ -39,6 +41,9 @@ export function LinksGroup({
       href={link.link}
       key={link.label}
       className={classNames(classes.link)}
+      onClick={() => {
+        setTimeout(toggle, 1000);
+      }}
     >
       {link.label}
     </Link>
