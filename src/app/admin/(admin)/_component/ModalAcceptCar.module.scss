@@ -1,0 +1,20 @@
+.headerModal {
+    border-bottom: 1px solid #ddd;
+    height: 50px;
+}
+.titleModal {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--primary-orange);
+}
+.pleaseInput {
+    padding: 30px 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    p {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--title-color-sub);
+        text-align: center;
+    }
+}

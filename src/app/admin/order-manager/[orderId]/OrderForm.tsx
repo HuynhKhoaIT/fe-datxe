@@ -36,7 +36,7 @@ import {
   useDisclosure,
   useMediaQuery,
 } from "@mantine/hooks";
-import { stepOrderOptions } from "@/constants/masterData";
+import { OptionsCancelOrder, stepOrderOptions } from "@/constants/masterData";
 import dynamic from "next/dynamic";
 import ListPage from "@/app/components/layout/ListPage";
 import Typo from "@/app/components/elements/Typo";
@@ -372,6 +372,34 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     });
   };
 
+  const HandleCancelOrder = (step: any) => {
+    modals.openConfirmModal({
+      title: (
+        <Typo size="small" type="semi-bold" style={{ color: "red" }}>
+          Huỷ đơn hàng
+        </Typo>
+      ),
+      children: (
+        <Box mb={30}>
+          <Select
+            size="lg"
+            radius={0}
+            label={"Lí do huỷ đơn"}
+            placeholder="Chọn lí do"
+            data={OptionsCancelOrder}
+          />
+        </Box>
+      ),
+      h: 400,
+      size: "350px",
+      centered: true,
+      // zIndex: 99,
+      withCloseButton: false,
+      labels: { confirm: "Xác nhận", cancel: "Huỷ" },
+      onConfirm: () => updateStep({ step: step, id: dataDetail?.id }),
+    });
+  };
+
   return (
     <Box pos="relative">
       <LoadingOverlay
@@ -687,7 +715,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       type="bold"
                       style={{ color: "var(--primary-orange)" }}
                     >
-                      Chi tiết đơn hàng
+                      Hàng hoá & Dịch vụ
                     </Typo>
                     <Button
                       size="lg"
@@ -806,7 +834,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                         key="cancel"
                         color="red"
                         // leftSection={<IconBan size={16} />}
-                        onClick={() => UpdateConfirm("-1")}
+                        onClick={() => HandleCancelOrder("-1")}
                       >
                         Huỷ đơn
                       </Button>
@@ -1058,7 +1086,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   type="bold"
                   style={{ color: "var(--primary-orange)" }}
                 >
-                  Chi tiết đơn hàng
+                  Hàng hoá & Dịch vụ
                 </Typo>
                 <Button
                   size="lg"
@@ -1167,7 +1195,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                   key="cancel"
                   color="red"
                   // leftSection={<IconBan size={16} />}
-                  onClick={() => UpdateConfirm("-1")}
+                  onClick={() => HandleCancelOrder("-1")}
                 >
                   Huỷ đơn
                 </Button>

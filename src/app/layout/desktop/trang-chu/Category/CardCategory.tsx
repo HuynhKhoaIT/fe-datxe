@@ -22,7 +22,7 @@ const CardCategory = ({
           className={styles.ItemCat}
         >
           <div>
-            <ImageField src={category.image} width={"60px"} />
+            <ImageField src={category.image} width={60} />
           </div>
           <Typo
             size="primary"
@@ -39,12 +39,7 @@ const CardCategory = ({
           className={styles.ItemCat}
         >
           <div>
-            <ImageField
-              src={category.image}
-              width={"60px"}
-              height={"60px"}
-              fit
-            />
+            <ImageField src={category.image} width={60} height={60} fit />
           </div>
           <Typo
             size="primary"

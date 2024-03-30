@@ -13,7 +13,7 @@ const BlogItem = ({ blog }: any) => {
             <Link href="" style={{ width: "100%" }}>
               <ImageField
                 src={blog?.image ? blog?.image : null}
-                height={"160"}
+                height={160}
                 radius={12}
               />
             </Link>

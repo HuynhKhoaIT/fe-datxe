@@ -12,14 +12,23 @@ import {
 import Typo from "@/app/components/elements/Typo";
 import { IconPhotoSensor } from "@tabler/icons-react";
 import Scan from "@/assets/icons/scan.svg";
-import Report from "@/assets/icons/report.svg";
-import Car from "@/assets/icons/car_icon_126268.svg";
+import Report from "@/assets/icons/record-svgrepo-com.svg";
+import Car from "@/assets/icons/car-steering-wheel-svgrepo-com.svg";
 import Product from "@/assets/icons/product.svg";
 import SP from "@/assets/icons/sp.svg";
-import Marketing from "@/assets/icons/marketing.svg";
-import Clock from "@/assets/icons/clock.svg";
+import Marketing from "@/assets/icons/analysis-comparison-svgrepo-com.svg";
+import Calendar from "@/assets/icons/calendar-svgrepo-com.svg";
 import CarService from "@/assets/images/carService2.jpeg";
+import { useRouter } from "next/navigation";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import dynamic from "next/dynamic";
 export default function DashboardAdmin() {
+  const router = useRouter();
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
+    false
+  );
+
   function getCurrentMonthDates() {
     const today = new Date();
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -47,7 +56,7 @@ export default function DashboardAdmin() {
       id: 1,
       icon: Scan.src,
       label: "Tiếp nhận",
-      action: "",
+      action: openModal,
     },
     {
       id: 2,
@@ -57,7 +66,7 @@ export default function DashboardAdmin() {
     },
     {
       id: 3,
-      icon: Clock.src,
+      icon: Calendar.src,
       label: "Lịch hẹn",
       link: "/admin/orders",
     },
@@ -77,13 +86,31 @@ export default function DashboardAdmin() {
       id: 6,
       icon: Marketing.src,
       label: "Chương trình",
-      link: "/admin/marketing",
+      link: "/admin/marketing-campaign",
     },
     {
       id: 7,
       icon: SP.src,
       label: "SP đường dẫn",
       link: "/admin/products",
+    },
+  ];
+
+  const card_3 = [
+    {
+      label: "Nghiệm thu",
+      value: 39,
+      id: 1,
+    },
+    {
+      label: "Xuất xưởng",
+      value: 60,
+      id: 2,
+    },
+    {
+      label: "Xe huỷ",
+      value: 0,
+      id: 3,
     },
   ];
   return (
@@ -97,9 +124,21 @@ export default function DashboardAdmin() {
         </div>
         <div className={styles.boxMenu}>
           {menu?.map((item: any, index: number) => {
-            const Icon = item.icon;
+            const Action = item?.action;
+
             return (
-              <div className={styles.itemMenu} key={index}>
+              <div
+                onClick={() => {
+                  if (item?.link) {
+                    router.push(item.link);
+                  }
+                  if (item?.action) {
+                    Action();
+                  }
+                }}
+                className={styles.itemMenu}
+                key={index}
+              >
                 <div className={styles.iconMenu}>
                   {/* <Icon size={40} stroke={1} /> */}
                   <img src={item.icon} />
@@ -122,10 +161,35 @@ export default function DashboardAdmin() {
         </div>
       </div>
 
-      <Statistical />
+      {isMobile ? (
+        <div className={styles.card_3}>
+          <div className={styles.item_card}>
+            <p>Nghiệm thu</p>
+            <span className={styles.value_3}>39</span>
+          </div>
+          <div className={styles.item_card}>
+            <p>Xuất xưởng</p>
+            <span className={styles.value_3}>60</span>
+          </div>
+          <div className={styles.item_card}>
+            <p>Xe huỷ</p>
+            <span className={styles.value_3}>0</span>
+          </div>
+        </div>
+      ) : (
+        <Statistical dataSource={card_3} />
+      )}
 
       <Chart />
+      <DynamicModalAcceptCart openModal={openedModal} close={closeModal} />
       {/* <SellingProductListPage /> */}
     </div>
   );
 }
+
+const DynamicModalAcceptCart = dynamic(
+  () => import("./_component/ModalAcceptCar"),
+  {
+    ssr: false,
+  }
+);

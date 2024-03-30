@@ -20,6 +20,13 @@ import {
     MARKETING_COMING,
     MARKETING_PENDING,
     ORDER_PENDING,
+    ORDER_CANCEL_1,
+    ORDER_CANCEL_2,
+    ORDER_CANCEL_3,
+    ORDER_CANCEL_4,
+    ORDER_CANCEL_5,
+    ORDER_CANCEL_6,
+    ORDER_CANCEL_7,
 } from './index';
 
 export const statusOptions = [
@@ -66,3 +73,13 @@ export const FieldTypes = {
     DATE: 'DATE',
     DATE_RANGE: 'DATE_RANGE',
 };
+
+export const OptionsCancelOrder = [
+    { value: ORDER_CANCEL_1, label: 'Sai lịch hẹn', color: 'pink' },
+    { value: ORDER_CANCEL_2, label: 'Khách từ chối', color: 'blue' },
+    { value: ORDER_CANCEL_3, label: 'Khách hàng không phản hồi', color: 'yellow' },
+    { value: ORDER_CANCEL_4, label: 'Hết hàng', color: 'orange' },
+    { value: ORDER_CANCEL_5, label: 'Giá cao', color: 'green' },
+    { value: ORDER_CANCEL_6, label: 'Dùng sản phẩm của đối thủ', color: 'cyan' },
+    { value: ORDER_CANCEL_7, label: 'Nguyên nhân khác', color: 'red' },
+];

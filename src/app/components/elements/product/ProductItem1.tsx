@@ -17,7 +17,12 @@ export default function ProductItem({
       <Card shadow="sm" radius="md">
         <Card.Section>
           <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>
-            <ImageField src={images ? images[0] : null} height={"160"} />
+            <ImageField
+              src={images ? images[0] : null}
+              height={160}
+
+              // fill={true}
+            />
           </Link>
         </Card.Section>
 

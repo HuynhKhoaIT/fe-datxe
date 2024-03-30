@@ -6,12 +6,5 @@ interface IProps {
 }
 
 export default function AdminLayout({ children }: IProps) {
-  const Breadcrumbs = [{ title: "Tổng quan" }];
-
-  return (
-    <Fragment>
-      <Breadcrumb breadcrumbs={Breadcrumbs} />
-      {children}
-    </Fragment>
-  );
+  return <Fragment>{children}</Fragment>;
 }

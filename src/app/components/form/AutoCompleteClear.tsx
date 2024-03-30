@@ -4,6 +4,7 @@ import {
   ActionIcon,
   CloseButton,
   Combobox,
+  Flex,
   Grid,
   Loader,
   TextInput,
@@ -22,17 +23,18 @@ export function AutocompleteClearable({
   isCamera = false,
   w,
 }: any) {
-  const values = form.values;
+  const values = form?.values;
   const [loading, setLoading] = useState(false);
   const [groceries, setGroceries] = useState([]);
   const [value, setValue] = useState("");
-  console.log("value", value);
+
   useEffect(() => {
-    if (values[name] == null) {
+    if (values?.[name] == null) {
       setValue("");
     }
-  }, [values[name]]);
+  }, [values?.[name]]);
   const [debounced] = useDebouncedValue(value, debounceTime);
+
   useEffect(() => {
     const fetchData = async () => {
       const data: any = await getOptionData({ s: debounced });
@@ -46,13 +48,15 @@ export function AutocompleteClearable({
       fetchData();
     }
   }, [debounced]);
+
   const combobox = useCombobox();
+
   const [
     openedModalCamera,
     { open: openModalCamera, close: closeModalCamera },
   ] = useDisclosure(false);
 
-  const options = groceries.map((item: any) => (
+  const options = groceries?.map((item: any) => (
     <Combobox.Option value={item.label} key={item}>
       <div
         style={{
@@ -80,7 +84,7 @@ export function AutocompleteClearable({
     >
       <Combobox.Target>
         <Grid w={w} justify="space-between" gutter={0}>
-          <Grid.Col span={isCamera ? 9 : 12}>
+          <Grid.Col span={isCamera ? 10 : 12}>
             <TextInput
               size="lg"
               radius={0}
@@ -111,12 +115,14 @@ export function AutocompleteClearable({
             />
           </Grid.Col>
           {isCamera && (
-            <Grid.Col span={2}>
+            <Grid.Col
+              style={{ display: "flex", justifyContent: "flex-end" }}
+              span={2}
+            >
               <ActionIcon
                 onClick={openModalCamera}
-                // size="lg"
-                h={50}
                 w={50}
+                h={50}
                 variant="filled"
                 aria-label="Settings"
               >
