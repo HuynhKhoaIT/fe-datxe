@@ -354,6 +354,34 @@ export async function getOrderByCode(code: string){
     
 }
 
+export async function reportTrafictDashboard(dateStart: string, dateEnd: string,garageId: number) {
+
+    const order = await prisma.order.findMany(
+        {
+            where:{
+                OR:[
+                    {
+                        dateTime:{
+                            gte: new Date(dateStart),
+                        },
+                        garageId
+                    },
+                    {
+                        dateTime:{
+                            gte:new Date(dateStart)
+                        },
+                        dateDone:{
+                            lte: new Date(dateEnd)
+                        },
+                        garageId
+                    }
+                ]
+            }
+        }
+    );
+    return order;
+}
+
 
 export async function createOrder(json: any) {
     try {
@@ -661,14 +689,15 @@ export async function updateOrderStatus(id:Number,status:string){
     );
     return order;
 }
-export async function updateOrderStep(id:Number,step:any){
+export async function updateOrderStep(id:Number,step:any,cancelReason: string){
     const order = await prisma.order.update(
         {
             where:{
                 id: Number(id)
             },
             data: {
-                step: Number(step)
+                step: Number(step),
+                cancelReason
             }
         }
     );
