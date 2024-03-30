@@ -4,7 +4,7 @@ import { ResponseError } from "@/utils/until/ResponseError";
 import { QUERY_KEY } from "@/constants";
 const queryClient = new QueryClient();
 
-const fetchMyProfile = async (): Promise<any> => {
+const fetchMygarage = async (): Promise<any> => {
   const response = await fetch(`/api/garage/my-garage`);
   if (!response.ok) {
     throw new ResponseError("Failed to fetch my garage", response);
@@ -12,8 +12,8 @@ const fetchMyProfile = async (): Promise<any> => {
   return await response.json();
 };
 
-interface useMyProfile {
-  profile: any;
+interface useMyGarage {
+  myGarage: any;
   isLoading: boolean;
   isFetching: boolean;
   error?: string;
@@ -26,23 +26,23 @@ function mapError(error: unknown | undefined): undefined | string {
   return "Unknown error";
 }
 
-export const useMyProfile = (): useMyProfile => {
+export const useMyGarage = (): useMyGarage => {
   const queryClient = useQueryClient();
   const {
-    data: profile = [],
+    data: myGarage = [],
     isLoading,
     isFetching,
     error,
     isPlaceholderData,
   } = useQuery({
-    queryKey: [QUERY_KEY.profile],
-    queryFn: () => fetchMyProfile(),
+    queryKey: [QUERY_KEY.myGarage],
+    queryFn: () => fetchMygarage(),
     refetchOnWindowFocus: false,
     retry: 2,
   });
 
   return {
-    profile,
+    myGarage,
     isLoading,
     isFetching,
     error: mapError(error),

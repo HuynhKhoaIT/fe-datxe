@@ -4,6 +4,7 @@ import {
   ActionIcon,
   CloseButton,
   Combobox,
+  Flex,
   Grid,
   Loader,
   TextInput,
@@ -12,6 +13,7 @@ import {
 import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import { IconCamera } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 
 export function AutocompleteClearable({
   debounceTime = 400,
@@ -22,17 +24,23 @@ export function AutocompleteClearable({
   isCamera = false,
   w,
 }: any) {
-  const values = form.values;
+  const searchParams = useSearchParams();
+  const initialValues: any = searchParams.get(name);
+  console.log(initialValues);
+
+  const values = form?.values;
   const [loading, setLoading] = useState(false);
   const [groceries, setGroceries] = useState([]);
   const [value, setValue] = useState("");
-  console.log("value", value);
+  const [opened, { open: open, close: close }] = useDisclosure(false);
+
   useEffect(() => {
-    if (values[name] == null) {
+    if (values?.[name] == null) {
       setValue("");
     }
-  }, [values[name]]);
+  }, [values?.[name]]);
   const [debounced] = useDebouncedValue(value, debounceTime);
+
   useEffect(() => {
     const fetchData = async () => {
       const data: any = await getOptionData({ s: debounced });
@@ -46,14 +54,16 @@ export function AutocompleteClearable({
       fetchData();
     }
   }, [debounced]);
+
   const combobox = useCombobox();
+
   const [
     openedModalCamera,
     { open: openModalCamera, close: closeModalCamera },
   ] = useDisclosure(false);
 
-  const options = groceries.map((item: any) => (
-    <Combobox.Option value={item.label} key={item}>
+  const options = groceries?.map((item: any) => (
+    <Combobox.Option defaultValue={initialValues} value={item.label} key={item}>
       <div
         style={{
           width: "100%",
@@ -62,6 +72,7 @@ export function AutocompleteClearable({
         }}
         onClick={() => {
           form.setFieldValue(name, item.value);
+          open();
         }}
       >
         {item.label}
@@ -80,7 +91,7 @@ export function AutocompleteClearable({
     >
       <Combobox.Target>
         <Grid w={w} justify="space-between" gutter={0}>
-          <Grid.Col span={isCamera ? 9 : 12}>
+          <Grid.Col span={isCamera ? 10 : 12}>
             <TextInput
               size="lg"
               radius={0}
@@ -93,7 +104,12 @@ export function AutocompleteClearable({
               }}
               onClick={() => combobox.openDropdown()}
               onFocus={() => combobox.openDropdown()}
-              onBlur={() => combobox.closeDropdown()}
+              onBlur={() => {
+                combobox.closeDropdown();
+                if (!opened) {
+                  setValue("");
+                }
+              }}
               rightSection={
                 loading ? (
                   <Loader size={18} />
@@ -111,12 +127,14 @@ export function AutocompleteClearable({
             />
           </Grid.Col>
           {isCamera && (
-            <Grid.Col span={2}>
+            <Grid.Col
+              style={{ display: "flex", justifyContent: "flex-end" }}
+              span={2}
+            >
               <ActionIcon
                 onClick={openModalCamera}
-                // size="lg"
-                h={50}
                 w={50}
+                h={50}
                 variant="filled"
                 aria-label="Settings"
               >

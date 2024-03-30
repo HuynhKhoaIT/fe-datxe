@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import PaginationBase from "../form/PaginationBase";
 import styles from "./index.module.scss";
 import classNames from "classnames";
+import EmptyData from "@/assets/images/nodata.png";
 export default function TableBasic({
   data = [],
   columns,
@@ -25,7 +26,7 @@ export default function TableBasic({
         zIndex={99}
       />
       <Table
-        mih={loading ? 300 : 0}
+        // mih={loading ? 300 : 0}
         classNames={{
           table: styles.rootTable,
           tr: styles.trTable,
@@ -102,7 +103,12 @@ export default function TableBasic({
           })}
         </Table.Tbody>
       </Table>
-
+      {data?.length == 0 && (
+        <div className={styles.emptyData}>
+          <img src={EmptyData.src} />
+          <p className={styles.label}>Không có dữ liệu</p>
+        </div>
+      )}
       {totalPage > 1 && (
         <PaginationBase
           totalPage={totalPage}

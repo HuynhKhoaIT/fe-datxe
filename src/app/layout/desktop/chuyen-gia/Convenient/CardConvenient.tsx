@@ -13,7 +13,7 @@ const CardConvenient = ({ convenient }: any) => {
             <Link href="" style={{ width: "100%" }}>
               <ImageField
                 src={convenient?.image ? convenient?.image : null}
-                height={"222"}
+                height={222}
                 width={266}
               />
             </Link>

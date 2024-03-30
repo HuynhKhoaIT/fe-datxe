@@ -10,6 +10,16 @@ const nextConfig = {
         apiUserV3: 'https://v2.dlbd.vn/api/v3/app',
         urlBase: 'https://oga.datxe.com/'
     },
+    images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'up-image.dlbd.vn',
+            port: '',
+            // pathname: '/storage/image/',
+          },
+        ],
+      },
     async headers() {
         return [
             {

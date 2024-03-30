@@ -7,7 +7,7 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
-import { statusOptions } from "@/constants/masterData";
+import { FieldTypes, statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import ListPage from "@/app/components/layout/ListPage";
 import { useCategories } from "../hooks/category/useCategory";
@@ -160,7 +160,7 @@ export default function CategoryListPage({ profile }: any) {
     {
       name: "s",
       placeholder: "Tên danh mục",
-      type: "input",
+      type: FieldTypes.STRING,
     },
     {
       name: "status",

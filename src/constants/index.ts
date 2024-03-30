@@ -40,7 +40,8 @@ export const QUERY_KEY = {
     customers: 'customers',
     experts: 'experts',
     marketing: 'marketing',
-
+    profile: 'profile',
+    myGarage: 'myGarage',
     optionsProvince: 'optionsProvince',
     optionsDistrict: 'optionsDistrict',
     optionsWard: 'optionsWard',
@@ -58,3 +59,11 @@ export const QUERY_KEY = {
     customersDlbd: 'customersDlbd',
     categoriesDlbd: 'categoriesDlbd',
 };
+
+export const ORDER_CANCEL_1 = '1';
+export const ORDER_CANCEL_2 = '2';
+export const ORDER_CANCEL_3 = '3';
+export const ORDER_CANCEL_4 = '4';
+export const ORDER_CANCEL_5 = '5';
+export const ORDER_CANCEL_6 = '6';
+export const ORDER_CANCEL_7 = '7';

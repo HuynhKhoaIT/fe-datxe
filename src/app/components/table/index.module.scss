@@ -74,6 +74,17 @@
     width: 25px;
     height: 25px;
 }
+
+.emptyData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+    .label {
+        color: var(--title-color-2);
+    }
+}
 // .tableBasic {
 //     padding: 30px;
 // }
