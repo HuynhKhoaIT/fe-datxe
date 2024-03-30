@@ -13,6 +13,7 @@ import {
 import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import { IconCamera } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 
 export function AutocompleteClearable({
   debounceTime = 400,
@@ -23,10 +24,15 @@ export function AutocompleteClearable({
   isCamera = false,
   w,
 }: any) {
+  const searchParams = useSearchParams();
+  const initialValues: any = searchParams.get(name);
+  console.log(initialValues);
+
   const values = form?.values;
   const [loading, setLoading] = useState(false);
   const [groceries, setGroceries] = useState([]);
   const [value, setValue] = useState("");
+  const [opened, { open: open, close: close }] = useDisclosure(false);
 
   useEffect(() => {
     if (values?.[name] == null) {
@@ -57,7 +63,7 @@ export function AutocompleteClearable({
   ] = useDisclosure(false);
 
   const options = groceries?.map((item: any) => (
-    <Combobox.Option value={item.label} key={item}>
+    <Combobox.Option defaultValue={initialValues} value={item.label} key={item}>
       <div
         style={{
           width: "100%",
@@ -66,6 +72,7 @@ export function AutocompleteClearable({
         }}
         onClick={() => {
           form.setFieldValue(name, item.value);
+          open();
         }}
       >
         {item.label}
@@ -97,7 +104,12 @@ export function AutocompleteClearable({
               }}
               onClick={() => combobox.openDropdown()}
               onFocus={() => combobox.openDropdown()}
-              onBlur={() => combobox.closeDropdown()}
+              onBlur={() => {
+                combobox.closeDropdown();
+                if (!opened) {
+                  setValue("");
+                }
+              }}
               rightSection={
                 loading ? (
                   <Loader size={18} />

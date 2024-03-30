@@ -40,7 +40,8 @@ export const QUERY_KEY = {
     customers: 'customers',
     experts: 'experts',
     marketing: 'marketing',
-
+    profile: 'profile',
+    myGarage: 'myGarage',
     optionsProvince: 'optionsProvince',
     optionsDistrict: 'optionsDistrict',
     optionsWard: 'optionsWard',
