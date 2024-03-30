@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="60px" height="64px"
+	 viewBox="0 0 60 64" enable-background="new 0 0 60 64" xml:space="preserve">
+<title>Alarm-clock</title>
+<desc>Created with Sketch.</desc>
+<g id="Page-1" sketch:type="MSPage">
+	<g id="Alarm-clock" transform="translate(1.000000, 1.000000)" sketch:type="MSLayerGroup">
+		<path id="Shape" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M43.9,52.1c2.7,2.3,4.3,2,4.3,5.1
+			c0,7.2-8.4,1.9-19,1.9S9.9,64.4,9.9,57.2c0-3.1,1.6-2.9,4.3-5.1"/>
+		<path id="Shape_2_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M3.4,20.3
+			c-4.5-4.5-4.5-11.9,0-16.6C7.9-0.9,15.3-1,19.8,3.5"/>
+		<path id="Shape_3_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M54.671,19.946
+			c4.377-4.231,4.235-11.455-0.277-16.15S42.697-1.356,38.32,2.875"/>
+		<circle id="Oval_1_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" cx="29" cy="29" r="27">
+		</circle>
+		<circle id="Oval" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" cx="29" cy="29" r="21">
+		</circle>
+		<path id="Shape_8_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M29,15v14"/>
+		<path id="Shape_1_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M28,29h9"/>
+		<path id="Shape_4_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M29,48v-3"/>
+		<path id="Shape_5_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M29,13v-3"/>
+		<path id="Shape_6_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M10,29h3"/>
+		<path id="Shape_7_" sketch:type="MSShapeGroup" fill="none" stroke="#6B6C6E" stroke-width="2" d="M45,29h3"/>
+	</g>
+</g>
+</svg>

@@ -53,7 +53,6 @@ export default function ModalNumberPlates({
   //   queryKey: ["carOptions"],
   //   queryFn: () => getOptionsCar(),
   // });
-  console.log(carOptions);
   return (
     <Modal
       opened={openModal}

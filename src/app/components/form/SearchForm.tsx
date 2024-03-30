@@ -105,24 +105,11 @@ export default function SearchForm({
               );
             } else if (item.type === FieldTypes.AUTOCOMPLETE) {
               return (
-                // <AutocompleteField
-                //   size="lg"
-                //   radius={0}
-                //   placeholder={item.placeholder}
-                //   value={item.value}
-                //   onChange={(value: any) => {
-                //     item.setValue(value);
-                //   }}
-                //   onOptionSubmit={(value: any) => {
-                //     form.setFieldValue(item.name, value);
-                //   }}
-                //   getOptionData={item.getOptionsData}
-                //   form={form}
-                // />
                 <AutocompleteClearable
                   getOptionData={item.getOptionsData}
                   form={form}
                   name={item.name}
+                  w={{ base: "100%", sm: "25%", md: "25%", lg: "25%" }}
                   placeholder={item.placeholder}
                   isCamera={item.isCamera}
                 />

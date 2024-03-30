@@ -10,7 +10,11 @@ import {
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import ImageDefult from "../../../../../public/assets/images/logoDatxe.png";
-import { kindProductOptions, statusOptions } from "@/constants/masterData";
+import {
+  FieldTypes,
+  kindProductOptions,
+  statusOptions,
+} from "@/constants/masterData";
 import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
@@ -211,22 +215,19 @@ export default function ModalChooseProducts({
     {
       name: "s",
       placeholder: "Tên sản phẩm",
-      type: "input",
+      type: FieldTypes.STRING,
     },
 
     {
       name: "isProduct",
       placeholder: "Loại",
-      type: "select",
+      type: FieldTypes.SELECT,
       data: kindProductOptions,
     },
   ];
   const initialValuesSearch = {
     s: "",
     isProduct: null,
-    brandId: null,
-    nameId: null,
-    yearId: null,
   };
 
   return (
@@ -274,7 +275,7 @@ export default function ModalChooseProducts({
           style={{ height: "100%" }}
           baseTable={
             <TableBasic
-              loading={isLoading}
+              loading={isLoading || isFetching}
               data={products?.data}
               columns={columns}
               totalPage={products?.totalPage}

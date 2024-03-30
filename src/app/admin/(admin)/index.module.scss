@@ -2,10 +2,151 @@
     background-color: #fff;
     padding: 30px;
 }
+.card1 {
+    border: 1px solid var(--primary-orange);
+    border-radius: 8px;
+    .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        border-bottom: 1px solid var(--primary-orange);
+
+        .title {
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+        .updating {
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+    }
+    .boxMenu {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-gap: 10px;
+        margin-top: 12px;
+        .itemMenu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+            .iconMenu {
+                background-color: #eba03f;
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img {
+                    width: 76px;
+                }
+            }
+            .titleItem {
+                font-size: 1.2rem;
+                text-wrap: nowrap;
+            }
+        }
+    }
+}
+.card_2 {
+    .title_2 {
+        font-size: 1.2rem;
+    }
+    .imgCar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 50%;
+        }
+    }
+    .value {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+}
 
 @media only screen and (max-width: 600px) {
     .main {
         background-color: #fff;
         padding: 0px;
+    }
+    .card1 {
+        border: 1px solid var(--primary-orange);
+        border-radius: 8px;
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px;
+            border-bottom: 1px solid var(--primary-orange);
+
+            .title {
+                font-size: 1.2rem;
+                font-weight: 500;
+            }
+            .updating {
+                font-size: 1rem;
+                font-weight: 400;
+            }
+        }
+        .boxMenu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 5px;
+            margin-top: 6px;
+            .itemMenu {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                gap: 10px;
+                .iconMenu {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    img {
+                        width: 35px;
+                    }
+                }
+                .titleItem {
+                    font-size: 14px;
+                    text-wrap: nowrap;
+                }
+            }
+        }
+    }
+    .card_2 {
+        .title_2 {
+            font-size: 1rem;
+        }
+        .imgCar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+                width: 60%;
+            }
+        }
+        .value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
     }
 }

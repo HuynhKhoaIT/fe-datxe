@@ -382,6 +382,9 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       <form onSubmit={form.onSubmit(handleSubmit)} onKeyPress={handleKeyPress}>
         {isMobile ? (
           <Tabs
+            variant="outline"
+            // radius={0}
+            color="blue"
             value={activeTab}
             onChange={(value) => {
               if (form.values.numberPlates.length === 0) {
@@ -426,8 +429,12 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                       value={numberPlate}
                       onChange={(value: any) => {
                         setNumberPlate(value);
+                        if (value.length > 0) {
+                          handlersPlate.close();
+                        }
                         form.setFieldValue("numberPlates", value);
                       }}
+                      error={errorPlate ? "Vui lòng nhập..." : false}
                       getOptionData={getOptionsCar}
                       form={form}
                     />
@@ -740,7 +747,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
                     type="bold"
                     style={{ color: "var(--primary-orange)" }}
                   >
-                    Thông tin đơn hàng
+                    Thông tin thanh toán
                   </Typo>
 
                   <Grid gutter={12} mt={24} className={styles.marketingInfo}>

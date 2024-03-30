@@ -160,7 +160,7 @@ export async function getOptionsCustomers() {
     const res = await axios.get(`/api/customer`);
     const dataOption = res.data?.data?.map((item: any) => ({
       value: item.id.toString(),
-      label: item.fullName,
+      label: item.fullName + "-" + item.phoneNumber,
     }));
     return dataOption;
   } catch (error) {
@@ -250,15 +250,15 @@ export const queryClientOptions = {
     },
   },
 };
-export function convertViToEn(str:string) {
+export function convertViToEn(str: string) {
   return str
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/đ/g, "d")
-      .replace(/Đ/g, "D");
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
 }
 
-export function generateUUID(){
-  const short = require('short-uuid');
+export function generateUUID() {
+  const short = require("short-uuid");
   return short.generate().toLowerCase();
 }

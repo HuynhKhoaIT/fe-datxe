@@ -54,13 +54,15 @@
 }
 
 .list {
-    border-bottom: 1px solid #eeeeee;
+    // border-bottom: 1px solid #eeeeee;
     margin-bottom: 10px;
+    overflow-x: scroll;
+    flex-wrap: nowrap !important;
 }
 .tab {
-    height: 50px;
-    font-size: 18px;
-    font-weight: 550;
+    // height: 50px;
+    font-size: 16px;
+    font-weight: 500;
     border-radius: 0;
 }
 

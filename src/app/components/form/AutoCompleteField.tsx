@@ -17,6 +17,7 @@ export default function AutocompleteField({
   getOptionData,
   props,
   limit = 10,
+  error,
 }: any) {
   const [optionsData, setOptionsData] = useState([]);
   const [debounced] = useDebouncedValue(value, debounceTime);
@@ -39,6 +40,7 @@ export default function AutocompleteField({
       size={size}
       radius={radius}
       w={w}
+      error={error}
       placeholder={placeholder}
       data={optionsData}
       //   value={value}

@@ -20,6 +20,7 @@ export function AutocompleteClearable({
   name,
   placeholder,
   isCamera = false,
+  w,
 }: any) {
   const values = form.values;
   const [loading, setLoading] = useState(false);
@@ -78,7 +79,7 @@ export function AutocompleteClearable({
       withinPortal={false}
     >
       <Combobox.Target>
-        <Grid gutter={12}>
+        <Grid w={w} justify="space-between" gutter={0}>
           <Grid.Col span={isCamera ? 9 : 12}>
             <TextInput
               size="lg"
@@ -113,7 +114,7 @@ export function AutocompleteClearable({
             <Grid.Col span={2}>
               <ActionIcon
                 onClick={openModalCamera}
-                size="lg"
+                // size="lg"
                 h={50}
                 w={50}
                 variant="filled"
