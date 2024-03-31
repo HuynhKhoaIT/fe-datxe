@@ -1,10 +1,10 @@
-
 import RenderContext from "@/app/components/elements/RenderContext";
 import OrdersListPage from "@/app/layout/dashboard/order/OrdersListPage";
 import { getMyOrders } from "@/app/libs/prisma/order";
-import { useSession } from "next-auth/react";
+import { getMyAccount } from "@/utils/user";
 export default async function Products() {
-  const orders = await getMyOrders({phoneNumber: '0964824588'});
+  const profile = await getMyAccount();
+  const orders = await getMyOrders({ phoneNumber: profile?.phone });
   return (
     <RenderContext
       components={{

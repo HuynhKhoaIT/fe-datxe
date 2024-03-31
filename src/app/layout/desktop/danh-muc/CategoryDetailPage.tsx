@@ -8,9 +8,6 @@ import Reassons from "../trang-chu/Reasons/Reasons";
 import bgLanding2 from "@/assets/images/bgLanding2.png";
 import ViewedProducts from "./viewedProducts";
 import Blogs from "./Blogs";
-import useFetch from "@/app/hooks/useFetch";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { useCategories } from "@/app/admin/hooks/category/useCategory";
 
 const CategoryDetailPageDesktop = ({
@@ -20,6 +17,9 @@ const CategoryDetailPageDesktop = ({
   productRelate,
   blogs,
   reassons,
+  productCount,
+  setProductCount,
+  isFetching,
 }: any) => {
   const { categories } = useCategories();
   return (
@@ -28,11 +28,11 @@ const CategoryDetailPageDesktop = ({
 
       <Container className={styles.container}>
         <div className={styles.fillter}>
-          <FilterRadio
+          {/* <FilterRadio
             data={categories}
             filterName="Danh mục"
             keyName="cat_id"
-          />
+          /> */}
           <FilterRadio
             data={kindProduct}
             filterName="Loại"
@@ -41,7 +41,12 @@ const CategoryDetailPageDesktop = ({
         </div>
 
         <div className={styles.body}>
-          <Products products={products?.data} />
+          <Products
+            products={products}
+            productCount={productCount}
+            setProductCount={setProductCount}
+            isFetching={isFetching}
+          />
         </div>
       </Container>
       <Blogs blogs={blogs} />

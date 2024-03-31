@@ -5,12 +5,7 @@ import styles from "./ProductItem.module.scss";
 import Typo from "../Typo";
 import ImageField from "../../form/ImageField";
 import Star from "@/assets/icons/star.svg";
-export default function ProductItem({
-  product,
-}: {
-  key: number;
-  product: IProduct;
-}) {
+export default function ProductItem({ product }: { product: IProduct }) {
   const images = JSON.parse(product.images);
   return (
     <Box w={"100%"}>

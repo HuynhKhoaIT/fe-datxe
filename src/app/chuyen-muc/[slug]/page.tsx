@@ -1,4 +1,4 @@
-import RenderContext from "@/app/components/elements/RenderContext";
+"use client";
 import { apiUrl } from "@/constants";
 import BlogImage1 from "@/assets/images/blog/blog1.png";
 import BlogImage2 from "@/assets/images/blog/blog2.png";
@@ -14,6 +14,12 @@ import Reasons2 from "@/assets/images/reasson2.png";
 import Reasons3 from "@/assets/images/reasson3.png";
 import { getProducts } from "@/app/libs/prisma/product";
 import { getCategories, getCategoryById } from "@/app/libs/prisma/category";
+import RenderContextClient from "@/app/components/elements/RenderContextClient";
+import {
+  useCategory,
+  useProductRelate,
+} from "@/app/hooks/products/useCategory";
+import { useState } from "react";
 async function getCategoryDetail(garageId: number) {
   const res = await fetch(`${apiUrl}/api/garage/${garageId}`, {
     method: "GET",
@@ -192,17 +198,25 @@ const slideshowData = [
   },
 ];
 
-export default async function DetailCategory({
+export default function DetailCategory({
   params,
 }: {
-  params: { slug: number };
+  params: { slug: string };
 }) {
-
-  const products = await getProducts({ category: params?.slug });
-  const productRelate: any = await getProducts({});
-
+  // const products = await getProducts({ category: params?.slug });
+  // const productRelate: any = await getProducts({});
+  const [productCount, setProductCount] = useState(5);
+  const { data: products, isPending, isFetching } = useCategory(
+    productCount,
+    params?.slug
+  );
+  const {
+    data: productRelate,
+    isPending: isPendingProductRelate,
+    isFetching: isFetchingProductRealate,
+  } = useProductRelate(productCount);
   return (
-    <RenderContext
+    <RenderContextClient
       components={{
         desktop: {
           defaultTheme: CategoryDetailPageDesktop,
@@ -216,6 +230,9 @@ export default async function DetailCategory({
       kindProduct={kindProduct}
       slideshowData={slideshowData}
       productRelate={productRelate}
+      isFetching={isFetching}
+      productCount={productCount}
+      setProductCount={setProductCount}
       reassons={reassons}
     />
   );
