@@ -9,7 +9,7 @@ export async function createReviewProduct(data: any) {
                 star: Number(data.star ?? 1),
                 message: data.message?.toString(),
                 createdId: Number(data.createdId),
-                status: data.status,
+                status: 'PUBLIC',
             }
         });
         return rs;
