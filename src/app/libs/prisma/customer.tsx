@@ -122,6 +122,40 @@ export async function getCustomers(requestData: any) {
     status: 200,
   };
 }
+export async function getCustomersAutoComplete(requestData: any) {
+  let titleFilter = "";
+  if (requestData.s) {
+    titleFilter = requestData.s;
+  }
+  let garageId = {};
+  if (requestData.garageId) {
+    garageId = requestData.garageId;
+  }
+  return await prisma.customer.findMany({
+      take: 10,
+      orderBy: {
+        id: "desc",
+      },
+      where: {
+        OR: [
+          {
+            fullName: {
+              contains: titleFilter
+            },
+            garageId,
+            status: 'PUBLIC'
+          },
+          {
+            phoneNumber: {
+              contains: titleFilter
+            },
+            garageId,
+            status: 'PUBLIC'
+          },
+        ],
+      },
+    });
+}
 
 export async function getMyCustomers(phoneNumber: string) {
   const rs = await prisma.customer.findMany({

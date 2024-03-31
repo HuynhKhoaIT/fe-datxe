@@ -1,11 +1,10 @@
 import prisma from "../prismadb";
-import { getProductSimpleByUuID } from "./product";
 
-export async function createReviewProduct(data: any) {
+export async function createReviewGarage(data: any) {
     try {
-        const rs = await prisma.reviewsProduct.create({
+        const rs = await prisma.reviewsGarage.create({
             data: {                
-                productId: Number(data.productId),
+                garageId: Number(data.garageId),
                 orderId: Number(data.orderId),
                 star: Number(data.star ?? 1),
                 message: data.message?.toString(),
@@ -18,7 +17,8 @@ export async function createReviewProduct(data: any) {
         return { error };
     }
 }
-export async function getReviewsProduct(uuId:string,requestData: any) {
+
+export async function getReviewsGarage(garageId:number,requestData: any) {
     let currentPage = 1;
     let take = 10;
     let limit = 10;
@@ -30,22 +30,21 @@ export async function getReviewsProduct(uuId:string,requestData: any) {
         currentPage = Number(page);
     }
     const skip = take * (currentPage - 1);
-    let product = await getProductSimpleByUuID(uuId);
     const [reviews, total] = await prisma.$transaction([
-        prisma.reviewsProduct.findMany({
+        prisma.reviewsGarage.findMany({
             take: take,
             skip: skip,
             orderBy: {
                 id: "desc",
             },
             where: {
-                productId: product?.id,
+                garageId,
                 status: 'PUBLIC'
             }
         }),
-        prisma.reviewsProduct.count({
+        prisma.reviewsGarage.count({
             where: {
-                productId: product?.id,
+                garageId,
                 status: 'PUBLIC'
             }
         })

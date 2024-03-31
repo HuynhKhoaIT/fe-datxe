@@ -15,11 +15,14 @@ export async function POST(request: Request) {
     try {
         const json = await request.json();
         const session = await getServerSession(authOptions);
-        const review = await createReviewProduct(json);
-        return NextResponse.json({
-            data: review,
-            status: 200,
-        });
+        if (session) {
+            json.createdId = session.user?.id;
+            const review = await createReviewProduct(json);
+            return NextResponse.json({
+                data: review,
+                status: 200,
+            });
+        }
     } catch (error: any) {
         return new NextResponse(error.message, { status: 500 });
     }

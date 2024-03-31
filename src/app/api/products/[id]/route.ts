@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: numb
             return new NextResponse("Missing 'id' parameter");
         }
         const session = await getServerSession(authOptions);
-        if (1) {
+        if (session) {
             const product = await getProductById(id);
             return NextResponse.json({ data: product });
         }
