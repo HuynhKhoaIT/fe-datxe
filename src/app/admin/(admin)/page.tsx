@@ -25,7 +25,13 @@ import dynamic from "next/dynamic";
 import { useAdmin } from "../hooks/admin/useAdmin";
 import FooterAdmin from "@/app/layout/common/desktop/Footer/footer-admin";
 export default function DashboardAdmin() {
-  const { ordersAdmin, isLoading, newArray, arrayDate } = useAdmin();
+  const {
+    ordersAdmin,
+    isLoading,
+    newArray,
+    arrayDate,
+    isFetching,
+  } = useAdmin();
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
@@ -118,8 +124,6 @@ export default function DashboardAdmin() {
   ];
   return (
     <div className={styles.main}>
-      {/* <Camera /> */}
-
       <div className={styles.wrapper_1}>
         <div className={styles.card1}>
           <div className={styles.info}>
@@ -193,7 +197,11 @@ export default function DashboardAdmin() {
         </div>
       )}
 
-      <Chart data={newArray} arrayDate={arrayDate} />
+      <Chart
+        isLoading={isLoading || isFetching}
+        data={newArray}
+        arrayDate={arrayDate}
+      />
       <DynamicModalAcceptCart openModal={openedModal} close={closeModal} />
       {/* <SellingProductListPage /> */}
       {isMobile && (

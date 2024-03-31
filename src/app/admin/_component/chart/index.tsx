@@ -1,6 +1,6 @@
 "use client";
 import Typo from "@/app/components/elements/Typo";
-import { Box, Grid } from "@mantine/core";
+import { Box, Grid, LoadingOverlay } from "@mantine/core";
 import SimpleLineChart from "./SimpleLineChart";
 import SimpleBarChart from "./SimpleBarChart";
 import { DatePickerInput } from "@mantine/dates";
@@ -11,8 +11,8 @@ import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./index.module.scss";
-export default function Chart({ data, arrayDate }: any) {
-  console.log(data);
+export default function Chart({ isLoading, data, arrayDate }: any) {
+  console.log(isLoading);
   const currentDate = new Date();
   const firstDayOfMonth = new Date(
     currentDate.getFullYear(),
@@ -25,10 +25,7 @@ export default function Chart({ data, arrayDate }: any) {
     0
   );
 
-  const [selectedDate, setSelectedDate] = useState<any>([
-    firstDayOfMonth,
-    lastDayOfMonth,
-  ]);
+  const [selectedDate, setSelectedDate] = useState<any>();
   const router = useRouter();
   const pathname = usePathname();
   const [dataChart, setDataChart] = useState([]);
@@ -90,6 +87,7 @@ export default function Chart({ data, arrayDate }: any) {
                 locale="vi"
                 clearable={true}
                 value={selectedDate}
+                defaultValue={[firstDayOfMonth, lastDayOfMonth]}
                 onChange={setSelectedDate}
                 minDate={minDate}
                 maxDate={maxDate}
@@ -97,35 +95,38 @@ export default function Chart({ data, arrayDate }: any) {
             </Grid.Col>
           </Grid>
         </Box>
-        <div className={styles.wrapper_chart}>
-          <div className={styles.headerChart}>
-            <div className={styles.itemHeader}>
-              <p className={styles.titleItem}>Tổng tiếp nhận</p>
-              <span className={styles.valueItem}>{data?.length}</span>
+        <Box pos="relative">
+          <LoadingOverlay visible={isLoading} loaderProps={{ type: "bars" }} />
+          <div className={styles.wrapper_chart}>
+            <div className={styles.headerChart}>
+              <div className={styles.itemHeader}>
+                <p className={styles.titleItem}>Tổng tiếp nhận</p>
+                <span className={styles.valueItem}>{data?.length}</span>
+              </div>
+              <div className={styles.itemHeader}>
+                <p className={styles.titleItem}>Nghiệm thu</p>
+                <span className={styles.valueItem}>
+                  {data?.filter((item: any) => item?.step === 1)?.length}
+                </span>
+              </div>
+              <div className={styles.itemHeader}>
+                <p className={styles.titleItem}>Xuất xưởng</p>
+                <span className={styles.valueItem}>
+                  {data?.filter((item: any) => item?.step === 2)?.length}
+                </span>
+              </div>
+              <div className={styles.itemHeader}>
+                <p className={styles.titleItem}>Xe huỷ</p>
+                <span className={styles.valueItem}>
+                  {data?.filter((item: any) => item?.step === 0)?.length}
+                </span>
+              </div>
             </div>
-            <div className={styles.itemHeader}>
-              <p className={styles.titleItem}>Nghiệm thu</p>
-              <span className={styles.valueItem}>
-                {data?.filter((item: any) => item?.step === 1)?.length}
-              </span>
-            </div>
-            <div className={styles.itemHeader}>
-              <p className={styles.titleItem}>Xuất xưởng</p>
-              <span className={styles.valueItem}>
-                {data?.filter((item: any) => item?.step === 2)?.length}
-              </span>
-            </div>
-            <div className={styles.itemHeader}>
-              <p className={styles.titleItem}>Xe huỷ</p>
-              <span className={styles.valueItem}>
-                {data?.filter((item: any) => item?.step === 0)?.length}
-              </span>
-            </div>
+            <Box h={500}>
+              <SimpleLineChart dataSource={dataChart} />
+            </Box>
           </div>
-          <Box h={500}>
-            <SimpleLineChart dataSource={dataChart} />
-          </Box>
-        </div>
+        </Box>
       </Grid.Col>
       {/* <Grid.Col span={{ base: 12, sm: 12, lg: 12, xs: 12 }} h={500}>
         <SimpleBarChart dataSource={mappedData} />

@@ -31,6 +31,10 @@ function mapError(error: unknown | undefined): undefined | string {
 }
 
 export const useAdmin = (): UseAdmin => {
+    const currentDate = new Date();
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
     const queryClient = useQueryClient();
     const searchParams = useSearchParams();
     const [arrayDate, setArrayDate] = useState<any>([]);
@@ -40,7 +44,6 @@ export const useAdmin = (): UseAdmin => {
     const getArrayDate = (startDate: any, endDate: any) => {
         const dateStart = new Date(startDate);
         const dateEnd = new Date(endDate);
-
         const differenceInTime = dateEnd?.getTime() - dateStart?.getTime();
         // Chuyển đổi sự khác biệt thành số ngày
         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
@@ -75,6 +78,8 @@ export const useAdmin = (): UseAdmin => {
         }
         if (startDate && endDate) {
             setArrayDate(getArrayDate(startDate, endDate));
+        } else {
+            setArrayDate(getArrayDate(firstDayOfMonth, lastDayOfMonth));
         }
     }, [ordersAdmin, searchParams, isPlaceholderData, queryClient]);
 

@@ -12,6 +12,7 @@ export default function Category({ categories }: any) {
       linkToList={"/danh-muc"}
       id="categories"
       padding={"30px 0"}
+      hiddenShowMore={true}
     >
       <div>
         <SlickCarousel gap={8} column={4} height="200px">

@@ -6404,6 +6404,11 @@ react-easy-crop@^5.0.4:
     normalize-wheel "^1.0.1"
     tslib "2.0.1"
 
+react-intersection-observer@^9.8.1:
+  version "9.8.1"
+  resolved "https://registry.npmjs.org/react-intersection-observer/-/react-intersection-observer-9.8.1.tgz"
+  integrity sha512-QzOFdROX8D8MH3wE3OVKH0f3mLjKTtEN1VX/rkNuECCff+aKky0pIjulDhr3Ewqj5el/L+MhBkM3ef0Tbt+qUQ==
+
 react-intl@^6.5.1:
   version "6.5.1"
   resolved "https://registry.npmjs.org/react-intl/-/react-intl-6.5.1.tgz"
