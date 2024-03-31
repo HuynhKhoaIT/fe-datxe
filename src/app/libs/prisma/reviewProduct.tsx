@@ -1,4 +1,5 @@
 import prisma from "../prismadb";
+import { getProductSimpleByUuID } from "./product";
 
 export async function createReviewProduct(data: any) {
     try {
@@ -16,4 +17,46 @@ export async function createReviewProduct(data: any) {
     } catch (error) {
         return { error };
     }
+}
+export async function getReviewsProduct(uuId:string,requestData: any) {
+    let currentPage = 1;
+    let take = 10;
+    let limit = 10;
+    if (requestData.limit) {
+        take = parseInt(requestData.limit);
+    }
+    let page = requestData.page;
+    if (page) {
+        currentPage = Number(page);
+    }
+    const skip = take * (currentPage - 1);
+    let product = await getProductSimpleByUuID(uuId);
+    const [reviews, total] = await prisma.$transaction([
+        prisma.reviewsProduct.findMany({
+            take: take,
+            skip: skip,
+            orderBy: {
+                id: "desc",
+            },
+            where: {
+                productId: product?.id,
+                status: 'PUBLIC'
+            }
+        }),
+        prisma.reviewsProduct.count({
+            where: {
+                productId: product?.id,
+                status: 'PUBLIC'
+            }
+        })
+    ]);
+    const totalPage = Math.ceil(total / limit);
+    return {
+        data: reviews,
+        total: total,
+        currentPage: currentPage,
+        limit: limit,
+        totalPage: totalPage,
+        status: 200,
+    };
 }

@@ -197,16 +197,6 @@ export async function getProductById(id: number) {
                     marketingCampaign: true,
                 },
             },
-            // reviews:{
-              
-            //   where:{
-            //     AND:[
-            //       {
-            //         status: "PUBLIC"
-            //       }
-            //     ]
-            //   },
-            // }
         },
       }),
       prisma.reviewsProduct.aggregate({
@@ -224,6 +214,47 @@ export async function getProductById(id: number) {
     return { error };
   }
 }
+
+export async function getProductByUuID(uuID:string) {
+  return await prisma.product.findFirst({
+    where: {
+      uuID: (uuID.toString()),
+    },
+    include: {
+        categories: true,
+        garage: true,
+        marketingCampaignDetail: {
+            take: 1,
+            where: {
+                marketingCampaign: {
+                    AND: [
+                        {
+                            status: 'PUBLIC',
+                            dateTimeStart: {
+                                lte: new Date(),
+                            },
+                            dateTimeEnd: {
+                                gte: new Date(),
+                            },
+                        },
+                    ],
+                },
+            },
+            include: {
+                marketingCampaign: true,
+            },
+        },
+    },
+  });
+  
+}
+export async function getProductSimpleByUuID(uuID:string){
+  return await prisma.product.findFirst({
+    where: {
+      uuID: (uuID.toString()),
+    }});
+}
+
 
 export async function getProductsBestSeller(token: String,json: any) {
   try {
