@@ -4,7 +4,7 @@ export default function FooterAdmin() {
   return (
     <footer className={styles.appFooter}>
       <div>
-        <strong>Đặt Lịch </strong>- © Copyright 2024.
+        <strong>Đặt xe </strong>- © Copyright 2024.
       </div>
       <div className={styles.version}>version 1</div>
     </footer>

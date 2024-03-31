@@ -34,6 +34,7 @@ export const MARKETING_ALL = '3';
 export const QUERY_KEY = {
     products: 'products',
     categories: 'categories',
+    ordersAdmin: 'ordersAdmin',
     blogs: 'blogs',
     orders: 'orders',
     cars: 'cars',
@@ -60,10 +61,10 @@ export const QUERY_KEY = {
     categoriesDlbd: 'categoriesDlbd',
 };
 
-export const ORDER_CANCEL_1 = '1';
-export const ORDER_CANCEL_2 = '2';
-export const ORDER_CANCEL_3 = '3';
-export const ORDER_CANCEL_4 = '4';
-export const ORDER_CANCEL_5 = '5';
-export const ORDER_CANCEL_6 = '6';
-export const ORDER_CANCEL_7 = '7';
+export const ORDER_CANCEL_1 = 'Sai lịch hẹn';
+export const ORDER_CANCEL_2 = 'Khách từ chối';
+export const ORDER_CANCEL_3 = 'Khách hàng không phản hồi';
+export const ORDER_CANCEL_4 = 'Hết hàng';
+export const ORDER_CANCEL_5 = 'Giá cao';
+export const ORDER_CANCEL_6 = 'Dùng sản phẩm của đối thủ';
+export const ORDER_CANCEL_7 = 'Nguyên nhân khác';

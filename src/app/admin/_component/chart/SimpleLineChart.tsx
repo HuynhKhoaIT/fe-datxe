@@ -11,88 +11,17 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    name: "1",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "2",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "3",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "4",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "5",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "6",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "7",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    name: "8",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "9",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "10",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "11",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "12",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
-const SimpleLineChart = () => {
+const SimpleLineChart = ({ dataSource }: any) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer
+      width="100%"
+      height="100%"
+      style={{ marginLeft: "-30px" }}
+    >
       <LineChart
         width={500}
         height={300}
-        data={data}
+        data={dataSource}
         margin={{
           top: 5,
           right: 30,
@@ -101,17 +30,33 @@ const SimpleLineChart = () => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
         <Legend />
         <Line
           type="monotone"
-          dataKey="pv"
-          stroke="#8884d8"
+          dataKey="countStep1"
+          name="Nghiệm thu"
+          stroke="blue"
+          label="khoa"
           activeDot={{ r: 8 }}
+          strokeWidth={3}
         />
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        <Line
+          type="monotone"
+          dataKey="countStep2"
+          name="Xuất xưởng"
+          stroke="green"
+          strokeWidth={3}
+        />
+        <Line
+          type="monotone"
+          strokeWidth={3}
+          dataKey="countStep0"
+          name="Xe huỷ"
+          stroke="red"
+        />
       </LineChart>
     </ResponsiveContainer>
   );

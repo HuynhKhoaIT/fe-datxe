@@ -40,7 +40,7 @@ export default function Layout({ children }: IProps) {
           px="md"
           justify="space-between"
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
             <Burger
               opened={opened}
               onClick={toggle}
@@ -58,7 +58,6 @@ export default function Layout({ children }: IProps) {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
                 justifyContent: "center",
               }}
             >
@@ -67,7 +66,7 @@ export default function Layout({ children }: IProps) {
               <p className={styles.addressExpert}>230 nguyễn thị định quận 2</p>
             </div>
           </div>
-          {!isMobile && <SearchFormName />}
+          {/* {!isMobile && <SearchFormName />} */}
           <SigninButton />
         </Group>
       </AppShell.Header>

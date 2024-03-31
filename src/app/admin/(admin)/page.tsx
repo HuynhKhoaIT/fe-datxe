@@ -22,7 +22,10 @@ import CarService from "@/assets/images/carService2.jpeg";
 import { useRouter } from "next/navigation";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import dynamic from "next/dynamic";
+import { useAdmin } from "../hooks/admin/useAdmin";
+import FooterAdmin from "@/app/layout/common/desktop/Footer/footer-admin";
 export default function DashboardAdmin() {
+  const { ordersAdmin, isLoading, newArray, arrayDate } = useAdmin();
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
@@ -117,72 +120,90 @@ export default function DashboardAdmin() {
     <div className={styles.main}>
       {/* <Camera /> */}
 
-      <div className={styles.card1}>
-        <div className={styles.info}>
-          <span className={styles.title}>Hiện đang có</span>
-          <span className={styles.updating}>Đang cập nhật</span>
-        </div>
-        <div className={styles.boxMenu}>
-          {menu?.map((item: any, index: number) => {
-            const Action = item?.action;
+      <div className={styles.wrapper_1}>
+        <div className={styles.card1}>
+          <div className={styles.info}>
+            <span className={styles.title}>Hiện đang có</span>
+            <span className={styles.updating}>Đang cập nhật</span>
+          </div>
+          <div className={styles.boxMenu}>
+            {menu?.map((item: any, index: number) => {
+              const Action = item?.action;
 
-            return (
-              <div
-                onClick={() => {
-                  if (item?.link) {
-                    router.push(item.link);
-                  }
-                  if (item?.action) {
-                    Action();
-                  }
-                }}
-                className={styles.itemMenu}
-                key={index}
-              >
-                <div className={styles.iconMenu}>
-                  {/* <Icon size={40} stroke={1} /> */}
-                  <img src={item.icon} />
+              return (
+                <div
+                  onClick={() => {
+                    if (item?.link) {
+                      router.push(item.link);
+                    }
+                    if (item?.action) {
+                      Action();
+                    }
+                  }}
+                  className={styles.itemMenu}
+                  key={index}
+                >
+                  <div className={styles.iconMenu}>
+                    {/* <Icon size={40} stroke={1} /> */}
+                    <img src={item.icon} />
+                  </div>
+                  <span className={styles.titleItem}>{item.label}</span>
                 </div>
-                <span className={styles.titleItem}>{item.label}</span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
-      <div className={styles.card_2}>
-        <div className={styles.title_2}>
-          <p>Thông tin xe ra vào {getCurrentMonthDates()}</p>
+      <div className={styles.wrapper_2}>
+        <div style={{ borderBottom: "1px solid #eeeeee" }}>
+          <Typo size="18px" type="bold" className={styles.title_2}>
+            Thông tin xe ra vào {getCurrentMonthDates()}
+          </Typo>
         </div>
-        <div className={styles.imgCar}>
-          <img src={CarService.src} />
-        </div>
-        <div className={styles.value}>
-          <p>99</p>
+        <div className={styles.card_2}>
+          <div className={styles.imgCar}>
+            <img src={CarService.src} />
+          </div>
+          <div className={styles.value}>
+            <p>{newArray?.length}</p>
+          </div>
         </div>
       </div>
 
-      {isMobile ? (
+      {isMobile && (
         <div className={styles.card_3}>
           <div className={styles.item_card}>
             <p>Nghiệm thu</p>
-            <span className={styles.value_3}>39</span>
+            <span className={styles.value_3}>
+              {newArray?.filter((item: any) => item?.step === 1)?.length}
+            </span>
           </div>
           <div className={styles.item_card}>
             <p>Xuất xưởng</p>
-            <span className={styles.value_3}>60</span>
+            <span className={styles.value_3}>
+              {newArray?.filter((item: any) => item?.step === 2)?.length}
+            </span>
           </div>
           <div className={styles.item_card}>
             <p>Xe huỷ</p>
-            <span className={styles.value_3}>0</span>
+            <span className={styles.value_3}>
+              {newArray?.filter((item: any) => item?.step === 0)?.length}
+            </span>
           </div>
         </div>
-      ) : (
-        <Statistical dataSource={card_3} />
       )}
 
-      <Chart />
+      <Chart data={newArray} arrayDate={arrayDate} />
       <DynamicModalAcceptCart openModal={openedModal} close={closeModal} />
       {/* <SellingProductListPage /> */}
+      {isMobile && (
+        <footer className={styles.appFooter}>
+          <div>
+            <strong>Datxe.com - Ứng dụng đặt lịch sửa xe </strong>
+          </div>
+          {/* <div className={styles.version}>version 1</div> */}
+        </footer>
+      )}
     </div>
   );
 }

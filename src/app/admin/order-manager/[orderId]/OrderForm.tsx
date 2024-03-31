@@ -53,6 +53,7 @@ import useFetch from "@/app/hooks/useFetch";
 import { getOptionsCar } from "../until";
 import { useAddOrder } from "../../hooks/order/useAddOrder";
 import AutocompleteField from "@/app/components/form/AutoCompleteField";
+import { ORDER_CANCEL_7 } from "@/constants";
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
@@ -373,6 +374,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   };
 
   const HandleCancelOrder = (step: any) => {
+    var cancelReason = "";
     modals.openConfirmModal({
       title: (
         <Typo size="small" type="semi-bold" style={{ color: "red" }}>
@@ -387,6 +389,11 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
             label={"Lí do huỷ đơn"}
             placeholder="Chọn lí do"
             data={OptionsCancelOrder}
+            onChange={(value) => {
+              if (value !== null) {
+                cancelReason = value;
+              }
+            }}
           />
         </Box>
       ),
@@ -396,7 +403,12 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
       // zIndex: 99,
       withCloseButton: false,
       labels: { confirm: "Xác nhận", cancel: "Huỷ" },
-      onConfirm: () => updateStep({ step: step, id: dataDetail?.id }),
+      onConfirm: () =>
+        updateStep({
+          step: step,
+          id: dataDetail?.id,
+          cancelReason: cancelReason,
+        }),
     });
   };
 

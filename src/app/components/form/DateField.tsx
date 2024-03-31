@@ -15,6 +15,7 @@ export default function DateField({
   locale = "vi",
   required = false,
   defaultValue,
+  type,
 }: any) {
   return (
     <DateInput
@@ -32,6 +33,7 @@ export default function DateField({
       defaultValue={defaultValue}
       size="lg"
       radius={0}
+      type={type}
     />
   );
 }

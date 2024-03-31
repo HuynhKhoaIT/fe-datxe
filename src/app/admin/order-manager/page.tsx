@@ -180,6 +180,13 @@ export default function OrdersManaga() {
   const [customer, setCustomer] = useState([]);
   const searchData = [
     {
+      name: "carId",
+      placeholder: "Biển số xe",
+      type: FieldTypes?.AUTOCOMPLETE,
+      getOptionsData: getOptionsCar,
+      isCamera: true,
+    },
+    {
       name: "s",
       placeholder: "Mã đơn hàng",
       type: FieldTypes?.STRING,
@@ -191,15 +198,6 @@ export default function OrdersManaga() {
       value: customer,
       setValue: setCustomer,
       getOptionsData: getOptionsCustomers,
-    },
-    {
-      name: "carId",
-      placeholder: "Biển số xe",
-      type: FieldTypes?.AUTOCOMPLETE,
-      value: customer,
-      setValue: setCustomer,
-      getOptionsData: getOptionsCar,
-      isCamera: true,
     },
   ];
 
