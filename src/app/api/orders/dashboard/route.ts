@@ -9,9 +9,13 @@ export async function GET(request: Request) {
         const session = await getServerSession(authOptions);
         if (session) {
             const { searchParams } = new URL(request.url);
-            // const garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
+            const garageId = await getGarageIdByDLBDID(Number(session.user?.garageId));
             // return NextResponse.json({ garageId: garageId });
-            const rs = await reportTrafictDashboard(searchParams.get('dateStart')!, searchParams.get('dateEnd')!, 14);
+            const rs = await reportTrafictDashboard(
+                searchParams.get('dateStart')!,
+                searchParams.get('dateEnd')!,
+                garageId,
+            );
             return NextResponse.json(rs);
         } else {
             throw new Error('Chua dang nhap');

@@ -358,6 +358,9 @@ export async function reportTrafictDashboard(
             gte: new Date(dateStart),
           },
           garageId,
+          status: {
+            not: 'DELETE'
+          }
         },
         {
           dateTime: {
@@ -367,6 +370,9 @@ export async function reportTrafictDashboard(
             lte: new Date(dateEnd),
           },
           garageId,
+          status: {
+            not: 'DELETE'
+          }
         },
       ],
     },

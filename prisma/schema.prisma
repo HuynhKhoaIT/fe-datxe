@@ -49,6 +49,7 @@ model Garage {
   bitlyLongUrl        String?
   groupGuid           String?
   bitlyUrl            String?
+  reviews             ReviewsGarage[]
 }
 model Provinces{
   id Int @id @default(autoincrement())
@@ -200,6 +201,7 @@ model Order{
   updatedAt         DateTime  @updatedAt  
   orderDetails      OrderDetail[]
   reviews           ReviewsProduct[]
+  reviewsGarage     ReviewsGarage[]
   method            ORDERMETHOD @default(OFFLINE)
 }
 model OrderCategory{
@@ -387,6 +389,18 @@ model ReviewsProduct {
   id                  Int @id @default(autoincrement())
   product             Product @relation(fields: [productId],references: [id])
   productId           Int
+  order               Order @relation(fields: [orderId],references: [id])
+  orderId             Int
+  star                Int @default(4)
+  message             String?
+  createdId           Int
+  status              STATUS @default(PUBLIC)
+}
+
+model ReviewsGarage {
+  id                  Int @id @default(autoincrement())
+  garage              Garage @relation(fields: [garageId],references: [id])
+  garageId            Int
   order               Order @relation(fields: [orderId],references: [id])
   orderId             Int
   star                Int @default(4)
