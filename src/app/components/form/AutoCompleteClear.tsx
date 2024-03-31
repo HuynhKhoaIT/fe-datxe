@@ -46,7 +46,6 @@ export function AutocompleteClearable({
       const data: any = await getOptionData({ s: debounced });
       setGroceries(data);
       setLoading(false);
-
       return data;
     };
     if (debounced?.length >= 3) {
@@ -62,8 +61,12 @@ export function AutocompleteClearable({
     { open: openModalCamera, close: closeModalCamera },
   ] = useDisclosure(false);
 
-  const options = groceries?.map((item: any) => (
-    <Combobox.Option defaultValue={initialValues} value={item.label} key={item}>
+  const options = groceries?.map((item: any, index: number) => (
+    <Combobox.Option
+      defaultValue={initialValues}
+      value={item.label}
+      key={index}
+    >
       <div
         style={{
           width: "100%",
