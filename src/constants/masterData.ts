@@ -83,3 +83,18 @@ export const OptionsCancelOrder = [
     { value: ORDER_CANCEL_6, label: 'Dùng sản phẩm của đối thủ', color: 'cyan' },
     { value: ORDER_CANCEL_7, label: 'Nguyên nhân khác', color: 'red' },
 ];
+
+export const kindProduct = {
+    data: [
+        {
+            id: '1',
+            value: true,
+            name: 'Sản phẩm',
+        },
+        {
+            id: '2',
+            value: false,
+            name: 'Dịch  vụ',
+        },
+    ],
+};
