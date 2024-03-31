@@ -7,10 +7,11 @@ import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dynamic from "next/dynamic";
-import { statusOptions } from "@/constants/masterData";
+import { FieldTypes, statusOptions } from "@/constants/masterData";
 import SearchForm from "@/app/components/form/SearchForm";
 import ListPage from "@/app/components/layout/ListPage";
 import styles from "./index.module.scss";
+import { getOptionsCar } from "../order-manager/until";
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
   {
@@ -171,20 +172,15 @@ export default function CarsListPage({
 
   const searchData = [
     {
-      name: "s",
-      placeholder: "Biển số",
-      type: "input",
-    },
-    {
-      name: "status",
-      placeholder: "Trạng thái",
-      type: "select",
-      data: statusOptions,
+      name: "carId",
+      placeholder: "Biển số xe",
+      type: FieldTypes?.AUTOCOMPLETE,
+      getOptionsData: getOptionsCar,
+      isCamera: true,
     },
   ];
   const initialValuesSearch = {
-    s: "",
-    status: null,
+    carId: null,
     carBrandId: null,
     nameId: null,
     yearId: null,

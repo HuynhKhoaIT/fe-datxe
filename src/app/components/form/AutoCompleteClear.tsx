@@ -95,6 +95,7 @@ export function AutocompleteClearable({
             <TextInput
               size="lg"
               radius={0}
+              data-autofocus
               placeholder={placeholder}
               value={value}
               onChange={(event) => {

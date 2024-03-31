@@ -33,16 +33,21 @@ const SigninButton = () => {
         <IconUserCircle color="#fff" />
         <div className={styles.actionLogin}>
           {!session?.user ? (
-            <Link href="/dang-nhap" className={styles.title}>
-              Đăng nhập / Đăng ký
-            </Link>
+            <div style={{ display: "flex" }}>
+              <Link href="/dang-nhap" className={styles.title}>
+                Đăng nhập/
+              </Link>
+              <Link href="/dang-ky" className={styles.title}>
+                Đăng ký
+              </Link>
+            </div>
           ) : (
             <Menu width={200} shadow="md">
               <Menu.Target>
-                <span className={styles.title}>
-                  {session?.user.name}
+                <div className={styles.title} style={{ display: "flex" }}>
+                  <span>{session?.user.name}</span>
                   <IconCaretDownFilled />
-                </span>
+                </div>
               </Menu.Target>
 
               <Menu.Dropdown>

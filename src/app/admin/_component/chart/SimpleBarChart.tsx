@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
+const dataSource = [
   {
     name: "Page A",
     uv: 4000,
@@ -57,13 +57,13 @@ const data = [
   },
 ];
 
-export default function SimpleBarChart() {
+export default function SimpleBarChart({ dataSource }: any) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
         width={500}
         height={300}
-        data={data}
+        data={dataSource}
         margin={{
           top: 5,
           right: 30,
@@ -72,19 +72,28 @@ export default function SimpleBarChart() {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="date" stroke="#8884d8" />
         <YAxis />
-        <Tooltip />
+        <Tooltip wrapperStyle={{ width: 100, backgroundColor: "#ccc" }} />
         <Legend />
+
         <Bar
-          dataKey="pv"
+          dataKey="countStep1"
+          name="Nghiệm thu"
           fill="#8884d8"
           activeBar={<Rectangle fill="pink" stroke="blue" />}
         />
         <Bar
-          dataKey="uv"
+          dataKey="countStep2"
+          name="Xuất xưởng"
           fill="#82ca9d"
           activeBar={<Rectangle fill="gold" stroke="purple" />}
+        />
+        <Bar
+          dataKey="countStep0"
+          name="Xe huỷ"
+          fill="red"
+          activeBar={<Rectangle fill="gold" stroke="green" />}
         />
       </BarChart>
     </ResponsiveContainer>
