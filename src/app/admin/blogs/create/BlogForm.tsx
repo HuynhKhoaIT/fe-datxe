@@ -124,7 +124,7 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
                           file
                             ? URL.createObjectURL(file)
                             : dataDetail
-                            ? dataDetail.image
+                            ? dataDetail.thumbnail
                             : null
                         }
                         fallbackSrc="https://placehold.co/600x400?text=Upload"

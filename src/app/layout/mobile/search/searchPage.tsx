@@ -1,15 +1,16 @@
+"use client";
 import Container from "@/app/components/common/Container";
 import Filter from "../danh-muc/Filter";
 import Products from "../danh-muc/Products";
 import styles from "./index.module.scss";
-const ProductsListPageMobile = ({ dataSource, kindProduct }: any) => {
+const SearchPageMobile = ({ kindProduct, products }: any) => {
   return (
     <div className={styles.wrapper}>
-      {/* <Filter kindProduct={kindProduct?.data} /> */}
+      <Filter kindProduct={kindProduct.data} />
       <Container>
-        <Products products={dataSource?.data} />
+        <Products products={products?.data} />
       </Container>
     </div>
   );
 };
-export default ProductsListPageMobile;
+export default SearchPageMobile;
