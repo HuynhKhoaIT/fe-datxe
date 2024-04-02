@@ -17,12 +17,12 @@ import { isNotEmpty, useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
 import DateTimeField from "@/app/components/form/DateTimeField";
 import ListPage from "@/app/components/layout/ListPage";
-import { useRouter } from "next/navigation";
 import { IconBan, IconPlus, IconTrash } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import Typo from "@/app/components/elements/Typo";
 import FooterSavePage from "../../_component/FooterSavePage";
+import { useAddMarketing } from "../../hooks/marketingCampaign/useAddMarketing";
 const DynamicModalChooseProducts = dynamic(
   () => import("./ModalChooseProducts"),
   {
@@ -31,7 +31,8 @@ const DynamicModalChooseProducts = dynamic(
 );
 
 export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
-  const router = useRouter();
+  const { addItem, updateItem } = useAddMarketing();
+
   const [selectedProducts, setSelectedProducts] = useState<any>(
     dataDetail
       ? dataDetail?.detail.map((item: any) => ({ ...item, id: item.productId }))
@@ -257,23 +258,15 @@ export default function MarketingCampaignForm({ dataDetail, isEditing }: any) {
   });
 
   const handleSubmit = async (values: any) => {
-    handlers.open();
     values.garageId = 1;
     values.createdBy = 1;
-
-    try {
-      const url = isEditing
-        ? `/api/marketing-campaign/${dataDetail?.id}`
-        : `/api/marketing-campaign`;
-      await fetch(url, {
-        method: isEditing ? "PUT" : "POST",
-        body: JSON.stringify(values),
-      });
-    } catch (error) {
-    } finally {
-      handlers.close();
-      router.push("/admin/marketing-campaign");
+    handlers.open();
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
+    handlers.close();
   };
 
   return (

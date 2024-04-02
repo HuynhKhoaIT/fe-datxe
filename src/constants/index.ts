@@ -38,6 +38,7 @@ export const QUERY_KEY = {
     productListReview: 'productListReview',
     categories: 'categories',
     newsList: 'newsList',
+    marketings: 'marketings',
     ordersAdmin: 'ordersAdmin',
     news: 'news',
     blogs: 'blogs',
