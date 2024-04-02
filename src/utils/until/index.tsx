@@ -1,4 +1,7 @@
+import { DATE_FORMAT_DISPLAY } from "@/constants";
 import axios from "axios";
+import moment from "moment/moment";
+require("moment/locale/vi");
 
 export const getHourAndDay = (date: any) => {
   const hours = date.getHours();

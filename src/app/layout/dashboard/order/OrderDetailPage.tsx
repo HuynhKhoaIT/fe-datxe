@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import TableBasic from "@/app/components/table/Tablebasic";
 import { Button, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -11,14 +11,17 @@ import ImageDefaul from "@/assets/images/logo.png";
 import Typo from "@/app/components/elements/Typo";
 import classNames from "classnames";
 import dayjs from "dayjs";
+import { ORDER_DONE } from "@/constants";
 const DynamicModalReview = dynamic(() => import("./ModalReview"), {
   ssr: false,
 });
 export default function OrderDetailPage({ dataSource }: any) {
-  console.log(dataSource);
   const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(
     false
   );
+
+  console.log(dataSource);
+  const [dataReview, setDataReview] = useState<any>();
   const columns = [
     {
       label: (
@@ -64,7 +67,7 @@ export default function OrderDetailPage({ dataSource }: any) {
         );
       },
     },
-    {
+    dataSource?.step.toString() == ORDER_DONE && {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>
           Hành động
@@ -75,7 +78,15 @@ export default function OrderDetailPage({ dataSource }: any) {
       render: (record: any) => {
         return (
           <Tooltip label="Đánh giá" withArrow position="bottom">
-            <Button size="lg" radius={0} variant="outline" onClick={openModal}>
+            <Button
+              size="lg"
+              radius={0}
+              variant="outline"
+              onClick={() => {
+                setDataReview(record);
+                openModal();
+              }}
+            >
               Đánh giá
             </Button>
           </Tooltip>
@@ -83,9 +94,8 @@ export default function OrderDetailPage({ dataSource }: any) {
       },
     },
   ];
-  console.log(dayjs(dataSource?.dateTime).format("HH:mm DD:MM:YY"));
   return (
-    <Container className="printable">
+    <Container className={classNames("printable", styles.container)}>
       <div className={styles.infoGara}>
         <div className={styles.info}>
           <div className={styles.imageGara}>
@@ -218,7 +228,8 @@ export default function OrderDetailPage({ dataSource }: any) {
           onCloseModal={closeModal}
           title="Đánh giá sản phẩm"
           onCancelModal={closeModal}
-          dataDetail={dataSource}
+          dataDetail={dataReview}
+          orderId={dataSource?.id}
         />
       )}
     </Container>

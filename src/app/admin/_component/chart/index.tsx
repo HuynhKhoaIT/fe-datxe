@@ -12,12 +12,10 @@ import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./index.module.scss";
 export default function Chart({ isLoading, data, arrayDate }: any) {
-  console.log(isLoading);
   const currentDate = new Date();
   const firstDayOfMonth = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
+    currentDate.getMonth()
   );
   const lastDayOfMonth = new Date(
     currentDate.getFullYear(),
@@ -125,12 +123,12 @@ export default function Chart({ isLoading, data, arrayDate }: any) {
             <Box h={500}>
               <SimpleLineChart dataSource={dataChart} />
             </Box>
+            <Box h={500} mt={30}>
+              <SimpleBarChart dataSource={dataChart} />
+            </Box>
           </div>
         </Box>
       </Grid.Col>
-      {/* <Grid.Col span={{ base: 12, sm: 12, lg: 12, xs: 12 }} h={500}>
-        <SimpleBarChart dataSource={mappedData} />
-      </Grid.Col> */}
     </Grid>
   );
 }

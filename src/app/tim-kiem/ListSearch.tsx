@@ -9,6 +9,7 @@ import ProductItem from "../components/elements/product/ProductItem1";
 import { Sort } from "../components/elements/shop-sort";
 import { FilterCheckBox } from "../components/elements/filterCheckBox";
 import { useSearch } from "../hooks/search/useSearch";
+import { kindProduct } from "@/constants/masterData";
 
 export default function ListSearch({ fillter }: any) {
   const [postCount, setPostCount] = useState(5);
@@ -22,17 +23,14 @@ export default function ListSearch({ fillter }: any) {
             filterName="Danh mục"
             keyName="categoryId"
           />
-          <FilterCheckBox
-            data={[
-              { id: "1", title: "Sản phẩm" },
-              { id: "0", title: "Dịch vụ" },
-            ]}
+          <FilterRadio
+            data={kindProduct}
             filterName="Loại"
             keyName="isProduct"
           />
         </Body.Sider>
         <Body.Content>
-          <Sort lengthData={8} />
+          <Sort lengthData={0} />
           <Space h="md" />
           <Box w={"100%"} h={"80vh"} pos={"relative"}>
             <LoadingOverlay
@@ -52,20 +50,21 @@ export default function ListSearch({ fillter }: any) {
           filterName="Danh mục"
           keyName="categoryId"
         />
-        <FilterCheckBox
+        <FilterRadio data={kindProduct} filterName="Loại" keyName="isProduct" />
+        {/* <FilterCheckBox
           data={[
             { id: "1", title: "Sản phẩm" },
             { id: "0", title: "Dịch vụ" },
           ]}
           filterName="Loại"
           keyName="isProduct"
-        />
+        /> */}
       </Body.Sider>
       <Body.Content>
-        <Sort lengthData={8} />
+        <Sort lengthData={products?.data?.length} />
         <Space h="md" />
         <Box w={"100%"}>
-          <Grid>
+          <Grid pb={20}>
             {products?.data?.map((product: IProduct, index: number) => (
               <Grid.Col
                 key={index}

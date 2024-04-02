@@ -3,7 +3,7 @@ export default function CardBlog({ data }: any) {
   return (
     <div
       className={styles.wrapper}
-      style={{ backgroundImage: `url(${data?.image})` }}
+      style={{ backgroundImage: `url(${data?.thumbnail})` }}
     >
       <div className={styles.info}>
         <div className={styles.title}>{data?.title}</div>

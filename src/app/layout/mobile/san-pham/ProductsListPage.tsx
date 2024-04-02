@@ -1,4 +1,15 @@
-const ProductsListPageMobile = ({ dataSource }: any) => {
-  return <div></div>;
+import Container from "@/app/components/common/Container";
+import Filter from "../danh-muc/Filter";
+import Products from "../danh-muc/Products";
+import styles from "./index.module.scss";
+const ProductsListPageMobile = ({ dataSource, kindProduct }: any) => {
+  return (
+    <div className={styles.wrapper}>
+      {/* <Filter kindProduct={kindProduct?.data} /> */}
+      <Container>
+        <Products products={dataSource?.data} />
+      </Container>
+    </div>
+  );
 };
 export default ProductsListPageMobile;

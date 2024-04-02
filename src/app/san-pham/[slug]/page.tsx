@@ -1,19 +1,29 @@
-import RenderContext from "@/app/components/elements/RenderContext";
+"use client";
+import RenderContextClient from "@/app/components/elements/RenderContextClient";
+import {
+  useProduct,
+  useProductRelate,
+  useProductReview,
+} from "@/app/hooks/products/useProducts";
 import ProductDetailPageDesktop from "@/app/layout/desktop/san-pham/ProductDetailPage";
 import ProductDetailPageMobile from "@/app/layout/mobile/san-pham/ProductDetailPage";
-import { getProductById, getProducts } from "@/app/libs/prisma/product";
 export const dynamic = "force-dynamic";
 
-export default async function DetailProduct({
+export default function DetailProduct({
   params,
 }: {
-  params: { slug: number };
+  params: { slug: string };
 }) {
-  const product = await getProductById(params?.slug);
-  const productsRelate = await getProducts({ garageId: 0 });
-
+  const { data: product, isLoading, isFetching } = useProduct(params?.slug);
+  const { data: productsRelate, isLoading: isLoadingRelate } = useProductRelate(
+    10
+  );
+  const {
+    data: productReview,
+    isLoading: isLoadingProductReview,
+  } = useProductReview(params?.slug);
   return (
-    <RenderContext
+    <RenderContextClient
       components={{
         desktop: {
           defaultTheme: ProductDetailPageDesktop,
@@ -23,6 +33,7 @@ export default async function DetailProduct({
         },
       }}
       product={product}
+      productReview={productReview}
       productRelate={productsRelate}
     />
   );

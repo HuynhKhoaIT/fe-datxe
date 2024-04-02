@@ -3,7 +3,8 @@ import { IProduct } from "@/interfaces/product";
 import { Tabs } from "@mantine/core";
 import styles from "./ProductTabsDes.module.scss";
 import Reviews from "./Review";
-const ProductTabsDes = ({ ProductDetail }: { ProductDetail: IProduct }) => {
+const ProductTabsDes = ({ ProductDetail, productReview }: any) => {
+  console.log(productReview);
   return (
     <Tabs
       defaultValue="description"

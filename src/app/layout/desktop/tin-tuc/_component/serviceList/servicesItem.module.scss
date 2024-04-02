@@ -1,0 +1,91 @@
+// ==============================
+.cart {
+    &:hover {
+        box-shadow: 0px -2px 15px 0px rgba(0, 172, 193, 0.25);
+    }
+}
+.product-title {
+    color: var(--text-color);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    height: max-content;
+}
+
+.product-author {
+    color: var(--text-color);
+    font-size: 15px;
+    // margin-bottom: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.productPriceSale {
+    color: var(--primary-color);
+}
+
+.productCost {
+    text-decoration: line-through;
+    color: var(--text-color);
+}
+.card {
+    cursor: pointer;
+    max-width: 310px;
+    &:hover {
+        .product-title {
+            /* Sử dụng .product-title thay vì .productTitle */
+            color: var(--primary-color);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+    }
+}
+.image {
+    width: 200px;
+    height: 200px;
+}
+@media (max-width: 1536px) {
+    .card {
+        width: 300px; /* Điều chỉnh kích thước của card khi độ rộng màn hình dưới 1536px */
+    }
+}
+
+@media (max-width: 1280px) {
+    .card {
+        width: 290px; /* Điều chỉnh kích thước của card khi độ rộng màn hình dưới 1280px */
+    }
+}
+
+@media (max-width: 1024px) {
+    .card {
+        width: 240px;
+        height: 280px; /* Điều chỉnh kích thước của card khi độ rộng màn hình dưới 1280px */
+    }
+    .image {
+        height: 165px;
+    }
+}
+@media (max-width: 960px) {
+    .card {
+        width: 205px;
+        height: 235px; /* Điều chỉnh kích thước của card khi độ rộng màn hình dưới 1280px */
+    }
+    .image {
+        height: 145px;
+    }
+}
+@media (max-width: 768px) {
+    .card {
+        width: 180px;
+        height: 200px; /* Điều chỉnh kích thước của card khi độ rộng màn hình dưới 1280px */
+    }
+    .image {
+        height: 110px;
+    }
+}

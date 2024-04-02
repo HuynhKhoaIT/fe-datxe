@@ -25,6 +25,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
 
+  console.log(file);
   const clearFile = () => {
     setFile(null);
     resetRef.current?.();
