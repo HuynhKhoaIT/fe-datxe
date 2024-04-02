@@ -1,16 +1,33 @@
-import { getCategories } from "../libs/prisma/category";
+"use client";
+import { useState } from "react";
+import RenderContextClient from "../components/elements/RenderContextClient";
+import SearchPageMobile from "../layout/mobile/search/searchPage";
 import ListSearch from "./ListSearch";
+import { useSearch } from "../hooks/search/useSearch";
 export const revalidate = 0;
+import { kindProduct } from "@/constants/masterData";
+import { useCategories } from "../hooks/categories/useCategory";
 
-async function getCategoriesData() {
-  const categories  = await getCategories({});
-  if (!categories) {
-    throw new Error("Failed to fetch data");
-  }
-  return categories;
-}
-export default async function Search() {
-  const categroies = await getCategoriesData();
-
-  return <ListSearch fillter={categroies} />;
+export default function Search() {
+  const [productCount, setProductCount] = useState(5);
+  const { data: products, isPending, isFetching } = useSearch(productCount);
+  const { data: categories } = useCategories(10);
+  return (
+    <RenderContextClient
+      components={{
+        desktop: {
+          defaultTheme: ListSearch,
+        },
+        mobile: {
+          defaultTheme: SearchPageMobile,
+        },
+      }}
+      products={products}
+      kindProduct={kindProduct}
+      productCount={productCount}
+      setProductCount={setProductCount}
+      isPending={isPending}
+      fillter={categories}
+    />
+  );
 }

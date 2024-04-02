@@ -63,7 +63,7 @@ export default function Layout({ children }: IProps) {
             >
               <p className={styles.shortName}>{myGarage?.shortName}</p>
               {/* <p>{myGarage?.address}</p> */}
-              <p className={styles.addressExpert}>230 nguyễn thị định quận 2</p>
+              <p className={styles.addressExpert}>{myGarage?.address}</p>
             </div>
           </div>
           {/* {!isMobile && <SearchFormName />} */}

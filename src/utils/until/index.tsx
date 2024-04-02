@@ -1,4 +1,7 @@
+import { DATE_FORMAT_DISPLAY } from "@/constants";
 import axios from "axios";
+import moment from "moment/moment";
+require("moment/locale/vi");
 
 export const getHourAndDay = (date: any) => {
   const hours = date.getHours();
@@ -262,3 +265,19 @@ export function generateUUID() {
   const short = require("short-uuid");
   return short.generate().toLowerCase();
 }
+
+export const convertUtcToLocalTime = (
+  utcTime: any,
+  inputFormat = DATE_FORMAT_DISPLAY,
+  format = DATE_FORMAT_DISPLAY
+) => {
+  try {
+    if (utcTime) {
+      // console.log(moment(moment.utc(utcTime, inputFormat).toDate()).format(format));
+      return moment(moment.utc(utcTime, inputFormat).toDate()).format(format);
+    }
+    return "";
+  } catch (err) {
+    return "";
+  }
+};

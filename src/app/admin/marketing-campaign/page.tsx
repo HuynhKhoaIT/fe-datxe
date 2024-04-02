@@ -1,86 +1,47 @@
 "use client";
 export const revalidate = 0;
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import Breadcrumb from "@/app/components/form/Breadcrumb";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Badge, Button, Flex, Image, Tooltip } from "@mantine/core";
-import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
-import {
-  kindMarketingOptions,
-  kindProductOptions,
-  statusOptions,
-} from "@/constants/masterData";
+import { Badge, Button, Flex, Tooltip } from "@mantine/core";
+import { kindMarketingOptions, statusOptions } from "@/constants/masterData";
 import Link from "next/link";
 import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
 import { useDisclosure } from "@mantine/hooks";
 import ListPage from "@/app/components/layout/ListPage";
 import SearchForm from "@/app/components/form/SearchForm";
 import TableBasic from "@/app/components/table/Tablebasic";
 import dayjs from "dayjs";
-import { QueryClient } from "@tanstack/react-query";
-import useFetch from "@/app/hooks/useFetch";
-import { getMarketing } from "./until";
-import axios from "axios";
+import { useMarketingList } from "../hooks/marketingCampaign/useMarketing";
 const DynamicModalDeleteItem = dynamic(
   () => import("../_component/ModalDeleteItem"),
   {
     ssr: false,
   }
 );
-const queryClient = new QueryClient();
 const Breadcrumbs = [
   { title: "Tổng quan", href: "/admin" },
   { title: "Danh sách chương trình" },
 ];
 export default function Discounts() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [page, setPage] = useState<number>(1);
-
   const [
     openedDeleteItem,
     { open: openDeleteProduct, close: closeDeleteItem },
   ] = useDisclosure(false);
 
   const {
-    data: marketing,
+    marketings,
     isLoading,
-    error,
     isFetching,
-    isPlaceholderData,
-    refetch,
-  } = useFetch({
-    queryKey: ["marketing", page],
-    queryFn: () => getMarketing(searchParams.toString(), page),
-  });
-
-  useEffect(() => {
-    if (!isPlaceholderData) {
-      queryClient.prefetchQuery({
-        queryKey: ["marketing", page],
-        queryFn: () => getMarketing(searchParams.toString(), page),
-        staleTime: Infinity,
-      });
-    }
-  }, [marketing, searchParams, isPlaceholderData, page, queryClient]);
-
+    page,
+    setPage,
+    deleteItem,
+  } = useMarketingList();
   const [deleteRow, setDeleteRow] = useState();
 
-  const handleDeleteItem = async (marketingId: any) => {
-    try {
-      await axios.delete(`/api/marketing-campaign/${marketingId}`);
-      notifications.show({
-        title: "Thành công",
-        message: "Xoá chương trình thành công",
-      });
-      refetch();
-    } catch (error) {
-      console.error("error: ", error);
-    }
+  const handleDeleteItem = (id: any) => {
+    deleteItem(id);
   };
-
   const columns = [
     {
       label: (
@@ -268,10 +229,10 @@ export default function Discounts() {
         titleTable={true}
         baseTable={
           <TableBasic
-            data={marketing?.data}
+            data={marketings?.data}
             columns={columns}
             loading={isLoading}
-            totalPage={marketing?.totalPage}
+            totalPage={marketings?.totalPage}
             setPage={setPage}
             activePage={page}
           />

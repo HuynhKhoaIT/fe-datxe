@@ -21,6 +21,7 @@ export default function InfoCart({
   handleOpenModalDelete,
   incrementQuantity,
   form,
+  ModalAcceptOrder,
 }: any) {
   useEffect(() => {
     const fetchData = async () => {
@@ -190,7 +191,8 @@ export default function InfoCart({
                 radius={0}
                 className="theme-btn"
                 variant="filled"
-                type="submit"
+                // type="submit"
+                onClick={ModalAcceptOrder}
                 loading={loading}
                 style={{ background: "var(--theme-color)" }}
               >

@@ -23,11 +23,10 @@ export function AutocompleteClearable({
   placeholder,
   isCamera = false,
   w,
+  setValueInput,
 }: any) {
   const searchParams = useSearchParams();
   const initialValues: any = searchParams.get(name);
-  console.log(initialValues);
-
   const values = form?.values;
   const [loading, setLoading] = useState(false);
   const [groceries, setGroceries] = useState([]);
@@ -75,6 +74,7 @@ export function AutocompleteClearable({
         }}
         onClick={() => {
           form.setFieldValue(name, item.value);
+          if (setValueInput) setValueInput(item.label);
           open();
         }}
       >
@@ -103,6 +103,7 @@ export function AutocompleteClearable({
               value={value}
               onChange={(event) => {
                 setValue(event.currentTarget.value);
+                if (setValueInput) setValueInput(event.currentTarget.value);
                 combobox.openDropdown();
                 combobox.updateSelectedOptionIndex();
               }}

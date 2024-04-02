@@ -18,6 +18,7 @@ export default function TableBasic({
   setSelectedRows,
   className,
 }: any) {
+  console.log(columns);
   return (
     <div className={classNames(styles.tableBasic, className)}>
       <LoadingOverlay
@@ -38,6 +39,9 @@ export default function TableBasic({
           <Table.Tr>
             {selectRow && <Table.Th />}
             {columns?.map((item: any, index: number) => {
+              if (!item) {
+                return;
+              }
               return (
                 <Table.Th
                   style={{ width: item?.width, textAlign: item?.textAlign }}
@@ -85,6 +89,9 @@ export default function TableBasic({
                   );
                   function returnFunc(data: any) {
                     return <span>{data}</span>;
+                  }
+                  if (!col) {
+                    return;
                   }
                   return (
                     <Table.Td

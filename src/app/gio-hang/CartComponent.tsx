@@ -2,7 +2,15 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { Grid, Modal, Button, Group, TextInput, Card } from "@mantine/core";
+import {
+  Grid,
+  Modal,
+  Button,
+  Group,
+  TextInput,
+  Card,
+  Box,
+} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconBan, IconChevronRight } from "@tabler/icons-react";
 import InfoCar from "./_component/InfoCar";
@@ -13,6 +21,9 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import Container from "../components/common/Container";
 import styles from "./index.module.scss";
+import { modals } from "@mantine/modals";
+import Typo from "../components/elements/Typo";
+import { DatePickerInput, DateTimePicker } from "@mantine/dates";
 export default function CartComponent({ myAccount, carsData }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -103,7 +114,43 @@ export default function CartComponent({ myAccount, carsData }: any) {
   }, [cartData]);
 
   console.log(cartData);
-  const handleSubmit = async (values: any) => {
+
+  const ModalAcceptOrder = () => {
+    var dateTime = new Date();
+    modals.openConfirmModal({
+      title: (
+        <Typo
+          size="small"
+          type="semi-bold"
+          style={{ color: "var(--primary-color)" }}
+        >
+          Xác nhận thời gian
+        </Typo>
+      ),
+      children: (
+        <DateTimePicker
+          label="Thời gian"
+          defaultValue={dateTime}
+          placeholder="Chọn thời gian "
+          locale="vi"
+          onChange={(value) => {
+            if (value) {
+              dateTime = value;
+            }
+          }}
+        />
+      ),
+      size: "500px",
+      centered: true,
+      withCloseButton: false,
+      labels: { confirm: "Tiếp tục", cancel: "Hủy" },
+      onConfirm: () => {
+        form.setFieldValue("dateTime", dateTime);
+        handleSubmit(form.values, dateTime);
+      },
+    });
+  };
+  const handleSubmit = async (values: any, dateTime: Date) => {
     if (cartData?.length == 0) {
       notifications.show({
         title: "Thất bại",
@@ -112,7 +159,7 @@ export default function CartComponent({ myAccount, carsData }: any) {
       return;
     }
     setLoading(true);
-    values.dateTime = new Date();
+    values.dateTime = dateTime;
     values.subTotal = calculateSubTotal();
 
     values.total = calculateSubTotal();
@@ -153,11 +200,9 @@ export default function CartComponent({ myAccount, carsData }: any) {
     }
   };
 
-  const [visible, handlers] = useDisclosure(false);
-
   return (
     <>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form>
         <div className="shop-cart pt-60 pb-60">
           <Container>
             <Grid gutter={16}>
@@ -208,7 +253,7 @@ export default function CartComponent({ myAccount, carsData }: any) {
                 // setCarDetail={setCarDetail}
               />
             </Grid>
-            <InfoDate setDate={setDate} setTime={setTime} />
+            {/* <InfoDate setDate={setDate} setTime={setTime} /> */}
             <Suspense fallback={<p>loading...</p>}>
               <InfoCart
                 loading={loading}
@@ -218,6 +263,7 @@ export default function CartComponent({ myAccount, carsData }: any) {
                 handleOpenModalDelete={handleOpenModalDelete}
                 incrementQuantity={incrementQuantity}
                 form={form}
+                ModalAcceptOrder={ModalAcceptOrder}
               />
             </Suspense>
           </Container>

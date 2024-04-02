@@ -41,6 +41,9 @@ export default function BookForm() {
 
   const handleSubmit = async (values: any) => {
     let queryString = "";
+    if (values?.provinceId) {
+      queryString = "provinceId" + "=" + values?.provinceId;
+    }
     if (values?.carBrandId) {
       queryString = "brand" + "=" + values?.carBrandId;
     }
@@ -78,6 +81,7 @@ export default function BookForm() {
                       rightSection={<></>}
                       placeholder="Vị trí"
                       data={provinceOptions}
+                      {...form.getInputProps("provinceId")}
                     />
                     <Select
                       {...form.getInputProps("carBrandId")}

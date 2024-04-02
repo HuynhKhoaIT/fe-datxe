@@ -12,33 +12,13 @@ import Banner2 from "@/assets/images/bannerExpert.png";
 import Reasons1 from "@/assets/images/reasson1.png";
 import Reasons2 from "@/assets/images/reasson2.png";
 import Reasons3 from "@/assets/images/reasson3.png";
-import { getProducts } from "@/app/libs/prisma/product";
-import { getCategories, getCategoryById } from "@/app/libs/prisma/category";
 import RenderContextClient from "@/app/components/elements/RenderContextClient";
 import {
-  useCategory,
+  useProductByCategory,
   useProductRelate,
-} from "@/app/hooks/products/useCategory";
+} from "@/app/hooks/products/useProducts";
 import { useState } from "react";
-async function getCategoryDetail(garageId: number) {
-  const res = await fetch(`${apiUrl}/api/garage/${garageId}`, {
-    method: "GET",
-  });
-  if (!res.ok) {
-    throw new Error(`HTTP error! Status: ${res.status}`);
-  }
-  const data = await res.json();
-  return data;
-}
-
-async function getProductsByCategory() {
-  const res = await fetch(`${apiUrl}api/products?isProduct=1&limit=12`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await res.json();
-  return data?.data;
-}
+import { kindProduct } from "@/constants/masterData";
 
 const blogs = [
   {
@@ -175,20 +155,7 @@ const reassons = [
       "Từ dịch vụ rửa xe, mâm & lốp, chăm sóc toàn diện, ắc quy, phụ tùng và cả việc bảo dưỡng định kỳ nữa. Ban có thể so sánh và tìm kiếm hệ thống Chuyên gia trên cả nước.",
   },
 ];
-const kindProduct = {
-  data: [
-    {
-      id: "1",
-      value: true,
-      name: "Sản phẩm",
-    },
-    {
-      id: "2",
-      value: false,
-      name: "Dịch  vụ",
-    },
-  ],
-};
+
 const slideshowData = [
   {
     image: Banner1.src,
@@ -203,10 +170,8 @@ export default function DetailCategory({
 }: {
   params: { slug: string };
 }) {
-  // const products = await getProducts({ category: params?.slug });
-  // const productRelate: any = await getProducts({});
   const [productCount, setProductCount] = useState(5);
-  const { data: products, isPending, isFetching } = useCategory(
+  const { data: products, isPending, isFetching } = useProductByCategory(
     productCount,
     params?.slug
   );

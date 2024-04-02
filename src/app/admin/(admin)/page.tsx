@@ -202,14 +202,15 @@ export default function DashboardAdmin() {
         data={newArray}
         arrayDate={arrayDate}
       />
-      <DynamicModalAcceptCart openModal={openedModal} close={closeModal} />
+      {openedModal && (
+        <DynamicModalAcceptCart openModal={openedModal} close={closeModal} />
+      )}
       {/* <SellingProductListPage /> */}
       {isMobile && (
         <footer className={styles.appFooter}>
           <div>
             <strong>Datxe.com - Ứng dụng đặt lịch sửa xe </strong>
           </div>
-          {/* <div className={styles.version}>version 1</div> */}
         </footer>
       )}
     </div>

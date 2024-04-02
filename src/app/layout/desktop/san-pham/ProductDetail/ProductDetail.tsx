@@ -98,7 +98,9 @@ function ProductDetail({ ProductDetail }: { ProductDetail: IProduct }) {
           }}
         >
           <Grid.Col span={5}>
-            <ProductSlider images={JSON.parse(ProductDetail?.images)} />
+            {ProductDetail?.images && (
+              <ProductSlider images={JSON?.parse(ProductDetail?.images)} />
+            )}
           </Grid.Col>
           <Grid.Col span={5}>
             <div className={styles.info}>

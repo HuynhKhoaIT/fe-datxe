@@ -14,21 +14,16 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconPlus, IconBan } from "@tabler/icons-react";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
-import { notifications } from "@mantine/notifications";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import FooterSavePage from "../../_component/FooterSavePage";
-import useFetch from "@/app/hooks/useFetch";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
-import { getBlogs } from "../until";
+import { useAddNews } from "../../hooks/news/useAddNews";
 export default function BlogForm({ isEditing, dataDetail }: any) {
-  const searchParams = useSearchParams();
   const [valueRTE, setValueRTE] = useState("");
-
+  const { addItem, updateItem } = useAddNews();
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
@@ -66,18 +61,6 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
       fetchData();
     }
   }, [dataDetail]);
-  const {
-    data: blogs,
-    isLoading,
-    error,
-    isFetching,
-    isPlaceholderData,
-    refetch,
-  } = useFetch({
-    queryKey: ["blogs", searchParams.toString(), 1],
-    queryFn: () => getBlogs(searchParams.toString(), 1),
-  });
-  const router = useRouter();
   function convertToSlug(str: string) {
     str = str.toLowerCase().trim(); // Chuyển đổi thành chữ thường và loại bỏ khoảng trắng ở đầu và cuối chuỗi
     str = str.replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
@@ -102,31 +85,12 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
     values.slug = convertToSlug(values?.title);
     values.description = valueRTE;
     handlers.open();
-    try {
-      if (!isEditing) {
-        await fetch(`/api/posts`, {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-      } else {
-        await fetch(`/api/posts/${dataDetail?.id}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-        });
-      }
-      notifications.show({
-        title: "Thành công",
-        message: "Thành công",
-      });
-      router.back();
-      refetch();
-    } catch (error) {
-      handlers.close();
-      notifications.show({
-        title: "Thất bại",
-        message: "Thất bại",
-      });
+    if (isEditing) {
+      updateItem(values);
+    } else {
+      addItem(values);
     }
+    handlers.close();
   };
 
   return (
@@ -160,7 +124,7 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
                           file
                             ? URL.createObjectURL(file)
                             : dataDetail
-                            ? dataDetail.image
+                            ? dataDetail.thumbnail
                             : null
                         }
                         fallbackSrc="https://placehold.co/600x400?text=Upload"

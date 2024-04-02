@@ -13,16 +13,22 @@ const Breadcrumbs = [
   { title: "Danh sách sản phẩm", href: "/san-pham" },
   { title: "Chi tiết sản phẩm" },
 ];
-const ProductDetailPageDesktop = ({ product, productRelate }: any) => {
-  console.log(product);
+const ProductDetailPageDesktop = ({
+  product,
+  productRelate,
+  productReview,
+}: any) => {
   return (
     <div className={styles.wrapper}>
       <Container>
         <Breadcrumb breadcrumbs={Breadcrumbs} />
         <Flex direction={"column"} gap={40}>
-          <ProductDetail ProductDetail={product?.product} />
-          <ProductTabsDes ProductDetail={product?.product} />
-          <ExpertBox ProductDetail={product?.product} />
+          <ProductDetail ProductDetail={product?.data?.product} />
+          <ProductTabsDes
+            ProductDetail={product?.data?.product}
+            productReview={productReview}
+          />
+          <ExpertBox ProductDetail={product?.data?.product} />
           <ImagesShowRoom />
           <ProductsRelate productRelate={productRelate?.data} />
           <div></div>

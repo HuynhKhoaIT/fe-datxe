@@ -20,7 +20,10 @@ import { useEffect, useState } from "react";
 import styles from "./ModalAcceptCar.module.scss";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 export default function ModalAcceptCar({ openModal, close }: any) {
+  const [numberPlate, setNumberPlate] = useState("");
+  const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [loadingTable, handlers] = useDisclosure(false);
 
@@ -154,6 +157,7 @@ export default function ModalAcceptCar({ openModal, close }: any) {
     if (form?.values?.carId) handleSubmit(form.values);
   }, [form.values]);
 
+  console.log(numberPlate);
   return (
     <Modal
       title="Tiếp nhận xe"
@@ -176,6 +180,7 @@ export default function ModalAcceptCar({ openModal, close }: any) {
                 name={"carId"}
                 placeholder={"Biển số xe"}
                 isCamera={true}
+                setValueInput={setNumberPlate}
               />
             </Grid.Col>
           </Grid>
@@ -211,7 +216,9 @@ export default function ModalAcceptCar({ openModal, close }: any) {
         >
           <Button
             onClick={() => {
-              close();
+              router.push(
+                `/admin/order-manager/create?numberPlate=${numberPlate}`
+              );
             }}
           >
             Tạo đơn
