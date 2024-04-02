@@ -9,14 +9,10 @@ import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import ImageDefult from "../../../../public/assets/images/logoDatxe.png";
 import Link from "next/link";
 import { Fragment, Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 import dynamic from "next/dynamic";
-import axios from "axios";
-import useFetch from "@/app/hooks/useFetch";
 import { QueryClient } from "@tanstack/react-query";
-import { getBlogs } from "./until";
+import { useNewsList } from "../hooks/news/useNews";
 const queryClient = new QueryClient();
 
 const Breadcrumbs = [
@@ -30,23 +26,18 @@ const DynamicModalDeleteItem = dynamic(
   }
 );
 const Blogs = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const {
+    newsList,
+    isLoading,
+    isFetching,
+    page,
+    setPage,
+    deleteItem,
+  } = useNewsList();
   const [deleteRow, setDeleteRow] = useState();
-  const [loadingTable, handlers] = useDisclosure(false);
 
-  const [page, setPage] = useState<number>(1);
-  const handleDeleteItem = async (idProduct: any) => {
-    try {
-      await axios.delete(`/api/garage/${idProduct}`);
-      notifications.show({
-        title: "Thành công",
-        message: "Xoá bài viết thành công",
-      });
-      refetch();
-    } catch (error) {
-      console.error("error: ", error);
-    }
+  const handleDeleteItem = (id: any) => {
+    deleteItem(id);
   };
   const [
     openedDeleteItem,
@@ -175,28 +166,6 @@ const Blogs = () => {
       type: "input",
     },
   ];
-  const {
-    data: blogs,
-    isLoading,
-    error,
-    isFetching,
-    isPlaceholderData,
-    refetch,
-  } = useFetch({
-    queryKey: ["blogs", searchParams.toString(), page],
-    queryFn: () => getBlogs(searchParams.toString(), page),
-  });
-
-  useEffect(() => {
-    if (!isPlaceholderData && searchParams) {
-      queryClient.prefetchQuery({
-        queryKey: ["blogs", searchParams.toString(), page],
-        queryFn: () => getBlogs(searchParams.toString(), page),
-        staleTime: Infinity,
-      });
-    }
-  }, [blogs, searchParams, isPlaceholderData, page, queryClient]);
-
   const initialValuesSearch = {
     s: "",
   };
@@ -233,10 +202,10 @@ const Blogs = () => {
         titleTable={true}
         baseTable={
           <TableBasic
-            data={blogs?.data}
+            data={newsList?.data}
             columns={columns}
             loading={isLoading}
-            totalPage={blogs?.totalPage}
+            totalPage={newsList?.totalPage}
             setPage={setPage}
             activePage={page}
           />

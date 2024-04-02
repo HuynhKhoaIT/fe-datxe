@@ -10,6 +10,7 @@ import Typo from "@/app/components/elements/Typo";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import TableBasic from "@/app/components/table/Tablebasic";
+import { modals } from "@mantine/modals";
 const DynamicModalReview = dynamic(() => import("./ModalReview"), {
   ssr: false,
 });
@@ -82,6 +83,7 @@ export default function OrderDetailPage({ dataSource }: any) {
     },
   ];
   console.log(dayjs(dataSource?.dateTime).format("HH:mm DD:MM:YY"));
+
   return (
     <Container className="printable">
       <div className={styles.infoGara}>

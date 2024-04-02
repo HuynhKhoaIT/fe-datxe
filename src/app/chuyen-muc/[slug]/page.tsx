@@ -14,9 +14,9 @@ import Reasons2 from "@/assets/images/reasson2.png";
 import Reasons3 from "@/assets/images/reasson3.png";
 import RenderContextClient from "@/app/components/elements/RenderContextClient";
 import {
-  useCategory,
+  useProductByCategory,
   useProductRelate,
-} from "@/app/hooks/products/useCategory";
+} from "@/app/hooks/products/useProducts";
 import { useState } from "react";
 import { kindProduct } from "@/constants/masterData";
 
@@ -170,10 +170,8 @@ export default function DetailCategory({
 }: {
   params: { slug: string };
 }) {
-  // const products = await getProducts({ category: params?.slug });
-  // const productRelate: any = await getProducts({});
   const [productCount, setProductCount] = useState(5);
-  const { data: products, isPending, isFetching } = useCategory(
+  const { data: products, isPending, isFetching } = useProductByCategory(
     productCount,
     params?.slug
   );

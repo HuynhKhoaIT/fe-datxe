@@ -30,7 +30,7 @@ import {
 } from "@tabler/icons-react";
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useDebouncedValue,
   useDisclosure,
@@ -53,9 +53,10 @@ import useFetch from "@/app/hooks/useFetch";
 import { getOptionsCar } from "../until";
 import { useAddOrder } from "../../hooks/order/useAddOrder";
 import AutocompleteField from "@/app/components/form/AutoCompleteField";
-import { ORDER_CANCEL_7 } from "@/constants";
 
 export default function OrderForm({ isEditing = false, dataDetail }: any) {
+  const searchParams = useSearchParams();
+  const licenseNumber = searchParams.get("numberPlate");
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const router = useRouter();
   const {
@@ -114,10 +115,13 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   });
 
   useEffect(() => {
-    if (!isEditing) {
+    if (!isEditing && !licenseNumber) {
       if (form.values.numberPlates.length == 0) {
         openModalNumberPlates();
       }
+    }
+    if (licenseNumber) {
+      handleGetInfo();
     }
   }, []);
   useEffect(() => {
@@ -227,6 +231,9 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
 
   // lấy thông tin theo biển số xe
   const handleGetInfo = async () => {
+    if (licenseNumber) {
+      form.values.numberPlates = licenseNumber;
+    }
     handlers.open();
     try {
       const res = await fetch(

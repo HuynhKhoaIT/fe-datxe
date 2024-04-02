@@ -19,7 +19,7 @@ const fetchProductRelate = async (searchParams: any, limit = 10) => {
     return await response.json();
 };
 
-const useCategory = (limit: any, categoryId: string) => {
+const useProductByCategory = (limit: any, categoryId: string) => {
     const searchParams = useSearchParams();
 
     return useQuery({
@@ -37,4 +37,50 @@ const useProductRelate = (limit: any) => {
     });
 };
 
-export { useCategory, fetchProductByCategory, useProductRelate, fetchProductRelate };
+const fetchProductDetail = async (id: string) => {
+    const response = await fetch(`/api/products/${id}`);
+    if (!response.ok) {
+        throw new ResponseError('Failed to fetch product ', response);
+    }
+    return await response.json();
+};
+
+const fetchProductReview = async (id: string) => {
+    const response = await fetch(`/api/reviews/product/${id}`);
+    if (!response.ok) {
+        throw new ResponseError('Failed to fetch product relate', response);
+    }
+    return await response.json();
+};
+
+const useProduct = (id: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY.productDetail, id],
+        queryFn: () => fetchProductDetail(id),
+    });
+};
+
+const useProductReview = (id: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY.productListReview, id],
+        queryFn: () => fetchProductReview(id),
+    });
+};
+
+const useProductsUserPage = (garageid: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY.productsUserPage, garageid],
+        queryFn: () => fetchProductDetail(garageid),
+    });
+};
+
+export {
+    useProductByCategory,
+    useProduct,
+    fetchProductByCategory,
+    useProductRelate,
+    fetchProductRelate,
+    useProductReview,
+    fetchProductDetail,
+    fetchProductReview,
+};
