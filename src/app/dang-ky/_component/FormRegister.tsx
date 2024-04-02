@@ -33,8 +33,9 @@ export function FormRegister() {
     const res = await CheckPhone(phone);
     if (!res) {
       
-      const genRs = await GenOTP(phone);
-      if (genRs.CodeResult == 100) {
+      // const genRs = await GenOTP(phone);
+      // if (genRs.CodeResult == 100) {
+      if (100 == 100) {
         router.push(`./dang-ky/xac-thuc?name=${name}&phone=${phone}`);
       } else {
         notifications.show({

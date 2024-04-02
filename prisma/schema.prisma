@@ -50,6 +50,7 @@ model Garage {
   groupGuid           String?
   bitlyUrl            String?
   reviews             ReviewsGarage[]
+  user                User[]
 }
 model Provinces{
   id Int @id @default(autoincrement())
@@ -392,7 +393,8 @@ model ReviewsProduct {
   order               Order @relation(fields: [orderId],references: [id])
   orderId             Int
   star                Int @default(4)
-  message             String?
+  message             String?  
+  user                User @relation(fields: [createdId],references: [id])
   createdId           Int
   status              STATUS @default(PUBLIC)
 }
@@ -438,14 +440,38 @@ model PostCategory{
 }
 
 model CategoriesOnPosts {
-  post    Post         @relation(fields: [postId], references: [id])
-  postId  Int // relation scalar field (used in the `@relation` attribute above)
-  category   PostCategory @relation(fields: [categoryId], references: [id])
-  categoryId Int // relation scalar field (used in the `@relation` attribute above)
-  assignedAt DateTime        @default(now())
-  assignedBy String
+  post            Post         @relation(fields: [postId], references: [id])
+  postId          Int // relation scalar field (used in the `@relation` attribute above)
+  category        PostCategory @relation(fields: [categoryId], references: [id])
+  categoryId      Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt      DateTime        @default(now())
+  assignedBy      String
 
   @@id([postId, categoryId])
+}
+
+model User{
+  id                  Int @id @default(autoincrement())
+  uuId                String
+  fullName            String
+  phoneNumber         String?
+  email               String?
+  avatar              String?
+  cityId              Int?
+  districtId          Int?
+  wardId              Int?
+  address             String?
+  dob                 DateTime?
+  description         String?
+  sex                 SEX @default(MALE)
+  status              STATUS @default(PUBLIC)
+  role                USERROLE @default(CUSTOMER)
+  garage              Garage @relation(fields: [garageId], references: [id])
+  garageId            Int @default(1)
+  reviewsProduct      ReviewsProduct[]
+  @@fulltext([fullName])
+  @@fulltext([fullName, phoneNumber])
+
 }
 
 enum SALETYPE {
@@ -476,4 +502,11 @@ enum CARBRAND {
 enum ORDERMETHOD {
   ONLINE
   OFFLINE
+}
+
+enum USERROLE {
+  ADMIN
+  ADMINGARAGE
+  CUSTOMER
+  BAN
 }

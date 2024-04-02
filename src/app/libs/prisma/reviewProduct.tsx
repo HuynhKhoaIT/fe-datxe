@@ -41,7 +41,7 @@ export async function getReviewsProduct(uuId:string,requestData: any) {
             where: {
                 productId: product?.id,
                 status: 'PUBLIC'
-            }
+            },
         }),
         prisma.reviewsProduct.count({
             where: {
@@ -51,6 +51,10 @@ export async function getReviewsProduct(uuId:string,requestData: any) {
         })
     ]);
     const totalPage = Math.ceil(total / limit);
+
+    // let reviewsRs = JSON.parse(JSON.stringify(reviews));
+
+
     return {
         data: reviews,
         total: total,
