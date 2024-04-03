@@ -52,12 +52,12 @@ const Reviews = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <Typo size="tiny" style={{ color: "var(--title-color)" }}>
+        <Typo size="sub" style={{ color: "var(--title-color)" }}>
           1-5 trên 300 đánh giá
         </Typo>
         <Select
-          size="lg"
-          radius={0}
+          // size="lg"
+          // radius={0}
           w={130}
           placeholder="Lọc theo"
           data={["5 sao", "4 sao", "3 sao", "2 sao", "1 sao"]}
