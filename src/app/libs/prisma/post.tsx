@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import prisma from "../prismadb";
-import convertToSlug from "@/utils/until";
+import convertToSlug, { generateUUID } from "@/utils/until";
 
 
 export async function getPosts(requestData: any){
@@ -87,10 +87,15 @@ export async function getPosts(requestData: any){
 
 export async function createPost(post: any) {
     try {
+        post.uuId = generateUUID(),
         post.slug = convertToSlug(post.slug);
         const rs = await prisma.post.create({ data: post });
         return rs;
     } catch (error) {
         return { error };
     }
+}
+
+export async function findPost(uuId: string){
+    
 }
