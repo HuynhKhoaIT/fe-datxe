@@ -1,14 +1,9 @@
 "use client";
-import { Group, Code, ScrollArea, rem } from "@mantine/core";
+import { ScrollArea } from "@mantine/core";
 import {
   IconNotes,
   IconCalendarStats,
   IconGauge,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
-  IconLogout,
   IconUsers,
   IconCar,
   IconClipboard,
@@ -16,7 +11,6 @@ import {
 import classes from "./NavbarNested.module.scss";
 import { LinksGroup } from "../components/NavBarLinksGroup/NavBarLinksGroup";
 import { IconUsersGroup } from "@tabler/icons-react";
-import { signOut } from "next-auth/react";
 import FooterAdmin from "../layout/common/desktop/Footer/footer-admin";
 
 const mockdata = [

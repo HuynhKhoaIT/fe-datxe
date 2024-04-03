@@ -4,7 +4,6 @@ import { LoadingOverlay, Select } from "@mantine/core";
 import ReviewItem from "./ReviewItem";
 
 const Reviews = ({ productReview, isLoadingProductReview }: any) => {
-  console.log(productReview);
   return (
     <div className={styles.wrapper}>
       {/* <LoadingOverlay visible={isLoadingProductReview} /> */}

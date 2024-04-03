@@ -1,16 +1,8 @@
 "use client";
 import React, { Fragment } from "react";
-import Statistical from "../_component/Statistical";
 import styles from "./index.module.scss";
 import Chart from "../_component/chart";
-import SellingProductListPage from "./SellingProductListPage";
-import {
-  IconCalendar,
-  IconCar,
-  IconReportAnalytics,
-} from "@tabler/icons-react";
 import Typo from "@/app/components/elements/Typo";
-import { IconPhotoSensor } from "@tabler/icons-react";
 import Scan from "@/assets/icons/scan.svg";
 import Report from "@/assets/icons/record-svgrepo-com.svg";
 import Car from "@/assets/icons/car-steering-wheel-svgrepo-com.svg";
@@ -23,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import dynamic from "next/dynamic";
 import { useAdmin } from "../hooks/admin/useAdmin";
-import FooterAdmin from "@/app/layout/common/desktop/Footer/footer-admin";
+import { ORDER_ACCEPT, ORDER_CANCEL, ORDER_DONE } from "@/constants";
 export default function DashboardAdmin() {
   const {
     ordersAdmin,
@@ -179,19 +171,28 @@ export default function DashboardAdmin() {
           <div className={styles.item_card}>
             <p>Nghiệm thu</p>
             <span className={styles.value_3}>
-              {newArray?.filter((item: any) => item?.step === 1)?.length}
+              {
+                newArray?.filter((item: any) => item?.step === ORDER_ACCEPT)
+                  ?.length
+              }
             </span>
           </div>
           <div className={styles.item_card}>
             <p>Xuất xưởng</p>
             <span className={styles.value_3}>
-              {newArray?.filter((item: any) => item?.step === 2)?.length}
+              {
+                newArray?.filter((item: any) => item?.step === ORDER_DONE)
+                  ?.length
+              }
             </span>
           </div>
           <div className={styles.item_card}>
             <p>Xe huỷ</p>
             <span className={styles.value_3}>
-              {newArray?.filter((item: any) => item?.step === 0)?.length}
+              {
+                newArray?.filter((item: any) => item?.step === ORDER_CANCEL)
+                  ?.length
+              }
             </span>
           </div>
         </div>

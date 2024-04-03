@@ -1,5 +1,4 @@
 "use client";
-import Typo from "@/app/components/elements/Typo";
 import { Box, Grid, LoadingOverlay } from "@mantine/core";
 import SimpleLineChart from "./SimpleLineChart";
 import SimpleBarChart from "./SimpleBarChart";
@@ -7,10 +6,10 @@ import { DatePickerInput } from "@mantine/dates";
 import "dayjs/locale/vi";
 import { addMonths } from "date-fns";
 import { useEffect, useState } from "react";
-import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./index.module.scss";
+import { ORDER_ACCEPT, ORDER_CANCEL, ORDER_DONE } from "@/constants";
 export default function Chart({ isLoading, data, arrayDate }: any) {
   const currentDate = new Date();
   const firstDayOfMonth = new Date(
@@ -39,9 +38,15 @@ export default function Chart({ isLoading, data, arrayDate }: any) {
       const items = data?.filter(
         (item: any) => item.dateTime.slice(0, 10) === date
       );
-      const countStep0 = items.filter((item: any) => item.step === 0).length;
-      const countStep1 = items.filter((item: any) => item.step === 1).length;
-      const countStep2 = items.filter((item: any) => item.step === 2).length;
+      const countStep0 = items.filter(
+        (item: any) => item.step == Number(ORDER_CANCEL)
+      ).length;
+      const countStep1 = items.filter(
+        (item: any) => item.step == Number(ORDER_ACCEPT)
+      ).length;
+      const countStep2 = items.filter(
+        (item: any) => item.step == Number(ORDER_DONE)
+      ).length;
       return { date, countStep1, countStep2, countStep0 };
     });
     return mappedData;
@@ -104,19 +109,31 @@ export default function Chart({ isLoading, data, arrayDate }: any) {
               <div className={styles.itemHeader}>
                 <p className={styles.titleItem}>Nghiệm thu</p>
                 <span className={styles.valueItem}>
-                  {data?.filter((item: any) => item?.step === 1)?.length}
+                  {
+                    data?.filter(
+                      (item: any) => item?.step === Number(ORDER_ACCEPT)
+                    )?.length
+                  }
                 </span>
               </div>
               <div className={styles.itemHeader}>
                 <p className={styles.titleItem}>Xuất xưởng</p>
                 <span className={styles.valueItem}>
-                  {data?.filter((item: any) => item?.step === 2)?.length}
+                  {
+                    data?.filter(
+                      (item: any) => item?.step === Number(ORDER_DONE)
+                    )?.length
+                  }
                 </span>
               </div>
               <div className={styles.itemHeader}>
                 <p className={styles.titleItem}>Xe huỷ</p>
                 <span className={styles.valueItem}>
-                  {data?.filter((item: any) => item?.step === 0)?.length}
+                  {
+                    data?.filter(
+                      (item: any) => item?.step === Number(ORDER_CANCEL)
+                    )?.length
+                  }
                 </span>
               </div>
             </div>

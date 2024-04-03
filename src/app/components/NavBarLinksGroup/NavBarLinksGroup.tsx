@@ -1,20 +1,11 @@
 "use client";
 import { useState } from "react";
-import {
-  Group,
-  Box,
-  Collapse,
-  ThemeIcon,
-  Text,
-  UnstyledButton,
-  rem,
-} from "@mantine/core";
+import { Group, Box, Collapse, UnstyledButton } from "@mantine/core";
 import classNames from "classnames";
-
-import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
+import { IconChevronRight } from "@tabler/icons-react";
 import classes from "./NavbarLinksGroup.module.scss";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 interface LinksGroupProps {
   icon: React.FC<any>;
   label: string;
