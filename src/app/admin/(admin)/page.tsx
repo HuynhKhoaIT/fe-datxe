@@ -209,7 +209,7 @@ export default function DashboardAdmin() {
       {isMobile && (
         <footer className={styles.appFooter}>
           <div>
-            <strong>Datxe.com - Ứng dụng đặt lịch sửa xe </strong>
+            <strong>DatXE - Ứng dụng đặt lịch sửa xe </strong>
           </div>
         </footer>
       )}

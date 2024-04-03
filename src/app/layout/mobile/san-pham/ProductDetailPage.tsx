@@ -13,15 +13,22 @@ const Breadcrumbs = [
   { title: "Danh sách sản phẩm", href: "/san-pham" },
   { title: "Sản phẩm" },
 ];
-const ProductDetailPageMobile = ({ product, productRelate }: any) => {
+const ProductDetailPageMobile = ({
+  product,
+  productReview,
+  productRelate,
+}: any) => {
   return (
     <div className={styles.wrapper}>
       <Container>
         <Breadcrumb breadcrumbs={Breadcrumbs} />
         <Flex direction={"column"} gap={40}>
-          <ProductDetail ProductDetail={product?.product} />
-          <ProductTabsDes ProductDetail={product?.product} />
-          <ExpertBox ProductDetail={product?.product} />
+          <ProductDetail ProductDetail={product?.data?.product} />
+          <ProductTabsDes
+            ProductDetail={product?.data?.product}
+            productReview={productReview}
+          />
+          <ExpertBox ProductDetail={product?.data?.product} />
           <ImagesShowRoom />
           <div></div>
         </Flex>
