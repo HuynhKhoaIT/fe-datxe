@@ -13,7 +13,7 @@ const ReviewItem = ({ dataDetail }: any) => {
         <div className={styles.info}>
           <div className={styles.infoUser}>
             <Typo size="tiny" type="bold">
-              {dataDetail?.user?.name}
+              {dataDetail?.user?.fullName}
             </Typo>
             <Typo style={{ fontSize: "12px", color: "var(--sub-color)" }}>
               {dataDetail?.created}

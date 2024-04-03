@@ -35,6 +35,7 @@ export default function DetailProduct({
       product={product}
       productReview={productReview}
       productRelate={productsRelate}
+      isLoadingProductReview={isLoadingProductReview}
     />
   );
 }

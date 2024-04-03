@@ -17,6 +17,7 @@ const ProductDetailPageDesktop = ({
   product,
   productRelate,
   productReview,
+  isLoadingProductReview,
 }: any) => {
   return (
     <div className={styles.wrapper}>
@@ -27,6 +28,7 @@ const ProductDetailPageDesktop = ({
           <ProductTabsDes
             ProductDetail={product?.data?.product}
             productReview={productReview}
+            isLoadingProductReview={isLoadingProductReview}
           />
           <ExpertBox ProductDetail={product?.data?.product} />
           <ImagesShowRoom />
