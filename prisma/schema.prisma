@@ -7,6 +7,26 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+model Provinces{
+  id Int @id @default(autoincrement())
+  name               String
+  type               String
+  garage             Garage[]
+}
+model Districts{
+  id Int @id @default(autoincrement())
+  name               String
+  type               String
+  province_id        Int
+  garage             Garage[]
+}
+model Wards{
+  id Int @id @default(autoincrement())
+  name               String
+  type               String
+  district_id        Int
+  garage             Garage[]
+}
 model Garage {
   id                  Int @id @default(autoincrement())
   routeId             Int?
@@ -52,26 +72,7 @@ model Garage {
   reviews             ReviewsGarage[]
   user                User[]
 }
-model Provinces{
-  id Int @id @default(autoincrement())
-  name               String
-  type               String
-  garage             Garage[]
-}
-model Districts{
-  id Int @id @default(autoincrement())
-  name               String
-  type               String
-  province_id        Int
-  garage             Garage[]
-}
-model Wards{
-  id Int @id @default(autoincrement())
-  name               String
-  type               String
-  district_id        Int
-  garage             Garage[]
-}
+
 
 model Amenities {
   id                  Int @id @default(autoincrement())
@@ -397,6 +398,8 @@ model ReviewsProduct {
   user                User @relation(fields: [createdId],references: [id])
   createdId           Int
   status              STATUS @default(PUBLIC)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
 
 model ReviewsGarage {
@@ -409,6 +412,8 @@ model ReviewsGarage {
   message             String?
   createdId           Int
   status              STATUS @default(PUBLIC)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
 }
 
 model Post{

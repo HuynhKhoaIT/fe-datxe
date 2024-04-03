@@ -5,6 +5,7 @@ interface IUser extends DefaultUser {
     token?: string;
     garageId?: string;
     isAdmin?: string;
+    role?: string;
 }
 declare module 'next-auth' {
     interface User extends IUser {}

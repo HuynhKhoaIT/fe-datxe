@@ -24,7 +24,7 @@ export async function POST(request: Request) {
                 email: json.email,
                 phoneNumber: json.phoneNumber,
                 role: 'CUSTOMER',
-                garageId: 2,
+                garageId: json.garageId,
             });
             return NextResponse.json(rs);
         }
