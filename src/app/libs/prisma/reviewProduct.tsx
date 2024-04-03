@@ -42,6 +42,9 @@ export async function getReviewsProduct(uuId:string,requestData: any) {
                 productId: product?.id,
                 status: 'PUBLIC'
             },
+            include: {
+                user: true
+            }
         }),
         prisma.reviewsProduct.count({
             where: {

@@ -3,7 +3,7 @@ import { registerUser } from '@/app/libs/prisma/user';
 import { sha256, sha224 } from 'js-sha256';
 
 export async function GET(request: Request) {
-    return new Response('Hello, Next.js!', {
+    return new Response('Hello1, Next.js!', {
         status: 200,
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -16,13 +16,13 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const json = await request.json();
-        const hash = sha256(`${json.phoneNumber}|@|${json.id}`);
+        const hash = sha256(`${json.phoneNumber}|@|${Number(json.id)}`);
         if (hash == json.hash) {
             const rs = await registerUser({
                 id: json.id,
                 fullName: json.name,
                 email: json.email,
-                phoneNumber: json.phone,
+                phoneNumber: json.phoneNumber,
                 role: 'CUSTOMER',
                 garageId: 2,
             });
