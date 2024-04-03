@@ -419,6 +419,17 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
     });
   };
 
+  useEffect(() => {
+    const fetchInfo = async () => {
+      await handleGetInfo();
+      setActiveTab("customer");
+    };
+    if (licenseNumber) {
+      setNumberPlate(licenseNumber);
+      fetchInfo();
+    }
+  }, [licenseNumber]);
+
   return (
     <Box pos="relative">
       <LoadingOverlay

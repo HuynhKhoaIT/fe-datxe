@@ -56,6 +56,7 @@ export function LinksGroup({
           data-active={link === pathname || undefined}
           onClick={() => {
             setOpened((o) => !o);
+            setTimeout(toggle, 1000);
           }}
           href={link}
           className={classNames(classes.control)}
