@@ -166,7 +166,7 @@ export async function deleteProduct(id: number) {
   }
 }
 
-export async function getProductById(id: number) {
+export async function getProductById(id: any) {
   try {
     const [product,avgReview] = await prisma.$transaction([
       prisma.product.findFirst({

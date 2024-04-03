@@ -21,6 +21,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { createGarage } from "@/app/libs/prisma/garage";
 import { createCustomer } from "@/app/libs/prisma/customer";
+import { registerUser } from "@/app/libs/prisma/user";
+import prisma from "@/app/libs/prismadb";
+import { generateUUID } from "./until";
 // import ForgotPassword from '@/app/forgot-password/page';
 /**
  * Get getMyAccount.
@@ -111,7 +114,7 @@ export const register = async (
       signIn("credentials", {
         phone: phone,
         password: password,
-        callbackUrl: `/dashboard?isNewCustomer=1&phone=${phone}&name=${name}`,
+        callbackUrl: `/dashboard`,
       });
     } else {
       console.log("Regiter failed");

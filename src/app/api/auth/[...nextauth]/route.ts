@@ -1,5 +1,8 @@
+import { stringToHash } from '@/utils/until';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { sha256, sha224 } from 'js-sha256';
+import axios from 'axios';
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
@@ -37,6 +40,9 @@ export const authOptions: NextAuthOptions = {
     ],
     secret: process.env.NEXTAUTH_SECRET as string,
     callbacks: {
+        async signIn({ user, account, profile, email, credentials }) {
+            return true;
+        },
         async jwt({ token, user, account }) {
             if (user) {
                 token.id = user.id;
