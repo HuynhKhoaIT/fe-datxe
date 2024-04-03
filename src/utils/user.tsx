@@ -157,7 +157,6 @@ export const registerGarage = async (
         method: "POST",
         body: JSON.stringify({
           routeId: Number(res.data.id),
-          code: "111222",
           name: garageName,
           shortName: garageName,
           logo: "",
