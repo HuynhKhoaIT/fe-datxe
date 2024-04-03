@@ -43,7 +43,7 @@ export default function AutocompleteField({
       error={error}
       placeholder={placeholder}
       data={optionsData}
-      //   value={value}
+      value={value}
       limit={limit}
       onChange={onChange}
       onOptionSubmit={onOptionSubmit}
