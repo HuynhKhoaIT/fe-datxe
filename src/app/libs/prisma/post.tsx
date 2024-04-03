@@ -97,5 +97,12 @@ export async function createPost(post: any) {
 }
 
 export async function findPost(uuId: string){
-    
+    return await prisma.post.findFirstOrThrow({
+        where:{
+            status:{
+                not: 'DELETE'
+            },
+            uuId
+        }
+    })
 }

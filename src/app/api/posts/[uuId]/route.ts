@@ -3,19 +3,19 @@ import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { getProductById } from '@/app/libs/prisma/product';
+import { findPost } from '@/app/libs/prisma/post';
 
-export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
+export async function GET(request: NextRequest, { params }: { params: { uuId: string } }) {
     try {
-        const now = new Date();
-        const id = params.id;
+        const uuId = params.uuId;
 
-        if (!id) {
-            return new NextResponse("Missing 'id' parameter");
+        if (!uuId) {
+            return new NextResponse("Missing 'uuId' parameter");
         }
         const session = await getServerSession(authOptions);
         if (session) {
-            const product = await getProductById(id);
-            return NextResponse.json({ data: product });
+            const post = await findPost(uuId);
+            return NextResponse.json({ data: post });
         }
         throw new Error('Chua dang nhap');
     } catch (error: any) {
