@@ -279,3 +279,19 @@ export function stringToHash(string:string) {
 
   return hash;
 }
+
+export const convertUtcToLocalTime = (
+  utcTime: any,
+  inputFormat = DATE_FORMAT_DISPLAY,
+  format = DATE_FORMAT_DISPLAY
+) => {
+  try {
+    if (utcTime) {
+      // console.log(moment(moment.utc(utcTime, inputFormat).toDate()).format(format));
+      return moment(moment.utc(utcTime, inputFormat).toDate()).format(format);
+    }
+    return "";
+  } catch (err) {
+    return "";
+  }
+};

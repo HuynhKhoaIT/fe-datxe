@@ -1,6 +1,18 @@
 import { NextResponse } from 'next/server';
 import { registerUser } from '@/app/libs/prisma/user';
 import { sha256, sha224 } from 'js-sha256';
+
+export async function GET(request: Request) {
+    return new Response('Hello, Next.js!', {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+    });
+}
+
 export async function POST(request: Request) {
     try {
         const json = await request.json();
@@ -8,6 +20,7 @@ export async function POST(request: Request) {
         if (hash == json.hash) {
             const rs = await registerUser({
                 id: json.id,
+                fullName: json.name,
                 email: json.email,
                 phoneNumber: json.phone,
                 role: 'CUSTOMER',

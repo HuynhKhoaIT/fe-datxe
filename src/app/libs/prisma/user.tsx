@@ -5,7 +5,7 @@ export async function registerUser(json: any) {
   try {
     const user = await prisma.user.create({
       data: {
-        id: json.id,
+        id: Number(json.id),
         uuId: generateUUID(),
         fullName: json.fullName,
         email: json.email ?? '',
