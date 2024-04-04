@@ -51,11 +51,9 @@ function CropImageLink({
     </div>
   );
 }
-
 const getFile = () => {
   document?.getElementById("image-uploader")?.click();
 };
-
 function Component({
   bgColor,
   preFix,
