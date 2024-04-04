@@ -1,12 +1,12 @@
 import prisma from '@/app/libs/prismadb';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import { slugify } from '@/utils/index';
 type ResponseBody = { errors: { message: string }[] } | { username: string };
 import { getProducts } from '@/app/libs/prisma/product';
 import { getGarageIdByDLBDID } from '@/app/libs/prisma/garage';
 import { generateUUID } from '@/utils/until';
+import { authOptions } from '../../auth/[...nextauth]/route';
 export async function GET(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
