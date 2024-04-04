@@ -7,11 +7,7 @@ import NewDetailPage from "@/app/layout/desktop/tin-tuc/NewsDetailPage";
 import ProductDetailPageMobile from "@/app/layout/mobile/san-pham/ProductDetailPage";
 export const dynamic = "force-dynamic";
 
-export default function DetailProduct({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default function DetailNews({ params }: { params: { slug: string } }) {
   const { data: newsData, isLoading: newsDataLoading } = useNewsDetail(
     params?.slug
   );

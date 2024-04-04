@@ -20,7 +20,7 @@ const ReviewItem = ({ dataDetail }: any) => {
             </Typo>
           </div>
           <div className={styles.star}>
-            <Rating defaultValue={dataDetail?.star} />
+            <Rating readOnly defaultValue={dataDetail?.star} />
           </div>
         </div>
         <div className={styles.message}>{dataDetail?.message}</div>

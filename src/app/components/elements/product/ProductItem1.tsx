@@ -11,7 +11,7 @@ export default function ProductItem({ product }: { product: IProduct }) {
     <Box w={"100%"}>
       <Card shadow="sm" radius="md">
         <Card.Section>
-          <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>
+          <Link href={`/san-pham/${product.uuID}`} style={{ width: "100%" }}>
             <ImageField
               src={images ? images[0] : null}
               height={160}
@@ -35,7 +35,7 @@ export default function ProductItem({ product }: { product: IProduct }) {
               4.6(280)
             </Typo>
           </div>
-          <Link href={`/san-pham/${product.id}`}>
+          <Link href={`/san-pham/${product.uuID}`}>
             <Typo size="primary" className={styles.productName}>
               {product.name}
             </Typo>
