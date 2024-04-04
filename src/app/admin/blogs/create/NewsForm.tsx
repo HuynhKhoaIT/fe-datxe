@@ -21,17 +21,15 @@ import axios from "axios";
 import FooterSavePage from "../../_component/FooterSavePage";
 import QuillEditor from "@/app/components/elements/RichTextEditor";
 import { useAddNews } from "../../hooks/news/useAddNews";
-export default function BlogForm({ isEditing, dataDetail }: any) {
+import CropImageLink from "@/app/components/common/CropImage";
+import ImageUpload from "@/assets/icons/cameraUploadMobile.svg";
+
+export default function NewsForm({ isEditing, dataDetail, isLoading }: any) {
   const [valueRTE, setValueRTE] = useState("");
   const { addItem, updateItem } = useAddNews();
   const [loading, handlers] = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
-
-  const clearFile = () => {
-    setFile(null);
-    resetRef.current?.();
-  };
   const form = useForm({
     initialValues: {
       thumbnail: "",
@@ -49,6 +47,7 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
       try {
         form.setInitialValues(dataDetail);
         form.setValues(dataDetail);
+        setValueRTE(form.values.description);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -57,7 +56,6 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
     };
 
     if (isEditing) {
-      handlers.open();
       fetchData();
     }
   }, [dataDetail]);
@@ -67,7 +65,8 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
     str = str.replace(/[^\w\-]+/g, ""); // Loại bỏ các ký tự đặc biệt.
     return str;
   }
-  const handleSubmit = async (values: any) => {
+
+  const uploadFileThumbnail = async (file: File) => {
     try {
       const baseURL = "https://up-image.dlbd.vn/api/image";
       const options = { headers: { "Content-Type": "multipart/form-data" } };
@@ -77,11 +76,12 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
         formData.append("image", file);
       }
       const response = await axios.post(baseURL, formData, options);
-      values.thumbnail = response.data;
+      form.setFieldValue("thumbnail", response.data);
     } catch (error) {
       console.error("Error:", error);
     }
-
+  };
+  const handleSubmit = async (values: any) => {
     values.slug = convertToSlug(values?.title);
     values.description = valueRTE;
     handlers.open();
@@ -96,7 +96,7 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
   return (
     <Box pos="relative">
       <LoadingOverlay
-        visible={loading}
+        visible={isLoading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
@@ -109,28 +109,13 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
                   <Text size={"16px"} c={"#999999"} mb={"6px"}>
                     Hình ảnh
                   </Text>
-                  <FileButton
-                    resetRef={resetRef}
-                    onChange={setFile}
-                    accept="image/png,image/jpeg"
-                  >
-                    {(props) => (
-                      <Image
-                        {...props}
-                        radius="md"
-                        h={150}
-                        w={150}
-                        src={
-                          file
-                            ? URL.createObjectURL(file)
-                            : dataDetail
-                            ? dataDetail.thumbnail
-                            : null
-                        }
-                        fallbackSrc="https://placehold.co/600x400?text=Upload"
-                      />
-                    )}
-                  </FileButton>
+                  <CropImageLink
+                    shape="rect"
+                    aspect={2 / 1}
+                    placeholder={"Cập nhật ảnh "}
+                    defaultImage={dataDetail?.thumbnail || ImageUpload.src}
+                    uploadFileThumbnail={uploadFileThumbnail}
+                  />
                 </Grid.Col>
               </Grid>
               <Grid gutter={10} mt={24}>
@@ -157,6 +142,19 @@ export default function BlogForm({ isEditing, dataDetail }: any) {
                       { value: "DRAFT", label: "Nháp" },
                       { value: "PENDING", label: "Đang duyệt" },
                     ]}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Grid mt={24}>
+                <Grid.Col span={12}>
+                  <Textarea
+                    size="lg"
+                    radius={0}
+                    label="Mô tả ngắn"
+                    minRows={4}
+                    autosize={true}
+                    {...form.getInputProps("shortDescription")}
+                    placeholder="Mô tả ngắn"
                   />
                 </Grid.Col>
               </Grid>

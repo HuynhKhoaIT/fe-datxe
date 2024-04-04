@@ -7,7 +7,7 @@ import { notifications } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const addNews = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/posts`, {
+    const response = await fetch(`/api/admin/posts`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ const addNews = async (values: any): Promise<any> => {
 };
 
 const updateNews = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/posts/${values?.id}`, {
+    const response = await fetch(`/api/admin/posts/${values?.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

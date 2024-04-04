@@ -8,7 +8,7 @@ import { notifications } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const fetchMarketing = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/marketing-campaign?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/marketing-campaign?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch marketing-campaign', response);
     }
@@ -16,7 +16,7 @@ const fetchMarketing = async (searchParams: any, page: number): Promise<any> => 
 };
 
 const deleteMarketing = async (id: string): Promise<any> => {
-    const response = await fetch(`/api/marketing-campaign/${id}`, {
+    const response = await fetch(`/api/admin/marketing-campaign/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

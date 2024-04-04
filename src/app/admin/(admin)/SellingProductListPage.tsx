@@ -27,7 +27,7 @@ export default function SellingProductListPage() {
     setProducts(data);
   }
   async function getDataCategories() {
-    const res = await fetch(`/api/product-category`, { method: "GET" });
+    const res = await fetch(`/api/admin/product-category`, { method: "GET" });
     const data = await res.json();
     if (!data) {
       throw new Error("Failed to fetch data");

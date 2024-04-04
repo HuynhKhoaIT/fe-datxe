@@ -54,8 +54,8 @@ export default function QuillEditor({
 
   useEffect(() => {
     if (defaultValue) {
-      const delta = editor.current.editor.clipboard.convert(defaultValue);
-      editor.current.editor.setContents(delta, "silent");
+      const delta = editor?.current?.editor?.clipboard.convert(defaultValue);
+      editor?.current?.editor.setContents(delta, "silent");
     }
   }, [defaultValue]);
 

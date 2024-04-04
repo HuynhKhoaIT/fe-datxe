@@ -22,7 +22,7 @@ export default function UtilitiesListPage({ dataSource }: any) {
   const [deleteRow, setDeleteRow] = useState();
   const handleDeleteItem = async (id: any) => {
     try {
-      await axios.delete(`/api/product-category/${id}`);
+      await axios.delete(`/api/admin/product-category/${id}`);
       notifications.show({
         title: "Thành công",
         message: "Xoá danh mục thành công",

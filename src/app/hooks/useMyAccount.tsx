@@ -5,7 +5,7 @@ import { QUERY_KEY } from "@/constants";
 const queryClient = new QueryClient();
 
 const fetchMyProfile = async (): Promise<any> => {
-  const response = await fetch(`/api/garage/my-garage`);
+  const response = await fetch(`/api/admin/garage/my-garage`);
   if (!response.ok) {
     throw new ResponseError("Failed to fetch my garage", response);
   }

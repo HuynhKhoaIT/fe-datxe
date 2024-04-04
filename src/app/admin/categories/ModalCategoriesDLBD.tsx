@@ -105,7 +105,7 @@ export default function ModalCategoriesDLBD({
       description: data?.description,
     };
     try {
-      const sync = await fetch(`/api/product-category/sync`, {
+      const sync = await fetch(`/api/admin/product-category/sync`, {
         method: "POST",
         body: JSON.stringify(data),
       });

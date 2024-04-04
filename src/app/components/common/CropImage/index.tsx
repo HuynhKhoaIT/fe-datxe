@@ -21,6 +21,7 @@ function CropImageLink({
   color,
   showRequired,
   showEditButton,
+  srcIcon,
 }: any) {
   return (
     <div className={className}>
@@ -44,6 +45,7 @@ function CropImageLink({
           color={color}
           showRequired={showRequired}
           showEditButton={showEditButton}
+          srcIcon={srcIcon}
         />
       </AntdImgCrop>
     </div>
@@ -51,7 +53,7 @@ function CropImageLink({
 }
 
 const getFile = () => {
-  document.getElementById("image-uploader").click();
+  document?.getElementById("image-uploader")?.click();
 };
 
 function Component({
@@ -67,6 +69,7 @@ function Component({
   color,
   showRequired,
   showEditButton,
+  srcIcon,
 }: any) {
   const [isEdit, setEdit] = useState(defaultImage && defaultImage !== "");
   useEffect(() => {
@@ -88,8 +91,7 @@ function Component({
           style={{ backgroundColor: bgColor, color: color }}
         >
           {preFix && <img src={preFix} alt="" className={styles.preFix} />}
-
-          {placeholder}
+          <span style={{ fontSize: "14px" }}> {placeholder}</span>
         </div>
 
         {required && showRequired && <Required />}
@@ -99,28 +101,24 @@ function Component({
         type="file"
         accept="image/png, image/jpeg"
         id="image-uploader"
-        name={name}
-        value=""
         className={styles.imageUploader}
-        required={required}
         onChange={async (e: any) => {
           const files = Array.from(e.target.files)[0];
           const filePreview = await beforeUpload(files, []);
-          const imagePreview: any = document.getElementById("image-result");
-          const imageContainer: any = document.getElementById(
-            "image-container"
-          );
-          if (filePreview) {
-            try {
-              imagePreview.src = URL.createObjectURL(filePreview);
-              imagePreview.style.display = "block";
-              uploadFileThumbnail(filePreview);
-              imageContainer.style.display = "none";
-              setEdit(true);
-              onFinish?.(filePreview);
-            } catch (error) {
-              console.log(error);
-            }
+          try {
+            const imagePreview: any = document.getElementById("image-result");
+            const imageContainer: any = document.getElementById(
+              "image-container"
+            );
+            imagePreview.style.display = "block";
+            imagePreview.src = URL.createObjectURL(filePreview);
+            console.log(filePreview);
+            await uploadFileThumbnail(filePreview);
+            imageContainer.style.display = "none";
+            setEdit(true);
+            onFinish?.(filePreview);
+          } catch (error) {
+            console.log(error);
           }
         }}
       />
@@ -129,17 +127,13 @@ function Component({
           id="image-result"
           className={styles.imagePreview}
           src={defaultImage}
-          height="170"
+          height="150"
           alt="Image preview"
           onClick={getFile}
         />
-        {/* {showEditButton && isEdit && (
-          <img
-            src={updateAlliance}
-            onClick={getFile}
-            className={styles.editButton}
-          />
-        )} */}
+        {srcIcon && (
+          <img src={srcIcon} onClick={getFile} className={styles.editIcon} />
+        )}
       </div>
     </>
   );

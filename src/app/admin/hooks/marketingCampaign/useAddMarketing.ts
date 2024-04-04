@@ -7,7 +7,7 @@ import { notifications } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const addMarketing = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/marketing-campaign`, {
+    const response = await fetch(`/api/admin/marketing-campaign`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ const addMarketing = async (values: any): Promise<any> => {
 };
 
 const updateMarketing = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/marketing-campaign/${values?.id}`, {
+    const response = await fetch(`/api/admin/marketing-campaign/${values?.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

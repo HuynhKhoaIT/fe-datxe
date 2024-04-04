@@ -10,7 +10,7 @@ import useFetch from '@/app/hooks/useFetch';
 const queryClient = new QueryClient();
 
 const addProduct = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/products`, {
+    const response = await fetch(`/api/admin/products`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ const addProduct = async (values: any): Promise<any> => {
 };
 
 const updateProduct = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/products/${values?.id}`, {
+    const response = await fetch(`/api/admin/products/${values?.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

@@ -46,29 +46,28 @@ const Expert = () => {
   ] = useDisclosure(false);
 
   const columns = [
-    // {
-    //   label: (
-    //     <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
-    //   ),
-    //   name: "image",
-    //   dataIndex: ["logo"],
-    //   width: "90px",
-    //   render: (data: any) => {
-    //     const image = JSON.parse(data);
-    //     if (!image) {
-    //       return (
-    //         <Image
-    //           radius="md"
-    //           src={ImageDefult.src}
-    //           h={40}
-    //           w="auto"
-    //           fit="contain"
-    //         />
-    //       );
-    //     }
-    //     return <Image radius="md " h={40} w={80} fit="contain" src={image} />;
-    //   },
-    // },
+    {
+      label: (
+        <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>Hình ảnh</span>
+      ),
+      name: "image",
+      dataIndex: ["logo"],
+      width: "90px",
+      render: (data: any) => {
+        if (!data) {
+          return (
+            <Image
+              radius="md"
+              src={ImageDefult.src}
+              h={40}
+              w="auto"
+              fit="contain"
+            />
+          );
+        }
+        return <Image radius="md " h={40} w={80} fit="contain" src={data} />;
+      },
+    },
     {
       label: (
         <span style={{ whiteSpace: "nowrap", fontSize: "16px" }}>

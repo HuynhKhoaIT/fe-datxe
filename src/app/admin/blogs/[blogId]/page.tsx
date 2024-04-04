@@ -1,44 +1,23 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Box, Space } from "@mantine/core";
-import ExpertForm from "../create/BlogForm";
-import axios from "axios";
-import { getProvinces } from "@/utils/notion";
+import { Box } from "@mantine/core";
+import NewsForm from "../create/NewsForm";
+import { useNewsDetail } from "../../hooks/news/useNews";
 export const revalidate = 60;
 export default function UpdateCategory({
   params,
 }: {
-  params: { expertId: number };
+  params: { blogId: string };
 }) {
-  const [expert, setExpert] = useState(null);
-  const [provinceData, setProvinceData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/api/garage/${params?.expertId}`);
-        const province: any = await getProvinces();
-        const provinceData = province.map((item: any) => ({
-          value: item.id.toString(),
-          label: item.name,
-        }));
-
-        setProvinceData(provinceData);
-        setExpert(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [params?.expertId]);
+  const { data: news, isLoading: isLoadingNews } = useNewsDetail(
+    params?.blogId
+  );
 
   return (
     <Box maw={"100%"} mx="auto">
-      <ExpertForm
+      <NewsForm
+        isLoading={isLoadingNews}
         isEditing={true}
-        dataDetail={expert}
-        provinceData={provinceData}
+        dataDetail={news?.data || []}
       />
     </Box>
   );

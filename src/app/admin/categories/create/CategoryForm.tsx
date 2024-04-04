@@ -19,17 +19,13 @@ import axios from "axios";
 import FooterSavePage from "../../_component/FooterSavePage";
 import convertToSlug from "@/utils/until";
 import { useAddCategory } from "../../hooks/category/useAddCategory";
+import CropImageLink from "@/app/components/common/CropImage";
+import ImageUpload from "@/assets/icons/cameraUploadMobile.svg";
 export default function CategoryForm({ isEditing, dataDetail }: any) {
   const { addItem, updateItem } = useAddCategory();
   const [loading, handlers] = useDisclosure();
-  const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
-
-  console.log(file);
-  const clearFile = () => {
-    setFile(null);
-    resetRef.current?.();
-  };
+  const [imageField, setImageField] = useState<File | null>();
 
   const form = useForm({
     initialValues: {
@@ -61,7 +57,7 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
     }
   }, [dataDetail]);
 
-  const handleSubmit = async (values: any) => {
+  const uploadFileThumbnail = async (file: File) => {
     try {
       const baseURL = "https://up-image.dlbd.vn/api/image";
       const options = { headers: { "Content-Type": "multipart/form-data" } };
@@ -71,11 +67,13 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
         formData.append("image", file);
       }
       const response = await axios.post(baseURL, formData, options);
-      values.image = response.data;
+      form.setFieldValue("image", response.data);
     } catch (error) {
       console.error("Error:", error);
     }
+  };
 
+  const handleSubmit = async (values: any) => {
     values.slug = convertToSlug(values?.title);
     handlers.open();
     if (isEditing) {
@@ -102,28 +100,12 @@ export default function CategoryForm({ isEditing, dataDetail }: any) {
                   <Text size={"16px"} c={"#999999"} mb={"6px"}>
                     Hình ảnh
                   </Text>
-                  <FileButton
-                    resetRef={resetRef}
-                    onChange={setFile}
-                    accept="image/png,image/jpeg"
-                  >
-                    {(props) => (
-                      <Image
-                        {...props}
-                        radius="md"
-                        h={150}
-                        w={150}
-                        src={
-                          file
-                            ? URL.createObjectURL(file)
-                            : dataDetail
-                            ? dataDetail.image
-                            : null
-                        }
-                        fallbackSrc="https://placehold.co/600x400?text=Upload"
-                      />
-                    )}
-                  </FileButton>
+                  <CropImageLink
+                    shape="rect"
+                    placeholder={"Cập nhật avatar"}
+                    defaultImage={dataDetail?.image || ImageUpload.src}
+                    uploadFileThumbnail={uploadFileThumbnail}
+                  />
                 </Grid.Col>
               </Grid>
               <Grid gutter={10} mt={24}>

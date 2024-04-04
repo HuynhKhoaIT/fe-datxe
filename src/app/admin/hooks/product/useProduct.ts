@@ -10,7 +10,7 @@ import { getOptionsCategories } from '@/utils/until';
 const queryClient = new QueryClient();
 
 const fetchProducts = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/admin/products?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/products?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch products', response);
     }
@@ -26,7 +26,7 @@ const fetchProductsDlbd = async (searchParams: any, page: number): Promise<any> 
 };
 
 const deleteProduct = async (id: string): Promise<any> => {
-    const response = await fetch(`/api/admin/products/${id}`, {
+    const response = await fetch(`/api/products/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -102,21 +102,25 @@ export const useProduct = (): useProduct => {
             queryClient.prefetchQuery({
                 queryKey: [QUERY_KEY.products, searchParams.toString(), page + 1],
                 queryFn: () => fetchProducts(searchParams.toString(), page + 1),
+                retry: 2,
             });
         } else if (activeTab == 'first' && !isPlaceholderData && searchParams) {
             queryClient.prefetchQuery({
                 queryKey: [QUERY_KEY.products, searchParams.toString(), page],
                 queryFn: () => fetchProducts(searchParams.toString(), page),
+                retry: 2,
             });
         } else if (activeTab == 'second' && !isPlaceholderDataDlbd) {
             queryClient.prefetchQuery({
                 queryKey: [QUERY_KEY.productsDlbd, searchParams.toString(), pageDlbd + 1],
                 queryFn: () => fetchProductsDlbd(searchParams.toString(), pageDlbd + 1),
+                retry: 2,
             });
         } else if (activeTab == 'second' && !isPlaceholderDataDlbd && searchParams) {
             queryClient.prefetchQuery({
                 queryKey: [QUERY_KEY.productsDlbd, searchParams.toString(), pageDlbd],
                 queryFn: () => fetchProductsDlbd(searchParams.toString(), pageDlbd),
+                retry: 2,
             });
         }
     }, [products, searchParams, isPlaceholderData, page, queryClient, isPlaceholderDataDlbd]);
@@ -160,3 +164,21 @@ export const useProduct = (): useProduct => {
         isLoadingDlbd,
     };
 };
+
+// get detail
+const fetchProductDetail = async (id: string) => {
+    const response = await fetch(`/api/admin/products/${id}`);
+    if (!response.ok) {
+        throw new ResponseError('Failed to fetch products', response);
+    }
+    return await response.json();
+};
+
+const useProductDetail = (id: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY.productDetail, id],
+        queryFn: () => fetchProductDetail(id),
+    });
+};
+
+export { useProductDetail, fetchProductDetail };

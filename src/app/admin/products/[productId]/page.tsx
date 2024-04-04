@@ -1,25 +1,16 @@
-import { Box } from "@mantine/core";
+"use client";
 import React from "react";
 import ProductForm from "../create/ProductForm";
-import { getProductById, getProducts } from "@/app/libs/prisma/product";
-import { apiUrl } from "@/constants";
+import { useProductDetail } from "../../hooks/product/useProduct";
 export const dynamic = "force-dynamic";
 
 export const revalidate = 0;
 
-async function getDataProduct(productId: number) {
-  const res = await fetch(`${apiUrl}api/products/${Number(productId)}`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
-
-export default async function ProductSavePage({
+export default function ProductSavePage({
   params,
 }: {
-  params: { productId: number };
+  params: { productId: string };
 }) {
-  const productDetail = await getProductById(params.productId);
-  return <ProductForm isEditing={true} dataDetail={productDetail} />;
+  const { data: productDetail } = useProductDetail(params?.productId);
+  return <ProductForm isEditing={true} dataDetail={productDetail?.data} />;
 }

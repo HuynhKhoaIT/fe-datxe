@@ -341,7 +341,7 @@ img {
     -ms-transition: all 0.3s ease-out 0s;
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s;
-    height: auto;
+    /* height: auto; */
 }
 
 label {

@@ -8,7 +8,7 @@ import { notifications } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const fetchCategories = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/product-category?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/product-category?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch categories', response);
     }
@@ -16,7 +16,7 @@ const fetchCategories = async (searchParams: any, page: number): Promise<any> =>
 };
 
 const deleteCategory = async (id: string): Promise<any> => {
-    const response = await fetch(`/api/product-category/${id}`, {
+    const response = await fetch(`/api/admin/product-category/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

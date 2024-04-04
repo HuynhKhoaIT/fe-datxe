@@ -8,7 +8,7 @@ import { notifications } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const fetchCustomers = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/customer?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/customer?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch customers', response);
     }
@@ -16,7 +16,7 @@ const fetchCustomers = async (searchParams: any, page: number): Promise<any> => 
 };
 
 const fetchCustomersDlbd = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/customer/dlbd?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/customer/dlbd?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch customers', response);
     }
@@ -24,7 +24,7 @@ const fetchCustomersDlbd = async (searchParams: any, page: number): Promise<any>
 };
 
 const deleteCustomer = async (id: string): Promise<any> => {
-    const response = await fetch(`/api/customer/${id}`, {
+    const response = await fetch(`/api/admin/customer/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
