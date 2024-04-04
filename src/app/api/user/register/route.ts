@@ -23,7 +23,7 @@ export async function POST(request: Request) {
                 fullName: json.name,
                 email: json.email,
                 phoneNumber: json.phoneNumber,
-                role: 'CUSTOMER',
+                role: json.role ?? 'CUSTOMER',
                 garageId: json.garageId,
             });
             return NextResponse.json(rs);
