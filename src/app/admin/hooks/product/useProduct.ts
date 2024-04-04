@@ -10,7 +10,7 @@ import { getOptionsCategories } from '@/utils/until';
 const queryClient = new QueryClient();
 
 const fetchProducts = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/products?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/products?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch products', response);
     }
@@ -18,7 +18,7 @@ const fetchProducts = async (searchParams: any, page: number): Promise<any> => {
 };
 
 const fetchProductsDlbd = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/products/dlbd?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/products/dlbd?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch products', response);
     }
@@ -26,7 +26,7 @@ const fetchProductsDlbd = async (searchParams: any, page: number): Promise<any> 
 };
 
 const deleteProduct = async (id: string): Promise<any> => {
-    const response = await fetch(`/api/products/${id}`, {
+    const response = await fetch(`/api/admin/products/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

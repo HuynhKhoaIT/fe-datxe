@@ -1,8 +1,5 @@
-import { stringToHash } from '@/utils/until';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { sha256, sha224 } from 'js-sha256';
-import axios from 'axios';
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
@@ -51,6 +48,7 @@ export const authOptions: NextAuthOptions = {
                 token.token = user.token;
                 token.garageId = user.garageId;
                 token.isAdmin = user.garageId;
+                token.role = user.role;
             }
             if (account) {
                 token.accessToken = account.access_token;
