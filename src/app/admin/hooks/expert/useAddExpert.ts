@@ -9,7 +9,7 @@ import useFetch from '@/app/hooks/useFetch';
 const queryClient = new QueryClient();
 
 const addExpert = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/garage`, {
+    const response = await fetch(`/api/admin/garage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ const addExpert = async (values: any): Promise<any> => {
 };
 
 const updateExpert = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/garage/${values?.id}`, {
+    const response = await fetch(`/api/admin/garage/${values?.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

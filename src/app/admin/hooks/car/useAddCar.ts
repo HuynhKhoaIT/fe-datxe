@@ -10,7 +10,7 @@ import useFetch from '@/app/hooks/useFetch';
 const queryClient = new QueryClient();
 
 const addCar = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/car`, {
+    const response = await fetch(`/api/admin/car`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ const addCar = async (values: any): Promise<any> => {
 };
 
 const updateCar = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/car/${values?.id}`, {
+    const response = await fetch(`/api/admin/car/${values?.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

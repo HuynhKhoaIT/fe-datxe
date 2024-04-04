@@ -8,7 +8,7 @@ import { notifications } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const fetchNewsList = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/posts?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/posts?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch posts', response);
     }
@@ -16,7 +16,7 @@ const fetchNewsList = async (searchParams: any, page: number): Promise<any> => {
 };
 
 const deleteNews = async (id: string): Promise<any> => {
-    const response = await fetch(`/api/posts/${id}`, {
+    const response = await fetch(`/api/admin/posts/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -102,3 +102,21 @@ export const useNewsList = (): UseNews => {
         deleteItem,
     };
 };
+
+// get detail
+const fetchNewsDetail = async (id: string) => {
+    const response = await fetch(`/api/admin/posts/${id}`);
+    if (!response.ok) {
+        throw new ResponseError('Failed to fetch post', response);
+    }
+    return await response.json();
+};
+
+const useNewsDetail = (id: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY.newsDetail, id],
+        queryFn: () => fetchNewsDetail(id),
+    });
+};
+
+export { useNewsDetail, fetchNewsDetail };

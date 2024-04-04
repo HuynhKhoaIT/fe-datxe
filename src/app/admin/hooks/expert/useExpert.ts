@@ -8,7 +8,7 @@ import { notifications } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const fetchExperts = async (searchParams: any, page: number): Promise<any> => {
-    const response = await fetch(`/api/garage?${searchParams}&page=${page}`);
+    const response = await fetch(`/api/admin/garage?${searchParams}&page=${page}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch experts', response);
     }
@@ -16,7 +16,7 @@ const fetchExperts = async (searchParams: any, page: number): Promise<any> => {
 };
 
 const deleteExpert = async (id: string): Promise<any> => {
-    const response = await fetch(`/api/garage/${id}`, {
+    const response = await fetch(`/api/admin/garage/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -102,3 +102,21 @@ export const useExperts = (): UseExperts => {
         deleteItem,
     };
 };
+
+// get detail
+const fetchExpertDetail = async (id: string) => {
+    const response = await fetch(`/api/admin/garage/${id}`);
+    if (!response.ok) {
+        throw new ResponseError('Failed to fetch expert', response);
+    }
+    return await response.json();
+};
+
+const useExpertDetail = (id: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY.expertDetail, id],
+        queryFn: () => fetchExpertDetail(id),
+    });
+};
+
+export { useExpertDetail, fetchExpertDetail };

@@ -10,7 +10,7 @@ import { getOptionsProvince } from '@/utils/until';
 const queryClient = new QueryClient();
 
 const addCustomer = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/customer`, {
+    const response = await fetch(`/api/admin/customer`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ const addCustomer = async (values: any): Promise<any> => {
 };
 
 const updateCustomer = async (values: any): Promise<any> => {
-    const response = await fetch(`/api/customer/${values?.id}`, {
+    const response = await fetch(`/api/admin/customer/${values?.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

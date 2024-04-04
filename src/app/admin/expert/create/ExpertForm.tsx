@@ -24,17 +24,18 @@ import {
   getOptionsWard,
   getUltilities,
 } from "@/utils/until";
-export default function ExpertForm({ isEditing, dataDetail }: any) {
+import CropImageLink from "@/app/components/common/CropImage";
+import ImageUpload from "@/assets/icons/cameraUploadMobile.svg";
+
+export default function ExpertForm({ isLoading, isEditing, dataDetail }: any) {
   const {
     addItem,
     updateItem,
     provinceOptions,
-    isLoadingProvince,
     UltilitiesOptions,
   } = useAddExpert();
 
   const [loading, handlers] = useDisclosure();
-  const [file, setFile] = useState<File | null>(null);
   const resetRef = useRef<() => void>(null);
 
   const [districtOptions, setDistrictOptions] = useState<any>([]);
@@ -45,10 +46,6 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
   const [ward, setWard] = useState<any>();
   const [amenities, setAmenities] = useState<any>();
 
-  const clearFile = () => {
-    setFile(null);
-    resetRef.current?.();
-  };
   const form = useForm({
     initialValues: {
       logo: "",
@@ -58,8 +55,6 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
   });
   useEffect(() => {
     const fetchData = async () => {
-      handlers.open();
-
       if (isEditing && dataDetail) {
         try {
           form.setInitialValues(dataDetail);
@@ -87,8 +82,6 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
           }
         } catch (error) {
           console.error("Error fetching data:", error);
-        } finally {
-          handlers.close();
         }
       }
     };
@@ -96,7 +89,7 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
     if (isEditing) fetchData();
   }, [dataDetail]);
 
-  const handleSubmit = async (values: any) => {
+  const uploadFileThumbnail = async (file: File) => {
     try {
       const baseURL = "https://up-image.dlbd.vn/api/image";
       const options = { headers: { "Content-Type": "multipart/form-data" } };
@@ -106,11 +99,13 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
         formData.append("image", file);
       }
       const response = await axios.post(baseURL, formData, options);
-      values.logo = response.data;
+      form.setFieldValue("logo", response.data);
     } catch (error) {
       console.error("Error:", error);
     }
+  };
 
+  const handleSubmit = async (values: any) => {
     handlers.open();
     if (isEditing) {
       updateItem(values);
@@ -123,7 +118,7 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
   return (
     <Box pos="relative">
       <LoadingOverlay
-        visible={loading}
+        visible={isLoading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
@@ -134,30 +129,14 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
               <Grid>
                 <Grid.Col span={{ base: 12 }}>
                   <Text size={"16px"} c={"#999999"} mb={"6px"}>
-                    Hình ảnh
+                    Logo
                   </Text>
-                  <FileButton
-                    resetRef={resetRef}
-                    onChange={setFile}
-                    accept="image/png,image/jpeg"
-                  >
-                    {(props) => (
-                      <Image
-                        {...props}
-                        radius="md"
-                        h={150}
-                        w={150}
-                        src={
-                          file
-                            ? URL.createObjectURL(file)
-                            : dataDetail
-                            ? dataDetail.image
-                            : null
-                        }
-                        fallbackSrc="https://placehold.co/600x400?text=Upload"
-                      />
-                    )}
-                  </FileButton>
+                  <CropImageLink
+                    shape="rect"
+                    placeholder={"Cập nhật logo"}
+                    defaultImage={dataDetail?.logo || ImageUpload.src}
+                    uploadFileThumbnail={uploadFileThumbnail}
+                  />
                 </Grid.Col>
               </Grid>
               <Grid gutter={10} mt={24}>
@@ -168,6 +147,7 @@ export default function ExpertForm({ isEditing, dataDetail }: any) {
                     {...form.getInputProps("code")}
                     label="Mã số"
                     type="text"
+                    readOnly
                     placeholder="Mã số"
                   />
                 </Grid.Col>

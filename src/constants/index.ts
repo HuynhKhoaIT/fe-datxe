@@ -69,6 +69,13 @@ export const QUERY_KEY = {
     productsDlbd: 'productsDlbd',
     customersDlbd: 'customersDlbd',
     categoriesDlbd: 'categoriesDlbd',
+
+    // detail
+    expertDetail: 'expertDetail',
+    categoryDetail: 'categoryDetail',
+    carDetail: 'carDetail',
+    customerDetail: 'customerDetail',
+    newsDetail: 'newsDetail',
 };
 
 export const ORDER_CANCEL_1 = 'Sai lịch hẹn';

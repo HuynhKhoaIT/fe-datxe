@@ -109,7 +109,7 @@ export function convertToPlatesNumber(str: string) {
 // get danh sách hãng xe
 export async function getOptionsBrands() {
   try {
-    const res = await axios.get(`/api/car-model`);
+    const res = await axios.get(`/api/admin/car-model`);
     const dataOption = res?.data?.map((item: any) => ({
       value: item.id.toString(),
       label: item.title,
@@ -124,7 +124,7 @@ export async function getOptionsBrands() {
 export async function getOptionsModels(brandId: number) {
   if (brandId) {
     try {
-      const res = await axios.get(`/api/car-model/${brandId}`);
+      const res = await axios.get(`/api/admin/car-model/${brandId}`);
 
       const dataOption = res?.data?.map((item: any) => ({
         value: item.id.toString(),
@@ -141,7 +141,7 @@ export async function getOptionsModels(brandId: number) {
 export async function getOptionsYearCar(modelId: number) {
   if (modelId) {
     try {
-      const res = await axios.get(`/api/car-model/${modelId}`);
+      const res = await axios.get(`/api/admin/car-model/${modelId}`);
       if (!res.data) {
         throw new Error("Failed to fetch data");
       }
@@ -173,7 +173,7 @@ export async function getOptionsCustomers() {
 // get danh sách options danh mục của chuyên gia
 export async function getOptionsCategories() {
   try {
-    const res = await axios.get(`/api/product-category`);
+    const res = await axios.get(`/api/admin/product-category`);
     const dataOption = res.data?.data?.map((item: any) => ({
       value: item.id.toString(),
       label: item.title,

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 
 const fetchCategoriesList = async (searchParams: any, limit = 10) => {
-    const response = await fetch(`/api/product-category?${searchParams}&limit=${limit}`);
+    const response = await fetch(`/api/admin/product-category?${searchParams}&limit=${limit}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch news', response);
     }

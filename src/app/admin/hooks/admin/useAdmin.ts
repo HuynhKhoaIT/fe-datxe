@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 const queryClient = new QueryClient();
 
 const fetchOrdersAdmin = async (searchParams: any): Promise<any> => {
-    const response = await fetch(`/api/orders/dashboard?${searchParams}`);
+    const response = await fetch(`/api/admin/orders/dashboard?${searchParams}`);
     if (!response.ok) {
         throw new ResponseError('Failed to fetch orders', response);
     }
