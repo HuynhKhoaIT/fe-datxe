@@ -20,13 +20,13 @@ export default function ProductItem2({
     <Box w={"100%"}>
       <Card shadow="sm" radius="md" mb={5}>
         <Card.Section>
-          <Link href={`/san-pham/${product.id}`} style={{ width: "100%" }}>
+          <Link href={`/san-pham/${product.uuID}`} style={{ width: "100%" }}>
             <ImageField src={images ? images[0] : null} height={160} />
           </Link>
         </Card.Section>
 
         <div className={styles.infoCard2}>
-          <Link href={`/san-pham/${product.id}`}>
+          <Link href={`/san-pham/${product.uuID}`}>
             <Typo size="sub" type="semi-bold" className={styles.productName}>
               {product.name}
             </Typo>

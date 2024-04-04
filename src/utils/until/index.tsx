@@ -110,7 +110,6 @@ export function convertToPlatesNumber(str: string) {
 export async function getOptionsBrands() {
   try {
     const res = await axios.get(`/api/car-model`);
-    console.log(res);
     const dataOption = res?.data?.map((item: any) => ({
       value: item.id.toString(),
       label: item.title,
@@ -265,16 +264,15 @@ export function generateUUID() {
   const short = require("short-uuid");
   return short.generate().toLowerCase();
 }
-export function stringToHash(string:string) {
-
+export function stringToHash(string: string) {
   let hash = 0;
 
   if (string.length == 0) return hash;
 
   for (let i = 0; i < string.length; i++) {
-      let char = string.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
+    let char = string.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash;
   }
 
   return hash;

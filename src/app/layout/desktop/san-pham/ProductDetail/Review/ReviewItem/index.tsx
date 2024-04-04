@@ -16,11 +16,11 @@ const ReviewItem = ({ dataDetail }: any) => {
               {dataDetail?.user?.fullName}
             </Typo>
             <Typo style={{ fontSize: "12px", color: "var(--sub-color)" }}>
-              {dataDetail?.created}
+              {dataDetail?.createdAt}
             </Typo>
           </div>
           <div className={styles.star}>
-            <Rating defaultValue={dataDetail?.star} />
+            <Rating readOnly defaultValue={dataDetail?.star} />
           </div>
         </div>
         <div className={styles.message}>{dataDetail?.message}</div>

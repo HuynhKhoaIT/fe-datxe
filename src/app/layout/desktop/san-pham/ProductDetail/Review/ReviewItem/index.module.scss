@@ -10,13 +10,16 @@
 .wrapper {
     display: flex;
     gap: 1rem;
+    .content {
+        flex: 1;
+    }
     .info {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         .infoUser {
             display: flex;
-            flex: 1;
             flex-direction: column;
             justify-content: space-between;
         }

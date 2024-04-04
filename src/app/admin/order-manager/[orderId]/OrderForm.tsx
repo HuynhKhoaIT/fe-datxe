@@ -3,19 +3,14 @@ import {
   ActionIcon,
   Box,
   Button,
-  Card,
-  Flex,
   Grid,
   Group,
   LoadingOverlay,
-  MultiSelect,
   NumberInput,
   Select,
   Space,
-  Switch,
   Table,
   Tabs,
-  Text,
   TextInput,
   Textarea,
   Tooltip,
@@ -31,11 +26,7 @@ import {
 import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  useDebouncedValue,
-  useDisclosure,
-  useMediaQuery,
-} from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { OptionsCancelOrder, stepOrderOptions } from "@/constants/masterData";
 import dynamic from "next/dynamic";
 import ListPage from "@/app/components/layout/ListPage";
@@ -43,13 +34,11 @@ import Typo from "@/app/components/elements/Typo";
 import ItemProduct from "../_component/ItemProduct";
 import { modals } from "@mantine/modals";
 import {
-  getOptionsBrands,
   getOptionsModels,
   getOptionsYearCar,
   handleKeyPress,
 } from "@/utils/until";
 import FooterSavePage from "../../_component/FooterSavePage";
-import useFetch from "@/app/hooks/useFetch";
 import { getOptionsCar } from "../until";
 import { useAddOrder } from "../../hooks/order/useAddOrder";
 import AutocompleteField from "@/app/components/form/AutoCompleteField";
@@ -59,13 +48,7 @@ export default function OrderForm({ isEditing = false, dataDetail }: any) {
   const licenseNumber = searchParams.get("numberPlate");
   const isMobile = useMediaQuery(`(max-width: ${"600px"})`);
   const router = useRouter();
-  const {
-    addItem,
-    updateItem,
-    updateStep,
-    brandOptions,
-    isLoadingBrand,
-  } = useAddOrder();
+  const { addItem, updateItem, updateStep, brandOptions } = useAddOrder();
   const [activeTab, setActiveTab] = useState<string | null>(
     !isEditing ? "numberPlates" : "customer"
   );

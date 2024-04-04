@@ -11,14 +11,16 @@ export default function NewDetailPage({
 }: any) {
   return (
     <div>
-      <Banner data={newsData} loading={newsDataLoading} />
+      <Banner data={newsData?.data} loading={newsDataLoading} />
       <Container>
         <Grid gutter={8}>
           <Grid.Col span={9}>
             <Box w={"100%"}>
               {newsData ? (
                 <div
-                  dangerouslySetInnerHTML={{ __html: newsData?.description }}
+                  dangerouslySetInnerHTML={{
+                    __html: newsData?.data?.description,
+                  }}
                 ></div>
               ) : (
                 <Skeleton style={{ marginTop: 25 }} />

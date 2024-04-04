@@ -12,4 +12,5 @@ export interface IProduct {
   garageId?: string;
   garage?: any;
   code?: string;
+  uuID?: string;
 }
